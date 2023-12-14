@@ -1,0 +1,16 @@
+{
+    "name": "Models.API.Websocket.Binance.Future.Orders",
+    "rootNamespace": "",
+    "references": [
+        "GUID:1dd59ad18fefbe84f80bbd20ffa3a276"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

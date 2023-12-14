@@ -1,0 +1,21 @@
+using UnityEngine;
+
+[ExecuteInEditMode]
+public class ShowVisibilityBasedOnNoOfChild : MonoBehaviour
+{
+    public GameObject visibleObject;
+    public Transform parent;
+    public long targetChildCount;
+    long childCount;
+
+    void Start()
+    {
+        childCount = -1;
+    }
+    void Update()
+    {
+        if (childCount == parent.childCount) return;
+        childCount = parent.childCount;
+        visibleObject.SetActive(childCount == targetChildCount);
+    }
+}

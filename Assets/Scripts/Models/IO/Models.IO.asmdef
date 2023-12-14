@@ -1,0 +1,18 @@
+{
+    "name": "Models.IO",
+    "rootNamespace": "",
+    "references": [
+        "GUID:98a654d3504a9fc42ad9f2122701db1a",
+        "GUID:0e886025ceffdf544b8cfbdfe8020193",
+        "GUID:c5e88d172ae05f344b8f82d40ff26e07"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}
