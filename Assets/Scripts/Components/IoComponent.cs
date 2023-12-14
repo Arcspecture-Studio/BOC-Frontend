@@ -4,7 +4,6 @@ public class IoComponent : MonoBehaviour
 {
     [Header("Config")]
     public string apiKeyFileName;
-    public string ordersFileName;
     public string preferencesFileName;
 
     [Header("Runtime")]
@@ -14,11 +13,11 @@ public class IoComponent : MonoBehaviour
     {
         get
         {
-        #if UNITY_EDITOR
+#if UNITY_EDITOR
             return editorPath;
-        #else
+#else
             return persistentPath;
-        #endif
+#endif
         }
     }
     public bool writeApiKey = false;
