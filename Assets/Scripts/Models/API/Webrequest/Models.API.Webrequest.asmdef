@@ -1,0 +1,17 @@
+{
+    "name": "Models.API.Webrequest",
+    "rootNamespace": "",
+    "references": [
+        "GUID:98a654d3504a9fc42ad9f2122701db1a",
+        "GUID:fa242471719a61845afd24ce36707339"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}
