@@ -3,7 +3,6 @@ using UnityEngine;
 public class IoComponent : MonoBehaviour
 {
     [Header("Config")]
-    public string websocketConnectionFileName;
     public string apiKeyFileName;
     public string ordersFileName;
     public string preferencesFileName;
@@ -22,7 +21,6 @@ public class IoComponent : MonoBehaviour
         #endif
         }
     }
-    public bool writeWebsocketConnection = false;
     public bool writeApiKey = false;
     public bool writePreferences = false;
     public bool readApiKey = false;

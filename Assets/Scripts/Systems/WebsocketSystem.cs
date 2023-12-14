@@ -129,7 +129,6 @@ public class WebsocketSystem : MonoBehaviour
                 General.WebsocketConnectionEstablishedResponse connectionEstablishedResponse = JsonConvert.DeserializeObject<General.WebsocketConnectionEstablishedResponse>(e.Data, JsonSerializerConfig.settings);
                 websocketComponent.generalSocketConnectionId = connectionEstablishedResponse.connectionId;
                 websocketComponent.generalSocketIv = connectionEstablishedResponse.iv.data;
-                ioComponent.writeWebsocketConnection = true;
                 if (loginComponent.loggedIn)
                 {
                     ioComponent.writeApiKey = true;
@@ -178,6 +177,19 @@ public class WebsocketSystem : MonoBehaviour
                     promptComponent.ShowPrompt("ERROR", message, () =>
                     {
                         promptComponent.active = false;
+                    });
+                });
+            }
+            else if (response.eventType.Equals(WebsocketEventTypeEnum.VERSION_MISMATCH.ToString())){
+                UnityMainThread.AddJob(() =>
+                {
+                    promptComponent.ShowPrompt("NOTICE", "App version is outdated, please update your app to latest version.", () =>
+                    {
+#if UNITY_EDITOR
+                        UnityEditor.EditorApplication.isPlaying = false;
+#else
+                        Application.Quit();
+#endif
                     });
                 });
             }
