@@ -1,0 +1,16 @@
+{
+    "name": "Models.API.Webrequest.Binance.Future.Responses",
+    "rootNamespace": "",
+    "references": [
+        "GUID:7951324c599a3724c82d6cc2a03de00d"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}
