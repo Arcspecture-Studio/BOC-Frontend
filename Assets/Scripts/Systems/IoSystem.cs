@@ -18,7 +18,6 @@ public class IoSystem : MonoBehaviour
     PreferenceComponent preferenceComponent;
     SettingPageComponent settingPageComponent;
     string logPrefix = "[IoSystem] ";
-    string loginErrorMessage = "Unable to continue previous login session, please re-login.";
     bool readApiKeyAdy = false;
 
     void Start()
@@ -41,33 +40,20 @@ public class IoSystem : MonoBehaviour
     void Update()
     {
         ReadFromPreferencesFile();
-        ReadFromWebsocketConnectionFile();
-        WriteIntoWebsocketConnectionFile();
+        ReadFromApiKeyFile();
         WriteIntoApiKeyFile();
         WriteIntoPreferencesFile();
     }
 
-    void Write(string fileName, string jsonString, bool encrypted = false)
+    void Write(string fileName, string jsonString)
     {
         if (!Directory.Exists(ioComponent.path))
         {
             Directory.CreateDirectory(ioComponent.path);
         }
         StreamWriter writer = new StreamWriter(ioComponent.path + fileName);
-        if (encrypted)
-        {
-            jsonString = Encryption.Encrypt(jsonString, websocketComponent.generalSocketConnectionId, websocketComponent.generalSocketIv);
-        }
         writer.Write(jsonString);
         writer.Close();
-    }
-    void WriteIntoWebsocketConnectionFile()
-    {
-        if (!ioComponent.writeWebsocketConnection) return;
-        ioComponent.writeWebsocketConnection = false;
-        WebsocketConnectionFile data = new WebsocketConnectionFile(websocketComponent.generalSocketConnectionId, websocketComponent.generalSocketIv);
-        string jsonString = JsonConvert.SerializeObject(data, JsonSerializerConfig.settings);
-        Write(ioComponent.websocketConnectionFileName, jsonString);
     }
     void WriteIntoApiKeyFile()
     {
@@ -77,9 +63,9 @@ public class IoSystem : MonoBehaviour
         List<ApiKeyFile> data = new List<ApiKeyFile>();
         if (binanceComponent.loggedIn) data.Add(new ApiKeyFile(PlatformEnum.BINANCE, binanceComponent.apiKey, binanceComponent.apiSecret, binanceComponent.loginPhrase));
         if (binanceTestnetComponent.loggedIn) data.Add(new ApiKeyFile(PlatformEnum.BINANCE_TESTNET, binanceTestnetComponent.apiKey, binanceTestnetComponent.apiSecret, binanceTestnetComponent.loginPhrase));
-        if(data.Count == 0)
+        if (data.Count == 0)
         {
-            if(File.Exists(ioComponent.path + ioComponent.apiKeyFileName))
+            if (File.Exists(ioComponent.path + ioComponent.apiKeyFileName))
             {
                 File.Delete(ioComponent.path + ioComponent.apiKeyFileName);
             }
@@ -87,45 +73,21 @@ public class IoSystem : MonoBehaviour
         else
         {
             string jsonString = JsonConvert.SerializeObject(data, JsonSerializerConfig.settings);
-            Write(ioComponent.apiKeyFileName, jsonString, true);
+            Write(ioComponent.apiKeyFileName, jsonString);
         }
     }
-    void ReadFromWebsocketConnectionFile()
+    void ReadFromApiKeyFile()
     {
         if (!ioComponent.readApiKey) return;
         ioComponent.readApiKey = false;
-        bool fileNotExist = !File.Exists(ioComponent.path + ioComponent.websocketConnectionFileName);
-        loginComponent.allowInput = fileNotExist;
-        if (fileNotExist) return;
-        StreamReader reader = new StreamReader(ioComponent.path + ioComponent.websocketConnectionFileName);
-        string jsonString = reader.ReadToEnd();
-        reader.Close();
-        try
-        {
-            WebsocketConnectionFile data = JsonConvert.DeserializeObject<WebsocketConnectionFile>(jsonString, JsonSerializerConfig.settings);
-            ReadFromApiKeyFile(data.connectionId, data.secondaryConnectionId);
-        }
-        catch (Exception ex)
-        {
-            Debug.LogError(logPrefix + ex);
-            loginComponent.allowInput = true;
-            promptComponent.ShowPrompt("ERROR", loginErrorMessage, () =>
-            {
-                promptComponent.active = false;
-            });
-        }
-    }
-    void ReadFromApiKeyFile(string connectionId, byte[] iv)
-    {
         bool fileNotExist = !File.Exists(ioComponent.path + ioComponent.apiKeyFileName);
         loginComponent.allowInput = fileNotExist;
         if (fileNotExist) return;
         StreamReader reader = new StreamReader(ioComponent.path + ioComponent.apiKeyFileName);
-        string encryptedString = reader.ReadToEnd();
+        string jsonString = reader.ReadToEnd();
         reader.Close();
         try
         {
-            string jsonString = Encryption.Decrypt(encryptedString, connectionId, iv);
             List<ApiKeyFile> datas = JsonConvert.DeserializeObject<List<ApiKeyFile>>(jsonString, JsonSerializerConfig.settings);
             Dictionary<PlatformEnum, bool> loggedIn = new();
             datas.ForEach(data =>
@@ -151,7 +113,7 @@ public class IoSystem : MonoBehaviour
                         break;
                 }
             });
-            if(loggedIn.ContainsKey(preferenceComponent.tradingPlatform))
+            if (loggedIn.ContainsKey(preferenceComponent.tradingPlatform))
             {
                 platformComponent.tradingPlatform = preferenceComponent.tradingPlatform;
             }
@@ -159,7 +121,7 @@ public class IoSystem : MonoBehaviour
             {
                 foreach (KeyValuePair<PlatformEnum, bool> logged in loggedIn)
                 {
-                    if(logged.Value)
+                    if (logged.Value)
                     {
                         platformComponent.tradingPlatform = logged.Key;
                         break;
@@ -171,7 +133,8 @@ public class IoSystem : MonoBehaviour
         {
             Debug.LogError(logPrefix + ex);
             loginComponent.allowInput = true;
-            promptComponent.ShowPrompt("ERROR", loginErrorMessage, () =>
+            string message = "Unable to read data from file named " + ioComponent.apiKeyFileName + " as the data has been manually modified.";
+            promptComponent.ShowPrompt("ERROR", message, () =>
             {
                 promptComponent.active = false;
             });

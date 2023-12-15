@@ -62,7 +62,8 @@ public class WebsocketSystem : MonoBehaviour
             Binance.WebsocketMarketResponse response = JsonConvert.DeserializeObject<Binance.WebsocketMarketResponse>(e.Data, JsonSerializerConfig.settings);
             if (response.stream != null)
             {
-                if (websocketComponent.marketResponses.ContainsKey(response.stream)){
+                if (websocketComponent.marketResponses.ContainsKey(response.stream))
+                {
                     websocketComponent.marketResponses[response.stream].Add(e.Data);
                 }
                 else
@@ -129,13 +130,27 @@ public class WebsocketSystem : MonoBehaviour
                 General.WebsocketConnectionEstablishedResponse connectionEstablishedResponse = JsonConvert.DeserializeObject<General.WebsocketConnectionEstablishedResponse>(e.Data, JsonSerializerConfig.settings);
                 websocketComponent.generalSocketConnectionId = connectionEstablishedResponse.connectionId;
                 websocketComponent.generalSocketIv = connectionEstablishedResponse.iv.data;
-                ioComponent.writeWebsocketConnection = true;
                 if (loginComponent.loggedIn)
                 {
                     ioComponent.writeApiKey = true;
                     websocketComponent.syncApiKeyToServer = true;
                     retrieveOrdersComponent.updateOrderStatus = true;
                 }
+            }
+            else if (response.eventType.Equals(WebsocketEventTypeEnum.VERSION_CHECKING.ToString()))
+            {
+                // TODO: check the body if {matched: true}
+                UnityMainThread.AddJob(() =>
+                {
+                    promptComponent.ShowPrompt("NOTICE", "App version is outdated, please update your app to latest version.", () =>
+                    {
+#if UNITY_EDITOR
+                        UnityEditor.EditorApplication.isPlaying = false;
+#else
+                        Application.Quit();
+#endif
+                    });
+                });
             }
             else if (response.eventType.Equals(WebsocketEventTypeEnum.CALL_API.ToString()))
             {
