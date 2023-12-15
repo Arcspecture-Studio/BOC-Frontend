@@ -45,17 +45,13 @@ public class IoSystem : MonoBehaviour
         WriteIntoPreferencesFile();
     }
 
-    void Write(string fileName, string jsonString, bool encrypted = false)
+    void Write(string fileName, string jsonString)
     {
         if (!Directory.Exists(ioComponent.path))
         {
             Directory.CreateDirectory(ioComponent.path);
         }
         StreamWriter writer = new StreamWriter(ioComponent.path + fileName);
-        if (encrypted)
-        {
-            jsonString = Encryption.Encrypt(jsonString, websocketComponent.generalSocketConnectionId, websocketComponent.generalSocketIv);
-        }
         writer.Write(jsonString);
         writer.Close();
     }
@@ -77,7 +73,7 @@ public class IoSystem : MonoBehaviour
         else
         {
             string jsonString = JsonConvert.SerializeObject(data, JsonSerializerConfig.settings);
-            Write(ioComponent.apiKeyFileName, jsonString, true);
+            Write(ioComponent.apiKeyFileName, jsonString);
         }
     }
     void ReadFromApiKeyFile()

@@ -62,7 +62,8 @@ public class WebsocketSystem : MonoBehaviour
             Binance.WebsocketMarketResponse response = JsonConvert.DeserializeObject<Binance.WebsocketMarketResponse>(e.Data, JsonSerializerConfig.settings);
             if (response.stream != null)
             {
-                if (websocketComponent.marketResponses.ContainsKey(response.stream)){
+                if (websocketComponent.marketResponses.ContainsKey(response.stream))
+                {
                     websocketComponent.marketResponses[response.stream].Add(e.Data);
                 }
                 else
@@ -136,6 +137,21 @@ public class WebsocketSystem : MonoBehaviour
                     retrieveOrdersComponent.updateOrderStatus = true;
                 }
             }
+            else if (response.eventType.Equals(WebsocketEventTypeEnum.VERSION_CHECKING.ToString()))
+            {
+                // TODO: check the body if {matched: true}
+                UnityMainThread.AddJob(() =>
+                {
+                    promptComponent.ShowPrompt("NOTICE", "App version is outdated, please update your app to latest version.", () =>
+                    {
+#if UNITY_EDITOR
+                        UnityEditor.EditorApplication.isPlaying = false;
+#else
+                        Application.Quit();
+#endif
+                    });
+                });
+            }
             else if (response.eventType.Equals(WebsocketEventTypeEnum.CALL_API.ToString()))
             {
                 General.WebsocketCallApiResponse callApiResponse = JsonConvert.DeserializeObject<General.WebsocketCallApiResponse>(e.Data, JsonSerializerConfig.settings);
@@ -177,19 +193,6 @@ public class WebsocketSystem : MonoBehaviour
                     promptComponent.ShowPrompt("ERROR", message, () =>
                     {
                         promptComponent.active = false;
-                    });
-                });
-            }
-            else if (response.eventType.Equals(WebsocketEventTypeEnum.VERSION_MISMATCH.ToString())){
-                UnityMainThread.AddJob(() =>
-                {
-                    promptComponent.ShowPrompt("NOTICE", "App version is outdated, please update your app to latest version.", () =>
-                    {
-#if UNITY_EDITOR
-                        UnityEditor.EditorApplication.isPlaying = false;
-#else
-                        Application.Quit();
-#endif
                     });
                 });
             }
