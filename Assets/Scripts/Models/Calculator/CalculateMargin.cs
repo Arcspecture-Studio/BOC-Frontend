@@ -57,7 +57,7 @@ public class CalculateMargin
         if (this.amountToLoss > this.balance) this.amountToLoss = this.balance;
         this.entryTimes = Math.Max(entryTimes, 0);
         this.entryPrices = entryPrices;
-        for(int i = 0; i < this.entryPrices.Count; i++)
+        for (int i = 0; i < this.entryPrices.Count; i++)
         {
             this.entryPrices[i] = Math.Max(this.entryPrices[i], 0);
         }
@@ -88,17 +88,19 @@ public class CalculateMargin
     }
     void CalculateEntryPrices()
     {
-        if (entryTimes > 2 && entryPrices.Count == 2)
+        if (entryTimes > 2 && (entryPrices.Count == 1 || entryPrices.Count == 2))
         {
-            double entryPriceDiff = Math.Abs(entryPrices[0] - entryPrices[^1]);
-            double pricePerSection = entryTimes == 1 ? 0 : entryPriceDiff / (entryTimes - 1);
-            double initialEntryPrice = Math.Max(entryPrices[0], entryPrices[^1]);
-            List<double> newEntryPrices = new List<double>();
+            List<double> newEntryPrices = new();
+            double targetPrice = entryPrices.Count == 1 ? stopLossPrice : entryPrices[^1];
+            double entryPriceDiff = Math.Abs(entryPrices[0] - targetPrice);
+            double pricePerSection = entryPriceDiff / (entryTimes - 1);
+            double initialEntryPrice = Math.Max(entryPrices[0], targetPrice);
             for (int i = 0; i < entryTimes; i++)
             {
                 double entryPrice = initialEntryPrice - pricePerSection * i;
                 newEntryPrices.Add(entryPrice);
             }
+            if (entryPrices.Count == 1) newEntryPrices.Remove(stopLossPrice);
             entryPrices = newEntryPrices;
         }
         else
@@ -171,7 +173,8 @@ public class CalculateMargin
     {
         List<double> sortedEntryPrices = new List<double>(entryPrices);
         List<double> sortedQuantities = new List<double>(quantities);
-        if (!isLong) {
+        if (!isLong)
+        {
             sortedEntryPrices.Reverse();
             sortedQuantities.Reverse();
         }
