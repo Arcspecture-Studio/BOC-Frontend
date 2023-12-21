@@ -5,7 +5,8 @@ public class ShowVisibilityBasedOnNoOfChild : MonoBehaviour
 {
     public GameObject visibleObject;
     public Transform parent;
-    public long targetChildCount;
+    public long targetChildCountMin;
+    public long targetChildCountMax;
     long childCount;
 
     void Start()
@@ -16,6 +17,6 @@ public class ShowVisibilityBasedOnNoOfChild : MonoBehaviour
     {
         if (childCount == parent.childCount) return;
         childCount = parent.childCount;
-        visibleObject.SetActive(childCount == targetChildCount);
+        visibleObject.SetActive(childCount >= targetChildCountMin && childCount <= targetChildCountMax);
     }
 }

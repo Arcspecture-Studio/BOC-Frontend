@@ -88,19 +88,31 @@ public class CalculateMargin
     }
     void CalculateEntryPrices()
     {
-        if (entryTimes > 2 && (entryPrices.Count == 1 || entryPrices.Count == 2))
+        if (entryPrices.Count == 1 && entryTimes > 1)
         {
+            double entryPriceDiff = Math.Abs(entryPrices[0] - stopLossPrice);
+            double pricePerSection = entryPriceDiff / entryTimes;
+            double initialEntryPrice = Math.Max(entryPrices[0], stopLossPrice);
             List<double> newEntryPrices = new();
-            double targetPrice = entryPrices.Count == 1 ? stopLossPrice : entryPrices[^1];
-            double entryPriceDiff = Math.Abs(entryPrices[0] - targetPrice);
+            for (int i = 0; i <= entryTimes; i++)
+            {
+                double entryPrice = initialEntryPrice - pricePerSection * i;
+                newEntryPrices.Add(entryPrice);
+            }
+            newEntryPrices.Remove(stopLossPrice);
+            entryPrices = newEntryPrices;
+        }
+        else if (entryPrices.Count == 2 && entryTimes > 2)
+        {
+            double entryPriceDiff = Math.Abs(entryPrices[0] - entryPrices[^1]);
             double pricePerSection = entryPriceDiff / (entryTimes - 1);
-            double initialEntryPrice = Math.Max(entryPrices[0], targetPrice);
+            double initialEntryPrice = Math.Max(entryPrices[0], entryPrices[^1]);
+            List<double> newEntryPrices = new();
             for (int i = 0; i < entryTimes; i++)
             {
                 double entryPrice = initialEntryPrice - pricePerSection * i;
                 newEntryPrices.Add(entryPrice);
             }
-            if (entryPrices.Count == 1) newEntryPrices.Remove(stopLossPrice);
             entryPrices = newEntryPrices;
         }
         else
@@ -171,8 +183,8 @@ public class CalculateMargin
     }
     void CalculateAverageEntryPrice()
     {
-        List<double> sortedEntryPrices = new List<double>(entryPrices);
-        List<double> sortedQuantities = new List<double>(quantities);
+        List<double> sortedEntryPrices = new(entryPrices);
+        List<double> sortedQuantities = new(quantities);
         if (!isLong)
         {
             sortedEntryPrices.Reverse();
