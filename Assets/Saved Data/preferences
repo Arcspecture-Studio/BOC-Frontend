@@ -1,0 +1,10 @@
+{
+  "riskRewardRatio": 1.2,
+  "symbol": "ETHUSDT",
+  "tradingPlatform": 0,
+  "takeProfitType": 3,
+  "takeProfitTrailingCallbackPercentage": 0.3,
+  "orderType": 0,
+  "marginDistributionMode": 1,
+  "marginWeightDistributionValue": 0.3
+}

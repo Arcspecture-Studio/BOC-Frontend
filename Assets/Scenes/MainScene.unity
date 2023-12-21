@@ -256,7 +256,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: v4.2.0t
+  m_text: v4.5.0
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -15116,13 +15116,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: eeb2724ab103e284fad67dd5563d4b96, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  websocketConnectionFileName: websocket-connection
   apiKeyFileName: api-key
-  ordersFileName: orders
   preferencesFileName: preferences
   editorPath: 
   persistentPath: 
-  writeWebsocketConnection: 0
   writeApiKey: 0
   writePreferences: 0
   readApiKey: 0
