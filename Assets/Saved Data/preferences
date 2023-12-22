@@ -1,8 +1,8 @@
 {
   "tradingPlatform": 0,
   "symbol": "ETHUSDT",
-  "lossPercentage": 0.0,
-  "lossAmount": 2.0,
+  "lossPercentage": 0.1,
+  "lossAmount": 0.0,
   "marginDistributionMode": 1,
   "marginWeightDistributionValue": 0.3,
   "takeProfitType": 3,

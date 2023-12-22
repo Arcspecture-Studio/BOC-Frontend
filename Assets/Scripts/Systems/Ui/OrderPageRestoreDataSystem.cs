@@ -97,7 +97,7 @@ public class OrderPageRestoreDataSystem : MonoBehaviour
         orderPageComponent.positionInfoQuantityFilledText.text = Utils.RoundNDecimal(orderData.quantityFilled, platformComponent.quantityPrecisions[orderPageComponent.symbolDropdownComponent.selectedSymbol]).ToString();
         orderPageComponent.positionInfoActualTakeProfitPriceText.text = Utils.RoundNDecimal(orderData.actualTakeProfitPrice, platformComponent.pricePrecisions[orderPageComponent.symbolDropdownComponent.selectedSymbol]).ToString();
         orderPageComponent.positionInfoPaidFundingAmount.text = orderData.paidFundingAmount.ToString();
-        foreach (KeyValuePair<Guid, WebsocketRetrieveThrottleOrdersData> throttleOrder in orderData.throttleOrders)
+        foreach (KeyValuePair<string, WebsocketRetrieveThrottleOrdersData> throttleOrder in orderData.throttleOrders)
         {
             GameObject throttleTabObject = Instantiate(orderPageComponent.throttleParentComponent.throttleTabPrefab, orderPageComponent.throttleParentComponent.transform);
             OrderPageThrottleComponent throttleComponent = throttleTabObject.GetComponent<OrderPageThrottleComponent>();

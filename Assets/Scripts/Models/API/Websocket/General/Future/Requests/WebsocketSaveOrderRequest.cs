@@ -9,13 +9,13 @@ namespace General
         public WebsocketOrderRequest orderRequest;
         public WebsocketSaveOrderEnum actionToTake;
 
-        public WebsocketSaveOrderRequest(Guid orderId, PlatformEnum platform, bool submit = false) : base(WebsocketEventTypeEnum.SAVE_ORDER, platform)
+        public WebsocketSaveOrderRequest(string orderId, PlatformEnum platform, bool submit = false) : base(WebsocketEventTypeEnum.SAVE_ORDER, platform)
         {
             orderRequest = new WebsocketOrderRequest(orderId);
             if (submit) actionToTake = WebsocketSaveOrderEnum.SUBMIT;
             else actionToTake = WebsocketSaveOrderEnum.DELETE;
         }
-        public WebsocketSaveOrderRequest(Guid orderId,
+        public WebsocketSaveOrderRequest(string orderId,
             PlatformEnum platform,
             CalculateMargin marginCalculator,
             OrderTakeProfitTypeEnum takeProfitType,
@@ -24,7 +24,7 @@ namespace General
             orderRequest = new WebsocketOrderRequest(orderId, marginCalculator, takeProfitType, orderType);
             actionToTake = WebsocketSaveOrderEnum.UPDATE;
         }
-        public WebsocketSaveOrderRequest(Guid orderId,
+        public WebsocketSaveOrderRequest(string orderId,
             PlatformEnum platform,
             CalculateMargin marginCalculator,
             string symbol,
@@ -38,17 +38,17 @@ namespace General
     [Serializable]
     public class WebsocketOrderRequest
     {
-        public Guid orderId;
+        public string orderId;
         public string symbol;
         public CalculateMargin marginCalculator;
         public OrderTakeProfitTypeEnum takeProfitType;
         public OrderTypeEnum orderType;
 
-        public WebsocketOrderRequest(Guid orderId)
+        public WebsocketOrderRequest(string orderId)
         {
             this.orderId = orderId;
         }
-        public WebsocketOrderRequest(Guid orderId,
+        public WebsocketOrderRequest(string orderId,
             CalculateMargin marginCalculator,
             OrderTakeProfitTypeEnum takeProfitType,
             OrderTypeEnum orderType)
@@ -58,7 +58,7 @@ namespace General
             this.takeProfitType = takeProfitType;
             this.orderType = orderType;
         }
-        public WebsocketOrderRequest(Guid orderId,
+        public WebsocketOrderRequest(string orderId,
             CalculateMargin marginCalculator,
             string symbol,
             OrderTakeProfitTypeEnum takeProfitType,

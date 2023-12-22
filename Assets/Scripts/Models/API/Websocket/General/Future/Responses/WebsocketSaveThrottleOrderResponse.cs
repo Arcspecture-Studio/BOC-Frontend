@@ -5,6 +5,6 @@ namespace General
     [Serializable]
     public class WebsocketSaveThrottleOrderResponse : WebsocketSaveOrderResponse
     {
-        public Guid parentOrderId;
+        public string parentOrderId;
     }
 }

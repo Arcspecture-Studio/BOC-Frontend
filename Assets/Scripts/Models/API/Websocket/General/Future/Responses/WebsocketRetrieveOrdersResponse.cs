@@ -6,7 +6,7 @@ namespace General
     [Serializable]
     public class WebsocketRetrieveOrdersResponse : WebsocketGeneralResponse
     {
-        public Dictionary<Guid, WebsocketRetrieveOrdersData> orders;
+        public Dictionary<string, WebsocketRetrieveOrdersData> orders;
     }
     [Serializable]
     public class WebsocketRetrieveOrdersData
@@ -21,7 +21,7 @@ namespace General
         public double averagePriceFilled;
         public double actualTakeProfitPrice;
         public double paidFundingAmount;
-        public Dictionary<Guid, WebsocketRetrieveThrottleOrdersData> throttleOrders;
+        public Dictionary<string, WebsocketRetrieveThrottleOrdersData> throttleOrders;
     }
     [Serializable]
     public class WebsocketRetrieveThrottleOrdersData

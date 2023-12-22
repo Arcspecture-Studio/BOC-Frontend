@@ -70,14 +70,14 @@ public class RetrieveOrdersSystem : MonoBehaviour
 
         #region Get orders according to platform
         yield return new WaitUntil(() => ordersReceived);
-        Dictionary<Guid, General.WebsocketRetrieveOrdersData> ordersFromServer = retrieveOrdersComponent.ordersFromServer.ContainsKey(platformComponent.tradingPlatform) ?
+        Dictionary<string, General.WebsocketRetrieveOrdersData> ordersFromServer = retrieveOrdersComponent.ordersFromServer.ContainsKey(platformComponent.tradingPlatform) ?
             retrieveOrdersComponent.ordersFromServer[platformComponent.tradingPlatform] : null;
         #endregion
 
         #region Instantiate orders
         if (ordersFromServer != null)
         {
-            foreach (KeyValuePair<Guid, General.WebsocketRetrieveOrdersData> order in ordersFromServer)
+            foreach (KeyValuePair<string, General.WebsocketRetrieveOrdersData> order in ordersFromServer)
             {
                 InstantiateOrder(order.Key);
             }
@@ -85,7 +85,7 @@ public class RetrieveOrdersSystem : MonoBehaviour
         }
         #endregion
     }
-    void InstantiateOrder(Guid orderId)
+    void InstantiateOrder(string orderId)
     {
         GameObject orderPageObject = Instantiate(orderPagesComponent.orderPagePrefab);
         orderPageObject.transform.SetParent(orderPagesComponent.transform, false);
@@ -102,7 +102,7 @@ public class RetrieveOrdersSystem : MonoBehaviour
 
         #region Get orders according to platform
         yield return new WaitUntil(() => ordersReceived);
-        Dictionary<Guid, General.WebsocketRetrieveOrdersData> ordersFromServer = retrieveOrdersComponent.ordersFromServer.ContainsKey(platformComponent.tradingPlatform) ?
+        Dictionary<string, General.WebsocketRetrieveOrdersData> ordersFromServer = retrieveOrdersComponent.ordersFromServer.ContainsKey(platformComponent.tradingPlatform) ?
             retrieveOrdersComponent.ordersFromServer[platformComponent.tradingPlatform] : null;
         #endregion
 
