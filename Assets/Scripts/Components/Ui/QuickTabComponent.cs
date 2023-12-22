@@ -11,6 +11,9 @@ public class QuickTabComponent : MonoBehaviour
     public TMP_Dropdown atrTimeframeDropdown;
     public TMP_InputField atrLengthInput;
     public TMP_InputField atrMultiplierInput;
+    public GameObject quickOrdersObject;
+    public Transform orderInfoTransform;
+    public GameObject quickOrderDataRowPrefab;
 
     [Header("Config")]
     public float pageMoveDuration;

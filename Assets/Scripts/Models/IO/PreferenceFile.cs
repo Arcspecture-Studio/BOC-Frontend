@@ -3,12 +3,14 @@
 [Serializable]
 public class PreferenceFile
 {
-    public double? riskRewardRatio;
-    public string symbol;
     public PlatformEnum? tradingPlatform;
-    public OrderTakeProfitTypeEnum? takeProfitType;
-    public float? takeProfitTrailingCallbackPercentage;
-    public OrderTypeEnum? orderType;
+    public string symbol;
+    public double? lossPercentage;
+    public double? lossAmount;
     public MarginDistributionModeEnum? marginDistributionMode;
-    public float? marginWeightDistributionValue;
+    public double? marginWeightDistributionValue;
+    public OrderTakeProfitTypeEnum? takeProfitType;
+    public double? riskRewardRatio;
+    public double? takeProfitTrailingCallbackPercentage;
+    public OrderTypeEnum? orderType;
 }
