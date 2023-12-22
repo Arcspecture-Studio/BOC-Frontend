@@ -43,8 +43,8 @@ public class OrderPageMarginWeightDistributionValueSystem : MonoBehaviour
         settingPageComponent.marginWeightDistributionValueInput.text = settingPageComponent.marginWeightDistributionValueSlider.value.ToString();
         settingPageComponent.marginWeightDistributionValueSlider.onValueChanged.AddListener(value =>
         {
-            float roundedValue = (float)Utils.RoundTwoDecimal((double)value);
-            settingPageComponent.marginWeightDistributionValueSlider.value = roundedValue;
+            double roundedValue = Utils.RoundTwoDecimal(value);
+            settingPageComponent.marginWeightDistributionValueSlider.value = (float)roundedValue;
             settingPageComponent.marginWeightDistributionValueInput.text = roundedValue.ToString();
 
             preferenceComponent.marginWeightDistributionValue = roundedValue;
@@ -56,9 +56,9 @@ public class OrderPageMarginWeightDistributionValueSystem : MonoBehaviour
         {
             if (value.IsNullOrEmpty()) value = "0";
             double parsedValue = Math.Min(Math.Max(double.Parse(value), settingPageComponent.marginWeightDistributionValueSlider.minValue), settingPageComponent.marginWeightDistributionValueSlider.maxValue);
-            float roundedValue = (float)Utils.RoundTwoDecimal(parsedValue);
+            double roundedValue = Utils.RoundTwoDecimal(parsedValue);
             settingPageComponent.marginWeightDistributionValueInput.text = roundedValue.ToString();
-            settingPageComponent.marginWeightDistributionValueSlider.value = roundedValue;
+            settingPageComponent.marginWeightDistributionValueSlider.value = (float)roundedValue;
 
             preferenceComponent.marginWeightDistributionValue = roundedValue;
             ioComponent.writePreferences = true;

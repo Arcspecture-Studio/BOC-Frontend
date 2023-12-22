@@ -77,12 +77,12 @@ public class OrderPageTakeProfitTrailingCallbackPercentageSystem : MonoBehaviour
         }
 
         settingPageComponent.takeProfitTrailingCallbackPercentageInput.text = settingPageComponent.takeProfitTrailingCallbackPercentageSlider.value.ToString();
-        
+
         EventTrigger.Entry pointerUpEvent = new() { eventID = EventTriggerType.PointerUp };
         pointerUpEvent.callback.AddListener(eventData =>
         {
-            float roundedValue = (float)Utils.RoundTwoDecimal(settingPageComponent.takeProfitTrailingCallbackPercentageSlider.value);
-            settingPageComponent.takeProfitTrailingCallbackPercentageSlider.value = roundedValue;
+            double roundedValue = Utils.RoundTwoDecimal(settingPageComponent.takeProfitTrailingCallbackPercentageSlider.value);
+            settingPageComponent.takeProfitTrailingCallbackPercentageSlider.value = (float)roundedValue;
             settingPageComponent.takeProfitTrailingCallbackPercentageInput.text = roundedValue.ToString();
 
             preferenceComponent.takeProfitTrailingCallbackPercentage = roundedValue;
@@ -94,9 +94,9 @@ public class OrderPageTakeProfitTrailingCallbackPercentageSystem : MonoBehaviour
         {
             if (value.IsNullOrEmpty()) value = "0";
             double parsedValue = Math.Min(Math.Max(double.Parse(value), BinanceConfig.TRAILING_MIN_PERCENTAGE), BinanceConfig.TRAILING_MAX_PERCENTAGE);
-            float roundedValue = (float)Utils.RoundTwoDecimal(parsedValue);
+            double roundedValue = Utils.RoundTwoDecimal(parsedValue);
             settingPageComponent.takeProfitTrailingCallbackPercentageInput.text = roundedValue.ToString();
-            settingPageComponent.takeProfitTrailingCallbackPercentageSlider.value = roundedValue;
+            settingPageComponent.takeProfitTrailingCallbackPercentageSlider.value = (float)roundedValue;
 
             preferenceComponent.takeProfitTrailingCallbackPercentage = roundedValue;
             ioComponent.writePreferences = true;
