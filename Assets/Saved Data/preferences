@@ -8,5 +8,8 @@
   "takeProfitType": 3,
   "riskRewardRatio": 1.2,
   "takeProfitTrailingCallbackPercentage": 0.3,
-  "orderType": 0
+  "quickEntryTimes": 2,
+  "atrTimeframe": 5,
+  "atrLength": 13,
+  "atrMultiplier": 2.0
 }

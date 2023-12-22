@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 
-public class UpdateSettingPageDataSystem : MonoBehaviour
+public class SettingPageUpdateDataSystem : MonoBehaviour
 {
     PreferenceComponent preferenceComponent;
     SettingPageComponent settingPageComponent;
@@ -65,7 +65,6 @@ public class UpdateSettingPageDataSystem : MonoBehaviour
         settingPageComponent.takeProfitTrailingCallbackPercentageSlider.value = (float)preferenceComponent.takeProfitTrailingCallbackPercentage;
         settingPageComponent.takeProfitTrailingCallbackPercentageInput.text = preferenceComponent.takeProfitTrailingCallbackPercentage.ToString();
         settingPageComponent.orderTypeDropdown.value = (int)preferenceComponent.orderType;
-
     }
     void SyncSettingToPreference()
     {

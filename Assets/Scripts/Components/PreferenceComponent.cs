@@ -16,6 +16,10 @@ public class PreferenceComponent : MonoBehaviour
     public double riskRewardRatio;
     public double takeProfitTrailingCallbackPercentage;
     public OrderTypeEnum orderType;
+    public int quickEntryTimes;
+    public TimeframeEnum atrTimeframe;
+    public int atrLength;
+    public double atrMultiplier;
 
     public void UpdateValue(PreferenceFile preferenceFile)
     {
@@ -29,6 +33,10 @@ public class PreferenceComponent : MonoBehaviour
         riskRewardRatio = preferenceFile.riskRewardRatio.GetValueOrDefault(riskRewardRatio);
         takeProfitTrailingCallbackPercentage = preferenceFile.takeProfitTrailingCallbackPercentage.GetValueOrDefault(takeProfitTrailingCallbackPercentage);
         orderType = preferenceFile.orderType.GetValueOrDefault(orderType);
+        quickEntryTimes = preferenceFile.quickEntryTimes.GetValueOrDefault(quickEntryTimes);
+        atrTimeframe = preferenceFile.atrTimeframe.GetValueOrDefault(atrTimeframe);
+        atrLength = preferenceFile.atrLength.GetValueOrDefault(atrLength);
+        atrMultiplier = preferenceFile.atrMultiplier.GetValueOrDefault(atrMultiplier);
     }
     public string GetJsonString()
     {
@@ -43,7 +51,10 @@ public class PreferenceComponent : MonoBehaviour
             { "takeProfitType", (int)takeProfitType },
             { "riskRewardRatio", riskRewardRatio },
             { "takeProfitTrailingCallbackPercentage", takeProfitTrailingCallbackPercentage },
-            { "orderType", (int)orderType },
+            { "quickEntryTimes", quickEntryTimes },
+            { "atrTimeframe", (int)atrTimeframe },
+            { "atrLength", atrLength },
+            { "atrMultiplier", atrMultiplier },
         };
         return json.ToString();
     }

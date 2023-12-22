@@ -13,4 +13,8 @@ public class PreferenceFile
     public double? riskRewardRatio;
     public double? takeProfitTrailingCallbackPercentage;
     public OrderTypeEnum? orderType;
+    public int? quickEntryTimes;
+    public TimeframeEnum? atrTimeframe;
+    public int? atrLength;
+    public double? atrMultiplier;
 }

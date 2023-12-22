@@ -21,4 +21,5 @@ public class QuickTabComponent : MonoBehaviour
 
     [Header("Runtime")]
     public bool active = false;
+    public bool syncData = false;
 }

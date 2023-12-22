@@ -7193,14 +7193,14 @@ MonoBehaviour:
   m_VerticalScrollbarEventHandler: {fileID: 0}
   m_LayoutGroup: {fileID: 0}
   m_ScrollSensitivity: 1
-  m_ContentType: 3
+  m_ContentType: 2
   m_InputType: 0
   m_AsteriskChar: 42
-  m_KeyboardType: 2
+  m_KeyboardType: 4
   m_LineType: 0
   m_HideMobileInput: 0
   m_HideSoftKeyboard: 0
-  m_CharacterValidation: 3
+  m_CharacterValidation: 2
   m_RegexValue: 
   m_GlobalPointSize: 70
   m_CharacterLimit: 0
@@ -12780,6 +12780,7 @@ GameObject:
   - component: {fileID: 909877265}
   - component: {fileID: 909877266}
   - component: {fileID: 909877267}
+  - component: {fileID: 909877268}
   m_Layer: 5
   m_Name: Quick Tab
   m_TagString: Untagged
@@ -12832,6 +12833,7 @@ MonoBehaviour:
   pageMoveDuration: 0.4
   pageMoveEase: 19
   active: 0
+  syncData: 0
 --- !u!114 &909877267
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -12842,6 +12844,18 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 0e7a8629d106da547b634ed471ed8aec, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &909877268
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 909877264}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 68234d4162863e2468abaa5e46ae3ae5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1 &912344672
@@ -20393,6 +20407,10 @@ MonoBehaviour:
   riskRewardRatio: 1.2
   takeProfitTrailingCallbackPercentage: 1
   orderType: 0
+  quickEntryTimes: 2
+  atrTimeframe: 5
+  atrLength: 13
+  atrMultiplier: 2
 --- !u!114 &1439778822
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -21810,14 +21828,14 @@ MonoBehaviour:
   m_VerticalScrollbarEventHandler: {fileID: 0}
   m_LayoutGroup: {fileID: 0}
   m_ScrollSensitivity: 1
-  m_ContentType: 3
+  m_ContentType: 2
   m_InputType: 0
   m_AsteriskChar: 42
-  m_KeyboardType: 2
+  m_KeyboardType: 4
   m_LineType: 0
   m_HideMobileInput: 0
   m_HideSoftKeyboard: 0
-  m_CharacterValidation: 3
+  m_CharacterValidation: 2
   m_RegexValue: 
   m_GlobalPointSize: 70
   m_CharacterLimit: 0
@@ -26977,7 +26995,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0, y: 160.00029}
+  m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 560}
   m_Pivot: {x: 0, y: 1}
 --- !u!114 &1904289440
@@ -29321,8 +29339,8 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 467063639}
   m_HandleRect: {fileID: 467063638}
   m_Direction: 2
-  m_Value: -0.000001907348
-  m_Size: 0.7142856
+  m_Value: 1
+  m_Size: 0.71428573
   m_NumberOfSteps: 0
   m_OnValueChanged:
     m_PersistentCalls:
