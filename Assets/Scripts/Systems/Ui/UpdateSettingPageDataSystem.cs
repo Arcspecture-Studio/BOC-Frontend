@@ -72,6 +72,10 @@ public class UpdateSettingPageDataSystem : MonoBehaviour
             preferenceComponent.riskRewardRatio = double.Parse(value);
             ioComponent.writePreferences = true;
         });
+        settingPageComponent.symbolInput.onValueChanged.AddListener(value =>
+        {
+            settingPageComponent.symbolInput.text = value.ToUpper();
+        });
         settingPageComponent.symbolInput.onEndEdit.AddListener(value =>
         {
             preferenceComponent.symbol = value;
@@ -105,11 +109,11 @@ public class UpdateSettingPageDataSystem : MonoBehaviour
             activePlatform = platformComponent.tradingPlatform;
             settingPageComponent.activePlatformText.text = activePlatform.ToString().Replace("_", " ");
         }
-        if(platformComponent.walletBalances != null)
+        if (platformComponent.walletBalances != null)
         {
             if (platformComponent.walletBalances.ContainsKey(usdt))
             {
-                if(balanceUsdt != platformComponent.walletBalances[usdt])
+                if (balanceUsdt != platformComponent.walletBalances[usdt])
                 {
                     balanceUsdt = platformComponent.walletBalances[usdt];
                     settingPageComponent.balanceUdstText.text = Utils.TruncTwoDecimal(balanceUsdt.Value).ToString();
