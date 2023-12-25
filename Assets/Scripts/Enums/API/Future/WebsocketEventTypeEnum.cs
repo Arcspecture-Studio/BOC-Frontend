@@ -6,6 +6,7 @@
     CALL_API,
     SAVE_ORDER,
     SAVE_THROTTLE_ORDER,
+    SAVE_QUICK_ORDER,
     RETRIEVE_ORDERS,
 
     // To Server

@@ -7,7 +7,7 @@ namespace General
     {
         public WebsocketQuickOrderRequest orderRequest;
 
-        public WebsocketSaveQuickOrderRequest(WebsocketEventTypeEnum eventType, PlatformEnum platform) : base(eventType, platform)
+        public WebsocketSaveQuickOrderRequest(string orderId, PlatformEnum platform) : base(WebsocketEventTypeEnum.SAVE_QUICK_ORDER, platform)
         {
         }
     }
