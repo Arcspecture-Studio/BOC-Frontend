@@ -5,16 +5,38 @@ namespace General
     [Serializable]
     public class WebsocketSaveQuickOrderRequest : WebsocketGeneralRequest
     {
-        public WebsocketQuickOrderRequest orderRequest;
+        public WebsocketOrderIdRequest orderRequest;
+        public WebsocketSaveOrderEnum actionToTake;
 
-        public WebsocketSaveQuickOrderRequest(string orderId, PlatformEnum platform) : base(WebsocketEventTypeEnum.SAVE_QUICK_ORDER, platform)
+        public WebsocketSaveQuickOrderRequest(PlatformEnum platform,
+        string symbol,
+        double maxLossPercentage,
+        double maxLossAmount,
+        bool weightedQuantity,
+        double quantityWeight,
+        OrderTakeProfitTypeEnum takeProfitType,
+        double riskRewardRatio,
+        double takeProfitTrailingCallbackPercentage,
+        double entryPrice,
+        int entryTimes,
+        TimeframeEnum atrTimeframe,
+        int atrLength,
+        double atrMultiplier) : base(WebsocketEventTypeEnum.SAVE_QUICK_ORDER, platform)
         {
+            actionToTake = WebsocketSaveOrderEnum.SAVE;
+            orderRequest = new WebsocketQuickOrderRequest(symbol, maxLossPercentage, maxLossAmount, weightedQuantity, quantityWeight, takeProfitType,
+            riskRewardRatio, takeProfitTrailingCallbackPercentage, entryPrice, entryTimes, atrTimeframe, atrLength, atrMultiplier);
+        }
+
+        public WebsocketSaveQuickOrderRequest(PlatformEnum platform, string orderId) : base(WebsocketEventTypeEnum.SAVE_QUICK_ORDER, platform)
+        {
+            actionToTake = WebsocketSaveOrderEnum.DELETE;
+            orderRequest = new WebsocketOrderIdRequest(orderId);
         }
     }
     [Serializable]
-    public class WebsocketQuickOrderRequest
+    public class WebsocketQuickOrderRequest : WebsocketOrderIdRequest
     {
-        public string orderId;
         public string symbol;
         public double maxLossPercentage;
         public double maxLossAmount;
@@ -28,5 +50,34 @@ namespace General
         public TimeframeEnum atrTimeframe;
         public int atrLength;
         public double atrMultiplier;
+
+        public WebsocketQuickOrderRequest(string symbol,
+        double maxLossPercentage,
+        double maxLossAmount,
+        bool weightedQuantity,
+        double quantityWeight,
+        OrderTakeProfitTypeEnum takeProfitType,
+        double riskRewardRatio,
+        double takeProfitTrailingCallbackPercentage,
+        double entryPrice,
+        int entryTimes,
+        TimeframeEnum atrTimeframe,
+        int atrLength,
+        double atrMultiplier) : base(null)
+        {
+            this.symbol = symbol;
+            this.maxLossPercentage = maxLossPercentage;
+            this.maxLossAmount = maxLossAmount;
+            this.weightedQuantity = weightedQuantity;
+            this.quantityWeight = quantityWeight;
+            this.takeProfitType = takeProfitType;
+            this.riskRewardRatio = riskRewardRatio;
+            this.takeProfitTrailingCallbackPercentage = takeProfitTrailingCallbackPercentage;
+            this.entryPrice = entryPrice;
+            this.entryTimes = entryTimes;
+            this.atrTimeframe = atrTimeframe;
+            this.atrLength = atrLength;
+            this.atrMultiplier = atrMultiplier;
+        }
     }
 }

@@ -5,52 +5,49 @@ namespace General
     [Serializable]
     public class WebsocketSaveThrottleOrderRequest : WebsocketGeneralRequest
     {
-        public WebsocketThrottleOrderRequest orderRequest;
+        public WebsocketThrottleOrderIdRequest orderRequest;
         public WebsocketSaveOrderEnum actionToTake;
 
         public WebsocketSaveThrottleOrderRequest(string orderId, string parentOrderId, PlatformEnum platform, bool submit = false) : base(WebsocketEventTypeEnum.SAVE_THROTTLE_ORDER, platform)
         {
-            orderRequest = new WebsocketThrottleOrderRequest(orderId, parentOrderId);
             if (submit) actionToTake = WebsocketSaveOrderEnum.SUBMIT;
             else actionToTake = WebsocketSaveOrderEnum.DELETE;
+            orderRequest = new WebsocketThrottleOrderIdRequest(orderId, parentOrderId);
         }
         public WebsocketSaveThrottleOrderRequest(string orderId, string parentOrderId, PlatformEnum platform, OrderTypeEnum orderType) : base(WebsocketEventTypeEnum.SAVE_THROTTLE_ORDER, platform)
         {
-            orderRequest = new WebsocketThrottleOrderRequest(orderId, parentOrderId, orderType);
             actionToTake = WebsocketSaveOrderEnum.UPDATE;
+            orderRequest = new WebsocketThrottleOrderRequest(orderId, parentOrderId, orderType);
         }
         public WebsocketSaveThrottleOrderRequest(string orderId, string parentOrderId, PlatformEnum platform, CalculateThrottle throttlerCalculator, OrderTypeEnum orderType) : base(WebsocketEventTypeEnum.SAVE_THROTTLE_ORDER, platform)
         {
-            orderRequest = new WebsocketThrottleOrderRequest(orderId, parentOrderId, platform, throttlerCalculator, orderType);
             actionToTake = WebsocketSaveOrderEnum.SAVE;
+            orderRequest = new WebsocketThrottleOrderRequest(orderId, parentOrderId, throttlerCalculator, orderType);
         }
     }
     [Serializable]
-    public class WebsocketThrottleOrderRequest
+    public class WebsocketThrottleOrderRequest : WebsocketThrottleOrderIdRequest
     {
-        public string orderId;
-        public string parentOrderId;
         public CalculateThrottle throttleCalculator;
         public OrderTypeEnum orderType;
 
-        public WebsocketThrottleOrderRequest(string orderId, string parentOrderId)
+        public WebsocketThrottleOrderRequest(string orderId, string parentOrderId, OrderTypeEnum orderType) : base(orderId, parentOrderId)
         {
-            this.orderId = orderId;
-            this.parentOrderId = parentOrderId;
-        }
-        public WebsocketThrottleOrderRequest(string orderId, string parentOrderId, OrderTypeEnum orderType)
-        {
-            this.orderId = orderId;
-            this.parentOrderId = parentOrderId;
             this.orderType = orderType;
         }
-        public WebsocketThrottleOrderRequest(string orderId, string parentOrderId,
-            PlatformEnum platform, CalculateThrottle throttleCalculator, OrderTypeEnum orderType)
+        public WebsocketThrottleOrderRequest(string orderId, string parentOrderId, CalculateThrottle throttleCalculator, OrderTypeEnum orderType) : base(orderId, parentOrderId)
         {
-            this.orderId = orderId;
-            this.parentOrderId = parentOrderId;
             this.throttleCalculator = throttleCalculator;
             this.orderType = orderType;
+        }
+    }
+    [Serializable]
+    public class WebsocketThrottleOrderIdRequest : WebsocketOrderIdRequest
+    {
+        public string parentOrderId;
+        public WebsocketThrottleOrderIdRequest(string orderId, string parentOrderId) : base(orderId)
+        {
+            this.parentOrderId = parentOrderId;
         }
     }
 }
