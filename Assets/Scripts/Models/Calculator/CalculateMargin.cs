@@ -10,7 +10,6 @@ public class CalculateMargin
     public long entryTimes;
     public List<double> entryPrices;
     public double stopLossPrice;
-    public double takeProfitPrice;
     public double riskRewardRatio;
     public double takeProfitTrailingCallbackPercentage;
     public double feeRate;
@@ -31,6 +30,7 @@ public class CalculateMargin
     public double totalFee;
     public double balanceDecrementRate;
     public double balanceAfterLoss;
+    public double takeProfitPrice;
     public List<double> takeProfitPrices;
     public List<double> takeProfitTrailingPrices;
     public double totalWinAmount;
@@ -43,7 +43,6 @@ public class CalculateMargin
         long entryTimes,
         List<double> entryPrices,
         double stopLossPrice,
-        double takeProfitPrice,
         double riskRewardRatio,
         double takeProfitTrailingCallbackPercentage,
         double feeRate,
@@ -62,7 +61,6 @@ public class CalculateMargin
             this.entryPrices[i] = Math.Max(this.entryPrices[i], 0);
         }
         this.stopLossPrice = Utils.RoundNDecimal(Math.Max(stopLossPrice, 0), pricePrecision);
-        this.takeProfitPrice = takeProfitPrice;
         this.riskRewardRatio = Math.Max(riskRewardRatio, 0);
         this.takeProfitTrailingCallbackPercentage = takeProfitTrailingCallbackPercentage;
         this.feeRate = feeRate;

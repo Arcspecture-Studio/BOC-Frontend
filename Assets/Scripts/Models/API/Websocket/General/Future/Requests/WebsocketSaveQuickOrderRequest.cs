@@ -19,14 +19,14 @@ namespace General
         double takeProfitTrailingCallbackPercentage,
         double entryPrice,
         int entryTimes,
-        TimeframeEnum atrTimeframe,
+        string atrInterval,
         int atrLength,
         double atrMultiplier,
         bool isLong) : base(WebsocketEventTypeEnum.SAVE_QUICK_ORDER, platform)
         {
             actionToTake = WebsocketSaveOrderEnum.SAVE;
             orderRequest = new WebsocketQuickOrderRequest(symbol, maxLossPercentage, maxLossAmount, weightedQuantity, quantityWeight, takeProfitType,
-            riskRewardRatio, takeProfitTrailingCallbackPercentage, entryPrice, entryTimes, atrTimeframe, atrLength, atrMultiplier, isLong);
+            riskRewardRatio, takeProfitTrailingCallbackPercentage, entryPrice, entryTimes, atrInterval, atrLength, atrMultiplier, isLong);
         }
 
         public WebsocketSaveQuickOrderRequest(PlatformEnum platform, string orderId) : base(WebsocketEventTypeEnum.SAVE_QUICK_ORDER, platform)
@@ -39,8 +39,8 @@ namespace General
     public class WebsocketQuickOrderRequest : WebsocketOrderIdRequest
     {
         public string symbol;
-        public double maxLossPercentage;
-        public double maxLossAmount;
+        public double maxLossPercentage; // 0 means null
+        public double maxLossAmount; // 0 means null
         public bool weightedQuantity;
         public double quantityWeight;
         public OrderTakeProfitTypeEnum takeProfitType;
@@ -48,7 +48,7 @@ namespace General
         public double takeProfitTrailingCallbackPercentage;
         public double entryPrice; // -1 means null
         public int entryTimes;
-        public TimeframeEnum atrTimeframe;
+        public string atrInterval;
         public int atrLength;
         public double atrMultiplier;
         public bool isLong;
@@ -63,7 +63,7 @@ namespace General
         double takeProfitTrailingCallbackPercentage,
         double entryPrice,
         int entryTimes,
-        TimeframeEnum atrTimeframe,
+        string atrInterval,
         int atrLength,
         double atrMultiplier,
         bool isLong) : base(null)
@@ -78,7 +78,7 @@ namespace General
             this.takeProfitTrailingCallbackPercentage = takeProfitTrailingCallbackPercentage;
             this.entryPrice = entryPrice;
             this.entryTimes = entryTimes;
-            this.atrTimeframe = atrTimeframe;
+            this.atrInterval = atrInterval;
             this.atrLength = atrLength;
             this.atrMultiplier = atrMultiplier;
             this.isLong = isLong;

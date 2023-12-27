@@ -239,7 +239,6 @@ public class OrderPageSystem : MonoBehaviour
                     entryTimes,
                     entryPrices,
                     stopLossPrice,
-                    takeProfitPrice,
                     riskRewardRatio,
                     takeProfitTrailingCallbackPercentage,
                     feeRate,
