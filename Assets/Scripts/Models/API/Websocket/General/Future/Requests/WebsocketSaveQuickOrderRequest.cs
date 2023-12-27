@@ -21,11 +21,12 @@ namespace General
         int entryTimes,
         TimeframeEnum atrTimeframe,
         int atrLength,
-        double atrMultiplier) : base(WebsocketEventTypeEnum.SAVE_QUICK_ORDER, platform)
+        double atrMultiplier,
+        bool isLong) : base(WebsocketEventTypeEnum.SAVE_QUICK_ORDER, platform)
         {
             actionToTake = WebsocketSaveOrderEnum.SAVE;
             orderRequest = new WebsocketQuickOrderRequest(symbol, maxLossPercentage, maxLossAmount, weightedQuantity, quantityWeight, takeProfitType,
-            riskRewardRatio, takeProfitTrailingCallbackPercentage, entryPrice, entryTimes, atrTimeframe, atrLength, atrMultiplier);
+            riskRewardRatio, takeProfitTrailingCallbackPercentage, entryPrice, entryTimes, atrTimeframe, atrLength, atrMultiplier, isLong);
         }
 
         public WebsocketSaveQuickOrderRequest(PlatformEnum platform, string orderId) : base(WebsocketEventTypeEnum.SAVE_QUICK_ORDER, platform)
@@ -50,6 +51,7 @@ namespace General
         public TimeframeEnum atrTimeframe;
         public int atrLength;
         public double atrMultiplier;
+        public bool isLong;
 
         public WebsocketQuickOrderRequest(string symbol,
         double maxLossPercentage,
@@ -63,7 +65,8 @@ namespace General
         int entryTimes,
         TimeframeEnum atrTimeframe,
         int atrLength,
-        double atrMultiplier) : base(null)
+        double atrMultiplier,
+        bool isLong) : base(null)
         {
             this.symbol = symbol;
             this.maxLossPercentage = maxLossPercentage;
@@ -78,6 +81,7 @@ namespace General
             this.atrTimeframe = atrTimeframe;
             this.atrLength = atrLength;
             this.atrMultiplier = atrMultiplier;
+            this.isLong = isLong;
         }
     }
 }
