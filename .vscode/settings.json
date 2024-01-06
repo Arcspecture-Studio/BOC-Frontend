@@ -43,6 +43,7 @@
         "**/*.meta": true,
         "**/*.prefab": true,
         "**/*.unity": true,
+        "**/*.csproj": true,
         "build/": true,
         "Build/": true,
         "Library/": true,
@@ -54,7 +55,10 @@
         "ProjectSettings/": true,
         "UserSettings/": true,
         "temp/": true,
-        "Temp/": true
+        "Temp/": true,
+        "AndroidSdk": true,
+        "Assets/Packages/": true,
+        "Assets/Plugins/": true
     },
     "dotnet.defaultSolution": "BOC-Frontend.sln"
 }
