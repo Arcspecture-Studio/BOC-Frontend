@@ -165,7 +165,7 @@ public class OrderPageSystem : MonoBehaviour
         {
             #region Prepare data
             // get input
-            string walletUnit = orderPageComponent.symbolDropdownComponent.selectedSymbol.Substring(orderPageComponent.symbolDropdownComponent.selectedSymbol.Length - 4);
+            string walletUnit = platformComponent.marginAssets[orderPageComponent.symbolDropdownComponent.selectedSymbol.ToUpper()];
             double maxLossPercentage = orderPageComponent.maxLossPercentageInput.text.IsNullOrEmpty() ? double.NaN :
                 double.Parse(orderPageComponent.maxLossPercentageInput.text);
             double amountToLoss = orderPageComponent.maxLossAmountInput.text.IsNullOrEmpty() ? double.NaN :
@@ -286,7 +286,7 @@ public class OrderPageSystem : MonoBehaviour
         orderPageComponent.resultComponent.orderInfoDataObject.transform.GetChild(4).gameObject.SetActive(false);
         #endregion
         #region Prices & Quantities
-        List<double> tpPrices = (OrderTakeProfitTypeEnum)orderPageComponent.takeProfitTypeDropdown.value == OrderTakeProfitTypeEnum.TAKE_ON_RETURN_TRAILING ? orderPageComponent.marginCalculator.takeProfitTrailingPrices: orderPageComponent.marginCalculator.takeProfitPrices;
+        List<double> tpPrices = (OrderTakeProfitTypeEnum)orderPageComponent.takeProfitTypeDropdown.value == OrderTakeProfitTypeEnum.TAKE_ON_RETURN_TRAILING ? orderPageComponent.marginCalculator.takeProfitTrailingPrices : orderPageComponent.marginCalculator.takeProfitPrices;
         for (int i = 0; i < orderPageComponent.marginCalculator.entryPrices.Count; i++)
         {
             #region Prices
@@ -306,7 +306,7 @@ public class OrderPageSystem : MonoBehaviour
             listedWinLossAmountDataObject.transform.GetChild(0).GetComponent<TMP_Text>().text = orderPageComponent.marginCalculator.quantities[i].ToString();
             listedWinLossAmountDataObject.transform.GetChild(1).GetComponent<TMP_Text>().text = orderPageComponent.marginCalculator.cumQuantities[i].ToString();
             listedWinLossAmountDataObject.transform.GetChild(2).gameObject.SetActive(false);
-            temp = listedWinLossAmountDataObject.transform.GetChild(3).GetComponent<TMP_Text>(); 
+            temp = listedWinLossAmountDataObject.transform.GetChild(3).GetComponent<TMP_Text>();
             temp.text = Utils.RoundTwoDecimal(orderPageComponent.marginCalculator.stopLossAmounts[i]).ToString();
             temp.color = Color.red;
             temp = listedWinLossAmountDataObject.transform.GetChild(4).GetComponent<TMP_Text>();
@@ -356,7 +356,8 @@ public class OrderPageSystem : MonoBehaviour
         #endregion
 
         #region Save order when calculate button is pressed
-        if (calculateButtonPressed) {
+        if (calculateButtonPressed)
+        {
             calculateButtonPressed = false;
             orderPageComponent.saveToServer = true;
         }
