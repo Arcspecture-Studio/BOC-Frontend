@@ -14,6 +14,7 @@ public class QuickTabComponent : MonoBehaviour
     public GameObject quickOrdersObject;
     public Transform orderInfoTransform;
     public GameObject quickOrderDataRowPrefab;
+    // TODO: add button
 
     [Header("Config")]
     public float pageMoveDuration;
