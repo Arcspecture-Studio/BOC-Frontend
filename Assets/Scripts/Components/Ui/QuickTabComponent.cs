@@ -1,6 +1,7 @@
 using DG.Tweening;
 using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class QuickTabComponent : MonoBehaviour
 {
@@ -11,10 +12,11 @@ public class QuickTabComponent : MonoBehaviour
     public TMP_Dropdown atrTimeframeDropdown;
     public TMP_InputField atrLengthInput;
     public TMP_InputField atrMultiplierInput;
+    public Button longButton;
+    public Button shortButton;
     public GameObject quickOrdersObject;
     public Transform orderInfoTransform;
     public GameObject quickOrderDataRowPrefab;
-    // TODO: add button
 
     [Header("Config")]
     public float pageMoveDuration;
@@ -23,4 +25,6 @@ public class QuickTabComponent : MonoBehaviour
     [Header("Runtime")]
     public bool active = false;
     public bool syncData = false;
+    public bool saveToServer = false;
+    public bool isLong;
 }

@@ -147,7 +147,7 @@ public class OrderPageSystem : MonoBehaviour
         UpdateUiInteractableStatus();
         UpdateOrderStatus();
         UpdatePositionInfo();
-        UpdateSaveOrder();
+        UpdateOrderToServer();
         StartCoroutine(CalculateMargin());
     }
 
@@ -447,7 +447,7 @@ public class OrderPageSystem : MonoBehaviour
             }
         }
     }
-    void UpdateSaveOrder()
+    void UpdateOrderToServer()
     {
         if (orderPageComponent.saveToServer)
         {
