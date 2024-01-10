@@ -1,5 +1,6 @@
 using DG.Tweening;
 using UnityEngine;
+using WebSocketSharp;
 
 public class QuickTabSystem : MonoBehaviour
 {
@@ -45,6 +46,7 @@ public class QuickTabSystem : MonoBehaviour
         {
             quickTabComponent.saveToServer = false;
             double normalizedMarginWeightDistributionValue = preferenceComponent.marginWeightDistributionValue * OrderConfig.MARGIN_WEIGHT_DISTRIBUTION_RANGE;
+            double entryPrice = quickTabComponent.entryPriceInput.text.IsNullOrEmpty() ? -1 : double.Parse(quickTabComponent.entryPriceInput.text);
             websocketComponent.generalRequests.Add(new General.WebsocketSaveQuickOrderRequest(
                platformComponent.tradingPlatform,
                preferenceComponent.symbol,
@@ -55,7 +57,7 @@ public class QuickTabSystem : MonoBehaviour
                preferenceComponent.takeProfitType,
                preferenceComponent.riskRewardRatio,
                preferenceComponent.takeProfitTrailingCallbackPercentage,
-               double.Parse(quickTabComponent.entryPriceInput.text),
+               entryPrice,
                int.Parse(quickTabComponent.entryTimesInput.text),
                WebsocketIntervalEnum.array[quickTabComponent.atrTimeframeDropdown.value],
                int.Parse(quickTabComponent.atrLengthInput.text),
