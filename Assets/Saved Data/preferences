@@ -1,5 +1,5 @@
 {
-  "tradingPlatform": 0,
+  "tradingPlatform": 1,
   "symbol": "ETHUSDT",
   "lossPercentage": 0.1,
   "lossAmount": 0.0,
