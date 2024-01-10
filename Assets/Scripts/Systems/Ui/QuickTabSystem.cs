@@ -44,19 +44,20 @@ public class QuickTabSystem : MonoBehaviour
         if (quickTabComponent.saveToServer)
         {
             quickTabComponent.saveToServer = false;
+            double normalizedMarginWeightDistributionValue = preferenceComponent.marginWeightDistributionValue * OrderConfig.MARGIN_WEIGHT_DISTRIBUTION_RANGE;
             websocketComponent.generalRequests.Add(new General.WebsocketSaveQuickOrderRequest(
                platformComponent.tradingPlatform,
                preferenceComponent.symbol,
                preferenceComponent.lossPercentage,
                preferenceComponent.lossAmount,
                preferenceComponent.marginDistributionMode == MarginDistributionModeEnum.WEIGHTED,
-               preferenceComponent.marginWeightDistributionValue, // TODO: is value is actual or normalized?
+               normalizedMarginWeightDistributionValue,
                preferenceComponent.takeProfitType,
                preferenceComponent.riskRewardRatio,
                preferenceComponent.takeProfitTrailingCallbackPercentage,
                double.Parse(quickTabComponent.entryPriceInput.text),
                int.Parse(quickTabComponent.entryTimesInput.text),
-               "",//quickTabComponent.atrTimeframeDropdown.value, // TODO: convert to string interval
+               WebsocketIntervalEnum.array[quickTabComponent.atrTimeframeDropdown.value],
                int.Parse(quickTabComponent.atrLengthInput.text),
                double.Parse(quickTabComponent.atrMultiplierInput.text),
                quickTabComponent.isLong
