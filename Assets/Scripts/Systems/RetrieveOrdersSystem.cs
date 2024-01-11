@@ -25,7 +25,7 @@ public class RetrieveOrdersSystem : MonoBehaviour
         GetOrdersFromServer();
         DestroyExistingOrdersObject();
         StartCoroutine(InstantiateOrders());
-        StartCoroutine(UpdateExistingOrders());
+        StartCoroutine(UpdateExistingOrdersStatus());
     }
 
     void GetOrdersFromServer()
@@ -93,7 +93,7 @@ public class RetrieveOrdersSystem : MonoBehaviour
         orderPageComponent.orderId = orderId;
         orderPageComponent.restoreData = true;
     }
-    IEnumerator UpdateExistingOrders()
+    IEnumerator UpdateExistingOrdersStatus()
     {
         if (!retrieveOrdersComponent.updateOrderStatus) yield break;
         retrieveOrdersComponent.updateOrderStatus = false;
