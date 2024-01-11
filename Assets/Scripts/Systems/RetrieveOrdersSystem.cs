@@ -106,6 +106,9 @@ public class RetrieveOrdersSystem : MonoBehaviour
             retrieveOrdersComponent.ordersFromServer[platformComponent.tradingPlatform] : null;
         #endregion
 
+        // TODO: investigate why does UpdateExistingOrdersStatus() is needed
+        Debug.Log("ordersFromServer: " + ordersFromServer);
+
         #region Update existing order status 
         orderPagesComponent.childOrderPageComponents.ForEach(orderPageComponent =>
         {
