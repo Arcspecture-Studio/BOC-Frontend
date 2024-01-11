@@ -93,7 +93,7 @@ public class RetrieveOrdersSystem : MonoBehaviour
         orderPageComponent.orderId = orderId;
         orderPageComponent.restoreData = true;
     }
-    IEnumerator UpdateExistingOrdersStatus()
+    IEnumerator UpdateExistingOrdersStatus() // PENDING: Review this and consider removing it because seems to be useless
     {
         if (!retrieveOrdersComponent.updateOrderStatus) yield break;
         retrieveOrdersComponent.updateOrderStatus = false;
@@ -105,9 +105,6 @@ public class RetrieveOrdersSystem : MonoBehaviour
         Dictionary<string, General.WebsocketRetrieveOrdersData> ordersFromServer = retrieveOrdersComponent.ordersFromServer.ContainsKey(platformComponent.tradingPlatform) ?
             retrieveOrdersComponent.ordersFromServer[platformComponent.tradingPlatform] : null;
         #endregion
-
-        // TODO: investigate why does UpdateExistingOrdersStatus() is needed
-        Debug.Log("ordersFromServer: " + ordersFromServer);
 
         #region Update existing order status 
         orderPagesComponent.childOrderPageComponents.ForEach(orderPageComponent =>

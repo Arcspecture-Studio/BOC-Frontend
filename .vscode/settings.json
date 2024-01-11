@@ -59,5 +59,6 @@
         "Assets/Packages/": true,
         "Assets/Plugins/": true
     },
-    "dotnet.defaultSolution": "BOC-Frontend.sln"
+    "dotnet.defaultSolution": "BOC-Frontend.sln",
+    "svn.ignoreMissingSvnWarning": true
 }
