@@ -7,6 +7,7 @@ namespace General
     public class WebsocketRetrieveOrdersResponse : WebsocketGeneralResponse
     {
         public Dictionary<string, WebsocketRetrieveOrdersData> orders;
+        public Dictionary<string, WebsocketRetrieveQuickOrdersData> quickOrders;
     }
     [Serializable]
     public class WebsocketRetrieveOrdersData
@@ -30,5 +31,13 @@ namespace General
         public bool statusError;
         public CalculateThrottle throttleCalculator;
         public OrderTypeEnum orderType;
+    }
+    [Serializable]
+    public class WebsocketRetrieveQuickOrdersData
+    {
+        public string symbol;
+        public bool isLong;
+        public double entryPrice;
+        public string atrInterval;
     }
 }

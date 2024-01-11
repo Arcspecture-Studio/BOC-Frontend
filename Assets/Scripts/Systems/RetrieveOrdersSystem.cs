@@ -37,6 +37,10 @@ public class RetrieveOrdersSystem : MonoBehaviour
         {
             retrieveOrdersComponent.ordersFromServer[platformComponent.tradingPlatform] = response.orders;
         }
+        if (!retrieveOrdersComponent.quickOrdersFromServer.TryAdd(platformComponent.tradingPlatform, response.quickOrders))
+        {
+            retrieveOrdersComponent.quickOrdersFromServer[platformComponent.tradingPlatform] = response.quickOrders;
+        }
         ordersReceived = true;
     }
     void RequestGetOrdersFromServer()
