@@ -1,6 +1,8 @@
+using System.Collections.Generic;
 using DG.Tweening;
 using TMPro;
 using UnityEngine;
+using UnityEngine.Events;
 using UnityEngine.UI;
 
 public class QuickTabComponent : MonoBehaviour
@@ -27,4 +29,15 @@ public class QuickTabComponent : MonoBehaviour
     public bool syncData = false;
     public bool saveToServer = false;
     public bool isLong;
+    public Dictionary<string, General.WebsocketRetrieveQuickOrdersData> _quickOrdersFromServer;
+    public Dictionary<string, General.WebsocketRetrieveQuickOrdersData> quickOrdersFromServer
+    {
+        get { return _quickOrdersFromServer; }
+        set
+        {
+            _quickOrdersFromServer = value;
+            onChange_quickOrdersFromServer.Invoke(value);
+        }
+    }
+    [HideInInspector] public UnityEvent<Dictionary<string, General.WebsocketRetrieveQuickOrdersData>> onChange_quickOrdersFromServer = new();
 }

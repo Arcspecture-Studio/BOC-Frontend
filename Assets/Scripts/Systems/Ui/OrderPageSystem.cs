@@ -3,12 +3,10 @@ using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
-using UnityEngine.EventSystems;
 using WebSocketSharp;
 
 public class OrderPageSystem : MonoBehaviour
 {
-    OrderPagesComponent orderPagesComponent;
     OrderPageComponent orderPageComponent;
     PlatformComponent platformComponent;
     PreferenceComponent preferenceComponent;
@@ -19,11 +17,8 @@ public class OrderPageSystem : MonoBehaviour
     OrderStatusEnum? orderStatus = null;
     bool calculateButtonPressed = false;
 
-    static Color green = new Color(0, 108 / 255f, 0);
-
     void Start()
     {
-        orderPagesComponent = GlobalComponent.instance.orderPagesComponent;
         orderPageComponent = GetComponent<OrderPageComponent>();
         platformComponent = GlobalComponent.instance.platformComponent;
         preferenceComponent = GlobalComponent.instance.preferenceComponent;
@@ -272,7 +267,7 @@ public class OrderPageSystem : MonoBehaviour
         TMP_Text temp;
         #region Order title
         string direction = orderPageComponent.marginCalculator.isLong ? "LONG" : "SHORT";
-        Color directionColor = orderPageComponent.marginCalculator.isLong ? green : Color.red;
+        Color directionColor = orderPageComponent.marginCalculator.isLong ? OrderConfig.DISPLAY_COLOR_GREEN : Color.red;
         orderPageComponent.orderTitleText.text = orderPageComponent.symbolDropdownComponent.selectedSymbol + ": " + direction;
         orderPageComponent.orderTitleText.color = directionColor;
         #endregion
@@ -296,7 +291,7 @@ public class OrderPageSystem : MonoBehaviour
             entryPriceDataObject.transform.GetChild(2).gameObject.SetActive(false);
             temp = entryPriceDataObject.transform.GetChild(3).GetComponent<TMP_Text>();
             temp.text = tpPrices[i].ToString();
-            temp.color = green;
+            temp.color = OrderConfig.DISPLAY_COLOR_GREEN;
             entryPriceDataObject.transform.GetChild(4).gameObject.SetActive(false);
             orderPageComponent.resultComponent.pricesDataObjects.Add(entryPriceDataObject);
             #endregion
@@ -328,7 +323,7 @@ public class OrderPageSystem : MonoBehaviour
         temp.color = Color.red;
         temp = orderPageComponent.resultComponent.totalWinLossAmountDataObject.transform.GetChild(3).GetComponent<TMP_Text>();
         temp.text = Utils.RoundTwoDecimal(orderPageComponent.marginCalculator.totalWinAmount).ToString();
-        temp.color = green;
+        temp.color = OrderConfig.DISPLAY_COLOR_GREEN;
         orderPageComponent.resultComponent.totalWinLossAmountDataObject.transform.GetChild(4).gameObject.SetActive(false);
         #endregion
         #region Balance
@@ -341,10 +336,10 @@ public class OrderPageSystem : MonoBehaviour
         temp.color = Color.red;
         temp = orderPageComponent.resultComponent.balanceDataObject.transform.GetChild(3).GetComponent<TMP_Text>();
         temp.text = Utils.TruncTwoDecimal(orderPageComponent.marginCalculator.balanceAfterFullWin).ToString();
-        temp.color = green;
+        temp.color = OrderConfig.DISPLAY_COLOR_GREEN;
         temp = orderPageComponent.resultComponent.balanceDataObject.transform.GetChild(4).GetComponent<TMP_Text>();
         temp.text = "+" + Utils.RoundTwoDecimal(Utils.RateToPercentage(orderPageComponent.marginCalculator.balanceIncrementRate)).ToString() + " %";
-        temp.color = green;
+        temp.color = OrderConfig.DISPLAY_COLOR_GREEN;
         #endregion
         #endregion
 

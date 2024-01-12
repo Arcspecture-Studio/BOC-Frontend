@@ -1,5 +1,4 @@
 using General;
-using System;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
@@ -8,7 +7,6 @@ using WebSocketSharp;
 
 public class OrderPageRestoreDataSystem : MonoBehaviour
 {
-    OrderPagesComponent orderPagesComponent;
     OrderPageComponent orderPageComponent;
     RetrieveOrdersComponent retrieveOrdersComponent;
     PlatformComponent platformComponent;
@@ -18,7 +16,6 @@ public class OrderPageRestoreDataSystem : MonoBehaviour
 
     void Start()
     {
-        orderPagesComponent = GlobalComponent.instance.orderPagesComponent;
         orderPageComponent = GetComponent<OrderPageComponent>();
         retrieveOrdersComponent = GlobalComponent.instance.retrieveOrdersComponent;
         platformComponent = GlobalComponent.instance.platformComponent;

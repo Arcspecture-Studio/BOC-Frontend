@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using DG.Tweening;
 using UnityEngine;
 using WebSocketSharp;
@@ -19,6 +20,7 @@ public class QuickTabSystem : MonoBehaviour
         platformComponent = GlobalComponent.instance.platformComponent;
         preferenceComponent = GlobalComponent.instance.preferenceComponent;
 
+        quickTabComponent.onChange_quickOrdersFromServer.AddListener(OnChange_QuickOrdersFromServer);
         InitializeButtonListener();
     }
     void Update()
@@ -79,5 +81,24 @@ public class QuickTabSystem : MonoBehaviour
         quickTabComponent.rectTransform.anchoredPosition = new Vector2(quickTabComponent.rectTransform.anchoredPosition.x,
             initialValue);
         tween = quickTabComponent.rectTransform.DOBlendableLocalMoveBy(new Vector3(0, moveValue, 0), quickTabComponent.pageMoveDuration).SetEase(quickTabComponent.pageMoveEase);
+    }
+    void OnChange_QuickOrdersFromServer(Dictionary<string, General.WebsocketRetrieveQuickOrdersData> quickOrdersFromServer)
+    {
+        if (quickOrdersFromServer == null) return;
+
+        #region Instantiate orders
+        foreach (KeyValuePair<string, General.WebsocketRetrieveQuickOrdersData> order in quickOrdersFromServer)
+        {
+            InstantiateQuickOrder(order);
+        }
+        #endregion
+    }
+    void InstantiateQuickOrder(KeyValuePair<string, General.WebsocketRetrieveQuickOrdersData> order)
+    {
+        GameObject quickOrderDataRowObject = Instantiate(quickTabComponent.quickOrderDataRowPrefab);
+        quickOrderDataRowObject.transform.SetParent(quickTabComponent.orderInfoTransform, false);
+        QuickOrderDataRowComponent quickOrderDataRowComponent = quickOrderDataRowObject.GetComponent<QuickOrderDataRowComponent>();
+        quickOrderDataRowComponent.orderId = order.Key;
+        quickOrderDataRowComponent.data = order.Value;
     }
 }

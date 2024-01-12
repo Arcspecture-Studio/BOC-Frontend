@@ -10,6 +10,7 @@ public class RetrieveOrdersSystem : MonoBehaviour
     RetrieveOrdersComponent retrieveOrdersComponent;
     PlatformComponent platformComponent;
     OrderPagesComponent orderPagesComponent;
+    QuickTabComponent quickTabComponent;
 
     bool ordersReceived = false;
     void Start()
@@ -18,6 +19,7 @@ public class RetrieveOrdersSystem : MonoBehaviour
         retrieveOrdersComponent = GlobalComponent.instance.retrieveOrdersComponent;
         platformComponent = GlobalComponent.instance.platformComponent;
         orderPagesComponent = GlobalComponent.instance.orderPagesComponent;
+        quickTabComponent = GlobalComponent.instance.quickTabComponent;
     }
     void Update()
     {
@@ -75,6 +77,7 @@ public class RetrieveOrdersSystem : MonoBehaviour
         yield return new WaitUntil(() => ordersReceived);
         Dictionary<string, General.WebsocketRetrieveOrdersData> ordersFromServer = retrieveOrdersComponent.ordersFromServer.ContainsKey(platformComponent.tradingPlatform) ?
             retrieveOrdersComponent.ordersFromServer[platformComponent.tradingPlatform] : null;
+        quickTabComponent.quickOrdersFromServer = retrieveOrdersComponent.quickOrdersFromServer.ContainsKey(platformComponent.tradingPlatform) ? retrieveOrdersComponent.quickOrdersFromServer[platformComponent.tradingPlatform] : null;
         #endregion
 
         #region Instantiate orders
@@ -84,7 +87,6 @@ public class RetrieveOrdersSystem : MonoBehaviour
             {
                 InstantiateOrder(order.Key);
             }
-
         }
         #endregion
     }

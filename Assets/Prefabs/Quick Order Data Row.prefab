@@ -492,6 +492,8 @@ GameObject:
   - component: {fileID: 576008403832550383}
   - component: {fileID: 576008403832550381}
   - component: {fileID: 576008403832550380}
+  - component: {fileID: 4123792273867529919}
+  - component: {fileID: 3507886455097487814}
   m_Layer: 5
   m_Name: Quick Order Data Row
   m_TagString: Untagged
@@ -522,7 +524,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 0, y: 40}
+  m_SizeDelta: {x: 500, y: 40}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &576008403832550381
 CanvasRenderer:
@@ -562,6 +564,43 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
+--- !u!114 &4123792273867529919
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 576008403832550382}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3b24e6b13f011564bab8cfab89f0efa4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  symbolText: {fileID: 576008403546782261}
+  positionSideText: {fileID: 576008403859954491}
+  entryPriceText: {fileID: 576008402765810358}
+  atrTimeframeText: {fileID: 576008403611789680}
+  orderId: 
+  data:
+    symbol: 
+    isLong: 0
+    entryPrice: 0
+    atrInterval: 
+  onChange_restoreData:
+    m_PersistentCalls:
+      m_Calls: []
+--- !u!114 &3507886455097487814
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 576008403832550382}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f53bf7b8553cf8d41b4c9d357dbb91da, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &576008403859954485
 GameObject:
   m_ObjectHideFlags: 0
