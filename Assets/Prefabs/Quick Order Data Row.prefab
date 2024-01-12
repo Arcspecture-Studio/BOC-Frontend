@@ -580,15 +580,13 @@ MonoBehaviour:
   positionSideText: {fileID: 576008403859954491}
   entryPriceText: {fileID: 576008402765810358}
   atrTimeframeText: {fileID: 576008403611789680}
+  closeButton: {fileID: 576008404127128508}
   orderId: 
   data:
     symbol: 
     isLong: 0
     entryPrice: 0
     atrInterval: 
-  onChange_restoreData:
-    m_PersistentCalls:
-      m_Calls: []
 --- !u!114 &3507886455097487814
 MonoBehaviour:
   m_ObjectHideFlags: 0
