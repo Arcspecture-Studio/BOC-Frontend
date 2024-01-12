@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class QuickTabUpdateDataSystem : MonoBehaviour
+public class QuickTabUpdatePreferenceDataSystem : MonoBehaviour
 {
     PreferenceComponent preferenceComponent;
     QuickTabComponent quickTabComponent;
@@ -13,7 +13,7 @@ public class QuickTabUpdateDataSystem : MonoBehaviour
         ioComponent = GlobalComponent.instance.ioComponent;
 
         SyncDataToPreference();
-        quickTabComponent.syncData = true;
+        quickTabComponent.syncDataFromPreference = true;
     }
     void Update()
     {
@@ -22,8 +22,8 @@ public class QuickTabUpdateDataSystem : MonoBehaviour
 
     void SyncDataFromPreference()
     {
-        if (!quickTabComponent.syncData) return;
-        quickTabComponent.syncData = false;
+        if (!quickTabComponent.syncDataFromPreference) return;
+        quickTabComponent.syncDataFromPreference = false;
 
         quickTabComponent.entryTimesInput.text = preferenceComponent.quickEntryTimes.ToString();
         quickTabComponent.atrTimeframeDropdown.value = (int)preferenceComponent.atrTimeframe;

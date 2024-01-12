@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using DG.Tweening;
+using Newtonsoft.Json;
 using UnityEngine;
 using WebSocketSharp;
 
@@ -27,6 +28,7 @@ public class QuickTabSystem : MonoBehaviour
     {
         MoveSettingPage();
         UpdateOrderToServer();
+        SpawnOrDestroyQuickOrderObject();
     }
 
     void InitializeButtonListener()
@@ -89,16 +91,38 @@ public class QuickTabSystem : MonoBehaviour
         #region Instantiate orders
         foreach (KeyValuePair<string, General.WebsocketRetrieveQuickOrdersData> order in quickOrdersFromServer)
         {
-            InstantiateQuickOrder(order);
+            InstantiateQuickOrder(order.Key, order.Value);
         }
         #endregion
     }
-    void InstantiateQuickOrder(KeyValuePair<string, General.WebsocketRetrieveQuickOrdersData> order)
+    void InstantiateQuickOrder(string orderId, General.WebsocketRetrieveQuickOrdersData orderData)
     {
         GameObject quickOrderDataRowObject = Instantiate(quickTabComponent.quickOrderDataRowPrefab);
         quickOrderDataRowObject.transform.SetParent(quickTabComponent.orderInfoTransform, false);
         QuickOrderDataRowComponent quickOrderDataRowComponent = quickOrderDataRowObject.GetComponent<QuickOrderDataRowComponent>();
-        quickOrderDataRowComponent.orderId = order.Key;
-        quickOrderDataRowComponent.data = order.Value;
+        quickOrderDataRowComponent.orderId = orderId;
+        quickOrderDataRowComponent.data = orderData;
+        if (!quickTabComponent.spawnedQuickOrderObjects.TryAdd(orderId, quickOrderDataRowObject))
+            quickTabComponent.spawnedQuickOrderObjects[orderId] = quickOrderDataRowObject;
+    }
+    void SpawnOrDestroyQuickOrderObject() // TODO: test this
+    {
+        string spawnQuickOrderString = websocketComponent.RetrieveGeneralResponses(WebsocketEventTypeEnum.SPAWN_QUICK_ORDER.ToString());
+        if (spawnQuickOrderString.IsNullOrEmpty()) return;
+        General.WebsocketSpawnQuickOrderResponse response = JsonConvert.DeserializeObject<General.WebsocketSpawnQuickOrderResponse>(spawnQuickOrderString, JsonSerializerConfig.settings);
+        websocketComponent.RemovesGeneralResponses(WebsocketEventTypeEnum.SPAWN_QUICK_ORDER.ToString());
+        if (response.quickOrder == null) // destroy
+        {
+            GameObject quickOrderObject;
+            if (quickTabComponent.spawnedQuickOrderObjects.TryGetValue(response.orderId, out quickOrderObject))
+            {
+                Destroy(quickOrderObject);
+                quickTabComponent.spawnedQuickOrderObjects.Remove(response.orderId);
+            }
+        }
+        else // spawn
+        {
+            InstantiateQuickOrder(response.orderId, response.quickOrder);
+        }
     }
 }

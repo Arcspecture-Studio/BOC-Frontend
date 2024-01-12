@@ -26,7 +26,7 @@ public class QuickTabComponent : MonoBehaviour
 
     [Header("Runtime")]
     public bool active = false;
-    public bool syncData = false;
+    public bool syncDataFromPreference = false;
     public bool saveToServer = false;
     public bool isLong;
     public Dictionary<string, General.WebsocketRetrieveQuickOrdersData> _quickOrdersFromServer;
@@ -40,4 +40,5 @@ public class QuickTabComponent : MonoBehaviour
         }
     }
     [HideInInspector] public UnityEvent<Dictionary<string, General.WebsocketRetrieveQuickOrdersData>> onChange_quickOrdersFromServer = new();
+    public Dictionary<string, GameObject> spawnedQuickOrderObjects;
 }

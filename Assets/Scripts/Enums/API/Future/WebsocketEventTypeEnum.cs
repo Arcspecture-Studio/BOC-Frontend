@@ -18,14 +18,7 @@
     ACCOUNT_OVERWRITE,
     INVALID_LOGIN_PHRASE,
     RETRIEVE_POSITION_INFO,
-    #endregion
-
-    #region Binance
-    MARGIN_CALL,
-    ACCOUNT_UPDATE, // balance and position update
-    ORDER_TRADE_UPDATE, // order update
-    ACCOUNT_CONFIG_UPDATE,
-    STRATEGY_UPDATE,
-    GRID_UPDATE
+    SPAWN_QUICK_ORDER,
+    SPAWN_ORDER
     #endregion
 }
