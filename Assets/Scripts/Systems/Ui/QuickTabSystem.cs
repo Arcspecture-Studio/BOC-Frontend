@@ -111,7 +111,7 @@ public class QuickTabSystem : MonoBehaviour
         quickOrderDataRowComponent.data = orderData;
         quickTabComponent.spawnedQuickOrderObjects.TryAdd(orderId, quickOrderDataRowObject);
     }
-    void SpawnOrDestroyQuickOrderObject() // TODO: test this
+    void SpawnOrDestroyQuickOrderObject()
     {
         string spawnQuickOrderString = websocketComponent.RetrieveGeneralResponses(WebsocketEventTypeEnum.SPAWN_QUICK_ORDER.ToString());
         if (spawnQuickOrderString.IsNullOrEmpty()) return;
