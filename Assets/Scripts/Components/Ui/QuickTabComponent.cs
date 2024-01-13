@@ -40,5 +40,5 @@ public class QuickTabComponent : MonoBehaviour
         }
     }
     [HideInInspector] public UnityEvent<Dictionary<string, General.WebsocketRetrieveQuickOrdersData>> onChange_quickOrdersFromServer = new();
-    public Dictionary<string, GameObject> spawnedQuickOrderObjects;
+    public Dictionary<string, GameObject> spawnedQuickOrderObjects = new();
 }
