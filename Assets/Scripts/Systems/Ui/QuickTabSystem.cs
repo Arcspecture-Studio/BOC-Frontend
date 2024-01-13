@@ -35,14 +35,20 @@ public class QuickTabSystem : MonoBehaviour
     {
         quickTabComponent.longButton.onClick.AddListener(() =>
         {
-            quickTabComponent.saveToServer = true;
             quickTabComponent.isLong = true;
+            AfterClickLongShortButton();
         });
         quickTabComponent.shortButton.onClick.AddListener(() =>
         {
-            quickTabComponent.saveToServer = true;
             quickTabComponent.isLong = false;
+            AfterClickLongShortButton();
         });
+    }
+    void AfterClickLongShortButton()
+    {
+        quickTabComponent.saveToServer = true;
+        quickTabComponent.longButton.interactable = false;
+        quickTabComponent.shortButton.interactable = false;
     }
     void UpdateOrderToServer()
     {
@@ -97,13 +103,13 @@ public class QuickTabSystem : MonoBehaviour
     }
     void InstantiateQuickOrder(string orderId, General.WebsocketRetrieveQuickOrdersData orderData)
     {
+        if (quickTabComponent.spawnedQuickOrderObjects.ContainsKey(orderId)) return;
         GameObject quickOrderDataRowObject = Instantiate(quickTabComponent.quickOrderDataRowPrefab);
         quickOrderDataRowObject.transform.SetParent(quickTabComponent.orderInfoTransform, false);
         QuickOrderDataRowComponent quickOrderDataRowComponent = quickOrderDataRowObject.GetComponent<QuickOrderDataRowComponent>();
         quickOrderDataRowComponent.orderId = orderId;
         quickOrderDataRowComponent.data = orderData;
-        if (!quickTabComponent.spawnedQuickOrderObjects.TryAdd(orderId, quickOrderDataRowObject))
-            quickTabComponent.spawnedQuickOrderObjects[orderId] = quickOrderDataRowObject;
+        quickTabComponent.spawnedQuickOrderObjects.TryAdd(orderId, quickOrderDataRowObject);
     }
     void SpawnOrDestroyQuickOrderObject() // TODO: test this
     {
@@ -123,6 +129,8 @@ public class QuickTabSystem : MonoBehaviour
         else // spawn
         {
             InstantiateQuickOrder(response.orderId, response.quickOrder);
+            quickTabComponent.longButton.interactable = true;
+            quickTabComponent.shortButton.interactable = true;
         }
     }
 }
