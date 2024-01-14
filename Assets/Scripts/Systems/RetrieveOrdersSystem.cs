@@ -26,7 +26,7 @@ public class RetrieveOrdersSystem : MonoBehaviour
         GetOrdersFromServer();
         DestroyExistingOrdersObject();
         StartCoroutine(InstantiateOrders());
-        StartCoroutine(UpdateExistingOrdersStatus());
+        // StartCoroutine(UpdateExistingOrdersStatus());
     }
 
     void GetOrdersFromServer()
@@ -62,7 +62,6 @@ public class RetrieveOrdersSystem : MonoBehaviour
         }
         orderPagesComponent.childRectTransforms.Clear();
         orderPagesComponent.childOrderPageComponents.Clear();
-        orderPagesComponent.status = OrderPagesStatusEnum.DETACH;
         orderPagesComponent.currentPageIndex = 0;
         orderPagesComponent.scaleOrders = true;
     }
@@ -70,6 +69,7 @@ public class RetrieveOrdersSystem : MonoBehaviour
     {
         if (!retrieveOrdersComponent.instantiateOrders) yield break;
         retrieveOrdersComponent.instantiateOrders = false;
+        orderPagesComponent.status = OrderPagesStatusEnum.DETACH;
 
         RequestGetOrdersFromServer();
 
