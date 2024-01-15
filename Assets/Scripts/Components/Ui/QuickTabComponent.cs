@@ -9,8 +9,9 @@ public class QuickTabComponent : MonoBehaviour
 {
     [Header("Reference")]
     public RectTransform rectTransform;
-    public TMP_InputField entryPriceInput;
     public TMP_InputField entryTimesInput;
+    public TMP_InputField entryPriceInput;
+    public Button clearEntryPriceButton;
     public TMP_Dropdown atrTimeframeDropdown;
     public TMP_InputField atrLengthInput;
     public TMP_InputField atrMultiplierInput;
