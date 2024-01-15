@@ -9,9 +9,10 @@ public class BinanceComponent : MonoBehaviour
     public bool loggedIn = false;
     public string listenKey;
     public List<string> allSymbols;
-    public Dictionary<string, long> quantityPrecisions = new Dictionary<string, long>();
-    public Dictionary<string, long> pricePrecisions = new Dictionary<string, long>();
-    public Dictionary<string, double?> fees = new Dictionary<string, double?>();
+    public Dictionary<string, string> marginAssets = new();
+    public Dictionary<string, long> quantityPrecisions = new();
+    public Dictionary<string, long> pricePrecisions = new();
+    public Dictionary<string, double?> fees = new();
     public Dictionary<string, double> walletBalances;
     public bool getAccInfo;
     public bool getExchangeInfo;

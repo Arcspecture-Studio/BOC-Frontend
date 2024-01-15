@@ -7,7 +7,7 @@ namespace General
     [Serializable]
     public class WebsocketRetrievePositionInfoResponse : WebsocketGeneralResponse
     {
-        public Guid orderId;
+        public string orderId;
         public double? quantityFilled;
         public double? averagePriceFilled;
         public double? actualTakeProfitPrice;

@@ -25,9 +25,11 @@ public class OrderPageTakeProfitTypeSystem : MonoBehaviour
     void ForSettingPageComponent()
     {
         if (settingPageComponent == null) return;
+        settingPageComponent.riskRewardRatioObject.SetActive(settingPageComponent.takeProfitTypeDropdown.value != (int)OrderTakeProfitTypeEnum.NONE);
         settingPageComponent.takeProfitTrailingCallbackPercentageObject.SetActive(settingPageComponent.takeProfitTypeDropdown.value == takeOnReturnTrailingEnum);
         settingPageComponent.takeProfitTypeDropdown.onValueChanged.AddListener(value =>
         {
+            settingPageComponent.riskRewardRatioObject.SetActive(value != (int)OrderTakeProfitTypeEnum.NONE);
             settingPageComponent.takeProfitTrailingCallbackPercentageObject.SetActive(value == takeOnReturnTrailingEnum);
         });
     }

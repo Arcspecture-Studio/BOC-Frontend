@@ -102,6 +102,7 @@ public class BinanceSystem : MonoBehaviour
         if (!binanceComponent.getExchangeInfo) return;
         binanceComponent.getExchangeInfo = false;
         binanceComponent.allSymbols.Clear();
+        binanceComponent.marginAssets.Clear();
         binanceComponent.quantityPrecisions.Clear();
         binanceComponent.pricePrecisions.Clear();
         getExchangeInfoRequest = new Binance.WebrequestGetExchangeInfoRequest(testnet);
@@ -125,6 +126,7 @@ public class BinanceSystem : MonoBehaviour
                 {
                     binanceComponent.allSymbols.Add(symbol.symbol);
                 }
+                binanceComponent.marginAssets.TryAdd(symbol.symbol, symbol.marginAsset);
                 binanceComponent.quantityPrecisions.TryAdd(symbol.symbol, symbol.quantityPrecision);
                 long pricePrecision = symbol.pricePrecision;
                 symbol.filters.ForEach(filter =>

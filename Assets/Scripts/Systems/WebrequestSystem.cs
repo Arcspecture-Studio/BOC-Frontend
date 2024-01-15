@@ -124,7 +124,7 @@ public class WebrequestSystem : MonoBehaviour
     }
     void ListenForIncomingResponse()
     {
-        if(webrequestComponent.rawResponses.Count == 0) return;
+        if (webrequestComponent.rawResponses.Count == 0) return;
         Dictionary<string, Response> rawResponses = new Dictionary<string, Response>(webrequestComponent.rawResponses);
         foreach (KeyValuePair<string, Response> data in rawResponses)
         {
@@ -182,8 +182,10 @@ public class WebrequestSystem : MonoBehaviour
                         promptComponent.active = false;
                     });
                 }
-            }catch(Exception ex) {
-                if (webrequestComponent.logging) Debug.Log(logPrefix + "Response json string deserialization error");
+            }
+            catch (Exception ex)
+            {
+                // if (webrequestComponent.logging) Debug.Log(logPrefix + "Response json string deserialization error");
             }
             webrequestComponent.rawResponses.Remove(rawResponse.id);
         };

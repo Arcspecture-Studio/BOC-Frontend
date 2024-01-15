@@ -1,5 +1,4 @@
 using General;
-using System;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
@@ -8,7 +7,6 @@ using WebSocketSharp;
 
 public class OrderPageRestoreDataSystem : MonoBehaviour
 {
-    OrderPagesComponent orderPagesComponent;
     OrderPageComponent orderPageComponent;
     RetrieveOrdersComponent retrieveOrdersComponent;
     PlatformComponent platformComponent;
@@ -18,7 +16,6 @@ public class OrderPageRestoreDataSystem : MonoBehaviour
 
     void Start()
     {
-        orderPagesComponent = GlobalComponent.instance.orderPagesComponent;
         orderPageComponent = GetComponent<OrderPageComponent>();
         retrieveOrdersComponent = GlobalComponent.instance.retrieveOrdersComponent;
         platformComponent = GlobalComponent.instance.platformComponent;
@@ -28,13 +25,15 @@ public class OrderPageRestoreDataSystem : MonoBehaviour
         {
             orderPageComponent.symbolDropdownComponent.selectedSymbol = preferenceComponent.symbol.ToUpper();
         }
+        orderPageComponent.maxLossPercentageInput.text = preferenceComponent.lossPercentage == 0 ? "" : preferenceComponent.lossPercentage.ToString();
+        orderPageComponent.maxLossAmountInput.text = preferenceComponent.lossAmount == 0 ? "" : preferenceComponent.lossAmount.ToString();
+        orderPageComponent.marginDistributionModeDropdown.value = (int)preferenceComponent.marginDistributionMode;
+        orderPageComponent.marginWeightDistributionValueSlider.value = (float)preferenceComponent.marginWeightDistributionValue;
         orderPageComponent.takeProfitTypeDropdown.value = (int)preferenceComponent.takeProfitType;
         orderPageComponent.riskRewardRatioInput.text = preferenceComponent.riskRewardRatio.ToString();
-        orderPageComponent.takeProfitTrailingCallbackPercentageSlider.value = preferenceComponent.takeProfitTrailingCallbackPercentage;
+        orderPageComponent.takeProfitTrailingCallbackPercentageSlider.value = (float)preferenceComponent.takeProfitTrailingCallbackPercentage;
         orderPageComponent.takeProfitTrailingCallbackPercentageInput.text = preferenceComponent.takeProfitTrailingCallbackPercentage.ToString();
         orderPageComponent.orderTypeDropdown.value = (int)preferenceComponent.orderType;
-        orderPageComponent.marginDistributionModeDropdown.value = (int)preferenceComponent.marginDistributionMode;
-        orderPageComponent.marginWeightDistributionValueSlider.value = preferenceComponent.marginWeightDistributionValue;
     }
     void Update()
     {
@@ -63,6 +62,7 @@ public class OrderPageRestoreDataSystem : MonoBehaviour
         orderPageComponent.symbolDropdownComponent.dropdown.value = orderPageComponent.symbolDropdownComponent.symbols.IndexOf(orderData.symbol);
         orderPageComponent.symbolDropdownComponent.selectedSymbol = orderData.symbol;
         orderPageComponent.maxLossPercentageInput.text = Utils.RoundTwoDecimal(Utils.RateToPercentage(orderData.marginCalculator.balanceDecrementRate)).ToString();
+        orderPageComponent.maxLossAmountInput.text = Utils.RoundTwoDecimal(orderData.marginCalculator.amountToLoss).ToString();
         #region Removed all the price input objects
         for (int i = orderPageComponent.inputEntryPricesComponent.parent.childCount - 1; i >= 0; i--)
         {
@@ -87,14 +87,15 @@ public class OrderPageRestoreDataSystem : MonoBehaviour
         orderPageComponent.takeProfitTrailingCallbackPercentageSlider.value = (float)orderData.marginCalculator.takeProfitTrailingCallbackPercentage;
         orderPageComponent.takeProfitTrailingCallbackPercentageInput.text = orderData.marginCalculator.takeProfitTrailingCallbackPercentage.ToString();
         orderPageComponent.orderTypeDropdown.value = (int)orderData.orderType;
-        orderPageComponent.marginDistributionModeDropdown.value = orderData.marginCalculator.weightedQuantity? 1 : 0;
-        orderPageComponent.marginWeightDistributionValueSlider.value = (float)orderData.marginCalculator.quantityWeight / orderPagesComponent.marginWeightDistributionRange;
+        orderPageComponent.marginDistributionModeDropdown.value = orderData.marginCalculator.weightedQuantity ? 1 : 0;
+        orderPageComponent.marginWeightDistributionValueSlider.value = (float)orderData.marginCalculator.quantityWeight / OrderConfig.MARGIN_WEIGHT_DISTRIBUTION_RANGE;
         orderPageComponent.marginCalculator = orderData.marginCalculator;
         orderPageComponent.positionInfoAvgEntryPriceFilledText.text = Utils.RoundNDecimal(orderData.averagePriceFilled, platformComponent.pricePrecisions[orderPageComponent.symbolDropdownComponent.selectedSymbol]).ToString();
         orderPageComponent.positionInfoQuantityFilledText.text = Utils.RoundNDecimal(orderData.quantityFilled, platformComponent.quantityPrecisions[orderPageComponent.symbolDropdownComponent.selectedSymbol]).ToString();
         orderPageComponent.positionInfoActualTakeProfitPriceText.text = Utils.RoundNDecimal(orderData.actualTakeProfitPrice, platformComponent.pricePrecisions[orderPageComponent.symbolDropdownComponent.selectedSymbol]).ToString();
         orderPageComponent.positionInfoPaidFundingAmount.text = orderData.paidFundingAmount.ToString();
-        foreach(KeyValuePair<Guid, WebsocketRetrieveThrottleOrdersData> throttleOrder in orderData.throttleOrders){
+        foreach (KeyValuePair<string, WebsocketRetrieveThrottleOrdersData> throttleOrder in orderData.throttleOrders)
+        {
             GameObject throttleTabObject = Instantiate(orderPageComponent.throttleParentComponent.throttleTabPrefab, orderPageComponent.throttleParentComponent.transform);
             OrderPageThrottleComponent throttleComponent = throttleTabObject.GetComponent<OrderPageThrottleComponent>();
             throttleComponent.calculate = true;
@@ -103,7 +104,7 @@ public class OrderPageRestoreDataSystem : MonoBehaviour
             throttleComponent.orderStatusError = throttleOrder.Value.statusError;
             throttleComponent.throttleCalculator = throttleOrder.Value.throttleCalculator;
             throttleComponent.pnlInput.text = throttleOrder.Value.throttleCalculator.realizedPnl.ToString();
-            if(throttleOrder.Value.throttleCalculator.throttleQty > 0)
+            if (throttleOrder.Value.throttleCalculator.throttleQty > 0)
             {
                 throttleComponent.throttlePriceInput.text = throttleOrder.Value.throttleCalculator.throttlePrice.ToString();
                 throttleComponent.throttleQuantityInput.text = throttleOrder.Value.throttleCalculator.throttleQty.ToString();

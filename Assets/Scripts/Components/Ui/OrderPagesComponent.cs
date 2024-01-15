@@ -20,7 +20,6 @@ public class OrderPagesComponent : MonoBehaviour
     public float pageDeletedDelaySeconds;
     public bool scaleOrders = false;
     public float borderGap;
-    public float marginWeightDistributionRange;
 
     [Header("Runtime")]
     public float currentXPos;

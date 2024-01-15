@@ -3,12 +3,10 @@ using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
-using UnityEngine.EventSystems;
 using WebSocketSharp;
 
 public class OrderPageSystem : MonoBehaviour
 {
-    OrderPagesComponent orderPagesComponent;
     OrderPageComponent orderPageComponent;
     PlatformComponent platformComponent;
     PreferenceComponent preferenceComponent;
@@ -19,11 +17,8 @@ public class OrderPageSystem : MonoBehaviour
     OrderStatusEnum? orderStatus = null;
     bool calculateButtonPressed = false;
 
-    static Color green = new Color(0, 108 / 255f, 0);
-
     void Start()
     {
-        orderPagesComponent = GlobalComponent.instance.orderPagesComponent;
         orderPageComponent = GetComponent<OrderPageComponent>();
         platformComponent = GlobalComponent.instance.platformComponent;
         preferenceComponent = GlobalComponent.instance.preferenceComponent;
@@ -147,7 +142,7 @@ public class OrderPageSystem : MonoBehaviour
         UpdateUiInteractableStatus();
         UpdateOrderStatus();
         UpdatePositionInfo();
-        UpdateSaveOrder();
+        UpdateOrderToServer();
         StartCoroutine(CalculateMargin());
     }
 
@@ -165,7 +160,7 @@ public class OrderPageSystem : MonoBehaviour
         {
             #region Prepare data
             // get input
-            string walletUnit = orderPageComponent.symbolDropdownComponent.selectedSymbol.Substring(orderPageComponent.symbolDropdownComponent.selectedSymbol.Length - 4);
+            string walletUnit = platformComponent.marginAssets[orderPageComponent.symbolDropdownComponent.selectedSymbol.ToUpper()];
             double maxLossPercentage = orderPageComponent.maxLossPercentageInput.text.IsNullOrEmpty() ? double.NaN :
                 double.Parse(orderPageComponent.maxLossPercentageInput.text);
             double amountToLoss = orderPageComponent.maxLossAmountInput.text.IsNullOrEmpty() ? double.NaN :
@@ -183,7 +178,7 @@ public class OrderPageSystem : MonoBehaviour
                 double.Parse(orderPageComponent.takeProfitInput.text);
             double riskRewardRatio = orderPageComponent.riskRewardRatioInput.text.IsNullOrEmpty() ? preferenceComponent.riskRewardRatio : double.Parse(orderPageComponent.riskRewardRatioInput.text);
             double takeProfitTrailingCallbackPercentage = orderPageComponent.takeProfitTrailingCallbackPercentageInput.text.IsNullOrEmpty() ? preferenceComponent.takeProfitTrailingCallbackPercentage : double.Parse(orderPageComponent.takeProfitTrailingCallbackPercentageInput.text);
-            double weightDistributionValue = orderPageComponent.marginWeightDistributionValueSlider.value * orderPagesComponent.marginWeightDistributionRange;
+            double normalizedMarginWeightDistributionValue = orderPageComponent.marginWeightDistributionValueSlider.value * OrderConfig.MARGIN_WEIGHT_DISTRIBUTION_RANGE;
 
             // validate input
             if (walletUnit.IsNullOrEmpty())
@@ -239,14 +234,13 @@ public class OrderPageSystem : MonoBehaviour
                     entryTimes,
                     entryPrices,
                     stopLossPrice,
-                    takeProfitPrice,
                     riskRewardRatio,
                     takeProfitTrailingCallbackPercentage,
                     feeRate,
                     platformComponent.quantityPrecisions[orderPageComponent.symbolDropdownComponent.selectedSymbol],
                     platformComponent.pricePrecisions[orderPageComponent.symbolDropdownComponent.selectedSymbol],
                     orderPageComponent.marginDistributionModeDropdown.value == 1,
-                    weightDistributionValue);
+                    normalizedMarginWeightDistributionValue);
             #endregion
         }
 
@@ -273,7 +267,7 @@ public class OrderPageSystem : MonoBehaviour
         TMP_Text temp;
         #region Order title
         string direction = orderPageComponent.marginCalculator.isLong ? "LONG" : "SHORT";
-        Color directionColor = orderPageComponent.marginCalculator.isLong ? green : Color.red;
+        Color directionColor = orderPageComponent.marginCalculator.isLong ? OrderConfig.DISPLAY_COLOR_GREEN : Color.red;
         orderPageComponent.orderTitleText.text = orderPageComponent.symbolDropdownComponent.selectedSymbol + ": " + direction;
         orderPageComponent.orderTitleText.color = directionColor;
         #endregion
@@ -287,7 +281,7 @@ public class OrderPageSystem : MonoBehaviour
         orderPageComponent.resultComponent.orderInfoDataObject.transform.GetChild(4).gameObject.SetActive(false);
         #endregion
         #region Prices & Quantities
-        List<double> tpPrices = (OrderTakeProfitTypeEnum)orderPageComponent.takeProfitTypeDropdown.value == OrderTakeProfitTypeEnum.TAKE_ON_RETURN_TRAILING ? orderPageComponent.marginCalculator.takeProfitTrailingPrices: orderPageComponent.marginCalculator.takeProfitPrices;
+        List<double> tpPrices = (OrderTakeProfitTypeEnum)orderPageComponent.takeProfitTypeDropdown.value == OrderTakeProfitTypeEnum.TAKE_ON_RETURN_TRAILING ? orderPageComponent.marginCalculator.takeProfitTrailingPrices : orderPageComponent.marginCalculator.takeProfitPrices;
         for (int i = 0; i < orderPageComponent.marginCalculator.entryPrices.Count; i++)
         {
             #region Prices
@@ -297,7 +291,7 @@ public class OrderPageSystem : MonoBehaviour
             entryPriceDataObject.transform.GetChild(2).gameObject.SetActive(false);
             temp = entryPriceDataObject.transform.GetChild(3).GetComponent<TMP_Text>();
             temp.text = tpPrices[i].ToString();
-            temp.color = green;
+            temp.color = OrderConfig.DISPLAY_COLOR_GREEN;
             entryPriceDataObject.transform.GetChild(4).gameObject.SetActive(false);
             orderPageComponent.resultComponent.pricesDataObjects.Add(entryPriceDataObject);
             #endregion
@@ -307,7 +301,7 @@ public class OrderPageSystem : MonoBehaviour
             listedWinLossAmountDataObject.transform.GetChild(0).GetComponent<TMP_Text>().text = orderPageComponent.marginCalculator.quantities[i].ToString();
             listedWinLossAmountDataObject.transform.GetChild(1).GetComponent<TMP_Text>().text = orderPageComponent.marginCalculator.cumQuantities[i].ToString();
             listedWinLossAmountDataObject.transform.GetChild(2).gameObject.SetActive(false);
-            temp = listedWinLossAmountDataObject.transform.GetChild(3).GetComponent<TMP_Text>(); 
+            temp = listedWinLossAmountDataObject.transform.GetChild(3).GetComponent<TMP_Text>();
             temp.text = Utils.RoundTwoDecimal(orderPageComponent.marginCalculator.stopLossAmounts[i]).ToString();
             temp.color = Color.red;
             temp = listedWinLossAmountDataObject.transform.GetChild(4).GetComponent<TMP_Text>();
@@ -329,7 +323,7 @@ public class OrderPageSystem : MonoBehaviour
         temp.color = Color.red;
         temp = orderPageComponent.resultComponent.totalWinLossAmountDataObject.transform.GetChild(3).GetComponent<TMP_Text>();
         temp.text = Utils.RoundTwoDecimal(orderPageComponent.marginCalculator.totalWinAmount).ToString();
-        temp.color = green;
+        temp.color = OrderConfig.DISPLAY_COLOR_GREEN;
         orderPageComponent.resultComponent.totalWinLossAmountDataObject.transform.GetChild(4).gameObject.SetActive(false);
         #endregion
         #region Balance
@@ -342,10 +336,10 @@ public class OrderPageSystem : MonoBehaviour
         temp.color = Color.red;
         temp = orderPageComponent.resultComponent.balanceDataObject.transform.GetChild(3).GetComponent<TMP_Text>();
         temp.text = Utils.TruncTwoDecimal(orderPageComponent.marginCalculator.balanceAfterFullWin).ToString();
-        temp.color = green;
+        temp.color = OrderConfig.DISPLAY_COLOR_GREEN;
         temp = orderPageComponent.resultComponent.balanceDataObject.transform.GetChild(4).GetComponent<TMP_Text>();
         temp.text = "+" + Utils.RoundTwoDecimal(Utils.RateToPercentage(orderPageComponent.marginCalculator.balanceIncrementRate)).ToString() + " %";
-        temp.color = green;
+        temp.color = OrderConfig.DISPLAY_COLOR_GREEN;
         #endregion
         #endregion
 
@@ -357,7 +351,8 @@ public class OrderPageSystem : MonoBehaviour
         #endregion
 
         #region Save order when calculate button is pressed
-        if (calculateButtonPressed) {
+        if (calculateButtonPressed)
+        {
             calculateButtonPressed = false;
             orderPageComponent.saveToServer = true;
         }
@@ -447,7 +442,7 @@ public class OrderPageSystem : MonoBehaviour
             }
         }
     }
-    void UpdateSaveOrder()
+    void UpdateOrderToServer()
     {
         if (orderPageComponent.saveToServer)
         {

@@ -6,7 +6,8 @@ namespace General
     [Serializable]
     public class WebsocketRetrieveOrdersResponse : WebsocketGeneralResponse
     {
-        public Dictionary<Guid, WebsocketRetrieveOrdersData> orders;
+        public Dictionary<string, WebsocketRetrieveOrdersData> orders;
+        public Dictionary<string, WebsocketRetrieveQuickOrdersData> quickOrders;
     }
     [Serializable]
     public class WebsocketRetrieveOrdersData
@@ -21,7 +22,7 @@ namespace General
         public double averagePriceFilled;
         public double actualTakeProfitPrice;
         public double paidFundingAmount;
-        public Dictionary<Guid, WebsocketRetrieveThrottleOrdersData> throttleOrders;
+        public Dictionary<string, WebsocketRetrieveThrottleOrdersData> throttleOrders;
     }
     [Serializable]
     public class WebsocketRetrieveThrottleOrdersData
@@ -30,5 +31,13 @@ namespace General
         public bool statusError;
         public CalculateThrottle throttleCalculator;
         public OrderTypeEnum orderType;
+    }
+    [Serializable]
+    public class WebsocketRetrieveQuickOrdersData
+    {
+        public string symbol;
+        public bool isLong;
+        public double entryPrice;
+        public string atrInterval;
     }
 }

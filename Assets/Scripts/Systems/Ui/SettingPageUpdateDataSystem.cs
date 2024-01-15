@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 
-public class UpdateSettingPageDataSystem : MonoBehaviour
+public class SettingPageUpdateDataSystem : MonoBehaviour
 {
     PreferenceComponent preferenceComponent;
     SettingPageComponent settingPageComponent;
@@ -53,33 +53,50 @@ public class UpdateSettingPageDataSystem : MonoBehaviour
         if (!settingPageComponent.syncSetting) return;
         settingPageComponent.syncSetting = false;
 
-        settingPageComponent.riskRewardRatioInput.text = preferenceComponent.riskRewardRatio.ToString();
-        settingPageComponent.symbolInput.text = preferenceComponent.symbol;
         settingPageComponent.platformsDropdown.value = (int)preferenceComponent.tradingPlatform;
+        settingPageComponent.symbolInput.text = preferenceComponent.symbol;
+        settingPageComponent.lossPercentageInput.text = preferenceComponent.lossPercentage == 0 ? "" : preferenceComponent.lossPercentage.ToString();
+        settingPageComponent.lossAmountInput.text = preferenceComponent.lossAmount == 0 ? "" : preferenceComponent.lossAmount.ToString();
+        settingPageComponent.marginDistributionModeDropdown.value = (int)preferenceComponent.marginDistributionMode;
+        settingPageComponent.marginWeightDistributionValueSlider.value = (float)preferenceComponent.marginWeightDistributionValue;
+        settingPageComponent.marginWeightDistributionValueInput.text = preferenceComponent.marginWeightDistributionValue.ToString();
         settingPageComponent.takeProfitTypeDropdown.value = (int)preferenceComponent.takeProfitType;
-        settingPageComponent.takeProfitTrailingCallbackPercentageSlider.value = preferenceComponent.takeProfitTrailingCallbackPercentage;
+        settingPageComponent.riskRewardRatioInput.text = preferenceComponent.riskRewardRatio.ToString();
+        settingPageComponent.takeProfitTrailingCallbackPercentageSlider.value = (float)preferenceComponent.takeProfitTrailingCallbackPercentage;
         settingPageComponent.takeProfitTrailingCallbackPercentageInput.text = preferenceComponent.takeProfitTrailingCallbackPercentage.ToString();
         settingPageComponent.orderTypeDropdown.value = (int)preferenceComponent.orderType;
-        settingPageComponent.marginDistributionModeDropdown.value = (int)preferenceComponent.marginDistributionMode;
-        settingPageComponent.marginWeightDistributionValueSlider.value = preferenceComponent.marginWeightDistributionValue;
-        settingPageComponent.marginWeightDistributionValueInput.text = preferenceComponent.marginWeightDistributionValue.ToString();
-
     }
     void SyncSettingToPreference()
     {
-        settingPageComponent.riskRewardRatioInput.onEndEdit.AddListener(value =>
+        settingPageComponent.platformsDropdown.onValueChanged.AddListener(value =>
         {
-            preferenceComponent.riskRewardRatio = double.Parse(value);
+            preferenceComponent.tradingPlatform = (PlatformEnum)value;
             ioComponent.writePreferences = true;
+        });
+        settingPageComponent.symbolInput.onValueChanged.AddListener(value =>
+        {
+            settingPageComponent.symbolInput.text = value.ToUpper();
         });
         settingPageComponent.symbolInput.onEndEdit.AddListener(value =>
         {
             preferenceComponent.symbol = value;
             ioComponent.writePreferences = true;
         });
-        settingPageComponent.platformsDropdown.onValueChanged.AddListener(value =>
+        settingPageComponent.lossPercentageInput.onEndEdit.AddListener(value =>
         {
-            preferenceComponent.tradingPlatform = (PlatformEnum)value;
+            if (value == "") value = "0";
+            preferenceComponent.lossPercentage = double.Parse(value);
+            ioComponent.writePreferences = true;
+        });
+        settingPageComponent.lossAmountInput.onEndEdit.AddListener(value =>
+        {
+            if (value == "") value = "0";
+            preferenceComponent.lossAmount = double.Parse(value);
+            ioComponent.writePreferences = true;
+        });
+        settingPageComponent.marginDistributionModeDropdown.onValueChanged.AddListener(value =>
+        {
+            preferenceComponent.marginDistributionMode = (MarginDistributionModeEnum)value;
             ioComponent.writePreferences = true;
         });
         settingPageComponent.takeProfitTypeDropdown.onValueChanged.AddListener(value =>
@@ -87,14 +104,19 @@ public class UpdateSettingPageDataSystem : MonoBehaviour
             preferenceComponent.takeProfitType = (OrderTakeProfitTypeEnum)value;
             ioComponent.writePreferences = true;
         });
+        settingPageComponent.riskRewardRatioInput.onEndEdit.AddListener(value =>
+        {
+            if (value == "")
+            {
+                value = "1";
+                settingPageComponent.riskRewardRatioInput.text = value;
+            }
+            preferenceComponent.riskRewardRatio = double.Parse(value);
+            ioComponent.writePreferences = true;
+        });
         settingPageComponent.orderTypeDropdown.onValueChanged.AddListener(value =>
         {
             preferenceComponent.orderType = (OrderTypeEnum)value;
-            ioComponent.writePreferences = true;
-        });
-        settingPageComponent.marginDistributionModeDropdown.onValueChanged.AddListener(value =>
-        {
-            preferenceComponent.marginDistributionMode = (MarginDistributionModeEnum)value;
             ioComponent.writePreferences = true;
         });
     }
@@ -105,11 +127,11 @@ public class UpdateSettingPageDataSystem : MonoBehaviour
             activePlatform = platformComponent.tradingPlatform;
             settingPageComponent.activePlatformText.text = activePlatform.ToString().Replace("_", " ");
         }
-        if(platformComponent.walletBalances != null)
+        if (platformComponent.walletBalances != null)
         {
             if (platformComponent.walletBalances.ContainsKey(usdt))
             {
-                if(balanceUsdt != platformComponent.walletBalances[usdt])
+                if (balanceUsdt != platformComponent.walletBalances[usdt])
                 {
                     balanceUsdt = platformComponent.walletBalances[usdt];
                     settingPageComponent.balanceUdstText.text = Utils.TruncTwoDecimal(balanceUsdt.Value).ToString();

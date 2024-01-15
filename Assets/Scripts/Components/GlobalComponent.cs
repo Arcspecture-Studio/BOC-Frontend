@@ -23,4 +23,6 @@ public class GlobalComponent : MonoBehaviour
     public IoComponent ioComponent;
     public RetrieveOrdersComponent retrieveOrdersComponent;
     public SettingPageComponent settingPageComponent;
+    public QuickTabComponent quickTabComponent;
+    public HideAllPanelComponent hideAllPanelComponent;
 }

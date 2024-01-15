@@ -1,8 +1,6 @@
 using UnityEngine;
 using WebSocketSharp;
 using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
-using System.Linq;
 using System.Collections.Generic;
 
 public class WebsocketSystem : MonoBehaviour
@@ -134,12 +132,12 @@ public class WebsocketSystem : MonoBehaviour
                 {
                     ioComponent.writeApiKey = true;
                     websocketComponent.syncApiKeyToServer = true;
-                    retrieveOrdersComponent.updateOrderStatus = true;
+                    // retrieveOrdersComponent.updateOrderStatus = true;
                 }
             }
             else if (response.eventType.Equals(WebsocketEventTypeEnum.VERSION_CHECKING.ToString()))
             {
-                // TODO: check the body if {matched: true}
+                // PENDING: now is when received this eventType VERSION_CHECKING straight means outdated, later need to check the body if the version is matching by {matched: true}
                 UnityMainThread.AddJob(() =>
                 {
                     promptComponent.ShowPrompt("NOTICE", "App version is outdated, please update your app to latest version.", () =>
