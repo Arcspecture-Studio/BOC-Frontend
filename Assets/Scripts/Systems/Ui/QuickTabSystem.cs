@@ -13,6 +13,7 @@ public class QuickTabSystem : MonoBehaviour
 
     bool? active = null;
     Tween tween = null;
+    int spawnedQuickOrderObjectCount = -1;
 
     void Start()
     {
@@ -29,6 +30,7 @@ public class QuickTabSystem : MonoBehaviour
         MoveSettingPage();
         UpdateOrderToServer();
         SpawnOrDestroyQuickOrderObject();
+        ShowAndHideQuickOrdersObject();
     }
 
     void InitializeButtonListener()
@@ -132,5 +134,11 @@ public class QuickTabSystem : MonoBehaviour
             quickTabComponent.longButton.interactable = true;
             quickTabComponent.shortButton.interactable = true;
         }
+    }
+    void ShowAndHideQuickOrdersObject()
+    {
+        if (spawnedQuickOrderObjectCount == quickTabComponent.spawnedQuickOrderObjects.Count) return;
+        spawnedQuickOrderObjectCount = quickTabComponent.spawnedQuickOrderObjects.Count;
+        quickTabComponent.quickOrdersObject.SetActive(spawnedQuickOrderObjectCount > 0);
     }
 }
