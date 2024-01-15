@@ -3639,7 +3639,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0.3405005, y: 1}
-  m_AnchoredPosition: {x: 10.0000305, y: 0}
+  m_AnchoredPosition: {x: 10, y: 0}
   m_SizeDelta: {x: -21, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &286436204
@@ -6965,8 +6965,8 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 2033694428}
   m_HandleRect: {fileID: 2033694427}
   m_Direction: 2
-  m_Value: 1.0000006
-  m_Size: 0.6992425
+  m_Value: 1.0000004
+  m_Size: 0.6992424
   m_NumberOfSteps: 0
   m_OnValueChanged:
     m_PersistentCalls:
@@ -19074,7 +19074,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 88443628}
   m_HandleRect: {fileID: 88443627}
   m_Direction: 0
-  m_Value: 0
+  m_Value: 1
   m_Size: 1
   m_NumberOfSteps: 0
   m_OnValueChanged:
@@ -20669,6 +20669,7 @@ GameObject:
   - component: {fileID: 1439778823}
   - component: {fileID: 1439778825}
   - component: {fileID: 1439778827}
+  - component: {fileID: 1439778833}
   - component: {fileID: 1439778819}
   - component: {fileID: 1439778807}
   - component: {fileID: 1439778813}
@@ -20679,6 +20680,7 @@ GameObject:
   - component: {fileID: 1439778828}
   - component: {fileID: 1439778829}
   - component: {fileID: 1439778831}
+  - component: {fileID: 1439778832}
   m_Layer: 0
   m_Name: Global Object
   m_TagString: Untagged
@@ -20740,6 +20742,7 @@ MonoBehaviour:
   retrieveOrdersComponent: {fileID: 1439778827}
   settingPageComponent: {fileID: 680527080}
   quickTabComponent: {fileID: 909877266}
+  hideAllPanelComponent: {fileID: 1439778833}
 --- !u!114 &1439778811
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -21134,6 +21137,33 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d9c93489bf5a02e438437a3ad64a4d06, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &1439778832
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1439778804}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7fa7f9fd283d6964f92515bccf8c77ee, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &1439778833
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1439778804}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6d58cdebaa19f904facb7b4f9e65e774, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  onChange_hideNow:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!1 &1442244242
 GameObject:
   m_ObjectHideFlags: 0
@@ -24962,7 +24992,7 @@ MonoBehaviour:
   m_HandleRect: {fileID: 1810723312}
   m_Direction: 0
   m_Value: 0
-  m_Size: 1
+  m_Size: 0.9999998
   m_NumberOfSteps: 0
   m_OnValueChanged:
     m_PersistentCalls:
@@ -30167,7 +30197,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 467063639}
   m_HandleRect: {fileID: 467063638}
   m_Direction: 2
-  m_Value: 1.0000018
+  m_Value: 1.0000023
   m_Size: 0.73653847
   m_NumberOfSteps: 0
   m_OnValueChanged:
