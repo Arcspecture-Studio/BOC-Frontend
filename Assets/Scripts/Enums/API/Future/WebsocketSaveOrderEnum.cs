@@ -1,4 +1,4 @@
-﻿public enum WebsocketSaveOrderEnum
+﻿public enum WebsocketDataActionEnum
 {
     SAVE,
     UPDATE,

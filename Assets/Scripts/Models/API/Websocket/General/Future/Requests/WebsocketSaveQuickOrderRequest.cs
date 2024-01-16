@@ -6,7 +6,7 @@ namespace General
     public class WebsocketSaveQuickOrderRequest : WebsocketGeneralRequest
     {
         public WebsocketOrderIdRequest orderRequest;
-        public WebsocketSaveOrderEnum actionToTake;
+        public WebsocketDataActionEnum actionToTake;
 
         public WebsocketSaveQuickOrderRequest(PlatformEnum platform,
         string symbol,
@@ -24,14 +24,14 @@ namespace General
         double atrMultiplier,
         bool isLong) : base(WebsocketEventTypeEnum.SAVE_QUICK_ORDER, platform)
         {
-            actionToTake = WebsocketSaveOrderEnum.SAVE;
+            actionToTake = WebsocketDataActionEnum.SAVE;
             orderRequest = new WebsocketQuickOrderRequest(symbol, maxLossPercentage, maxLossAmount, weightedQuantity, quantityWeight, takeProfitType,
             riskRewardRatio, takeProfitTrailingCallbackPercentage, entryPrice, entryTimes, atrInterval, atrLength, atrMultiplier, isLong);
         }
 
         public WebsocketSaveQuickOrderRequest(PlatformEnum platform, string orderId) : base(WebsocketEventTypeEnum.SAVE_QUICK_ORDER, platform)
         {
-            actionToTake = WebsocketSaveOrderEnum.DELETE;
+            actionToTake = WebsocketDataActionEnum.DELETE;
             orderRequest = new WebsocketOrderIdRequest(orderId);
         }
     }
