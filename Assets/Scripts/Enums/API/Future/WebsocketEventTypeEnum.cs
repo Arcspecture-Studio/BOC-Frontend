@@ -12,6 +12,7 @@
     // To Server
     SYNC_API_KEY,
     LOGOUT,
+    SAVE_TRADING_BOT,
 
     // From Server
     CONNECTION_ID,
