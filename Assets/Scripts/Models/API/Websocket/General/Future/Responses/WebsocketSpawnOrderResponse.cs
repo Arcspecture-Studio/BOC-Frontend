@@ -8,6 +8,6 @@ namespace General
     public class WebsocketSpawnOrderResponse : WebsocketGeneralResponse
     {
         public string orderId;
-        public WebsocketRetrieveOrdersData order;
+        public WebsocketRetrieveOrdersData? order;
     }
 }
