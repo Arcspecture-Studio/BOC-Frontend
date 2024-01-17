@@ -71,10 +71,14 @@ public class TradingBotSystem : MonoBehaviour
         General.WebsocketRetrieveTradingBotsResponse response = JsonConvert.DeserializeObject<General.WebsocketRetrieveTradingBotsResponse>(retrieveTradingBotsString, JsonSerializerConfig.settings);
         websocketComponent.RemovesGeneralResponses(WebsocketEventTypeEnum.RETRIEVE_TRADING_BOTS.ToString());
         General.WebsocketRetrieveTradingBotsResponseData data;
+        tradingBotComponent.doNotInvokeTradingBotDropdown = true;
         if (response.tradingBots.TryGetValue(platformComponent.apiKey, out data))
         {
-            tradingBotComponent.doNotInvokeTradingBotDropdown = true;
             tradingBotComponent.tradingBotDropdown.value = (int)data.botType;
+        }
+        else
+        {
+            tradingBotComponent.tradingBotDropdown.value = 0;
         }
     }
 }
