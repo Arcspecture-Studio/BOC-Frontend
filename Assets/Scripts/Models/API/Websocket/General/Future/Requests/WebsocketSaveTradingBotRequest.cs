@@ -29,7 +29,7 @@ namespace General
         int entryTimes,
         string atrInterval,
         int atrLength,
-        double atrMultiplier) : base(WebsocketEventTypeEnum.SAVE_QUICK_ORDER, platform)
+        double atrMultiplier) : base(WebsocketEventTypeEnum.SAVE_TRADING_BOT, platform)
         {
             actionToTake = WebsocketDataActionEnum.SAVE;
             botId = "1";
