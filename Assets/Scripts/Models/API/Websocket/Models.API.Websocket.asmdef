@@ -1,3 +1,16 @@
 {
-	"name": "Models.API.Websocket"
+    "name": "Models.API.Websocket",
+    "rootNamespace": "",
+    "references": [
+        "GUID:0e886025ceffdf544b8cfbdfe8020193"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
 }

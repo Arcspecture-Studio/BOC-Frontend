@@ -31,7 +31,6 @@ public class SettingPageComponent : MonoBehaviour
     public TMP_Text takeProfitTrailingCallbackPercentageMaxText;
     public TMP_InputField takeProfitTrailingCallbackPercentageInput;
     public TMP_Dropdown orderTypeDropdown;
-    public TMP_Dropdown tradingBotDropdown; // PENDING: temporarly put here
     public Button logoutButton;
 
     [Header("Config")]

@@ -1,8 +1,10 @@
+using Newtonsoft.Json;
 using UnityEngine;
+using WebSocketSharp;
 
 public class TradingBotSystem : MonoBehaviour
 {
-    SettingPageComponent settingPageComponent;
+    TradingBotComponent tradingBotComponent;
     WebsocketComponent websocketComponent;
     PlatformComponent platformComponent;
     PreferenceComponent preferenceComponent;
@@ -10,38 +12,69 @@ public class TradingBotSystem : MonoBehaviour
 
     void Start()
     {
-        settingPageComponent = GlobalComponent.instance.settingPageComponent;
+        tradingBotComponent = GlobalComponent.instance.tradingBotComponent;
         websocketComponent = GlobalComponent.instance.websocketComponent;
         platformComponent = GlobalComponent.instance.platformComponent;
         preferenceComponent = GlobalComponent.instance.preferenceComponent;
         quickTabComponent = GlobalComponent.instance.quickTabComponent;
 
-        settingPageComponent.tradingBotDropdown.onValueChanged.AddListener(value =>
+        tradingBotComponent.tradingBotDropdown.onValueChanged.AddListener(value => SendSignalToServer((BotTypeEnum)value));
+        tradingBotComponent.onChange_getTradingBots.AddListener(() => SendRetrieveTradingBotsSignal());
+    }
+    void Update()
+    {
+        RetrieveTradingBotsFromServer();
+    }
+
+    void SendSignalToServer(BotTypeEnum value)
+    {
+        if (tradingBotComponent.doNotInvokeTradingBotDropdown)
         {
-            switch ((BotTypeEnum)value)
-            {
-                case BotTypeEnum.NONE:
-                    websocketComponent.generalRequests.Add(new General.WebsocketSaveTradingBotRequest(platformComponent.tradingPlatform));
-                    break;
-                case BotTypeEnum.PREMIUM_INDEX:
-                    double normalizedMarginWeightDistributionValue = preferenceComponent.marginWeightDistributionValue * OrderConfig.MARGIN_WEIGHT_DISTRIBUTION_RANGE;
-                    websocketComponent.generalRequests.Add(new General.WebsocketSaveTradingBotRequest(
-                        platformComponent.tradingPlatform,
-                        preferenceComponent.symbol,
-                        preferenceComponent.lossPercentage,
-                        preferenceComponent.lossAmount,
-                        preferenceComponent.marginDistributionMode == MarginDistributionModeEnum.WEIGHTED,
-                        normalizedMarginWeightDistributionValue,
-                        preferenceComponent.takeProfitType,
-                        preferenceComponent.riskRewardRatio,
-                        preferenceComponent.takeProfitTrailingCallbackPercentage,
-                        int.Parse(quickTabComponent.entryTimesInput.text),
-                        WebsocketIntervalEnum.array[quickTabComponent.atrTimeframeDropdown.value],
-                        int.Parse(quickTabComponent.atrLengthInput.text),
-                        double.Parse(quickTabComponent.atrMultiplierInput.text)
-                    ));
-                    break;
-            }
-        });
+            tradingBotComponent.doNotInvokeTradingBotDropdown = false;
+            return;
+        }
+        switch (value)
+        {
+            case BotTypeEnum.NONE:
+                websocketComponent.generalRequests.Add(new General.WebsocketSaveTradingBotRequest(platformComponent.tradingPlatform, platformComponent.apiKey));
+                break;
+            case BotTypeEnum.PREMIUM_INDEX:
+                double normalizedMarginWeightDistributionValue = preferenceComponent.marginWeightDistributionValue * OrderConfig.MARGIN_WEIGHT_DISTRIBUTION_RANGE;
+                websocketComponent.generalRequests.Add(new General.WebsocketSaveTradingBotRequest(
+                    platformComponent.tradingPlatform,
+                    platformComponent.apiKey,
+                    preferenceComponent.symbol,
+                    preferenceComponent.lossPercentage,
+                    preferenceComponent.lossAmount,
+                    preferenceComponent.marginDistributionMode == MarginDistributionModeEnum.WEIGHTED,
+                    normalizedMarginWeightDistributionValue,
+                    preferenceComponent.takeProfitType,
+                    preferenceComponent.riskRewardRatio,
+                    preferenceComponent.takeProfitTrailingCallbackPercentage,
+                    int.Parse(quickTabComponent.entryTimesInput.text),
+                    WebsocketIntervalEnum.array[quickTabComponent.atrTimeframeDropdown.value],
+                    int.Parse(quickTabComponent.atrLengthInput.text),
+                    double.Parse(quickTabComponent.atrMultiplierInput.text)
+                ));
+                break;
+        }
+    }
+    void SendRetrieveTradingBotsSignal()
+    {
+        General.WebsocketGeneralRequest request = new General.WebsocketGeneralRequest(WebsocketEventTypeEnum.RETRIEVE_TRADING_BOTS, platformComponent.tradingPlatform);
+        websocketComponent.generalRequests.Add(request);
+    }
+    void RetrieveTradingBotsFromServer()
+    {
+        string retrieveTradingBotsString = websocketComponent.RetrieveGeneralResponses(WebsocketEventTypeEnum.RETRIEVE_TRADING_BOTS.ToString());
+        if (retrieveTradingBotsString.IsNullOrEmpty()) return;
+        General.WebsocketRetrieveTradingBotsResponse response = JsonConvert.DeserializeObject<General.WebsocketRetrieveTradingBotsResponse>(retrieveTradingBotsString, JsonSerializerConfig.settings);
+        websocketComponent.RemovesGeneralResponses(WebsocketEventTypeEnum.RETRIEVE_TRADING_BOTS.ToString());
+        General.WebsocketRetrieveTradingBotsResponseData data;
+        if (response.tradingBots.TryGetValue(platformComponent.apiKey, out data))
+        {
+            tradingBotComponent.doNotInvokeTradingBotDropdown = true;
+            tradingBotComponent.tradingBotDropdown.value = (int)data.botType;
+        }
     }
 }

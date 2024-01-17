@@ -38,21 +38,9 @@ namespace General
     [Serializable]
     public class WebsocketQuickOrderRequest : WebsocketOrderIdRequest
     {
-        public string symbol;
-        public double maxLossPercentage; // 0 means null
-        public double maxLossAmount; // 0 means null
-        public bool weightedQuantity;
-        public double quantityWeight;
-        public OrderTakeProfitTypeEnum takeProfitType;
-        public double riskRewardRatio;
-        public double takeProfitTrailingCallbackPercentage;
+        public QuickOrderSetting setting;
         public double entryPrice; // -1 means null
-        public int entryTimes;
-        public string atrInterval;
-        public int atrLength;
-        public double atrMultiplier;
         public bool isLong;
-        public bool autoDestroy;
 
         public WebsocketQuickOrderRequest(string symbol,
         double maxLossPercentage,
@@ -70,21 +58,9 @@ namespace General
         bool isLong,
         bool autoDestroy) : base(null)
         {
-            this.symbol = symbol;
-            this.maxLossPercentage = maxLossPercentage;
-            this.maxLossAmount = maxLossAmount;
-            this.weightedQuantity = weightedQuantity;
-            this.quantityWeight = quantityWeight;
-            this.takeProfitType = takeProfitType;
-            this.riskRewardRatio = riskRewardRatio;
-            this.takeProfitTrailingCallbackPercentage = takeProfitTrailingCallbackPercentage;
+            setting = new(symbol, maxLossPercentage, maxLossAmount, weightedQuantity, quantityWeight, takeProfitType, riskRewardRatio, takeProfitTrailingCallbackPercentage, entryTimes, atrInterval, atrLength, atrMultiplier, autoDestroy);
             this.entryPrice = entryPrice;
-            this.entryTimes = entryTimes;
-            this.atrInterval = atrInterval;
-            this.atrLength = atrLength;
-            this.atrMultiplier = atrMultiplier;
             this.isLong = isLong;
-            this.autoDestroy = autoDestroy;
         }
     }
 }

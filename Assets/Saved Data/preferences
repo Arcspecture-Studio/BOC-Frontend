@@ -7,7 +7,7 @@
   "marginWeightDistributionValue": 0.2,
   "takeProfitType": 3,
   "riskRewardRatio": 1.2,
-  "takeProfitTrailingCallbackPercentage": 1.0,
+  "takeProfitTrailingCallbackPercentage": 0.3,
   "quickEntryTimes": 2,
   "atrTimeframe": 5,
   "atrLength": 13,
