@@ -9,7 +9,7 @@
   "riskRewardRatio": 1.2,
   "takeProfitTrailingCallbackPercentage": 0.3,
   "quickEntryTimes": 2,
-  "atrTimeframe": 5,
+  "atrTimeframe": 1,
   "atrLength": 13,
   "atrMultiplier": 2.0
 }

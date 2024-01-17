@@ -8,7 +8,7 @@ public class OrderPageSpawnOrderBasedOnServerSignalSystem : MonoBehaviour
     OrderPagesComponent orderPagesComponent;
     RetrieveOrdersComponent retrieveOrdersComponent;
     PlatformComponent platformComponent;
-    QuickTabComponent quickTabComponent;
+    HideAllPanelComponent hideAllPanelComponent;
 
     void Start()
     {
@@ -16,7 +16,7 @@ public class OrderPageSpawnOrderBasedOnServerSignalSystem : MonoBehaviour
         orderPagesComponent = GlobalComponent.instance.orderPagesComponent;
         retrieveOrdersComponent = GlobalComponent.instance.retrieveOrdersComponent;
         platformComponent = GlobalComponent.instance.platformComponent;
-        quickTabComponent = GlobalComponent.instance.quickTabComponent;
+        hideAllPanelComponent = GlobalComponent.instance.hideAllPanelComponent;
     }
     void Update()
     {
@@ -61,8 +61,8 @@ public class OrderPageSpawnOrderBasedOnServerSignalSystem : MonoBehaviour
             orderPageComponent.restoreData = true;
             #endregion
 
-            #region Hide quick order tab
-            quickTabComponent.active = false;
+            #region Hide all tabs
+            hideAllPanelComponent.hideNow = "true";
             #endregion
         }
     }
