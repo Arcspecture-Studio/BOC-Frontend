@@ -7,8 +7,7 @@ public class TradingBotComponent : MonoBehaviour
     [Header("Reference")]
     public TMP_Dropdown tradingBotDropdown;
 
-    [Header("Runtime")]
-    public bool doNotInvokeTradingBotDropdown;
+    // [Header("Runtime")]
     public bool getTradingBots
     {
         set
@@ -17,4 +16,12 @@ public class TradingBotComponent : MonoBehaviour
         }
     }
     [HideInInspector] public UnityEvent onChange_getTradingBots = new();
+    public bool sendSignalToServer // Used by tradingBotDropdown
+    {
+        set
+        {
+            if (value) onChange_sendSignalToServer.Invoke();
+        }
+    }
+    [HideInInspector] public UnityEvent onChange_sendSignalToServer = new();
 }

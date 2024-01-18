@@ -18,7 +18,7 @@ public class TradingBotSystem : MonoBehaviour
         preferenceComponent = GlobalComponent.instance.preferenceComponent;
         quickTabComponent = GlobalComponent.instance.quickTabComponent;
 
-        tradingBotComponent.tradingBotDropdown.onValueChanged.AddListener(value => SendSignalToServer((BotTypeEnum)value));
+        tradingBotComponent.onChange_sendSignalToServer.AddListener(() => SendSignalToServer((BotTypeEnum)tradingBotComponent.tradingBotDropdown.value));
         tradingBotComponent.onChange_getTradingBots.AddListener(() => SendRetrieveTradingBotsSignal());
     }
     void Update()
@@ -28,11 +28,6 @@ public class TradingBotSystem : MonoBehaviour
 
     void SendSignalToServer(BotTypeEnum value)
     {
-        if (tradingBotComponent.doNotInvokeTradingBotDropdown)
-        {
-            tradingBotComponent.doNotInvokeTradingBotDropdown = false;
-            return;
-        }
         switch (value)
         {
             case BotTypeEnum.NONE:
@@ -71,7 +66,6 @@ public class TradingBotSystem : MonoBehaviour
         General.WebsocketRetrieveTradingBotsResponse response = JsonConvert.DeserializeObject<General.WebsocketRetrieveTradingBotsResponse>(retrieveTradingBotsString, JsonSerializerConfig.settings);
         websocketComponent.RemovesGeneralResponses(WebsocketEventTypeEnum.RETRIEVE_TRADING_BOTS.ToString());
         General.WebsocketRetrieveTradingBotsResponseData data;
-        tradingBotComponent.doNotInvokeTradingBotDropdown = true;
         if (response.tradingBots.TryGetValue(platformComponent.apiKey, out data))
         {
             tradingBotComponent.tradingBotDropdown.value = (int)data.botType;
