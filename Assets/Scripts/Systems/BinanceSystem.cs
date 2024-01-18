@@ -145,6 +145,7 @@ public class BinanceSystem : MonoBehaviour
                 loginComponent.gameObj.SetActive(false);
                 retrieveOrdersComponent.destroyOrders = true;
                 retrieveOrdersComponent.instantiateOrders = true;
+                GlobalComponent.instance.tradingBotComponent.getTradingBots = true;
             }
         }
     }

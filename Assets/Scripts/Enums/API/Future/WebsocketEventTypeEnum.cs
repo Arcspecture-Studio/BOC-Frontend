@@ -8,10 +8,12 @@
     SAVE_THROTTLE_ORDER,
     SAVE_QUICK_ORDER,
     RETRIEVE_ORDERS,
+    RETRIEVE_TRADING_BOTS,
 
     // To Server
     SYNC_API_KEY,
     LOGOUT,
+    SAVE_TRADING_BOT,
 
     // From Server
     CONNECTION_ID,

@@ -79,7 +79,7 @@ public class QuickTabSystem : MonoBehaviour
                int.Parse(quickTabComponent.atrLengthInput.text),
                double.Parse(quickTabComponent.atrMultiplierInput.text),
                quickTabComponent.isLong
-           ));
+            ));
         }
     }
     void MoveSettingPage()

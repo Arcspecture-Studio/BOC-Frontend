@@ -216,6 +216,7 @@ public class CalculateMargin
                 (avgEntryPrices[i] * cumQuantities[i] * feeRate + totalLossAmount * riskRewardRatio +
                 (isLong ? cumQuantities[i] * avgEntryPrices[i] : -cumQuantities[i] * avgEntryPrices[i])) /
                 (cumQuantities[i] * (isLong ? 1 - feeRate : 1 + feeRate));
+            if (double.IsNaN(price) || double.IsInfinity(price)) price = 0;
             takeProfitPrices.Add(Utils.RoundNDecimal(Math.Max(price, 0), pricePrecision));
 
             double percentage = takeProfitTrailingCallbackPercentage;

@@ -6,12 +6,12 @@ namespace General
     public class WebsocketSaveOrderRequest : WebsocketGeneralRequest
     {
         public WebsocketOrderIdRequest orderRequest;
-        public WebsocketSaveOrderEnum actionToTake;
+        public WebsocketDataActionEnum actionToTake;
 
         public WebsocketSaveOrderRequest(string orderId, PlatformEnum platform, bool submit = false) : base(WebsocketEventTypeEnum.SAVE_ORDER, platform)
         {
-            if (submit) actionToTake = WebsocketSaveOrderEnum.SUBMIT;
-            else actionToTake = WebsocketSaveOrderEnum.DELETE;
+            if (submit) actionToTake = WebsocketDataActionEnum.SUBMIT;
+            else actionToTake = WebsocketDataActionEnum.DELETE;
             orderRequest = new WebsocketOrderIdRequest(orderId);
         }
         public WebsocketSaveOrderRequest(string orderId,
@@ -20,7 +20,7 @@ namespace General
             OrderTakeProfitTypeEnum takeProfitType,
             OrderTypeEnum orderType) : base(WebsocketEventTypeEnum.SAVE_ORDER, platform)
         {
-            actionToTake = WebsocketSaveOrderEnum.UPDATE;
+            actionToTake = WebsocketDataActionEnum.UPDATE;
             orderRequest = new WebsocketOrderRequest(orderId, marginCalculator, takeProfitType, orderType);
         }
         public WebsocketSaveOrderRequest(string orderId,
@@ -30,7 +30,7 @@ namespace General
             OrderTakeProfitTypeEnum takeProfitType,
             OrderTypeEnum orderType) : base(WebsocketEventTypeEnum.SAVE_ORDER, platform)
         {
-            actionToTake = WebsocketSaveOrderEnum.SAVE;
+            actionToTake = WebsocketDataActionEnum.SAVE;
             orderRequest = new WebsocketOrderRequest(orderId, marginCalculator, symbol, takeProfitType, orderType);
         }
     }

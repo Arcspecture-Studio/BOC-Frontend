@@ -6,6 +6,7 @@ public class OnClick_GetBalanceAndReinstantiateOrdersSystem : MonoBehaviour
     PlatformComponent platformComponent;
     RetrieveOrdersComponent retrieveOrdersComponent;
     HideAllPanelComponent hideAllPanelComponent;
+    TradingBotComponent tradingBotComponent;
     Button button;
 
     void Start()
@@ -13,6 +14,7 @@ public class OnClick_GetBalanceAndReinstantiateOrdersSystem : MonoBehaviour
         platformComponent = GlobalComponent.instance.platformComponent;
         retrieveOrdersComponent = GlobalComponent.instance.retrieveOrdersComponent;
         hideAllPanelComponent = GlobalComponent.instance.hideAllPanelComponent;
+        tradingBotComponent = GlobalComponent.instance.tradingBotComponent;
         button = GetComponent<Button>();
 
         button.onClick.AddListener(() =>
@@ -22,6 +24,7 @@ public class OnClick_GetBalanceAndReinstantiateOrdersSystem : MonoBehaviour
             platformComponent.getBalance = true;
             retrieveOrdersComponent.destroyOrders = true;
             retrieveOrdersComponent.instantiateOrders = true;
+            tradingBotComponent.getTradingBots = true;
         });
     }
 }

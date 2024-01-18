@@ -25,4 +25,5 @@ public class GlobalComponent : MonoBehaviour
     public SettingPageComponent settingPageComponent;
     public QuickTabComponent quickTabComponent;
     public HideAllPanelComponent hideAllPanelComponent;
+    public TradingBotComponent tradingBotComponent;
 }
