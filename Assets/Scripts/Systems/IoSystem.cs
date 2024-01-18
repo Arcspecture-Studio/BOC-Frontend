@@ -17,6 +17,7 @@ public class IoSystem : MonoBehaviour
     PlatformComponent platformComponent;
     PreferenceComponent preferenceComponent;
     SettingPageComponent settingPageComponent;
+    QuickTabComponent quickTabComponent;
     string logPrefix = "[IoSystem] ";
     bool readApiKeyAdy = false;
 
@@ -31,6 +32,7 @@ public class IoSystem : MonoBehaviour
         platformComponent = GlobalComponent.instance.platformComponent;
         preferenceComponent = GlobalComponent.instance.preferenceComponent;
         settingPageComponent = GlobalComponent.instance.settingPageComponent;
+        quickTabComponent = GlobalComponent.instance.quickTabComponent;
 
         ioComponent.editorPath = Application.dataPath + Path.AltDirectorySeparatorChar + "Saved Data" + Path.AltDirectorySeparatorChar;
         ioComponent.persistentPath = Application.persistentDataPath + Path.AltDirectorySeparatorChar;
@@ -162,6 +164,7 @@ public class IoSystem : MonoBehaviour
             PreferenceFile preferenceFile = JsonConvert.DeserializeObject<PreferenceFile>(jsonString, JsonSerializerConfig.settings);
             preferenceComponent.UpdateValue(preferenceFile);
             settingPageComponent.syncSetting = true;
+            quickTabComponent.syncDataFromPreference = true;
             if (!readApiKeyAdy)
             {
                 readApiKeyAdy = true;
