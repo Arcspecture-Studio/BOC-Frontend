@@ -25,6 +25,7 @@ public class BinanceSystem : MonoBehaviour
     IoComponent ioComponent;
     RetrieveOrdersComponent retrieveOrdersComponent;
     PlatformComponent platformComponent;
+    TradingBotComponent tradingBotComponent;
 
     Binance.WebrequestRequest createListenKeyRequest = null;
     Binance.WebrequestRequest getExchangeInfoRequest = null;
@@ -42,6 +43,7 @@ public class BinanceSystem : MonoBehaviour
         ioComponent = GlobalComponent.instance.ioComponent;
         retrieveOrdersComponent = GlobalComponent.instance.retrieveOrdersComponent;
         platformComponent = GlobalComponent.instance.platformComponent;
+        tradingBotComponent = GlobalComponent.instance.tradingBotComponent;
 
         //websocketComponent.connectMarketSocket = true;
     }
@@ -145,7 +147,7 @@ public class BinanceSystem : MonoBehaviour
                 loginComponent.gameObj.SetActive(false);
                 retrieveOrdersComponent.destroyOrders = true;
                 retrieveOrdersComponent.instantiateOrders = true;
-                GlobalComponent.instance.tradingBotComponent.getTradingBots = true;
+                tradingBotComponent.getTradingBots = true;
             }
         }
     }
