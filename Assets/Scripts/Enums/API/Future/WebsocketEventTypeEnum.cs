@@ -9,11 +9,11 @@
     SAVE_QUICK_ORDER,
     RETRIEVE_ORDERS,
     RETRIEVE_TRADING_BOTS,
+    SAVE_TRADING_BOT,
 
     // To Server
     SYNC_API_KEY,
     LOGOUT,
-    SAVE_TRADING_BOT,
 
     // From Server
     CONNECTION_ID,

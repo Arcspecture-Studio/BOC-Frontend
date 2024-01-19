@@ -9,6 +9,7 @@ public class TradingBotSystem : MonoBehaviour
     PlatformComponent platformComponent;
     PreferenceComponent preferenceComponent;
     QuickTabComponent quickTabComponent;
+    MiniPromptComponent miniPromptComponent;
 
     void Start()
     {
@@ -17,6 +18,7 @@ public class TradingBotSystem : MonoBehaviour
         platformComponent = GlobalComponent.instance.platformComponent;
         preferenceComponent = GlobalComponent.instance.preferenceComponent;
         quickTabComponent = GlobalComponent.instance.quickTabComponent;
+        miniPromptComponent = GlobalComponent.instance.miniPromptComponent;
 
         tradingBotComponent.onChange_sendSignalToServer.AddListener(() => SendSignalToServer((BotTypeEnum)tradingBotComponent.tradingBotDropdown.value));
         tradingBotComponent.onChange_getTradingBots.AddListener(() => SendRetrieveTradingBotsSignal());
@@ -24,6 +26,7 @@ public class TradingBotSystem : MonoBehaviour
     void Update()
     {
         RetrieveTradingBotsFromServer();
+        RetrieveSaveTradinBotNotificationFromServer();
     }
 
     void SendSignalToServer(BotTypeEnum value)
@@ -74,5 +77,14 @@ public class TradingBotSystem : MonoBehaviour
         {
             tradingBotComponent.tradingBotDropdown.value = 0;
         }
+    }
+    void RetrieveSaveTradinBotNotificationFromServer() // PENDING: when there is multiple bots, all use RETRIEVE_TRADING_BOTS since we will retrieve all bots info in one go, RETRIEVE_TRADING_BOTS no longer only sent to frontend when frontend ask for it
+    {
+        string retrieveNotificationString = websocketComponent.RetrieveGeneralResponses(WebsocketEventTypeEnum.SAVE_TRADING_BOT.ToString());
+        if (retrieveNotificationString.IsNullOrEmpty()) return;
+        General.WebsocketSaveTradingBotsResponse response = JsonConvert.DeserializeObject<General.WebsocketSaveTradingBotsResponse>(retrieveNotificationString, JsonSerializerConfig.settings);
+        websocketComponent.RemovesGeneralResponses(WebsocketEventTypeEnum.SAVE_TRADING_BOT.ToString());
+        if (response.tradingBotSpawned) miniPromptComponent.message = "Bot Spawned";
+        else miniPromptComponent.message = "Bot Removed";
     }
 }
