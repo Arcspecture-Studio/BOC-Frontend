@@ -139,11 +139,11 @@ public class OrderPageSystem : MonoBehaviour
     }
     void Update()
     {
+        StartCoroutine(CalculateMargin());
         UpdateUiInteractableStatus();
         UpdateOrderStatus();
         UpdatePositionInfo();
         UpdateOrderToServer();
-        StartCoroutine(CalculateMargin());
     }
 
     IEnumerator CalculateMargin()
