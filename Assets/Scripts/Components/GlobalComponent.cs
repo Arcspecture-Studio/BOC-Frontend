@@ -26,4 +26,5 @@ public class GlobalComponent : MonoBehaviour
     public QuickTabComponent quickTabComponent;
     public HideAllPanelComponent hideAllPanelComponent;
     public TradingBotComponent tradingBotComponent;
+    public MiniPromptComponent miniPromptComponent;
 }
