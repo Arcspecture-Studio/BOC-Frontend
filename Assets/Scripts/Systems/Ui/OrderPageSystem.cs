@@ -424,7 +424,9 @@ public class OrderPageSystem : MonoBehaviour
             websocketComponent.RemovesGeneralResponses(WebsocketEventTypeEnum.SAVE_ORDER.ToString());
             orderPageComponent.orderStatus = response.status;
             orderPageComponent.orderStatusError = response.statusError;
-            orderPageComponent.resultComponent.orderInfoDataObject.transform.GetChild(3).GetComponent<TMP_Text>().text = orderPageComponent.orderStatus.ToString();
+            // BUG: since server can now spawn order,  meaning frontend here haven't get balance (CalculateMargin function will wait for get balance to call), ady received SAVE_ORDER from server (because order just spawned at this timing)
+            if (orderPageComponent.resultComponent.orderInfoDataObject.transform.GetChild(3) != null)
+                orderPageComponent.resultComponent.orderInfoDataObject.transform.GetChild(3).GetComponent<TMP_Text>().text = orderPageComponent.orderStatus.ToString();
             if (!response.errorJsonString.IsNullOrEmpty())
             {
                 switch (platformComponent.tradingPlatform)
@@ -493,15 +495,16 @@ public class OrderPageSystem : MonoBehaviour
         if (response.orderId.Equals(orderPageComponent.orderId))
         {
             websocketComponent.RemovesGeneralResponses(WebsocketEventTypeEnum.RETRIEVE_POSITION_INFO.ToString());
-            if (response.averagePriceFilled.HasValue)
+            // BUG: since now server can spawn order, meaning frontend here haven't get exchangeInfo, server ady send RETRIEVE_POSITION_INFO (because order just spawned at this timing)
+            if (response.averagePriceFilled.HasValue && platformComponent.pricePrecisions.ContainsKey(orderPageComponent.symbolDropdownComponent.selectedSymbol))
             {
                 orderPageComponent.positionInfoAvgEntryPriceFilledText.text = Utils.RoundNDecimal(response.averagePriceFilled.Value, platformComponent.pricePrecisions[orderPageComponent.symbolDropdownComponent.selectedSymbol]).ToString();
             }
-            if (response.quantityFilled.HasValue)
+            if (response.quantityFilled.HasValue && platformComponent.quantityPrecisions.ContainsKey(orderPageComponent.symbolDropdownComponent.selectedSymbol))
             {
                 orderPageComponent.positionInfoQuantityFilledText.text = Utils.RoundNDecimal(response.quantityFilled.Value, platformComponent.quantityPrecisions[orderPageComponent.symbolDropdownComponent.selectedSymbol]).ToString();
             }
-            if (response.actualTakeProfitPrice.HasValue)
+            if (response.actualTakeProfitPrice.HasValue && platformComponent.pricePrecisions.ContainsKey(orderPageComponent.symbolDropdownComponent.selectedSymbol))
             {
                 orderPageComponent.positionInfoActualTakeProfitPriceText.text = Utils.RoundNDecimal(response.actualTakeProfitPrice.Value, platformComponent.pricePrecisions[orderPageComponent.symbolDropdownComponent.selectedSymbol]).ToString();
             }
