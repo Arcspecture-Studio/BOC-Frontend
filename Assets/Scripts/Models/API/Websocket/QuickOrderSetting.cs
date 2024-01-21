@@ -15,7 +15,6 @@ public class QuickOrderSetting
     public string atrInterval;
     public int atrLength;
     public double atrMultiplier;
-    public bool autoDestroy;
 
     public QuickOrderSetting(string symbol,
     double maxLossPercentage,
@@ -28,8 +27,7 @@ public class QuickOrderSetting
     int entryTimes,
     string atrInterval,
     int atrLength,
-    double atrMultiplier,
-    bool autoDestroy)
+    double atrMultiplier)
     {
         this.symbol = symbol;
         this.maxLossPercentage = maxLossPercentage;
@@ -43,6 +41,5 @@ public class QuickOrderSetting
         this.atrInterval = atrInterval;
         this.atrLength = atrLength;
         this.atrMultiplier = atrMultiplier;
-        this.autoDestroy = autoDestroy;
     }
 }

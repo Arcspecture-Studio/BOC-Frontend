@@ -25,8 +25,7 @@ namespace General
         bool isLong) : base(WebsocketEventTypeEnum.SAVE_QUICK_ORDER, platform)
         {
             actionToTake = WebsocketDataActionEnum.SAVE;
-            orderRequest = new WebsocketQuickOrderRequest(symbol, maxLossPercentage, maxLossAmount, weightedQuantity, quantityWeight, takeProfitType,
-            riskRewardRatio, takeProfitTrailingCallbackPercentage, entryPrice, entryTimes, atrInterval, atrLength, atrMultiplier, isLong, false);
+            orderRequest = new WebsocketQuickOrderRequest(symbol, maxLossPercentage, maxLossAmount, weightedQuantity, quantityWeight, takeProfitType, riskRewardRatio, takeProfitTrailingCallbackPercentage, entryPrice, entryTimes, atrInterval, atrLength, atrMultiplier, isLong);
         }
 
         public WebsocketSaveQuickOrderRequest(PlatformEnum platform, string orderId) : base(WebsocketEventTypeEnum.SAVE_QUICK_ORDER, platform)
@@ -55,10 +54,9 @@ namespace General
         string atrInterval,
         int atrLength,
         double atrMultiplier,
-        bool isLong,
-        bool autoDestroy) : base(null)
+        bool isLong) : base(null)
         {
-            setting = new(symbol, maxLossPercentage, maxLossAmount, weightedQuantity, quantityWeight, takeProfitType, riskRewardRatio, takeProfitTrailingCallbackPercentage, entryTimes, atrInterval, atrLength, atrMultiplier, autoDestroy);
+            setting = new(symbol, maxLossPercentage, maxLossAmount, weightedQuantity, quantityWeight, takeProfitType, riskRewardRatio, takeProfitTrailingCallbackPercentage, entryTimes, atrInterval, atrLength, atrMultiplier);
             this.entryPrice = entryPrice;
             this.isLong = isLong;
         }
