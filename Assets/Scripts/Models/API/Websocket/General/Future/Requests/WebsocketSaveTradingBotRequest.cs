@@ -34,8 +34,7 @@ namespace General
             actionToTake = WebsocketDataActionEnum.SAVE;
             this.botId = botId;
             botType = BotTypeEnum.PREMIUM_INDEX;
-            quickOrderSetting = new QuickOrderSetting(symbol, maxLossPercentage, maxLossAmount, weightedQuantity, quantityWeight, takeProfitType,
-            riskRewardRatio, takeProfitTrailingCallbackPercentage, entryTimes, atrInterval, atrLength, atrMultiplier, true);
+            quickOrderSetting = new QuickOrderSetting(symbol, maxLossPercentage, maxLossAmount, weightedQuantity, quantityWeight, takeProfitType, riskRewardRatio, takeProfitTrailingCallbackPercentage, entryTimes, atrInterval, atrLength, atrMultiplier);
         }
     }
 }

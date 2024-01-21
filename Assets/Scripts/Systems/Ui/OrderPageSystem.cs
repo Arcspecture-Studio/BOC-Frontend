@@ -425,7 +425,7 @@ public class OrderPageSystem : MonoBehaviour
             orderPageComponent.orderStatus = response.status;
             orderPageComponent.orderStatusError = response.statusError;
             // BUG: since server can now spawn order,  meaning frontend here haven't get balance (CalculateMargin function will wait for get balance to call), ady received SAVE_ORDER from server (because order just spawned at this timing)
-            if (orderPageComponent.resultComponent.orderInfoDataObject.transform.GetChild(3) != null)
+            if (orderPageComponent.resultComponent.orderInfoDataObject != null)
                 orderPageComponent.resultComponent.orderInfoDataObject.transform.GetChild(3).GetComponent<TMP_Text>().text = orderPageComponent.orderStatus.ToString();
             if (!response.errorJsonString.IsNullOrEmpty())
             {
