@@ -11,6 +11,7 @@ public class MiniPromptSystem : MonoBehaviour
         miniPromptComponent.onChange_message.AddListener(value =>
         {
             miniPromptComponent.messageText.text = value;
+            miniPromptComponent.anim.Stop();
             miniPromptComponent.anim.Play();
         });
     }
