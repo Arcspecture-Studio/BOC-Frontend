@@ -1,7 +1,6 @@
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
-using MongoDB.Bson;
 
 public class OrderPageThrottleComponent : MonoBehaviour
 {
@@ -32,7 +31,7 @@ public class OrderPageThrottleComponent : MonoBehaviour
     public bool submitToServer;
     public CalculateThrottle throttleCalculator;
     public bool lockForEdit;
-    public string orderId = ObjectId.GenerateNewId().ToString();
+    public string orderId;
     public OrderStatusEnum orderStatus = OrderStatusEnum.UNSUBMITTED;
     public bool orderStatusError = false;
 }

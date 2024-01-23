@@ -2,10 +2,8 @@
     "name": "Models.API.Websocket.General.Future.Requests",
     "rootNamespace": "",
     "references": [
+        "GUID:597d3c3569af0344d9a041a7eb28def8",
         "GUID:fd5c2314a4dbfdf438b1f9fd2cec138d",
-        "GUID:98a654d3504a9fc42ad9f2122701db1a",
-        "GUID:fa242471719a61845afd24ce36707339",
-        "GUID:0e886025ceffdf544b8cfbdfe8020193",
         "GUID:c5e88d172ae05f344b8f82d40ff26e07",
         "GUID:1dd59ad18fefbe84f80bbd20ffa3a276",
         "GUID:f2747e20baa28dd47985a99ad1bd1e32",
