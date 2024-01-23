@@ -1,6 +1,7 @@
 using Newtonsoft.Json;
 using UnityEngine;
 using WebSocketSharp;
+using MongoDB.Bson;
 
 public class OrderPageThrottleSystem : MonoBehaviour
 {
@@ -20,6 +21,8 @@ public class OrderPageThrottleSystem : MonoBehaviour
         orderPageThrottleComponent = GetComponent<OrderPageThrottleComponent>();
         orderPageComponent = orderPageThrottleComponent.transform.parent.GetComponent<OrderPageThrottleParentComponent>().orderPageComponent;
 
+        if (orderPageThrottleComponent.orderId.IsNullOrEmpty())
+            orderPageThrottleComponent.orderId = ObjectId.GenerateNewId().ToString();
         orderPageThrottleComponent.calculateButton.onClick.AddListener(() =>
         {
             if (orderPageThrottleComponent.lockForEdit)
