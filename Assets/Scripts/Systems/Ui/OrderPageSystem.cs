@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using WebSocketSharp;
+using MongoDB.Bson;
 
 public class OrderPageSystem : MonoBehaviour
 {
@@ -25,6 +26,8 @@ public class OrderPageSystem : MonoBehaviour
         websocketComponent = GlobalComponent.instance.websocketComponent;
         promptComponent = GlobalComponent.instance.promptComponent;
 
+        if (orderPageComponent.orderId.IsNullOrEmpty())
+            orderPageComponent.orderId = ObjectId.GenerateNewId().ToString();
         orderPageComponent.orderIdButton.onClick.AddListener(() =>
         {
             GUIUtility.systemCopyBuffer = orderPageComponent.orderId.ToString();

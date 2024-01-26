@@ -3,7 +3,6 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
-using MongoDB.Bson;
 
 public class OrderPageComponent : MonoBehaviour
 {
@@ -64,7 +63,7 @@ public class OrderPageComponent : MonoBehaviour
     public bool submitToServer;
     public CalculateMargin marginCalculator;
     public bool lockForEdit;
-    public string orderId = ObjectId.GenerateNewId().ToString();
+    public string orderId;
     public OrderStatusEnum orderStatus = OrderStatusEnum.UNSUBMITTED;
     public bool orderStatusError = false;
     public Tween spawnTween;
