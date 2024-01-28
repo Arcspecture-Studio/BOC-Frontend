@@ -27,7 +27,7 @@ public class QuickTabSystem : MonoBehaviour
     }
     void Update()
     {
-        MoveSettingPage();
+        MovePage();
         UpdateOrderToServer();
         SpawnOrDestroyQuickOrderObject();
         ShowAndHideQuickOrdersObject();
@@ -82,7 +82,7 @@ public class QuickTabSystem : MonoBehaviour
             ));
         }
     }
-    void MoveSettingPage()
+    void MovePage()
     {
         if (active == quickTabComponent.active) return;
         if (tween != null)
@@ -90,8 +90,8 @@ public class QuickTabSystem : MonoBehaviour
             if (tween.IsPlaying()) return;
         }
         active = quickTabComponent.active;
-        float initialValue = active.Value ? -200 : 200;
-        float moveValue = active.Value ? 400f : -400f;
+        float initialValue = active.Value ? quickTabComponent.inactiveYPosition : quickTabComponent.activeYPosition;
+        float moveValue = active.Value ? quickTabComponent.inactiveToActiveYMovement : quickTabComponent.activeToInactiveYMovement;
         quickTabComponent.rectTransform.anchoredPosition = new Vector2(quickTabComponent.rectTransform.anchoredPosition.x,
             initialValue);
         tween = quickTabComponent.rectTransform.DOBlendableLocalMoveBy(new Vector3(0, moveValue, 0), quickTabComponent.pageMoveDuration).SetEase(quickTabComponent.pageMoveEase);

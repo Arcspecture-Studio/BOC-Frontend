@@ -24,6 +24,10 @@ public class QuickTabComponent : MonoBehaviour
     [Header("Config")]
     public float pageMoveDuration;
     public Ease pageMoveEase;
+    public float activeYPosition;
+    public float inactiveYPosition;
+    public float activeToInactiveYMovement;
+    public float inactiveToActiveYMovement;
 
     [Header("Runtime")]
     public bool active = false;
