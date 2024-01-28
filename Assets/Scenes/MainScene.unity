@@ -10310,6 +10310,10 @@ MonoBehaviour:
   logoutButton: {fileID: 1072248454}
   pageMoveDuration: 0.4
   pageMoveEase: 19
+  activeXPosition: -200
+  inactiveXPosition: 200
+  activeToInactiveXMovement: 400
+  inactiveToActiveXMovement: -400
   active: 0
   syncSetting: 0
 --- !u!114 &680527081
@@ -13770,6 +13774,10 @@ MonoBehaviour:
   quickOrderDataRowPrefab: {fileID: 576008403832550382, guid: e72c2436d7c3de04d835d19d7d6cba70, type: 3}
   pageMoveDuration: 0.4
   pageMoveEase: 19
+  activeYPosition: 200
+  inactiveYPosition: -260
+  activeToInactiveYMovement: -460
+  inactiveToActiveYMovement: 460
   active: 0
   syncDataFromPreference: 0
   saveToServer: 0

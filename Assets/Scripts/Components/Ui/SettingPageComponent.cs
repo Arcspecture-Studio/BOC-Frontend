@@ -36,6 +36,10 @@ public class SettingPageComponent : MonoBehaviour
     [Header("Config")]
     public float pageMoveDuration;
     public Ease pageMoveEase;
+    public float activeXPosition;
+    public float inactiveXPosition;
+    public float activeToInactiveXMovement;
+    public float inactiveToActiveXMovement;
 
     [Header("Runtime")]
     public bool active = false;
