@@ -27,7 +27,7 @@ public class OnClick_GetBalanceAndReinstantiateOrdersSystem : MonoBehaviour
             retrieveOrdersComponent.destroyOrders = true;
             retrieveOrdersComponent.instantiateOrders = true;
             tradingBotComponent.getTradingBots = true;
-            miniPromptComponent.message = "Refreshed";
+            // miniPromptComponent.message = "Refreshed";
         });
     }
 }

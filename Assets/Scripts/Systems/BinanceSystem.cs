@@ -26,6 +26,7 @@ public class BinanceSystem : MonoBehaviour
     RetrieveOrdersComponent retrieveOrdersComponent;
     PlatformComponent platformComponent;
     TradingBotComponent tradingBotComponent;
+    MiniPromptComponent miniPromptComponent;
 
     Binance.WebrequestRequest createListenKeyRequest = null;
     Binance.WebrequestRequest getExchangeInfoRequest = null;
@@ -44,6 +45,7 @@ public class BinanceSystem : MonoBehaviour
         retrieveOrdersComponent = GlobalComponent.instance.retrieveOrdersComponent;
         platformComponent = GlobalComponent.instance.platformComponent;
         tradingBotComponent = GlobalComponent.instance.tradingBotComponent;
+        miniPromptComponent = GlobalComponent.instance.miniPromptComponent;
 
         //websocketComponent.connectMarketSocket = true;
     }
@@ -86,6 +88,7 @@ public class BinanceSystem : MonoBehaviour
             }
             webrequestComponent.responses.Remove(getBalanceRequest.id);
             if (response == null || response.Count == 0) return;
+            miniPromptComponent.message = "Balance Updated";
             response.ForEach(asset =>
             {
                 if (!binanceComponent.walletBalances.TryAdd(asset.asset, double.Parse(asset.balance)))
