@@ -1,0 +1,126 @@
+using Newtonsoft.Json;
+using TMPro;
+using UnityEngine;
+using UnityEngine.UI;
+
+public class DepthManager : MonoBehaviour
+{
+    [Header("References")]
+    public RectTransform canvasRectTransform;
+    public GameObject barPrefab;
+    public TMP_Text middleQuantity;
+    public TMP_Text largestQuantity;
+
+    [Header("Configs")]
+    public int barCount;
+    public double impactMarginNotional;
+    public string jsonString;
+
+    [Header("Result")]
+    public double totalQuantityOnAskSide;
+    public double totalQuantityOnBidSide;
+    public double totalAmountOnAskSide;
+    public double totalAmountOnBidSide;
+    public double impactAskPrice;
+    public double impactBidPrice;
+
+    // Runtime
+    Depth depth;
+    double largestQuantityValue;
+
+    void Start()
+    {
+        depth = JsonConvert.DeserializeObject<Model>(jsonString).caseStudy.depth;
+        CalculateLargestQuantityValue();
+        SpawnBar();
+        CalculateImpactBidOrAskPrice();
+    }
+    void CalculateLargestQuantityValue()
+    {
+        largestQuantityValue = 0;
+        foreach (BarData ask in depth.asks)
+        {
+            if (ask.quantity > largestQuantityValue) largestQuantityValue = ask.quantity;
+        }
+        foreach (BarData bid in depth.bids)
+        {
+            if (bid.quantity > largestQuantityValue) largestQuantityValue = bid.quantity;
+        }
+        largestQuantity.text = largestQuantityValue.ToString();
+        middleQuantity.text = (largestQuantityValue / 2).ToString();
+    }
+    void SpawnBar()
+    {
+        totalQuantityOnAskSide = 0;
+        totalQuantityOnBidSide = 0;
+        totalAmountOnAskSide = 0;
+        totalAmountOnBidSide = 0;
+        for (int i = 0; i < barCount; i++)
+        {
+            GameObject barObject = Instantiate(barPrefab);
+            RectTransform rectTransform = barObject.GetComponent<RectTransform>();
+            Image image = barObject.GetComponent<Image>();
+            TMP_Text barLabel = barObject.transform.GetChild(0).GetComponent<TMP_Text>();
+
+            barObject.transform.SetParent(transform);
+            rectTransform.sizeDelta = new Vector2(rectTransform.sizeDelta.x, canvasRectTransform.sizeDelta.y / barCount);
+            if (i < 100)
+            {
+                image.color = Color.red;
+                image.fillAmount = (float)(depth.asks[i].quantity / largestQuantityValue);
+                barLabel.text = depth.asks[i].price.ToString() + " : " + depth.asks[i].quantity.ToString();
+                totalQuantityOnAskSide += depth.asks[i].quantity;
+                totalAmountOnAskSide += depth.asks[i].price * depth.asks[i].quantity;
+            }
+            else
+            {
+                int j = i - 100;
+                image.color = Color.green;
+                image.fillAmount = (float)(depth.bids[j].quantity / largestQuantityValue);
+                barLabel.text = depth.bids[j].price.ToString() + " : " + depth.bids[j].quantity.ToString();
+                totalQuantityOnBidSide += depth.bids[j].quantity;
+                totalAmountOnBidSide += depth.bids[j].price * depth.bids[j].quantity;
+            }
+        }
+    }
+    void CalculateImpactBidOrAskPrice()
+    {
+        double remainingBalance = impactMarginNotional;
+        double quantityPurchased = 0;
+        for (int i = 0; i < depth.bids.Count; i++)
+        {
+            double amount = depth.bids[i].quantity * depth.bids[i].price;
+            if (remainingBalance >= amount)
+            {
+                remainingBalance -= amount;
+                quantityPurchased += depth.bids[i].quantity;
+                continue;
+            }
+            else
+            {
+                quantityPurchased += remainingBalance / depth.bids[i].price;
+                break;
+            }
+        }
+        impactBidPrice = impactMarginNotional / quantityPurchased;
+
+        remainingBalance = impactMarginNotional;
+        quantityPurchased = 0;
+        for (int i = depth.asks.Count - 1; i >= 0; i--)
+        {
+            double amount = depth.asks[i].quantity * depth.asks[i].price;
+            if (remainingBalance >= amount)
+            {
+                remainingBalance -= amount;
+                quantityPurchased += depth.asks[i].quantity;
+                continue;
+            }
+            else
+            {
+                quantityPurchased += remainingBalance / depth.asks[i].price;
+                break;
+            }
+        }
+        impactAskPrice = impactMarginNotional / quantityPurchased;
+    }
+}
