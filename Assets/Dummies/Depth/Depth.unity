@@ -237,7 +237,7 @@ GameObject:
   - component: {fileID: 193544553}
   - component: {fileID: 193544552}
   m_Layer: 5
-  m_Name: Text (TMP)
+  m_Name: Middle Quantity
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -283,7 +283,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 1000
+  m_text: 0
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -292,8 +292,8 @@ MonoBehaviour:
   m_fontMaterials: []
   m_fontColor32:
     serializedVersion: 2
-    rgba: 4294967295
-  m_fontColor: {r: 1, g: 1, b: 1, a: 1}
+    rgba: 4278190080
+  m_fontColor: {r: 0, g: 0, b: 0, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
   m_fontColorGradient:
@@ -504,8 +504,199 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: eee7baa40acddf748a7aceee537ecf18, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  canvasRectTransform: {fileID: 133643611}
   barPrefab: {fileID: 3200435051308413669, guid: 52e745774aa53334986b9a129327ea3f, type: 3}
+  middleQuantity: {fileID: 193544552}
+  largestQuantity: {fileID: 1367274512}
   barCount: 200
+  jsonString: '{   "caseStudy": {     "depth": {       "asks": [         {          
+    "price": 2638.51,           "quantity": 0.067         },         {          
+    "price": 2624.99,           "quantity": 0.057         },         {          
+    "price": 2620.74,           "quantity": 0.067         },         {          
+    "price": 2603.09,           "quantity": 0.067         },         {          
+    "price": 2600,           "quantity": 53.894         },         {           "price":
+    2598.31,           "quantity": 0.181         },         {           "price":
+    2585.56,           "quantity": 0.067         },         {           "price":
+    2585,           "quantity": 5         },         {           "price": 2580,          
+    "quantity": 0.038         },         {           "price": 2572.06,          
+    "quantity": 0.181         },         {           "price": 2568.15,          
+    "quantity": 0.067         },         {           "price": 2565,           "quantity":
+    2.456         },         {           "price": 2553.16,           "quantity":
+    0.004         },         {           "price": 2552.99,           "quantity":
+    6.428         },         {           "price": 2550.85,           "quantity":
+    0.067         },         {           "price": 2550,           "quantity": 27.118        
+    },         {           "price": 2548.45,           "quantity": 0.736        
+    },         {           "price": 2545.82,           "quantity": 0.181        
+    },         {           "price": 2542.33,           "quantity": 1.845        
+    },         {           "price": 2542,           "quantity": 52.848         },        
+    {           "price": 2533.67,           "quantity": 0.067         },        
+    {           "price": 2516.6,           "quantity": 0.067         },         {          
+    "price": 2516,           "quantity": 2.418         },         {           "price":
+    2506.74,           "quantity": 0.004         },         {           "price":
+    2500,           "quantity": 99.224         },         {           "price": 2499.66,          
+    "quantity": 0.067         },         {           "price": 2491.8,           "quantity":
+    0.048         },         {           "price": 2490.3,           "quantity": 0.048        
+    },         {           "price": 2482.82,           "quantity": 0.067        
+    },         {           "price": 2480,           "quantity": 2000.009        
+    },         {           "price": 2466.1,           "quantity": 0.067         },        
+    {           "price": 2462.98,           "quantity": 0.048         },        
+    {           "price": 2460.32,           "quantity": 0.004         },        
+    {           "price": 2458.11,           "quantity": 0.048         },        
+    {           "price": 2456.67,           "quantity": 0.048         },        
+    {           "price": 2455,           "quantity": 0.009         },         {          
+    "price": 2454.02,           "quantity": 0.048         },         {          
+    "price": 2450,           "quantity": 1         },         {           "price":
+    2449.49,           "quantity": 0.067         },         {           "price":
+    2445,           "quantity": 0.1         },         {           "price": 2444,          
+    "quantity": 2000         },         {           "price": 2443.54,           "quantity":
+    0.1         },         {           "price": 2432.99,           "quantity": 0.067        
+    },         {           "price": 2432.94,           "quantity": 0.049        
+    },         {           "price": 2432.61,           "quantity": 0.385        
+    },         {           "price": 2430,           "quantity": 0.009         },        
+    {           "price": 2424.43,           "quantity": 0.049         },        
+    {           "price": 2423.03,           "quantity": 0.049         },        
+    {           "price": 2420.73,           "quantity": 0.049         },        
+    {           "price": 2418,           "quantity": 4.135         },         {          
+    "price": 2416.61,           "quantity": 0.067         },         {          
+    "price": 2413.9,           "quantity": 0.004         },         {           "price":
+    2410,           "quantity": 58.284         },         {           "price": 2409.81,          
+    "quantity": 9.5         },         {           "price": 2407.98,           "quantity":
+    37.685         },         {           "price": 2407.95,           "quantity":
+    70.564         },         {           "price": 2402.89,           "quantity":
+    0.049         },         {           "price": 2400.33,           "quantity":
+    0.067         },         {           "price": 2400.24,           "quantity":
+    0.02         },         {           "price": 2400,           "quantity": 1198.111        
+    },         {           "price": 2399.97,           "quantity": 41.667        
+    },         {           "price": 2399,           "quantity": 2000         },        
+    {           "price": 2397.76,           "quantity": 0.05         },         {          
+    "price": 2396.46,           "quantity": 40.728         },         {          
+    "price": 2396.44,           "quantity": 10.483         },         {          
+    "price": 2395,           "quantity": 1377.678         },         {          
+    "price": 2394,           "quantity": 62.183         },         {           "price":
+    2391,           "quantity": 0.05         },         {           "price": 2390,          
+    "quantity": 0.051         },         {           "price": 2388.34,          
+    "quantity": 0.1         },         {           "price": 2384.16,           "quantity":
+    0.067         },         {           "price": 2384,           "quantity": 38.013        
+    },         {           "price": 2383.56,           "quantity": 0.05         },        
+    {           "price": 2383,           "quantity": 5.2         },         {          
+    "price": 2376,           "quantity": 0.009         },         {           "price":
+    2373.14,           "quantity": 0.1         },         {           "price": 2370,          
+    "quantity": 29.964         },         {           "price": 2367.48,          
+    "quantity": 0.004         },         {           "price": 2363.19,          
+    "quantity": 0.01         },         {           "price": 2363.11,           "quantity":
+    0.198         },         {           "price": 2362.01,           "quantity":
+    0.075         },         {           "price": 2360.67,           "quantity":
+    0.01         },         {           "price": 2360,           "quantity": 0.053        
+    },         {           "price": 2358.29,           "quantity": 384.278        
+    },         {           "price": 2356.41,           "quantity": 2646.793        
+    },         {           "price": 2356,           "quantity": 534.198         },        
+    {           "price": 2355.97,           "quantity": 0.028         },        
+    {           "price": 2355,           "quantity": 0.009         },         {          
+    "price": 2354.53,           "quantity": 2648.906         },         {          
+    "price": 2353.68,           "quantity": 0.05         },         {           "price":
+    2352.64,           "quantity": 2651.034         },         {           "price":
+    2352,           "quantity": 815.868         },         {           "price": 2350.76,          
+    "quantity": 2653.154         },         {           "price": 2350,          
+    "quantity": 492.628         },         {           "price": 2348.99,          
+    "quantity": 0.025         },         {           "price": 2348.88,          
+    "quantity": 2655.278         },         {           "price": 2347.19,          
+    "quantity": 32.315         },         {           "price": 2347.01,          
+    "quantity": 2657.393         },         {           "price": 2345.48,          
+    "quantity": 2         },         {           "price": 2345,           "quantity":
+    3736.677         }       ],       "bids": [         {           "price": 2335.72,          
+    "quantity": 693.211         },         {           "price": 2335.24,          
+    "quantity": 821.496         },         {           "price": 2334.66,          
+    "quantity": 883.296         },         {           "price": 2334.04,          
+    "quantity": 877.393         },         {           "price": 2333.43,          
+    "quantity": 857.832         },         {           "price": 2332.83,          
+    "quantity": 886.77         },         {           "price": 2332,           "quantity":
+    0.025         },         {           "price": 2329,           "quantity": 0.144        
+    },         {           "price": 2328.31,           "quantity": 2678.737        
+    },         {           "price": 2327.33,           "quantity": 0.05         },        
+    {           "price": 2326.45,           "quantity": 2680.878         },        
+    {           "price": 2324.59,           "quantity": 2683.023         },        
+    {           "price": 2322.73,           "quantity": 2685.172         },        
+    {           "price": 2321.86,           "quantity": 34.885         },        
+    {           "price": 2320.88,           "quantity": 2687.312         },        
+    {           "price": 2319.7,           "quantity": 0.043         },         {          
+    "price": 2319.02,           "quantity": 2689.468         },         {          
+    "price": 2317.17,           "quantity": 2691.615         },         {          
+    "price": 2316.93,           "quantity": 0.075         },         {          
+    "price": 2315.32,           "quantity": 2693.765         },         {          
+    "price": 2313.56,           "quantity": 60.706         },         {          
+    "price": 2313.47,           "quantity": 2695.92         },         {          
+    "price": 2311.62,           "quantity": 2698.077         },         {          
+    "price": 2309.77,           "quantity": 2700.238         },         {          
+    "price": 2307.92,           "quantity": 2649.784         },         {          
+    "price": 2306.08,           "quantity": 6.322         },         {          
+    "price": 2305.03,           "quantity": 0.1         },         {           "price":
+    2303,           "quantity": 100         },         {           "price": 2302.37,          
+    "quantity": 94         },         {           "price": 2302.01,           "quantity":
+    1         },         {           "price": 2302,           "quantity": 161.172        
+    },         {           "price": 2301.33,           "quantity": 0.362        
+    },         {           "price": 2301,           "quantity": 651.908         },        
+    {           "price": 2300.13,           "quantity": 133.357         },        
+    {           "price": 2300.09,           "quantity": 1675.783         },        
+    {           "price": 2300,           "quantity": 50.455         },         {          
+    "price": 2294.43,           "quantity": 27.662         },         {          
+    "price": 2294.3,           "quantity": 30         },         {           "price":
+    2290.51,           "quantity": 0.1         },         {           "price": 2285.32,          
+    "quantity": 0.01         },         {           "price": 2282.8,           "quantity":
+    0.01         },         {           "price": 2280,           "quantity": 2.192        
+    },         {           "price": 2278.09,           "quantity": 0.366        
+    },         {           "price": 2271.09,           "quantity": 0.052        
+    },         {           "price": 2270.44,           "quantity": 0.206        
+    },         {           "price": 2270,           "quantity": 80.241         },        
+    {           "price": 2263,           "quantity": 44.189         },         {          
+    "price": 2262,           "quantity": 110.521         },         {           "price":
+    2260.17,           "quantity": 0.053         },         {           "price":
+    2257.92,           "quantity": 0.687         },         {           "price":
+    2256,           "quantity": 0.664         },         {           "price": 2255.32,          
+    "quantity": 0.053         },         {           "price": 2253,           "quantity":
+    0.088         },         {           "price": 2251,           "quantity": 9352.135        
+    },         {           "price": 2250.81,           "quantity": 0.1         },        
+    {           "price": 2250,           "quantity": 7168.033         },        
+    {           "price": 2249.33,           "quantity": 1         },         {          
+    "price": 2249.25,           "quantity": 0.053         },         {          
+    "price": 2246.01,           "quantity": 11.13         },         {          
+    "price": 2246,           "quantity": 0.6         },         {           "price":
+    2245.68,           "quantity": 0.044         },         {           "price":
+    2244.55,           "quantity": 0.3         },         {           "price": 2243.48,          
+    "quantity": 0.067         },         {           "price": 2243.25,          
+    "quantity": 0.013         },         {           "price": 2242.31,          
+    "quantity": 0.01         },         {           "price": 2240.1,           "quantity":
+    0.089         },         {           "price": 2240,           "quantity": 44.642        
+    },         {           "price": 2238.33,           "quantity": 0.053        
+    },         {           "price": 2238,           "quantity": 23.759         },        
+    {           "price": 2235.67,           "quantity": 134.187         },        
+    {           "price": 2235,           "quantity": 2         },         {          
+    "price": 2233,           "quantity": 0.009         },         {           "price":
+    2232.8,           "quantity": 37.983         },         {           "price":
+    2230.88,           "quantity": 0.106         },         {           "price":
+    2230.71,           "quantity": 0.134         },         {           "price":
+    2230.3,           "quantity": 0.044         },         {           "price": 2230.01,          
+    "quantity": 0.448         },         {           "price": 2230,           "quantity":
+    3.933         },         {           "price": 2228.37,           "quantity":
+    0.067         },         {           "price": 2226.5,           "quantity": 9.134        
+    },         {           "price": 2225,           "quantity": 99.839         },        
+    {           "price": 2224.79,           "quantity": 0.044         },        
+    {           "price": 2224.72,           "quantity": 0.3         },         {          
+    "price": 2224,           "quantity": 0.09         },         {           "price":
+    2223.39,           "quantity": 0.044         },         {           "price":
+    2223,           "quantity": 108         },         {           "price": 2222.22,          
+    "quantity": 45         },         {           "price": 2222,           "quantity":
+    30.611         },         {           "price": 2221.76,           "quantity":
+    0.054         },         {           "price": 2221.01,           "quantity":
+    0.1         },         {           "price": 2221,           "quantity": 1        
+    },         {           "price": 2220.15,           "quantity": 0.3         },        
+    {           "price": 2220.01,           "quantity": 675.672         },        
+    {           "price": 2220,           "quantity": 18.928         },         {          
+    "price": 2219.19,           "quantity": 0.3         },         {           "price":
+    2218.74,           "quantity": 0.3         },         {           "price": 2217.81,          
+    "quantity": 20         },         {           "price": 2217.56,           "quantity":
+    0.3         },         {           "price": 2217.4,           "quantity": 8.117        
+    },         {           "price": 2217.36,           "quantity": 0.5         }      
+    ],       "transactionTime": 1707213425723     }   } }'
 --- !u!1 &704823051
 GameObject:
   m_ObjectHideFlags: 0
@@ -602,7 +793,7 @@ GameObject:
   - component: {fileID: 1367274513}
   - component: {fileID: 1367274512}
   m_Layer: 5
-  m_Name: Text (TMP) (1)
+  m_Name: Largest Quantity
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -648,7 +839,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 1000
+  m_text: 0
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -657,8 +848,8 @@ MonoBehaviour:
   m_fontMaterials: []
   m_fontColor32:
     serializedVersion: 2
-    rgba: 4294967295
-  m_fontColor: {r: 1, g: 1, b: 1, a: 1}
+    rgba: 4278190080
+  m_fontColor: {r: 0, g: 0, b: 0, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
   m_fontColorGradient:
