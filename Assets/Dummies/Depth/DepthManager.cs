@@ -35,7 +35,7 @@ public class DepthManager : MonoBehaviour
 
     void Start()
     {
-        depth = JsonConvert.DeserializeObject<DepthModel>(jsonString).depth;
+        depth = JsonConvert.DeserializeObject<Depth>(jsonString);
         CalculateLargestQuantityValue();
         CalculateImpactBidOrAskPrice();
         SpawnBar();

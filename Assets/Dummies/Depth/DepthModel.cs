@@ -2,11 +2,6 @@ using System;
 using System.Collections.Generic;
 
 [Serializable]
-public class DepthModel
-{
-    public Depth depth;
-}
-[Serializable]
 public class Depth
 {
     public List<BarData> asks;
