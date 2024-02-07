@@ -71,6 +71,7 @@ public class DepthManager : MonoBehaviour
                 if (Utils.TruncTwoDecimal(impactAskPrice).Equals(depth.asks[i].price))
                 {
                     image.color = Color.magenta;
+                    barLabel.fontStyle = FontStyles.Underline;
                 }
                 else
                 {
@@ -86,6 +87,7 @@ public class DepthManager : MonoBehaviour
                 if (Utils.TruncTwoDecimal(impactBidPrice).Equals(depth.bids[j].price))
                 {
                     image.color = Color.cyan;
+                    barLabel.fontStyle = FontStyles.Underline;
                 }
                 else
                 {
