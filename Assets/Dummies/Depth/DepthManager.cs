@@ -35,10 +35,11 @@ public class DepthManager : MonoBehaviour
 
     void Start()
     {
-        depth = JsonConvert.DeserializeObject<Model>(jsonString).caseStudy.depth;
+        depth = JsonConvert.DeserializeObject<DepthModel>(jsonString).depth;
         CalculateLargestQuantityValue();
         CalculateImpactBidOrAskPrice();
         SpawnBar();
+        GenerateResultInJsonString();
     }
     void CalculateLargestQuantityValue()
     {
@@ -157,5 +158,10 @@ public class DepthManager : MonoBehaviour
         {
             impactAskRatio = Math.Abs(impactAskPricePercentage / impactBidPricePercentage);
         }
+    }
+    void GenerateResultInJsonString()
+    {
+        DepthResult result = new DepthResult(totalQuantityOnAskSide, totalQuantityOnBidSide, totalAmountOnAskSide, totalAmountOnBidSide, impactAskPrice, impactBidPrice, impactAskPricePercentage, impactBidPricePercentage, impactAskRatio, impactBidRatio);
+        Debug.Log(JsonConvert.SerializeObject(result));
     }
 }
