@@ -1,3 +1,4 @@
+using System;
 using Newtonsoft.Json;
 using TMPro;
 using UnityEngine;
@@ -23,6 +24,10 @@ public class DepthManager : MonoBehaviour
     public double totalAmountOnBidSide;
     public double impactAskPrice;
     public double impactBidPrice;
+    public double impactAskPricePercentage;
+    public double impactBidPricePercentage;
+    public double impactAskRatio;
+    public double impactBidRatio;
 
     // Runtime
     Depth depth;
@@ -32,8 +37,8 @@ public class DepthManager : MonoBehaviour
     {
         depth = JsonConvert.DeserializeObject<Model>(jsonString).caseStudy.depth;
         CalculateLargestQuantityValue();
-        SpawnBar();
         CalculateImpactBidOrAskPrice();
+        SpawnBar();
     }
     void CalculateLargestQuantityValue()
     {
@@ -66,18 +71,34 @@ public class DepthManager : MonoBehaviour
             rectTransform.sizeDelta = new Vector2(rectTransform.sizeDelta.x, canvasRectTransform.sizeDelta.y / barCount);
             if (i < 100)
             {
-                image.color = Color.red;
+                if (Utils.TruncTwoDecimal(impactAskPrice).Equals(depth.asks[i].price))
+                {
+                    image.color = Color.magenta;
+                }
+                else
+                {
+                    image.color = Color.red;
+                }
                 image.fillAmount = (float)(depth.asks[i].quantity / largestQuantityValue);
                 barLabel.text = depth.asks[i].price.ToString() + " : " + depth.asks[i].quantity.ToString();
+                barObject.name = barLabel.text;
                 totalQuantityOnAskSide += depth.asks[i].quantity;
                 totalAmountOnAskSide += depth.asks[i].price * depth.asks[i].quantity;
             }
             else
             {
                 int j = i - 100;
-                image.color = Color.green;
+                if (Utils.TruncTwoDecimal(impactBidPrice).Equals(depth.bids[j].price))
+                {
+                    image.color = Color.cyan;
+                }
+                else
+                {
+                    image.color = Color.green;
+                }
                 image.fillAmount = (float)(depth.bids[j].quantity / largestQuantityValue);
                 barLabel.text = depth.bids[j].price.ToString() + " : " + depth.bids[j].quantity.ToString();
+                barObject.name = barLabel.text;
                 totalQuantityOnBidSide += depth.bids[j].quantity;
                 totalAmountOnBidSide += depth.bids[j].price * depth.bids[j].quantity;
             }
@@ -122,5 +143,19 @@ public class DepthManager : MonoBehaviour
             }
         }
         impactAskPrice = impactMarginNotional / quantityPurchased;
+
+        impactAskPricePercentage = Utils.RateToPercentage(Utils.PriceMovingRate(depth.asks[^1].price, impactAskPrice));
+        impactBidPricePercentage = Utils.RateToPercentage(Utils.PriceMovingRate(depth.bids[0].price, impactBidPrice));
+
+        impactAskRatio = 1;
+        impactBidRatio = 1;
+        if (Math.Abs(impactBidPricePercentage) > Math.Abs(impactAskPricePercentage))
+        {
+            impactBidRatio = Math.Abs(impactBidPricePercentage / impactAskPricePercentage);
+        }
+        else
+        {
+            impactAskRatio = Math.Abs(impactAskPricePercentage / impactBidPricePercentage);
+        }
     }
 }

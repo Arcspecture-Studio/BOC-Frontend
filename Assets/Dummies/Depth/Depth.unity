@@ -440,7 +440,7 @@ GameObject:
   - component: {fileID: 454637008}
   - component: {fileID: 454637009}
   m_Layer: 5
-  m_Name: Bar Parent
+  m_Name: Depth Manager
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -713,6 +713,10 @@ MonoBehaviour:
   totalAmountOnBidSide: 0
   impactAskPrice: 0
   impactBidPrice: 0
+  impactAskPricePercentage: 0
+  impactBidPricePercentage: 0
+  askRatio: 0
+  bidRatio: 0
 --- !u!1 &704823051
 GameObject:
   m_ObjectHideFlags: 0

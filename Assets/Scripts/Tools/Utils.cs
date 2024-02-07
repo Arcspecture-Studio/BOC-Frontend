@@ -8,7 +8,7 @@ public static class Utils
     {
         return finalPrice / initialPrice;
     }
-    public static double PriceMovingPercentage(double initialPrice, double finalPrice)
+    public static double PriceMovingRate(double initialPrice, double finalPrice)
     {
         return PriceRatio(initialPrice, finalPrice) - 1;
     }
