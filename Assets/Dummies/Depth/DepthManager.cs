@@ -57,10 +57,6 @@ public class DepthManager : MonoBehaviour
     }
     void SpawnBar()
     {
-        totalQuantityOnAskSide = 0;
-        totalQuantityOnBidSide = 0;
-        totalAmountOnAskSide = 0;
-        totalAmountOnBidSide = 0;
         for (int i = 0; i < barCount; i++)
         {
             GameObject barObject = Instantiate(barPrefab);
@@ -83,8 +79,6 @@ public class DepthManager : MonoBehaviour
                 image.fillAmount = (float)(depth.asks[i].quantity / largestQuantityValue);
                 barLabel.text = depth.asks[i].price.ToString() + " : " + depth.asks[i].quantity.ToString();
                 barObject.name = barLabel.text;
-                totalQuantityOnAskSide += depth.asks[i].quantity;
-                totalAmountOnAskSide += depth.asks[i].price * depth.asks[i].quantity;
             }
             else
             {
@@ -100,28 +94,34 @@ public class DepthManager : MonoBehaviour
                 image.fillAmount = (float)(depth.bids[j].quantity / largestQuantityValue);
                 barLabel.text = depth.bids[j].price.ToString() + " : " + depth.bids[j].quantity.ToString();
                 barObject.name = barLabel.text;
-                totalQuantityOnBidSide += depth.bids[j].quantity;
-                totalAmountOnBidSide += depth.bids[j].price * depth.bids[j].quantity;
             }
         }
     }
     void CalculateImpactBidOrAskPrice()
     {
+        totalQuantityOnAskSide = 0;
+        totalQuantityOnBidSide = 0;
+        totalAmountOnAskSide = 0;
+        totalAmountOnBidSide = 0;
         double remainingBalance = impactMarginNotional;
         double quantityPurchased = 0;
         for (int i = 0; i < depth.bids.Count; i++)
         {
             double amount = depth.bids[i].quantity * depth.bids[i].price;
-            if (remainingBalance >= amount)
+            totalAmountOnBidSide += amount;
+            totalQuantityOnBidSide += depth.bids[i].quantity;
+            if (remainingBalance > 0)
             {
-                remainingBalance -= amount;
-                quantityPurchased += depth.bids[i].quantity;
-                continue;
-            }
-            else
-            {
-                quantityPurchased += remainingBalance / depth.bids[i].price;
-                break;
+                if (remainingBalance >= amount)
+                {
+                    quantityPurchased += depth.bids[i].quantity;
+                    remainingBalance -= amount;
+                }
+                else
+                {
+                    quantityPurchased += remainingBalance / depth.bids[i].price;
+                    remainingBalance = 0;
+                }
             }
         }
         impactBidPrice = impactMarginNotional / quantityPurchased;
@@ -131,16 +131,20 @@ public class DepthManager : MonoBehaviour
         for (int i = depth.asks.Count - 1; i >= 0; i--)
         {
             double amount = depth.asks[i].quantity * depth.asks[i].price;
-            if (remainingBalance >= amount)
+            totalAmountOnAskSide += amount;
+            totalQuantityOnAskSide += depth.asks[i].quantity;
+            if (remainingBalance > 0)
             {
-                remainingBalance -= amount;
-                quantityPurchased += depth.asks[i].quantity;
-                continue;
-            }
-            else
-            {
-                quantityPurchased += remainingBalance / depth.asks[i].price;
-                break;
+                if (remainingBalance >= amount)
+                {
+                    quantityPurchased += depth.asks[i].quantity;
+                    remainingBalance -= amount;
+                }
+                else
+                {
+                    quantityPurchased += remainingBalance / depth.asks[i].price;
+                    remainingBalance = 0;
+                }
             }
         }
         impactAskPrice = impactMarginNotional / quantityPurchased;
