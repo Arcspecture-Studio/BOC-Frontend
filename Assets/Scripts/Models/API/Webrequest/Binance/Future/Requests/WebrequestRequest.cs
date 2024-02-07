@@ -19,7 +19,7 @@ namespace Binance
             this.queries = queries;
             string queriesFront = queries.IsNullOrEmpty() ? "" : (queries + "&");
             string queriesFull = queriesFront + "recvWindow=" + WebrequestConfig.RECV_WINDOW.ToString() + "&timestamp=" + Utils.CurrentTimestamp().ToString();
-            string signature = Signature.Generate(queriesFull, apiSecret);
+            string signature = Signature.Binance(queriesFull, apiSecret);
             uri = host + path + "?" + queriesFull + "&signature=" + signature;
         }
     }
