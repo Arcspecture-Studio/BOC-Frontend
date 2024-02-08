@@ -57,6 +57,8 @@ public class DepthManager : MonoBehaviour
     }
     void SpawnBar()
     {
+        bool impactAskPriceFound = false;
+        bool impactBidPriceFound = false;
         for (int i = 0; i < barCount; i++)
         {
             GameObject barObject = Instantiate(barPrefab);
@@ -68,34 +70,30 @@ public class DepthManager : MonoBehaviour
             rectTransform.sizeDelta = new Vector2(rectTransform.sizeDelta.x, canvasRectTransform.sizeDelta.y / barCount);
             if (i < 100)
             {
-                if (Utils.TruncTwoDecimal(impactAskPrice).Equals(depth.asks[i].price))
-                {
-                    image.color = Color.magenta;
-                    barLabel.fontStyle = FontStyles.Underline;
-                }
-                else
-                {
-                    image.color = Color.red;
-                }
+                image.color = Color.red;
                 image.fillAmount = (float)(depth.asks[i].quantity / largestQuantityValue);
                 barLabel.text = depth.asks[i].price.ToString() + " : " + depth.asks[i].quantity.ToString();
                 barObject.name = barLabel.text;
+                if (Utils.TruncTwoDecimal(impactAskPrice) >= depth.asks[i].price && !impactAskPriceFound)
+                {
+                    impactAskPriceFound = true;
+                    barLabel.fontStyle = FontStyles.Bold;
+                    barLabel.text += " <------------------------------------ Impact ASK price";
+                }
             }
             else
             {
                 int j = i - 100;
-                if (Utils.TruncTwoDecimal(impactBidPrice).Equals(depth.bids[j].price))
-                {
-                    image.color = Color.cyan;
-                    barLabel.fontStyle = FontStyles.Underline;
-                }
-                else
-                {
-                    image.color = Color.green;
-                }
+                image.color = Color.green;
                 image.fillAmount = (float)(depth.bids[j].quantity / largestQuantityValue);
                 barLabel.text = depth.bids[j].price.ToString() + " : " + depth.bids[j].quantity.ToString();
                 barObject.name = barLabel.text;
+                if (Utils.TruncTwoDecimal(impactBidPrice) >= depth.bids[j].price && !impactBidPriceFound)
+                {
+                    impactBidPriceFound = true;
+                    barLabel.fontStyle = FontStyles.Bold;
+                    barLabel.text += " <------------------------------------ Impact BID price";
+                }
             }
         }
     }
