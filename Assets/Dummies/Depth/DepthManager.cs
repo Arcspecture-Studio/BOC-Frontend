@@ -124,7 +124,7 @@ public class DepthManager : MonoBehaviour
                 }
             }
         }
-        impactBidPrice = impactMarginNotional / quantityPurchased;
+        impactBidPrice = impactMarginNotional / quantityPurchased; // if balance > 0, meaning the impact price exceed current data in order book
 
         remainingBalance = impactMarginNotional;
         quantityPurchased = 0;
