@@ -7,17 +7,20 @@ public class OnClick_SwitchOrderPageStatusSystem : MonoBehaviour, IPointerEnterH
 
     InputComponent inputComponent;
     OrderPagesComponent orderPagesComponent;
+    HideAllPanelComponent hideAllPanelComponent;
     bool hovering;
 
     void Start()
     {
         inputComponent = GlobalComponent.instance.inputComponent;
         orderPagesComponent = GlobalComponent.instance.orderPagesComponent;
+        hideAllPanelComponent = GlobalComponent.instance.hideAllPanelComponent;
 
         inputComponent.click.performed += _ =>
         {
             if (hovering && inputComponent.drag.ReadValue<Vector2>().Equals(Vector2.zero))
             {
+                hideAllPanelComponent.hideNow = "true";
                 switch (orderPagesComponent.status)
                 {
                     case OrderPagesStatusEnum.IMMERSIVE:

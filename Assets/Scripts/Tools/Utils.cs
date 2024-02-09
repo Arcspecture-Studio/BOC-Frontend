@@ -67,7 +67,9 @@ public static class Utils
             ratio1 = ratio2;
             ratio2 = temp;
         }
-        return price2 + ((price1 - price2) * ratio1 / (ratio1 + ratio2));
+        double avgPrice = price2 + ((price1 - price2) * ratio1 / (ratio1 + ratio2));
+        if (double.IsNaN(avgPrice) || double.IsInfinity(avgPrice)) avgPrice = 0;
+        return avgPrice;
     }
     public static double CalculateInitialPriceByMovingPercentage(double percentage, double finalPrice)
     {
@@ -107,7 +109,7 @@ public static class Utils
         {
             double negativeValue = 0;
             double positiveCount = 0;
-            for(int i = 0; i < values.Count; i++)
+            for (int i = 0; i < values.Count; i++)
             {
                 if (values[i] < 0)
                 {
@@ -122,7 +124,7 @@ public static class Utils
             if (negativeValue >= 0) break;
 
             negativeValue /= positiveCount;
-            for(int i = 0; i < values.Count; i++)
+            for (int i = 0; i < values.Count; i++)
             {
                 if (values[i] > 0)
                 {

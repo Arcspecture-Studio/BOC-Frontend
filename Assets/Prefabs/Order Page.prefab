@@ -3113,7 +3113,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: '*Note: If Loss Amount has value, it will overwrite Loss Percentage'
+  m_text: '*Note: If both has value, loss amount is taken'
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -9286,14 +9286,14 @@ MonoBehaviour:
   m_VerticalScrollbarEventHandler: {fileID: 0}
   m_LayoutGroup: {fileID: 0}
   m_ScrollSensitivity: 1
-  m_ContentType: 3
+  m_ContentType: 2
   m_InputType: 0
   m_AsteriskChar: 42
-  m_KeyboardType: 2
+  m_KeyboardType: 4
   m_LineType: 0
   m_HideMobileInput: 0
   m_HideSoftKeyboard: 0
-  m_CharacterValidation: 3
+  m_CharacterValidation: 2
   m_RegexValue: 
   m_GlobalPointSize: 70
   m_CharacterLimit: 0
@@ -21153,7 +21153,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   visibleObject: {fileID: 8559263970435255111}
   parent: {fileID: 8559263970435254874}
-  targetChildCount: 2
+  targetChildCountMin: 1
+  targetChildCountMax: 2
 --- !u!114 &634920993753532989
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -21796,8 +21797,8 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 2518784663524098463}
   m_HandleRect: {fileID: 2518784663524098409}
   m_Direction: 2
-  m_Value: 0.01172842
-  m_Size: 0.47741935
+  m_Value: 0
+  m_Size: 0.9709035
   m_NumberOfSteps: 0
   m_OnValueChanged:
     m_PersistentCalls:
@@ -21817,7 +21818,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &8559263970435254821
 RectTransform:
   m_ObjectHideFlags: 0
@@ -21834,10 +21835,10 @@ RectTransform:
   m_Father: {fileID: 8559263970435254897}
   m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 1}
-  m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 241.49998, y: -390}
-  m_SizeDelta: {x: 482.99997, y: 80}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 0, y: 80}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &8559263970435255115
 GameObject:
@@ -22642,7 +22643,7 @@ GameObject:
   - component: {fileID: 8559263970435255293}
   - component: {fileID: 8559263970435255008}
   m_Layer: 5
-  m_Name: Loss Amount
+  m_Name: Label
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -23169,8 +23170,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0, y: 960.6}
-  m_SizeDelta: {x: 0, y: 1860}
+  m_AnchoredPosition: {x: 0, y: 57.00008}
+  m_SizeDelta: {x: 0, y: 1960}
   m_Pivot: {x: 0, y: 1}
 --- !u!114 &8559263970435255019
 MonoBehaviour:
@@ -24404,10 +24405,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: Price Input
       objectReference: {fileID: 0}
-    - target: {fileID: 4226610897972118795, guid: 95495674690fd724f92d111f4fd21a4b, type: 3}
-      propertyPath: m_AnchoredPosition.x
-      value: -20.039062
-      objectReference: {fileID: 0}
     - target: {fileID: 4226610897972118864, guid: 95495674690fd724f92d111f4fd21a4b, type: 3}
       propertyPath: m_Pivot.x
       value: 0.5
@@ -24491,10 +24488,6 @@ PrefabInstance:
     - target: {fileID: 4226610897972118864, guid: 95495674690fd724f92d111f4fd21a4b, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4226610897972118899, guid: 95495674690fd724f92d111f4fd21a4b, type: 3}
-      propertyPath: m_AnchoredPosition.x
-      value: -20
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 95495674690fd724f92d111f4fd21a4b, type: 3}

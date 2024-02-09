@@ -1,5 +1,4 @@
 ﻿using Newtonsoft.Json;
-using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -11,6 +10,7 @@ public class RetrieveOrdersSystem : MonoBehaviour
     RetrieveOrdersComponent retrieveOrdersComponent;
     PlatformComponent platformComponent;
     OrderPagesComponent orderPagesComponent;
+    QuickTabComponent quickTabComponent;
 
     bool ordersReceived = false;
     void Start()
@@ -19,13 +19,14 @@ public class RetrieveOrdersSystem : MonoBehaviour
         retrieveOrdersComponent = GlobalComponent.instance.retrieveOrdersComponent;
         platformComponent = GlobalComponent.instance.platformComponent;
         orderPagesComponent = GlobalComponent.instance.orderPagesComponent;
+        quickTabComponent = GlobalComponent.instance.quickTabComponent;
     }
     void Update()
     {
         GetOrdersFromServer();
         DestroyExistingOrdersObject();
         StartCoroutine(InstantiateOrders());
-        StartCoroutine(UpdateExistingOrders());
+        // StartCoroutine(UpdateExistingOrdersStatus());
     }
 
     void GetOrdersFromServer()
@@ -37,6 +38,10 @@ public class RetrieveOrdersSystem : MonoBehaviour
         if (!retrieveOrdersComponent.ordersFromServer.TryAdd(platformComponent.tradingPlatform, response.orders))
         {
             retrieveOrdersComponent.ordersFromServer[platformComponent.tradingPlatform] = response.orders;
+        }
+        if (!retrieveOrdersComponent.quickOrdersFromServer.TryAdd(platformComponent.tradingPlatform, response.quickOrders))
+        {
+            retrieveOrdersComponent.quickOrdersFromServer[platformComponent.tradingPlatform] = response.quickOrders;
         }
         ordersReceived = true;
     }
@@ -57,7 +62,6 @@ public class RetrieveOrdersSystem : MonoBehaviour
         }
         orderPagesComponent.childRectTransforms.Clear();
         orderPagesComponent.childOrderPageComponents.Clear();
-        orderPagesComponent.status = OrderPagesStatusEnum.DETACH;
         orderPagesComponent.currentPageIndex = 0;
         orderPagesComponent.scaleOrders = true;
     }
@@ -65,27 +69,28 @@ public class RetrieveOrdersSystem : MonoBehaviour
     {
         if (!retrieveOrdersComponent.instantiateOrders) yield break;
         retrieveOrdersComponent.instantiateOrders = false;
+        orderPagesComponent.status = OrderPagesStatusEnum.DETACH;
 
         RequestGetOrdersFromServer();
 
         #region Get orders according to platform
         yield return new WaitUntil(() => ordersReceived);
-        Dictionary<Guid, General.WebsocketRetrieveOrdersData> ordersFromServer = retrieveOrdersComponent.ordersFromServer.ContainsKey(platformComponent.tradingPlatform) ?
+        Dictionary<string, General.WebsocketRetrieveOrdersData> ordersFromServer = retrieveOrdersComponent.ordersFromServer.ContainsKey(platformComponent.tradingPlatform) ?
             retrieveOrdersComponent.ordersFromServer[platformComponent.tradingPlatform] : null;
+        quickTabComponent.quickOrdersFromServer = retrieveOrdersComponent.quickOrdersFromServer.ContainsKey(platformComponent.tradingPlatform) ? retrieveOrdersComponent.quickOrdersFromServer[platformComponent.tradingPlatform] : null;
         #endregion
 
         #region Instantiate orders
         if (ordersFromServer != null)
         {
-            foreach (KeyValuePair<Guid, General.WebsocketRetrieveOrdersData> order in ordersFromServer)
+            foreach (KeyValuePair<string, General.WebsocketRetrieveOrdersData> order in ordersFromServer)
             {
                 InstantiateOrder(order.Key);
             }
-
         }
         #endregion
     }
-    void InstantiateOrder(Guid orderId)
+    void InstantiateOrder(string orderId)
     {
         GameObject orderPageObject = Instantiate(orderPagesComponent.orderPagePrefab);
         orderPageObject.transform.SetParent(orderPagesComponent.transform, false);
@@ -93,7 +98,7 @@ public class RetrieveOrdersSystem : MonoBehaviour
         orderPageComponent.orderId = orderId;
         orderPageComponent.restoreData = true;
     }
-    IEnumerator UpdateExistingOrders()
+    IEnumerator UpdateExistingOrdersStatus() // PENDING: Review this and consider removing it because seems to be useless
     {
         if (!retrieveOrdersComponent.updateOrderStatus) yield break;
         retrieveOrdersComponent.updateOrderStatus = false;
@@ -102,7 +107,7 @@ public class RetrieveOrdersSystem : MonoBehaviour
 
         #region Get orders according to platform
         yield return new WaitUntil(() => ordersReceived);
-        Dictionary<Guid, General.WebsocketRetrieveOrdersData> ordersFromServer = retrieveOrdersComponent.ordersFromServer.ContainsKey(platformComponent.tradingPlatform) ?
+        Dictionary<string, General.WebsocketRetrieveOrdersData> ordersFromServer = retrieveOrdersComponent.ordersFromServer.ContainsKey(platformComponent.tradingPlatform) ?
             retrieveOrdersComponent.ordersFromServer[platformComponent.tradingPlatform] : null;
         #endregion
 

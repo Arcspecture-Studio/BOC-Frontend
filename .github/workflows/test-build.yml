@@ -19,14 +19,14 @@ jobs:
           - Android # Build an Android .apk standalone app.
 
     steps:
-      - name: Checkout branch
-        uses: actions/checkout@v4
-        with:
-          ref: test
-
       - name: Get version from tag
         id: version
         run: echo "VERSION=${GITHUB_REF#refs/tags/}" >> $GITHUB_OUTPUT
+
+      - name: Checkout branch
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ steps.version.outputs.VERSION }}
 
       - name: Cache library files
         uses: actions/cache@v3

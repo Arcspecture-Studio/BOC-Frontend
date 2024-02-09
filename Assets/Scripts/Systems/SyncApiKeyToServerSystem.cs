@@ -29,7 +29,8 @@ public class SyncApiKeyToServerSystem : MonoBehaviour
                 binanceComponent.apiKey,
                 binanceComponent.apiSecret,
                 PlatformEnum.BINANCE,
-                binanceComponent.loginPhrase);
+                binanceComponent.loginPhrase,
+                Application.version);
         websocketComponent.generalRequests.Add(request);
     }
     void syncBinanceTestnet()
@@ -39,7 +40,8 @@ public class SyncApiKeyToServerSystem : MonoBehaviour
                 binanceTestnetComponent.apiKey,
                 binanceTestnetComponent.apiSecret,
                 PlatformEnum.BINANCE_TESTNET,
-                binanceTestnetComponent.loginPhrase);
+                binanceTestnetComponent.loginPhrase,
+                Application.version);
         websocketComponent.generalRequests.Add(request);
     }
 }

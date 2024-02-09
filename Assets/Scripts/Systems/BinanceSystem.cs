@@ -25,6 +25,8 @@ public class BinanceSystem : MonoBehaviour
     IoComponent ioComponent;
     RetrieveOrdersComponent retrieveOrdersComponent;
     PlatformComponent platformComponent;
+    TradingBotComponent tradingBotComponent;
+    MiniPromptComponent miniPromptComponent;
 
     Binance.WebrequestRequest createListenKeyRequest = null;
     Binance.WebrequestRequest getExchangeInfoRequest = null;
@@ -42,62 +44,70 @@ public class BinanceSystem : MonoBehaviour
         ioComponent = GlobalComponent.instance.ioComponent;
         retrieveOrdersComponent = GlobalComponent.instance.retrieveOrdersComponent;
         platformComponent = GlobalComponent.instance.platformComponent;
+        tradingBotComponent = GlobalComponent.instance.tradingBotComponent;
+        miniPromptComponent = GlobalComponent.instance.miniPromptComponent;
 
         //websocketComponent.connectMarketSocket = true;
     }
     void Update()
     {
-        GetAccInfo();
-        ReceiveAccInfo();
         GetExchangeInfo();
         ReceiveExchangeInfo();
         GetBalance();
         ReceiveBalance();
     }
 
-    #region Execute at server
-    void CreateListenKey()
+    void GetBalance()
     {
-        binanceComponent.listenKey = null;
-        createListenKeyRequest = new Binance.WebrequestCreateListenKeyRequest(testnet);
-        webrequestComponent.requests.Add(createListenKeyRequest);
-        updateListenKeyTimer = 0;
-    }
-    void ReceiveListenKey()
-    {
-        if(webrequestComponent.responses.ContainsKey(createListenKeyRequest.id))
+        if (!binanceComponent.getBalance) return;
+        binanceComponent.getBalance = false;
+        if (binanceComponent.walletBalances == null)
         {
-            Binance.WebrequestCreateListenKeyResponse response = JsonConvert.DeserializeObject<Binance.WebrequestCreateListenKeyResponse>(webrequestComponent.responses[createListenKeyRequest.id], JsonSerializerConfig.settings);
-            webrequestComponent.responses.Remove(createListenKeyRequest.id);
-            if (response.listenKey.IsNullOrEmpty())
-            {
-                CreateListenKey();
-                return;
-            }
-            binanceComponent.listenKey = response.listenKey;
-            websocketComponent.connectUserDataSocket = true;
-        }
-    }
-    void RenewListenKey()
-    {
-        if (binanceComponent.listenKey.IsNullOrEmpty()) return;
-        if(updateListenKeyTimer < BinanceConfig.UPDATE_LISTEN_KEY_INTERVAL)
-        {
-            updateListenKeyTimer += Time.deltaTime;
+            binanceComponent.walletBalances = new Dictionary<string, double>();
         }
         else
         {
-            updateListenKeyTimer -= BinanceConfig.UPDATE_LISTEN_KEY_INTERVAL;
-            Binance.WebrequestRequest request = new Binance.WebrequestRenewListenKeyRequest(testnet);
-            webrequestComponent.requests.Add(request);
+            binanceComponent.walletBalances.Clear();
+        }
+        getBalanceRequest = new Binance.WebrequestGetBalanceRequest(testnet, binanceComponent.apiSecret);
+        webrequestComponent.requests.Add(getBalanceRequest);
+    }
+    void ReceiveBalance()
+    {
+        if (getBalanceRequest == null) return;
+        if (webrequestComponent.responses.ContainsKey(getBalanceRequest.id))
+        {
+            Binance.WebrequestGetBalanceResponseList response = null;
+            try
+            {
+                response = JsonConvert.DeserializeObject<Binance.WebrequestGetBalanceResponseList>(webrequestComponent.responses[getBalanceRequest.id], JsonSerializerConfig.settings);
+            }
+            catch (Exception ex)
+            {
+                Debug.Log(logPrefix + "Receive balance deserialization error");
+            }
+            webrequestComponent.responses.Remove(getBalanceRequest.id);
+            if (response == null || response.Count == 0) return;
+            miniPromptComponent.message = "Balance Updated";
+            response.ForEach(asset =>
+            {
+                if (!binanceComponent.walletBalances.TryAdd(asset.asset, double.Parse(asset.balance)))
+                {
+                    binanceComponent.walletBalances[asset.asset] = double.Parse(asset.balance);
+                }
+            });
+            if (!binanceComponent.loggedIn)
+            {
+                binanceComponent.getExchangeInfo = true;
+            }
         }
     }
-    #endregion
     void GetExchangeInfo()
     {
         if (!binanceComponent.getExchangeInfo) return;
         binanceComponent.getExchangeInfo = false;
         binanceComponent.allSymbols.Clear();
+        binanceComponent.marginAssets.Clear();
         binanceComponent.quantityPrecisions.Clear();
         binanceComponent.pricePrecisions.Clear();
         getExchangeInfoRequest = new Binance.WebrequestGetExchangeInfoRequest(testnet);
@@ -110,7 +120,7 @@ public class BinanceSystem : MonoBehaviour
         {
             Binance.WebrequestGetExchangeInfoResponse response = JsonConvert.DeserializeObject<Binance.WebrequestGetExchangeInfoResponse>(webrequestComponent.responses[getExchangeInfoRequest.id], JsonSerializerConfig.settings);
             webrequestComponent.responses.Remove(getExchangeInfoRequest.id);
-            if(response.timezone.IsNullOrEmpty())
+            if (response.timezone.IsNullOrEmpty())
             {
                 binanceComponent.getExchangeInfo = true;
                 return;
@@ -121,11 +131,12 @@ public class BinanceSystem : MonoBehaviour
                 {
                     binanceComponent.allSymbols.Add(symbol.symbol);
                 }
+                binanceComponent.marginAssets.TryAdd(symbol.symbol, symbol.marginAsset);
                 binanceComponent.quantityPrecisions.TryAdd(symbol.symbol, symbol.quantityPrecision);
                 long pricePrecision = symbol.pricePrecision;
                 symbol.filters.ForEach(filter =>
                 {
-                    if(filter.tickSize != null)
+                    if (filter.tickSize != null)
                     {
                         pricePrecision = Math.Min(Utils.CountDecimalPlaces(double.Parse(filter.tickSize)), pricePrecision);
                     }
@@ -134,14 +145,17 @@ public class BinanceSystem : MonoBehaviour
             });
             binanceComponent.loggedIn = true;
             ioComponent.writeApiKey = true;
-            if(platformComponent.testnet == testnet)
+            if (platformComponent.testnet == testnet)
             {
                 loginComponent.gameObj.SetActive(false);
                 retrieveOrdersComponent.destroyOrders = true;
                 retrieveOrdersComponent.instantiateOrders = true;
+                tradingBotComponent.getTradingBots = true;
             }
         }
     }
+
+    #region Unused
     void GetAccInfo()
     {
         if (!binanceComponent.getAccInfo) return;
@@ -174,47 +188,43 @@ public class BinanceSystem : MonoBehaviour
             });
         }
     }
-    void GetBalance()
+    #endregion
+    #region Execute at server
+    void CreateListenKey()
     {
-        if (!binanceComponent.getBalance) return;
-        binanceComponent.getBalance = false;
-        if (binanceComponent.walletBalances == null)
+        binanceComponent.listenKey = null;
+        createListenKeyRequest = new Binance.WebrequestCreateListenKeyRequest(testnet);
+        webrequestComponent.requests.Add(createListenKeyRequest);
+        updateListenKeyTimer = 0;
+    }
+    void ReceiveListenKey()
+    {
+        if (webrequestComponent.responses.ContainsKey(createListenKeyRequest.id))
         {
-            binanceComponent.walletBalances = new Dictionary<string, double>();
+            Binance.WebrequestCreateListenKeyResponse response = JsonConvert.DeserializeObject<Binance.WebrequestCreateListenKeyResponse>(webrequestComponent.responses[createListenKeyRequest.id], JsonSerializerConfig.settings);
+            webrequestComponent.responses.Remove(createListenKeyRequest.id);
+            if (response.listenKey.IsNullOrEmpty())
+            {
+                CreateListenKey();
+                return;
+            }
+            binanceComponent.listenKey = response.listenKey;
+            websocketComponent.connectUserDataSocket = true;
+        }
+    }
+    void RenewListenKey()
+    {
+        if (binanceComponent.listenKey.IsNullOrEmpty()) return;
+        if (updateListenKeyTimer < BinanceConfig.UPDATE_LISTEN_KEY_INTERVAL)
+        {
+            updateListenKeyTimer += Time.deltaTime;
         }
         else
         {
-            binanceComponent.walletBalances.Clear();
-        }
-        getBalanceRequest = new Binance.WebrequestGetBalanceRequest(testnet, binanceComponent.apiSecret);
-        webrequestComponent.requests.Add(getBalanceRequest);
-    }
-    void ReceiveBalance()
-    {
-        if (getBalanceRequest == null) return;
-        if (webrequestComponent.responses.ContainsKey(getBalanceRequest.id))
-        {
-            Binance.WebrequestGetBalanceResponseList response = null;
-            try
-            {
-                response = JsonConvert.DeserializeObject<Binance.WebrequestGetBalanceResponseList>(webrequestComponent.responses[getBalanceRequest.id], JsonSerializerConfig.settings);
-            }
-            catch (Exception ex) {
-                Debug.Log(logPrefix + "Receive balance deserialization error");
-            }
-            webrequestComponent.responses.Remove(getBalanceRequest.id);
-            if (response == null || response.Count == 0) return;
-            response.ForEach(asset =>
-            {
-                if (!binanceComponent.walletBalances.TryAdd(asset.asset, double.Parse(asset.balance)))
-                {
-                    binanceComponent.walletBalances[asset.asset] = double.Parse(asset.balance);
-                }
-            });
-            if (!binanceComponent.loggedIn)
-            {
-                binanceComponent.getExchangeInfo = true;
-            }
+            updateListenKeyTimer -= BinanceConfig.UPDATE_LISTEN_KEY_INTERVAL;
+            Binance.WebrequestRequest request = new Binance.WebrequestRenewListenKeyRequest(testnet);
+            webrequestComponent.requests.Add(request);
         }
     }
+    #endregion
 }

@@ -134,7 +134,7 @@ PlayerSettings:
     16:10: 1
     16:9: 1
     Others: 1
-  bundleVersion: v4.4.1
+  bundleVersion: v4.5.0
   preloadedAssets:
   - {fileID: 11400000, guid: 400a248644c38ee4aa1a7fbfdd972193, type: 2}
   - {fileID: -1696323715548719706, guid: beea4b7260fc210428f5df8446517234, type: 2}
@@ -694,7 +694,7 @@ PlayerSettings:
   additionalIl2CppArgs: 
   scriptingRuntimeVersion: 1
   gcIncremental: 1
-  assemblyVersionValidation: 1
+  assemblyVersionValidation: 0
   gcWBarrierValidation: 0
   apiCompatibilityLevelPerPlatform: {}
   m_RenderingPath: 1

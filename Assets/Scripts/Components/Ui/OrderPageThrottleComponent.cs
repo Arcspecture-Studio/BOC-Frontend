@@ -1,4 +1,3 @@
-using System;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -32,7 +31,7 @@ public class OrderPageThrottleComponent : MonoBehaviour
     public bool submitToServer;
     public CalculateThrottle throttleCalculator;
     public bool lockForEdit;
-    public Guid orderId = Guid.NewGuid();
+    public string orderId;
     public OrderStatusEnum orderStatus = OrderStatusEnum.UNSUBMITTED;
     public bool orderStatusError = false;
 }

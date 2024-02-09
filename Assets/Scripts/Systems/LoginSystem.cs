@@ -147,6 +147,7 @@ public class LoginSystem : MonoBehaviour
                 loginComponent.gameObj.SetActive(false);
 
                 retrieveOrdersComponent.instantiateOrders = true;
+                GlobalComponent.instance.tradingBotComponent.getTradingBots = true;
             });
         }
         else
@@ -168,7 +169,7 @@ public class LoginSystem : MonoBehaviour
                         promptComponent.active = false;
                     });
                 }
-                else if(loginComponent.apiKeyInput.text.IsNullOrEmpty() || loginComponent.secretKeyInput.text.IsNullOrEmpty())
+                else if (loginComponent.apiKeyInput.text.IsNullOrEmpty() || loginComponent.secretKeyInput.text.IsNullOrEmpty())
                 {
                     promptComponent.ShowPrompt("ERROR", "Key(s) cannot be blank.", () =>
                     {

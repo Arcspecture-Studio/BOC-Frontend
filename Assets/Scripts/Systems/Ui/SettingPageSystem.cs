@@ -21,20 +21,20 @@ public class SettingPageSystem : MonoBehaviour
     }
     void Update()
     {
-        MoveSettingPage();
+        MovePage();
     }
 
-    void MoveSettingPage()
+    void MovePage()
     {
         if (active == settingPageComponent.active) return;
-        if(tween != null)
+        if (tween != null)
         {
             if (tween.IsPlaying()) return;
         }
         active = settingPageComponent.active;
-        float initialValue = active.Value ? 200f : -200f;
-        float moveValue = active.Value ? -400f : 400f;
-        settingPageComponent.rectTransform.anchoredPosition = new Vector2(initialValue, 
+        float initialValue = active.Value ? settingPageComponent.inactiveXPosition : settingPageComponent.activeXPosition;
+        float moveValue = active.Value ? settingPageComponent.inactiveToActiveXMovement : settingPageComponent.activeToInactiveXMovement;
+        settingPageComponent.rectTransform.anchoredPosition = new Vector2(initialValue,
             settingPageComponent.rectTransform.anchoredPosition.y);
         tween = settingPageComponent.rectTransform.DOBlendableLocalMoveBy(new Vector3(moveValue, 0, 0), settingPageComponent.pageMoveDuration).SetEase(settingPageComponent.pageMoveEase);
     }

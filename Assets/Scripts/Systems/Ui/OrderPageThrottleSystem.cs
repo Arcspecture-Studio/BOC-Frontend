@@ -1,6 +1,7 @@
 using Newtonsoft.Json;
 using UnityEngine;
 using WebSocketSharp;
+using MongoDB.Bson;
 
 public class OrderPageThrottleSystem : MonoBehaviour
 {
@@ -20,6 +21,8 @@ public class OrderPageThrottleSystem : MonoBehaviour
         orderPageThrottleComponent = GetComponent<OrderPageThrottleComponent>();
         orderPageComponent = orderPageThrottleComponent.transform.parent.GetComponent<OrderPageThrottleParentComponent>().orderPageComponent;
 
+        if (orderPageThrottleComponent.orderId.IsNullOrEmpty())
+            orderPageThrottleComponent.orderId = ObjectId.GenerateNewId().ToString();
         orderPageThrottleComponent.calculateButton.onClick.AddListener(() =>
         {
             if (orderPageThrottleComponent.lockForEdit)
@@ -35,10 +38,10 @@ public class OrderPageThrottleSystem : MonoBehaviour
         });
         orderPageThrottleComponent.closeTabButton.onClick.AddListener(() =>
         {
-            if(orderPageThrottleComponent.orderStatus == OrderStatusEnum.UNSUBMITTED)
+            if (orderPageThrottleComponent.orderStatus == OrderStatusEnum.UNSUBMITTED)
             {
                 orderPageThrottleComponent.deleteFromServer = true;
-                UpdateSaveOrder();
+                UpdateOrderToServer();
                 Destroy(orderPageThrottleComponent.gameObject);
             }
             else
@@ -58,7 +61,7 @@ public class OrderPageThrottleSystem : MonoBehaviour
                 promptComponent.leftButton.onClick.AddListener(() =>
                 {
                     orderPageThrottleComponent.deleteFromServer = true;
-                    UpdateSaveOrder();
+                    UpdateOrderToServer();
                     Destroy(orderPageThrottleComponent.gameObject);
                 });
             }
@@ -128,7 +131,7 @@ public class OrderPageThrottleSystem : MonoBehaviour
     {
         UpdateUiInteractableStatus();
         UpdateOrderStatus();
-        UpdateSaveOrder();
+        UpdateOrderToServer();
         CalculateThrottle();
     }
 
@@ -254,7 +257,7 @@ public class OrderPageThrottleSystem : MonoBehaviour
             orderPageThrottleComponent.orderStatusError = response.statusError;
             if (!response.errorJsonString.IsNullOrEmpty())
             {
-                    switch (platformComponent.tradingPlatform)
+                switch (platformComponent.tradingPlatform)
                 {
                     case PlatformEnum.BINANCE:
                     case PlatformEnum.BINANCE_TESTNET:
@@ -269,16 +272,16 @@ public class OrderPageThrottleSystem : MonoBehaviour
             }
         }
     }
-    void UpdateSaveOrder()
+    void UpdateOrderToServer()
     {
         if (orderPageThrottleComponent.saveToServer)
         {
             orderPageThrottleComponent.saveToServer = false;
             websocketComponent.generalRequests.Add(new General.WebsocketSaveThrottleOrderRequest(
-                orderPageThrottleComponent.orderId, 
-                orderPageComponent.orderId, 
-                platformComponent.tradingPlatform, 
-                orderPageThrottleComponent.throttleCalculator, 
+                orderPageThrottleComponent.orderId,
+                orderPageComponent.orderId,
+                platformComponent.tradingPlatform,
+                orderPageThrottleComponent.throttleCalculator,
                 (OrderTypeEnum)orderPageThrottleComponent.orderTypeDropdown.value
             ));
         }
@@ -286,7 +289,7 @@ public class OrderPageThrottleSystem : MonoBehaviour
         {
             orderPageThrottleComponent.updateToServer = false;
             websocketComponent.generalRequests.Add(new General.WebsocketSaveThrottleOrderRequest(
-                orderPageThrottleComponent.orderId, 
+                orderPageThrottleComponent.orderId,
                 orderPageComponent.orderId,
                 platformComponent.tradingPlatform,
                 (OrderTypeEnum)orderPageThrottleComponent.orderTypeDropdown.value
