@@ -74,7 +74,7 @@ public class DepthManager : MonoBehaviour
                 image.fillAmount = (float)(depth.asks[i].quantity / largestQuantityValue);
                 barLabel.text = depth.asks[i].price.ToString() + " : " + depth.asks[i].quantity.ToString();
                 barObject.name = barLabel.text;
-                if (Utils.TruncTwoDecimal(impactAskPrice) >= depth.asks[i].price && !impactAskPriceFound)
+                if (impactAskPrice >= depth.asks[i].price && !impactAskPriceFound)
                 {
                     impactAskPriceFound = true;
                     barLabel.fontStyle = FontStyles.Bold;
@@ -88,7 +88,7 @@ public class DepthManager : MonoBehaviour
                 image.fillAmount = (float)(depth.bids[j].quantity / largestQuantityValue);
                 barLabel.text = depth.bids[j].price.ToString() + " : " + depth.bids[j].quantity.ToString();
                 barObject.name = barLabel.text;
-                if (Utils.TruncTwoDecimal(impactBidPrice) >= depth.bids[j].price && !impactBidPriceFound)
+                if (impactBidPrice >= depth.bids[j].price && !impactBidPriceFound)
                 {
                     impactBidPriceFound = true;
                     barLabel.fontStyle = FontStyles.Bold;
