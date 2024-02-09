@@ -1,5 +1,4 @@
-﻿using AYellowpaper.SerializedCollections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using UnityEngine;
 using WebSocketSharp;
 
@@ -43,7 +42,7 @@ public class WebsocketComponent : MonoBehaviour
 
     public void AddGeneralResponses(string key, string value)
     {
-        if(generalResponses.ContainsKey(key))
+        if (generalResponses.ContainsKey(key))
         {
             generalResponses[key].Add(value);
         }
@@ -73,7 +72,7 @@ public class WebsocketComponent : MonoBehaviour
     {
         if (generalResponses.ContainsKey(key))
         {
-            if(generalResponses[key].Count == 0)
+            if (generalResponses[key].Count == 0)
             {
                 generalResponses.Remove(key);
                 return null;
