@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using Newtonsoft.Json;
 using TMPro;
 using UnityEngine;
@@ -11,11 +12,13 @@ public class DepthManager : MonoBehaviour
     public GameObject barPrefab;
     public TMP_Text middleQuantity;
     public TMP_Text largestQuantity;
+    public WebrequestComponent webrequestComponent;
 
     [Header("Configs")]
     public int barCount;
     public double impactMarginNotional;
     public string jsonString;
+    public bool displayCurrentDepth;
 
     [Header("Result")]
     public double totalQuantityOnAskSide;
@@ -32,8 +35,20 @@ public class DepthManager : MonoBehaviour
     // Runtime
     Depth depth;
     double largestQuantityValue;
+    Binance.WebrequestGetDepthRequest request;
 
     void Start()
+    {
+        request = null;
+
+        DisplayJsonStringData();
+    }
+    void Update()
+    {
+        DisplayCurrentDepth();
+        DisplayCurrentDepthResponse();
+    }
+    void DisplayJsonStringData()
     {
         depth = JsonConvert.DeserializeObject<Depth>(jsonString);
         CalculateLargestQuantityValue();
@@ -95,6 +110,13 @@ public class DepthManager : MonoBehaviour
                     barLabel.text += " <------------------------------------ Impact BID price";
                 }
             }
+        }
+    }
+    void DeleteBar()
+    {
+        for (int i = transform.childCount - 1; i >= 0; i--)
+        {
+            Destroy(transform.GetChild(i).gameObject);
         }
     }
     void CalculateImpactBidOrAskPrice()
@@ -167,5 +189,43 @@ public class DepthManager : MonoBehaviour
     {
         DepthResult result = new DepthResult(totalQuantityOnAskSide, totalQuantityOnBidSide, totalAmountOnAskSide, totalAmountOnBidSide, impactAskPrice, impactBidPrice, impactAskPricePercentage, impactBidPricePercentage, impactAskRatio, impactBidRatio);
         Debug.Log(JsonConvert.SerializeObject(result));
+    }
+    void DisplayCurrentDepth()
+    {
+        if (!displayCurrentDepth) return;
+        // displayCurrentDepth = false;
+        if (request == null)
+        {
+            request = new(false, "ETHUSDT", 100);
+            webrequestComponent.requests.Add(request);
+        }
+    }
+    void DisplayCurrentDepthResponse()
+    {
+        if (request == null) return;
+        if (webrequestComponent.responses.ContainsKey(request.id))
+        {
+            Binance.WebrequestGetDepthResponse response = JsonConvert.DeserializeObject<Binance.WebrequestGetDepthResponse>(webrequestComponent.responses[request.id]);
+            webrequestComponent.responses.Remove(request.id);
+            request = null;
+
+            List<BarData> polishedAsks = new();
+            List<BarData> polishedBids = new();
+
+            response.asks.Reverse();
+            foreach (List<string> ask in response.asks)
+            {
+                polishedAsks.Add(new BarData(ask));
+            }
+            foreach (List<string> bid in response.bids)
+            {
+                polishedBids.Add(new BarData(bid));
+            }
+            depth = new Depth(polishedAsks, polishedBids);
+            CalculateLargestQuantityValue();
+            CalculateImpactBidOrAskPrice();
+            DeleteBar();
+            SpawnBar();
+        }
     }
 }

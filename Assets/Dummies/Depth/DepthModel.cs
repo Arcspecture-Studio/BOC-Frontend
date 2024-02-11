@@ -6,12 +6,24 @@ public class Depth
 {
     public List<BarData> asks;
     public List<BarData> bids;
+    public Depth() { }
+    public Depth(List<BarData> asks, List<BarData> bids)
+    {
+        this.asks = asks;
+        this.bids = bids;
+    }
 }
 [Serializable]
 public class BarData
 {
     public double price;
     public double quantity;
+    public BarData() { }
+    public BarData(List<string> array)
+    {
+        price = double.Parse(array[0]);
+        quantity = double.Parse(array[1]);
+    }
 }
 [Serializable]
 public class DepthResult
