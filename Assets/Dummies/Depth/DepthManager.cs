@@ -41,7 +41,10 @@ public class DepthManager : MonoBehaviour
     {
         request = null;
 
-        DisplayJsonStringData();
+        if (!displayCurrentDepth)
+        {
+            DisplayJsonStringData();
+        }
     }
     void Update()
     {
@@ -193,7 +196,6 @@ public class DepthManager : MonoBehaviour
     void DisplayCurrentDepth()
     {
         if (!displayCurrentDepth) return;
-        // displayCurrentDepth = false;
         if (request == null)
         {
             request = new(false, "ETHUSDT", 100);

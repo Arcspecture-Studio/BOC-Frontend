@@ -225,7 +225,7 @@ public class WebsocketSystem : MonoBehaviour
                 case PlatformEnum.MEXC:
                     break;
             }
-            marketSocket.SslConfiguration.EnabledSslProtocols = WebsocketConfig.SSL_PROTOCOLS;
+            marketSocket.SslConfiguration.EnabledSslProtocols = websocketComponent.sslProtocols;
             ListenMarketSocket();
             websocketComponent.marketSocket = marketSocket;
             if (!marketSocket.IsAlive) marketSocket.ConnectAsync();
@@ -244,7 +244,7 @@ public class WebsocketSystem : MonoBehaviour
                 case PlatformEnum.MEXC:
                     break;
             }
-            userDataSocket.SslConfiguration.EnabledSslProtocols = WebsocketConfig.SSL_PROTOCOLS;
+            userDataSocket.SslConfiguration.EnabledSslProtocols = websocketComponent.sslProtocols;
             ListenUserDataSocket();
             websocketComponent.userDataSocket = userDataSocket;
             if (!userDataSocket.IsAlive) userDataSocket.ConnectAsync();
@@ -258,7 +258,7 @@ public class WebsocketSystem : MonoBehaviour
             string host = WebsocketConfig.GENERAL_HOST;
 #endif
             generalSocket = new WebSocket(host + ":" + (websocketComponent.productionPort ? WebsocketConfig.GENERAL_PORT_PRODUCTION : WebsocketConfig.GENERAL_PORT));
-            //if (!websocketComponent.localhost) generalSocket.SslConfiguration.EnabledSslProtocols = WebsocketConfig.sslProtocols;
+            //if (!websocketComponent.localhost) generalSocket.SslConfiguration.EnabledSslProtocols = websocketComponent.sslProtocols;
             ListenGeneralSocket();
             websocketComponent.generalSocket = generalSocket;
             if (!generalSocket.IsAlive) generalSocket.ConnectAsync();

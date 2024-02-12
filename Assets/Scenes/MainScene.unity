@@ -22021,6 +22021,7 @@ MonoBehaviour:
   localhost: 1
   productionPort: 0
   logging: 1
+  sslProtocols: 3072
   connectMarketSocket: 0
   connectUserDataSocket: 0
   connectGeneralSocket: 0
@@ -22052,6 +22053,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   logging: 1
+  processRequestAtServer: 1
   requests: []
 --- !u!114 &1439778815
 MonoBehaviour:

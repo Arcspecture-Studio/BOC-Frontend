@@ -618,7 +618,7 @@ MonoBehaviour:
     5.301 },     { price: 2509.09, quantity: 38.706 },     { price: 2509.08, quantity:
     9.943 },     { price: 2509.07, quantity: 11.853 },     { price: 2509.06, quantity:
     3.792 }   ] }'
-  displayCurrentDepth: 0
+  displayCurrentDepth: 1
   totalQuantityOnAskSide: 0
   totalQuantityOnBidSide: 0
   totalAmountOnAskSide: 0
@@ -654,6 +654,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   logging: 0
+  processRequestAtServer: 0
   requests: []
 --- !u!114 &454637012
 MonoBehaviour:

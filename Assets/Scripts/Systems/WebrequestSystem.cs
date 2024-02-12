@@ -96,7 +96,7 @@ public class WebrequestSystem : MonoBehaviour
         if (webrequestComponent.requests.Count == 0) return;
         webrequestComponent.requests.ForEach(request =>
         {
-            if (WebrequestConfig.PROCESS_REQUEST_AT_SERVER)
+            if (webrequestComponent.processRequestAtServer)
             {
                 General.WebsocketCallApiRequest callApiRequest = new General.WebsocketCallApiRequest(request);
                 websocketComponent.generalRequests.Add(callApiRequest);

@@ -1,5 +1,3 @@
-using System.Security.Authentication;
-
 public static class WebsocketConfig
 {
     public static readonly string GENERAL_HOST_LOCAL = "ws://localhost";
@@ -10,5 +8,4 @@ public static class WebsocketConfig
     public static readonly string BINANCE_HOST = "wss://fstream.binance.com";
     public static readonly string BINANCE_MARKET_PATH = "/stream";
     public static readonly string BINANCE_USER_DATA_PATH = "/ws/";
-    public static readonly SslProtocols SSL_PROTOCOLS = SslProtocols.Tls12;
 }

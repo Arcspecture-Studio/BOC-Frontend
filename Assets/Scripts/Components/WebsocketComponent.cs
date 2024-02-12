@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
 using WebSocketSharp;
+using System.Security.Authentication;
 
 public class WebsocketComponent : MonoBehaviour
 {
@@ -8,6 +9,7 @@ public class WebsocketComponent : MonoBehaviour
     public bool localhost = true;
     public bool productionPort = false;
     public bool logging;
+    public SslProtocols sslProtocols = SslProtocols.Tls12;
 
     public WebSocket marketSocket;
     [HideInInspector] public List<object> marketRequests = new();
