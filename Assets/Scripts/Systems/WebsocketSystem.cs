@@ -120,7 +120,7 @@ public class WebsocketSystem : MonoBehaviour
         };
         generalSocket.OnMessage += (sender, e) =>
         {
-            if (websocketComponent.logging) Debug.Log(logPrefix + "Message received from: " + ((WebSocket)sender).Url + ", Data: " + e.Data);
+            if (websocketComponent.logging) Debug.Log(logPrefix + "Incoming message from: " + ((WebSocket)sender).Url + ", Data: " + e.Data);
 
             General.WebsocketGeneralResponse response = JsonConvert.DeserializeObject<General.WebsocketGeneralResponse>(e.Data, JsonSerializerConfig.settings);
             if (response.eventType.Equals(WebsocketEventTypeEnum.CONNECTION_ID.ToString()))
@@ -288,7 +288,7 @@ public class WebsocketSystem : MonoBehaviour
     void Send(object request, WebSocket socket, bool encrypt = false)
     {
         string jsonStr = JsonConvert.SerializeObject(request, JsonSerializerConfig.settings);
-        if (websocketComponent.logging) Debug.Log(logPrefix + "Websocket Request: " + jsonStr);
+        if (websocketComponent.logging) Debug.Log(logPrefix + "Send message: " + jsonStr);
         if (encrypt) jsonStr = Encryption.Encrypt(jsonStr, websocketComponent.generalSocketConnectionId, websocketComponent.generalSocketIv);
         socket.Send(jsonStr);
     }
