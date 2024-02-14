@@ -23,7 +23,7 @@ namespace General
         double maxLossAmount,
         bool weightedQuantity,
         double quantityWeight,
-        OrderTakeProfitTypeEnum takeProfitType,
+        TakeProfitTypeEnum takeProfitType,
         double riskRewardRatio,
         double takeProfitTrailingCallbackPercentage,
         int entryTimes,

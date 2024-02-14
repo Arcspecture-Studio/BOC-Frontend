@@ -284,7 +284,7 @@ public class OrderPageSystem : MonoBehaviour
         orderPageComponent.resultComponent.orderInfoDataObject.transform.GetChild(4).gameObject.SetActive(false);
         #endregion
         #region Prices & Quantities
-        List<double> tpPrices = (OrderTakeProfitTypeEnum)orderPageComponent.takeProfitTypeDropdown.value == OrderTakeProfitTypeEnum.TAKE_ON_RETURN_TRAILING ? orderPageComponent.marginCalculator.takeProfitTrailingPrices : orderPageComponent.marginCalculator.takeProfitPrices;
+        List<double> tpPrices = (TakeProfitTypeEnum)orderPageComponent.takeProfitTypeDropdown.value == TakeProfitTypeEnum.TAKE_ON_RETURN_TRAILING ? orderPageComponent.marginCalculator.takeProfitTrailingPrices : orderPageComponent.marginCalculator.takeProfitPrices;
         for (int i = 0; i < orderPageComponent.marginCalculator.entryPrices.Count; i++)
         {
             #region Prices
@@ -403,8 +403,8 @@ public class OrderPageSystem : MonoBehaviour
         orderPageComponent.cancelErrorOrderButton.interactable = lockForEdit.Value;
         orderPageComponent.resultComponent.gameObject.SetActive(lockForEdit.Value);
         orderPageComponent.takeProfitTypeObject.SetActive(lockForEdit.Value);
-        orderPageComponent.riskRewardRatioObject.SetActive(orderPageComponent.lockForEdit && orderPageComponent.takeProfitTypeDropdown.value > (int)OrderTakeProfitTypeEnum.NONE);
-        orderPageComponent.takeProfitTrailingCallbackPercentageObject.SetActive(orderPageComponent.lockForEdit && orderPageComponent.takeProfitTypeDropdown.value == (int)OrderTakeProfitTypeEnum.TAKE_ON_RETURN_TRAILING);
+        orderPageComponent.riskRewardRatioObject.SetActive(orderPageComponent.lockForEdit && orderPageComponent.takeProfitTypeDropdown.value > (int)TakeProfitTypeEnum.NONE);
+        orderPageComponent.takeProfitTrailingCallbackPercentageObject.SetActive(orderPageComponent.lockForEdit && orderPageComponent.takeProfitTypeDropdown.value == (int)TakeProfitTypeEnum.TAKE_ON_RETURN_TRAILING);
         orderPageComponent.orderTypeObject.SetActive(lockForEdit.Value);
         orderPageComponent.applyButtonObject.SetActive(lockForEdit.Value);
     }
@@ -457,7 +457,7 @@ public class OrderPageSystem : MonoBehaviour
                 platformComponent.tradingPlatform,
                 orderPageComponent.marginCalculator,
                 orderPageComponent.symbolDropdownComponent.selectedSymbol,
-                (OrderTakeProfitTypeEnum)orderPageComponent.takeProfitTypeDropdown.value,
+                (TakeProfitTypeEnum)orderPageComponent.takeProfitTypeDropdown.value,
                 (OrderTypeEnum)orderPageComponent.orderTypeDropdown.value
             ));
         }
@@ -468,7 +468,7 @@ public class OrderPageSystem : MonoBehaviour
                 orderPageComponent.orderId,
                 platformComponent.tradingPlatform,
                 orderPageComponent.marginCalculator,
-                (OrderTakeProfitTypeEnum)orderPageComponent.takeProfitTypeDropdown.value,
+                (TakeProfitTypeEnum)orderPageComponent.takeProfitTypeDropdown.value,
                 (OrderTypeEnum)orderPageComponent.orderTypeDropdown.value
             ));
         }
@@ -524,14 +524,14 @@ public class OrderPageSystem : MonoBehaviour
     public void UpdateTakeProfitPrice()
     {
         #region Calculate and get latest take profit prices
-        if (orderPageComponent.takeProfitTypeDropdown.value > (int)OrderTakeProfitTypeEnum.NONE)
+        if (orderPageComponent.takeProfitTypeDropdown.value > (int)TakeProfitTypeEnum.NONE)
         {
             orderPageComponent.marginCalculator.RecalculateTakeProfitPrices(
                 double.Parse(orderPageComponent.riskRewardRatioInput.text),
                 double.Parse(orderPageComponent.takeProfitTrailingCallbackPercentageInput.text));
         }
         List<double> tpPrices = orderPageComponent.marginCalculator.takeProfitPrices;
-        if (orderPageComponent.takeProfitTypeDropdown.value == (int)OrderTakeProfitTypeEnum.TAKE_ON_RETURN_TRAILING)
+        if (orderPageComponent.takeProfitTypeDropdown.value == (int)TakeProfitTypeEnum.TAKE_ON_RETURN_TRAILING)
         {
             tpPrices = orderPageComponent.marginCalculator.takeProfitTrailingPrices;
         }

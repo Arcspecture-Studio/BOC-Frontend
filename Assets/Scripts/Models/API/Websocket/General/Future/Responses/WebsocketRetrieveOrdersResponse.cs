@@ -17,7 +17,7 @@ namespace General
         public string symbol;
         public CalculateMargin marginCalculator;
         public OrderTypeEnum orderType;
-        public OrderTakeProfitTypeEnum takeProfitType;
+        public TakeProfitTypeEnum takeProfitType;
         public double quantityFilled;
         public double averagePriceFilled;
         public double actualTakeProfitPrice;

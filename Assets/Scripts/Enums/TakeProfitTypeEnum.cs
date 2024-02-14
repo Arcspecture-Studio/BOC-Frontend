@@ -1,4 +1,4 @@
-﻿public enum OrderTakeProfitTypeEnum
+﻿public enum TakeProfitTypeEnum
 {
     NONE,
     TAKE_IMMEDIATELY,

@@ -12,7 +12,7 @@ public class PreferenceComponent : MonoBehaviour
     public double lossAmount;
     public MarginDistributionModeEnum marginDistributionMode;
     public double marginWeightDistributionValue;
-    public OrderTakeProfitTypeEnum takeProfitType;
+    public TakeProfitTypeEnum takeProfitType;
     public double riskRewardRatio;
     public double takeProfitTrailingCallbackPercentage;
     public OrderTypeEnum orderType;

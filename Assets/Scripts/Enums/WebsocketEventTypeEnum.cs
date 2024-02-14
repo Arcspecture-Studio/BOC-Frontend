@@ -1,6 +1,5 @@
 ﻿public enum WebsocketEventTypeEnum
 {
-    #region General
     // Both Way
     VERSION_CHECKING,
     CALL_API,
@@ -24,5 +23,4 @@
     RETRIEVE_POSITION_INFO,
     SPAWN_QUICK_ORDER,
     SPAWN_ORDER
-    #endregion
 }
