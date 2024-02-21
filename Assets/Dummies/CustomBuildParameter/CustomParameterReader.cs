@@ -1,4 +1,6 @@
 using TMPro;
+using UnityEditor;
+using UnityEditor.Build;
 using UnityEngine;
 
 public class CustomParameterReader : MonoBehaviour
@@ -7,7 +9,7 @@ public class CustomParameterReader : MonoBehaviour
 
     void Start()
     {
-        var args = System.Environment.GetCommandLineArgs();
+        var args = PlayerSettings.GetAdditionalCompilerArguments(NamedBuildTarget.Android);
         foreach (string arg in args)
         {
             text.text += "\n" + arg;
