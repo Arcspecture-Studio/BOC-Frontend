@@ -101,7 +101,7 @@ public class SettingPageUpdateDataSystem : MonoBehaviour
         });
         settingPageComponent.takeProfitTypeDropdown.onValueChanged.AddListener(value =>
         {
-            preferenceComponent.takeProfitType = (OrderTakeProfitTypeEnum)value;
+            preferenceComponent.takeProfitType = (TakeProfitTypeEnum)value;
             ioComponent.writePreferences = true;
         });
         settingPageComponent.riskRewardRatioInput.onEndEdit.AddListener(value =>

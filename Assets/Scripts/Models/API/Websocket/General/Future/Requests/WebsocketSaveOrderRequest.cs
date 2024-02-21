@@ -17,7 +17,7 @@ namespace General
         public WebsocketSaveOrderRequest(string orderId,
             PlatformEnum platform,
             CalculateMargin marginCalculator,
-            OrderTakeProfitTypeEnum takeProfitType,
+            TakeProfitTypeEnum takeProfitType,
             OrderTypeEnum orderType) : base(WebsocketEventTypeEnum.SAVE_ORDER, platform)
         {
             actionToTake = WebsocketDataActionEnum.UPDATE;
@@ -27,7 +27,7 @@ namespace General
             PlatformEnum platform,
             CalculateMargin marginCalculator,
             string symbol,
-            OrderTakeProfitTypeEnum takeProfitType,
+            TakeProfitTypeEnum takeProfitType,
             OrderTypeEnum orderType) : base(WebsocketEventTypeEnum.SAVE_ORDER, platform)
         {
             actionToTake = WebsocketDataActionEnum.SAVE;
@@ -39,12 +39,12 @@ namespace General
     {
         public string symbol;
         public CalculateMargin marginCalculator;
-        public OrderTakeProfitTypeEnum takeProfitType;
+        public TakeProfitTypeEnum takeProfitType;
         public OrderTypeEnum orderType;
 
         public WebsocketOrderRequest(string orderId,
             CalculateMargin marginCalculator,
-            OrderTakeProfitTypeEnum takeProfitType,
+            TakeProfitTypeEnum takeProfitType,
             OrderTypeEnum orderType) : base(orderId)
         {
             this.marginCalculator = marginCalculator;
@@ -54,7 +54,7 @@ namespace General
         public WebsocketOrderRequest(string orderId,
             CalculateMargin marginCalculator,
             string symbol,
-            OrderTakeProfitTypeEnum takeProfitType,
+            TakeProfitTypeEnum takeProfitType,
             OrderTypeEnum orderType) : base(orderId)
         {
             this.symbol = symbol;

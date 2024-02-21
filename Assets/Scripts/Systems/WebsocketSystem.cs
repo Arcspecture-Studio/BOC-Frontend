@@ -120,7 +120,7 @@ public class WebsocketSystem : MonoBehaviour
         };
         generalSocket.OnMessage += (sender, e) =>
         {
-            if (websocketComponent.logging) Debug.Log(logPrefix + "Message received from: " + ((WebSocket)sender).Url + ", Data: " + e.Data);
+            if (websocketComponent.logging) Debug.Log(logPrefix + "Incoming message from: " + ((WebSocket)sender).Url + ", Data: " + e.Data);
 
             General.WebsocketGeneralResponse response = JsonConvert.DeserializeObject<General.WebsocketGeneralResponse>(e.Data, JsonSerializerConfig.settings);
             if (response.eventType.Equals(WebsocketEventTypeEnum.CONNECTION_ID.ToString()))
@@ -137,7 +137,7 @@ public class WebsocketSystem : MonoBehaviour
             }
             else if (response.eventType.Equals(WebsocketEventTypeEnum.VERSION_CHECKING.ToString()))
             {
-                // PENDING: now is when received this eventType VERSION_CHECKING straight means outdated, later need to check the body if the version is matching by {matched: true}
+                // PENDING: now is when received this eventType VERSION_CHECKING straight means outdated, later need to check the body if the version is matching by {valid: true}
                 UnityMainThread.AddJob(() =>
                 {
                     promptComponent.ShowPrompt("NOTICE", "App version is outdated, please update your app to latest version.", () =>
@@ -225,7 +225,7 @@ public class WebsocketSystem : MonoBehaviour
                 case PlatformEnum.MEXC:
                     break;
             }
-            marketSocket.SslConfiguration.EnabledSslProtocols = WebsocketConfig.SSL_PROTOCOLS;
+            marketSocket.SslConfiguration.EnabledSslProtocols = websocketComponent.sslProtocols;
             ListenMarketSocket();
             websocketComponent.marketSocket = marketSocket;
             if (!marketSocket.IsAlive) marketSocket.ConnectAsync();
@@ -244,7 +244,7 @@ public class WebsocketSystem : MonoBehaviour
                 case PlatformEnum.MEXC:
                     break;
             }
-            userDataSocket.SslConfiguration.EnabledSslProtocols = WebsocketConfig.SSL_PROTOCOLS;
+            userDataSocket.SslConfiguration.EnabledSslProtocols = websocketComponent.sslProtocols;
             ListenUserDataSocket();
             websocketComponent.userDataSocket = userDataSocket;
             if (!userDataSocket.IsAlive) userDataSocket.ConnectAsync();
@@ -258,7 +258,7 @@ public class WebsocketSystem : MonoBehaviour
             string host = WebsocketConfig.GENERAL_HOST;
 #endif
             generalSocket = new WebSocket(host + ":" + (websocketComponent.productionPort ? WebsocketConfig.GENERAL_PORT_PRODUCTION : WebsocketConfig.GENERAL_PORT));
-            //if (!websocketComponent.localhost) generalSocket.SslConfiguration.EnabledSslProtocols = WebsocketConfig.sslProtocols;
+            //if (!websocketComponent.localhost) generalSocket.SslConfiguration.EnabledSslProtocols = websocketComponent.sslProtocols;
             ListenGeneralSocket();
             websocketComponent.generalSocket = generalSocket;
             if (!generalSocket.IsAlive) generalSocket.ConnectAsync();
@@ -288,7 +288,7 @@ public class WebsocketSystem : MonoBehaviour
     void Send(object request, WebSocket socket, bool encrypt = false)
     {
         string jsonStr = JsonConvert.SerializeObject(request, JsonSerializerConfig.settings);
-        if (websocketComponent.logging) Debug.Log(logPrefix + "Websocket Request: " + jsonStr);
+        if (websocketComponent.logging) Debug.Log(logPrefix + "Send message: " + jsonStr);
         if (encrypt) jsonStr = Encryption.Encrypt(jsonStr, websocketComponent.generalSocketConnectionId, websocketComponent.generalSocketIv);
         socket.Send(jsonStr);
     }

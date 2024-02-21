@@ -96,7 +96,7 @@ public class WebrequestSystem : MonoBehaviour
         if (webrequestComponent.requests.Count == 0) return;
         webrequestComponent.requests.ForEach(request =>
         {
-            if (WebrequestConfig.PROCESS_REQUEST_AT_SERVER)
+            if (webrequestComponent.processRequestAtServer)
             {
                 General.WebsocketCallApiRequest callApiRequest = new General.WebsocketCallApiRequest(request);
                 websocketComponent.generalRequests.Add(callApiRequest);
@@ -129,7 +129,7 @@ public class WebrequestSystem : MonoBehaviour
         foreach (KeyValuePair<string, Response> data in rawResponses)
         {
             Response rawResponse = data.Value;
-            if (webrequestComponent.logging) Debug.Log(logPrefix + "Id: " + rawResponse.id + ", " + rawResponse.logStatus + ": " + rawResponse.responseJsonString);
+            if (webrequestComponent.logging) Debug.Log(logPrefix + "Incoming message on Id: " + rawResponse.id + ", " + rawResponse.logStatus + ": " + rawResponse.responseJsonString);
             if (!rawResponse.id.IsNullOrEmpty())
             {
                 if (!webrequestComponent.responses.TryAdd(rawResponse.id, rawResponse.responseJsonString))

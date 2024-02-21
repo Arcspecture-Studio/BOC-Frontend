@@ -8,7 +8,7 @@ public class QuickOrderSetting
     public double maxLossAmount; // 0 means null
     public bool weightedQuantity;
     public double quantityWeight;
-    public OrderTakeProfitTypeEnum takeProfitType;
+    public TakeProfitTypeEnum takeProfitType;
     public double riskRewardRatio;
     public double takeProfitTrailingCallbackPercentage;
     public int entryTimes;
@@ -21,7 +21,7 @@ public class QuickOrderSetting
     double maxLossAmount,
     bool weightedQuantity,
     double quantityWeight,
-    OrderTakeProfitTypeEnum takeProfitType,
+    TakeProfitTypeEnum takeProfitType,
     double riskRewardRatio,
     double takeProfitTrailingCallbackPercentage,
     int entryTimes,

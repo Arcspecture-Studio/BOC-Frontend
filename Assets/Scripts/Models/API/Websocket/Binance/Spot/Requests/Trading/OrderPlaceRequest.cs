@@ -114,7 +114,7 @@ namespace Binance
             this.timestamp = Utils.CurrentTimestamp();
             string queryString = GetQueryParams();
             Debug.Log("Query: " + queryString);
-            this.signature = Signature.Generate(queryString, apiSecret);
+            this.signature = Signature.Binance(queryString, apiSecret);
         }
     }
 }
