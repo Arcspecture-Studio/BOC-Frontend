@@ -7,7 +7,10 @@ public class CustomParameterReader : MonoBehaviour
 
     void Start()
     {
-        var arg = System.Environment.GetEnvironmentVariable("KIMI_NO_NAWA");
-        text.text = arg;
+        var args = System.Environment.GetCommandLineArgs();
+        foreach (string arg in args)
+        {
+            text.text += "\n" + arg;
+        }
     }
 }
