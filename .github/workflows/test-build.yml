@@ -56,7 +56,8 @@ jobs:
           androidKeystorePass: ${{ secrets.ANDROID_KEYSTORE_PASS }}
           androidKeyaliasName: ${{ secrets.ANDROID_KEYALIAS_NAME }}
           androidKeyaliasPass: ${{ secrets.ANDROID_KEYALIAS_PASS }}
-
+          customParameters: -profile SomeProfile -someBoolean -someValue exampleValue
+          
       - name: Rename apk file
         run: sudo mv build/${{ matrix.targetPlatform }}/Android.apk build/${{ matrix.targetPlatform }}/BOC_Test.apk
 
