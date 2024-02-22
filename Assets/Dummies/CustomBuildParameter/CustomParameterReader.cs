@@ -1,5 +1,5 @@
+using System.Collections;
 using TMPro;
-using UnityEditor;
 using UnityEngine;
 
 public class CustomParameterReader : MonoBehaviour
@@ -8,11 +8,10 @@ public class CustomParameterReader : MonoBehaviour
 
     void Start()
     {
-        var args = PlayerSettings.GetAdditionalIl2CppArgs();
-        text.text = args;
-        // foreach (string arg in args)
-        // {
-        //     text.text += "\n" + arg;
-        // }
+        var args = System.Environment.GetEnvironmentVariables();
+        foreach (DictionaryEntry entry in args)
+        {
+            text.text += $"{entry.Key} ---> {entry.Value}\n";
+        }
     }
 }
