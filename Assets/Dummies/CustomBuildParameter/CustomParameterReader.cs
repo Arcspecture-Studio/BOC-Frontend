@@ -1,4 +1,3 @@
-using System.Collections;
 using TMPro;
 using UnityEngine;
 
@@ -8,11 +7,13 @@ public class CustomParameterReader : MonoBehaviour
 
     void Start()
     {
-        var args = System.Environment.GetEnvironmentVariables();
-        // text.text = args;
-        foreach (DictionaryEntry entry in args)
-        {
-            text.text += $"{entry.Key} ---> {entry.Value}\n";
-        }
+        // var args = System.Environment.GetEnvironmentVariables();
+        // // text.text = args;
+        // foreach (DictionaryEntry entry in args)
+        // {
+        //     text.text += $"{entry.Key} ---> {entry.Value}\n";
+        // }
+
+        text.text = SecretConfig.ENCRYPTION_ACCESS_TOKEN_32;
     }
 }
