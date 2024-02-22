@@ -35,6 +35,13 @@ jobs:
           key: Library-${{ matrix.targetPlatform }}
           restore-keys: Library-
 
+      - name: Write secret variables to SecretConfig.cs
+        run: |
+          echo 'public static class SecretConfig' > Assets/Scripts/Configs/SecretConfig.cs
+          echo '{' >> Assets/Scripts/Configs/SecretConfig.cs
+          echo '    public static readonly string ENCRYPTION_ACCESS_TOKEN_32 = "123456abcdefghijklmnopqrstuvwxyz";' >> Assets/Scripts/Configs/SecretConfig.cs
+          echo '}' >> Assets/Scripts/Configs/SecretConfig.cs
+
       - name: Free disk space
         if: matrix.targetPlatform == 'Android'
         uses: jlumbroso/free-disk-space@v1.3.1
@@ -45,9 +52,7 @@ jobs:
           UNITY_LICENSE: ${{ secrets.UNITY_LICENSE }}
           UNITY_EMAIL: ${{ secrets.UNITY_EMAIL }}
           UNITY_PASSWORD: ${{ secrets.UNITY_PASSWORD }}
-          KIMI_NO_NAWA: JoelKagay
         with:
-          buildMethod: UnityBuilderAction.BuildScript.Build
           targetPlatform: ${{ matrix.targetPlatform }}
           versioning: Custom
           version: ${{ steps.version.outputs.VERSION }}
@@ -57,7 +62,6 @@ jobs:
           androidKeystorePass: ${{ secrets.ANDROID_KEYSTORE_PASS }}
           androidKeyaliasName: ${{ secrets.ANDROID_KEYALIAS_NAME }}
           androidKeyaliasPass: ${{ secrets.ANDROID_KEYALIAS_PASS }}
-          customParameters: -profile SomeProfile -someBoolean -someValue exampleValue
           
       - name: Rename apk file
         run: sudo mv build/${{ matrix.targetPlatform }}/Android.apk build/${{ matrix.targetPlatform }}/BOC_Test.apk
