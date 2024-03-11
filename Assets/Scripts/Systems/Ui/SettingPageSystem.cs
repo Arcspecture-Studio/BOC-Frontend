@@ -4,7 +4,7 @@ using UnityEngine;
 public class SettingPageSystem : MonoBehaviour
 {
     SettingPageComponent settingPageComponent;
-    LoginComponent loginComponent;
+    LoginComponentOld loginComponent;
 
     bool? active = null;
     Tween tween = null;

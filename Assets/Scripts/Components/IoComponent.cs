@@ -5,6 +5,7 @@ public class IoComponent : MonoBehaviour
     [Header("Config")]
     public string apiKeyFileName;
     public string preferencesFileName;
+    public string tokenFileName;
 
     [Header("Runtime")]
     public string editorPath;

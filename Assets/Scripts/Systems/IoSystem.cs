@@ -12,7 +12,7 @@ public class IoSystem : MonoBehaviour
     WebsocketComponent websocketComponent;
     BinanceComponent binanceComponent;
     BinanceComponent binanceTestnetComponent;
-    LoginComponent loginComponent;
+    LoginComponentOld loginComponent;
     PromptComponent promptComponent;
     PlatformComponent platformComponent;
     PreferenceComponent preferenceComponent;

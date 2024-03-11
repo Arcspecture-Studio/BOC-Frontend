@@ -20,7 +20,7 @@ public class BinanceSystem : MonoBehaviour
         }
     }
     WebrequestComponent webrequestComponent;
-    LoginComponent loginComponent;
+    LoginComponentOld loginComponent;
     IoComponent ioComponent;
     RetrieveOrdersComponent retrieveOrdersComponent;
     PlatformComponent platformComponent;

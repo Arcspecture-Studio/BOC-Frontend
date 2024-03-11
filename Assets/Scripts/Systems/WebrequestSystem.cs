@@ -17,7 +17,7 @@ public class WebrequestSystem : MonoBehaviour
     WebsocketComponent websocketComponent;
     PlatformComponent platformComponent;
     PromptComponent promptComponent;
-    LoginComponent loginComponent;
+    LoginComponentOld loginComponent;
     string logPrefix = "[WebrequestSystem] ";
 
     void Start()

@@ -2,7 +2,7 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class LoginComponent : MonoBehaviour
+public class LoginComponentOld : MonoBehaviour
 {
     [Header("References")]
     public GameObject gameObj;

@@ -6,7 +6,7 @@ public class SyncApiKeyToServerSystem : MonoBehaviour
     BinanceComponent binanceComponent;
     BinanceComponent binanceTestnetComponent;
     WebsocketComponent websocketComponent;
-    LoginComponent loginComponent;
+    LoginComponentOld loginComponent;
 
     void Start()
     {

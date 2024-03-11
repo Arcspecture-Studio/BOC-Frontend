@@ -7,7 +7,7 @@ public class WebsocketSystem : MonoBehaviour
     WebsocketComponent websocketComponent;
     WebrequestComponent webrequestComponent;
     IoComponent ioComponent;
-    LoginComponent loginComponent;
+    LoginComponentOld loginComponent;
     PromptComponent promptComponent;
 
     WebSocket generalSocket;

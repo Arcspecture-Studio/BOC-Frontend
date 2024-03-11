@@ -3,9 +3,9 @@ using TMPro;
 using UnityEngine;
 using WebSocketSharp;
 
-public class LoginSystem : MonoBehaviour
+public class LoginSystemOld : MonoBehaviour
 {
-    LoginComponent loginComponent;
+    LoginComponentOld loginComponent;
     BinanceComponent binanceComponent;
     BinanceComponent binanceTestnetComponent;
     PlatformComponent platformComponent;
