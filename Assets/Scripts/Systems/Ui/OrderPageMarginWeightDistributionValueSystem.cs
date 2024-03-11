@@ -50,7 +50,7 @@ public class OrderPageMarginWeightDistributionValueSystem : MonoBehaviour
             preferenceComponent.marginWeightDistributionValue = roundedValue;
         });
         EventTrigger.Entry pointerUpEvent = new() { eventID = EventTriggerType.PointerUp };
-        pointerUpEvent.callback.AddListener(eventData => ioComponent.writePreferences = true);
+        // pointerUpEvent.callback.AddListener(eventData => ioComponent.writePreferences = true);
         settingPageComponent.marginWeightDistributionValueSliderTrigger.triggers.Add(pointerUpEvent);
         settingPageComponent.marginWeightDistributionValueInput.onSubmit.AddListener(value =>
         {
@@ -61,7 +61,7 @@ public class OrderPageMarginWeightDistributionValueSystem : MonoBehaviour
             settingPageComponent.marginWeightDistributionValueSlider.value = (float)roundedValue;
 
             preferenceComponent.marginWeightDistributionValue = roundedValue;
-            ioComponent.writePreferences = true;
+            // ioComponent.writePreferences = true;
         });
     }
 }

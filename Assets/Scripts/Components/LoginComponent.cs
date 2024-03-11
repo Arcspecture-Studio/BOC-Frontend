@@ -15,23 +15,26 @@ public class LoginComponent : MonoBehaviour
     public TMP_Text proceedButtonText;
     public Button switchButton;
     public TMP_Text switchButtonText;
+    public GameObject switchButtonObj;
 
     [Header("Config")]
     public string loginKeyword;
     public string registerKeyword;
     public string switchToRegisterKeyword;
     public string switchToLoginKeyword;
+    public string logoutKeyword;
 
     [Header("Runtime")]
-    [SerializeField] private bool _isLoginPage;
-    public bool isLoginPage
+    [SerializeField] private LoginPageStatusEnum _loginStatus;
+    public LoginPageStatusEnum loginStatus
     {
         set
         {
-            _isLoginPage = value;
-            onChange_isLoginPage.Invoke();
+            _loginStatus = value;
+            onChange_loginStatus.Invoke();
         }
-        get { return _isLoginPage; }
+        get { return _loginStatus; }
     }
-    [HideInInspector] public UnityEvent onChange_isLoginPage = new();
+    [HideInInspector] public UnityEvent onChange_loginStatus = new();
+    public string token;
 }

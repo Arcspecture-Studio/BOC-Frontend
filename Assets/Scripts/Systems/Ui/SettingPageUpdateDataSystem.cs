@@ -71,7 +71,7 @@ public class SettingPageUpdateDataSystem : MonoBehaviour
         settingPageComponent.platformsDropdown.onValueChanged.AddListener(value =>
         {
             preferenceComponent.tradingPlatform = (PlatformEnum)value;
-            ioComponent.writePreferences = true;
+            // ioComponent.writePreferences = true;
         });
         settingPageComponent.symbolInput.onValueChanged.AddListener(value =>
         {
@@ -80,29 +80,29 @@ public class SettingPageUpdateDataSystem : MonoBehaviour
         settingPageComponent.symbolInput.onEndEdit.AddListener(value =>
         {
             preferenceComponent.symbol = value;
-            ioComponent.writePreferences = true;
+            // ioComponent.writePreferences = true;
         });
         settingPageComponent.lossPercentageInput.onEndEdit.AddListener(value =>
         {
             if (value == "") value = "0";
             preferenceComponent.lossPercentage = double.Parse(value);
-            ioComponent.writePreferences = true;
+            // ioComponent.writePreferences = true;
         });
         settingPageComponent.lossAmountInput.onEndEdit.AddListener(value =>
         {
             if (value == "") value = "0";
             preferenceComponent.lossAmount = double.Parse(value);
-            ioComponent.writePreferences = true;
+            // ioComponent.writePreferences = true;
         });
         settingPageComponent.marginDistributionModeDropdown.onValueChanged.AddListener(value =>
         {
             preferenceComponent.marginDistributionMode = (MarginDistributionModeEnum)value;
-            ioComponent.writePreferences = true;
+            // ioComponent.writePreferences = true;
         });
         settingPageComponent.takeProfitTypeDropdown.onValueChanged.AddListener(value =>
         {
             preferenceComponent.takeProfitType = (TakeProfitTypeEnum)value;
-            ioComponent.writePreferences = true;
+            // ioComponent.writePreferences = true;
         });
         settingPageComponent.riskRewardRatioInput.onEndEdit.AddListener(value =>
         {
@@ -112,12 +112,12 @@ public class SettingPageUpdateDataSystem : MonoBehaviour
                 settingPageComponent.riskRewardRatioInput.text = value;
             }
             preferenceComponent.riskRewardRatio = double.Parse(value);
-            ioComponent.writePreferences = true;
+            // ioComponent.writePreferences = true;
         });
         settingPageComponent.orderTypeDropdown.onValueChanged.AddListener(value =>
         {
             preferenceComponent.orderType = (OrderTypeEnum)value;
-            ioComponent.writePreferences = true;
+            // ioComponent.writePreferences = true;
         });
     }
     void UpdateInfo()

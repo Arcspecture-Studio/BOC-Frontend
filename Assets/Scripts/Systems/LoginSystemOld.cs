@@ -35,7 +35,7 @@ public class LoginSystemOld : MonoBehaviour
         loginComponent.logoutButton.onClick.AddListener(() =>
         {
             loginComponent.loggedIn = false;
-            ioComponent.writeApiKey = true;
+            // ioComponent.writeApiKey = true;
             UpdateDropdownOptions();
 
             General.WebsocketLogoutRequest request = new General.WebsocketLogoutRequest(platformComponent.tradingPlatform);

@@ -137,7 +137,7 @@ public class BinanceSystem : MonoBehaviour
                 binanceComponent.pricePrecisions.TryAdd(symbol.symbol, pricePrecision);
             });
             binanceComponent.loggedIn = true;
-            ioComponent.writeApiKey = true;
+            // ioComponent.writeApiKey = true;
             if (platformComponent.testnet == testnet)
             {
                 loginComponent.gameObj.SetActive(false);

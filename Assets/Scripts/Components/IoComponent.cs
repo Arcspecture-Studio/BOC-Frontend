@@ -1,10 +1,9 @@
 using UnityEngine;
+using UnityEngine.Events;
 
 public class IoComponent : MonoBehaviour
 {
     [Header("Config")]
-    public string apiKeyFileName;
-    public string preferencesFileName;
     public string tokenFileName;
 
     [Header("Runtime")]
@@ -21,8 +20,9 @@ public class IoComponent : MonoBehaviour
 #endif
         }
     }
-    public bool writeApiKey = false;
-    public bool writePreferences = false;
-    public bool readApiKey = false;
-    public bool readPreferences = false;
+    public bool readToken
+    {
+        set { onChange_readToken.Invoke(); }
+    }
+    [HideInInspector] public UnityEvent onChange_readToken = new();
 }

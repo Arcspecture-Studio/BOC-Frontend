@@ -12,7 +12,7 @@ public class IoSystem : MonoBehaviour
     WebsocketComponent websocketComponent;
     BinanceComponent binanceComponent;
     BinanceComponent binanceTestnetComponent;
-    LoginComponentOld loginComponent;
+    LoginComponent loginComponent;
     PromptComponent promptComponent;
     PlatformComponent platformComponent;
     PreferenceComponent preferenceComponent;
@@ -27,7 +27,7 @@ public class IoSystem : MonoBehaviour
         websocketComponent = GlobalComponent.instance.websocketComponent;
         binanceComponent = GlobalComponent.instance.binanceComponent;
         binanceTestnetComponent = GlobalComponent.instance.binanceTestnetComponent;
-        loginComponent = GlobalComponent.instance.loginComponentOld;
+        loginComponent = GlobalComponent.instance.loginComponent;
         promptComponent = GlobalComponent.instance.promptComponent;
         platformComponent = GlobalComponent.instance.platformComponent;
         preferenceComponent = GlobalComponent.instance.preferenceComponent;
@@ -37,7 +37,8 @@ public class IoSystem : MonoBehaviour
         ioComponent.editorPath = Application.dataPath + Path.AltDirectorySeparatorChar + "Saved Data" + Path.AltDirectorySeparatorChar;
         ioComponent.persistentPath = Application.persistentDataPath + Path.AltDirectorySeparatorChar;
 
-        ioComponent.readPreferences = true;
+        ioComponent.onChange_readToken.AddListener(ReadFromTokenFile);
+        ioComponent.readToken = true;
     }
     void Update()
     {
@@ -57,40 +58,52 @@ public class IoSystem : MonoBehaviour
         writer.Write(jsonString);
         writer.Close();
     }
+    void ReadFromTokenFile()
+    {
+        bool fileNotExist = !File.Exists(ioComponent.path + ioComponent.tokenFileName);
+        if (fileNotExist) return;
+
+        StreamReader reader = new StreamReader(ioComponent.path + ioComponent.tokenFileName);
+        string jsonString = reader.ReadToEnd();
+        reader.Close();
+
+        try // to serialize the json string
+        {
+            TokenFile data = JsonConvert.DeserializeObject<TokenFile>(jsonString, JsonSerializerConfig.settings);
+            loginComponent.loginStatus = LoginPageStatusEnum.LOGGED_IN;
+            loginComponent.token = Encryption.Decrypt(data.token, SecretConfig.ENCRYPTION_ACCESS_TOKEN_32, data.cache);
+        }
+        catch (Exception ex)
+        {
+            Debug.LogError(logPrefix + ex);
+            string message = "Unable to read data from file named " + ioComponent.tokenFileName + " as the data has been manually modified.";
+            promptComponent.ShowPrompt("ERROR", message, () => { promptComponent.active = false; });
+        }
+    }
     void WriteIntoApiKeyFile()
     {
-        if (!ioComponent.writeApiKey) return;
-        ioComponent.writeApiKey = false;
         if (websocketComponent.generalSocketIv == null) return;
         List<ApiKeyFile> data = new List<ApiKeyFile>();
         if (binanceComponent.loggedIn) data.Add(new ApiKeyFile(PlatformEnum.BINANCE, binanceComponent.apiKey, binanceComponent.apiSecret, binanceComponent.loginPhrase));
         if (binanceTestnetComponent.loggedIn) data.Add(new ApiKeyFile(PlatformEnum.BINANCE_TESTNET, binanceTestnetComponent.apiKey, binanceTestnetComponent.apiSecret, binanceTestnetComponent.loginPhrase));
         if (data.Count == 0)
         {
-            if (File.Exists(ioComponent.path + ioComponent.apiKeyFileName))
-            {
-                File.Delete(ioComponent.path + ioComponent.apiKeyFileName);
-            }
+            // if (File.Exists(ioComponent.path + ioComponent.apiKeyFileName))
+            // {
+            //     File.Delete(ioComponent.path + ioComponent.apiKeyFileName);
+            // }
         }
         else
         {
             string jsonString = JsonConvert.SerializeObject(data, JsonSerializerConfig.settings);
-            Write(ioComponent.apiKeyFileName, jsonString);
+            // Write(ioComponent.apiKeyFileName, jsonString);
         }
     }
     void ReadFromApiKeyFile()
     {
-        if (!ioComponent.readApiKey) return;
-        ioComponent.readApiKey = false;
-        bool fileNotExist = !File.Exists(ioComponent.path + ioComponent.apiKeyFileName);
-        loginComponent.allowInput = fileNotExist;
-        if (fileNotExist) return;
-        StreamReader reader = new StreamReader(ioComponent.path + ioComponent.apiKeyFileName);
-        string jsonString = reader.ReadToEnd();
-        reader.Close();
         try
         {
-            List<ApiKeyFile> datas = JsonConvert.DeserializeObject<List<ApiKeyFile>>(jsonString, JsonSerializerConfig.settings);
+            List<ApiKeyFile> datas = JsonConvert.DeserializeObject<List<ApiKeyFile>>("jsonString", JsonSerializerConfig.settings);
             Dictionary<PlatformEnum, bool> loggedIn = new();
             datas.ForEach(data =>
             {
@@ -133,58 +146,30 @@ public class IoSystem : MonoBehaviour
         }
         catch (Exception ex)
         {
-            Debug.LogError(logPrefix + ex);
-            loginComponent.allowInput = true;
-            string message = "Unable to read data from file named " + ioComponent.apiKeyFileName + " as the data has been manually modified.";
-            promptComponent.ShowPrompt("ERROR", message, () =>
-            {
-                promptComponent.active = false;
-            });
         }
     }
     void ReadFromPreferencesFile()
     {
-        if (!ioComponent.readPreferences) return;
-        ioComponent.readPreferences = false;
-        bool fileNotExist = !File.Exists(ioComponent.path + ioComponent.preferencesFileName);
-        if (fileNotExist)
-        {
-            if (!readApiKeyAdy)
-            {
-                readApiKeyAdy = true;
-                ioComponent.readApiKey = readApiKeyAdy;
-            }
-            return;
-        }
-        StreamReader reader = new StreamReader(ioComponent.path + ioComponent.preferencesFileName);
-        string jsonString = reader.ReadToEnd();
-        reader.Close();
         try
         {
-            PreferenceFile preferenceFile = JsonConvert.DeserializeObject<PreferenceFile>(jsonString, JsonSerializerConfig.settings);
+            PreferenceFile preferenceFile = JsonConvert.DeserializeObject<PreferenceFile>("jsonString", JsonSerializerConfig.settings);
             preferenceComponent.UpdateValue(preferenceFile);
             settingPageComponent.syncSetting = true;
             quickTabComponent.syncDataFromPreference = true;
             if (!readApiKeyAdy)
             {
                 readApiKeyAdy = true;
-                ioComponent.readApiKey = readApiKeyAdy;
+                // ioComponent.readApiKey = readApiKeyAdy;
             }
         }
         catch (Exception ex)
         {
-            Debug.LogError(logPrefix + ex);
-            string message = "Unable to read data from file named " + ioComponent.preferencesFileName + " as the data has been manually modified.";
-            promptComponent.ShowPrompt("ERROR", message, () =>
-            {
-                promptComponent.active = false;
-            });
         }
     }
     void WriteIntoPreferencesFile()
     {
-        if (!ioComponent.writePreferences) return;
-        ioComponent.writePreferences = false;
-        Write(ioComponent.preferencesFileName, preferenceComponent.GetJsonString());
+        // if (!ioComponent.writePreferences) return;
+        // ioComponent.writePreferences = false;
+        // Write(ioComponent.preferencesFileName, preferenceComponent.GetJsonString());
     }
 }

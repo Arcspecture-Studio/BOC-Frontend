@@ -86,7 +86,7 @@ public class OrderPageTakeProfitTrailingCallbackPercentageSystem : MonoBehaviour
             settingPageComponent.takeProfitTrailingCallbackPercentageInput.text = roundedValue.ToString();
 
             preferenceComponent.takeProfitTrailingCallbackPercentage = roundedValue;
-            ioComponent.writePreferences = true;
+            // ioComponent.writePreferences = true;
         });
         settingPageComponent.takeProfitTrailingCallbackPercentageSliderTrigger.triggers.Add(pointerUpEvent);
 
@@ -99,7 +99,7 @@ public class OrderPageTakeProfitTrailingCallbackPercentageSystem : MonoBehaviour
             settingPageComponent.takeProfitTrailingCallbackPercentageSlider.value = (float)roundedValue;
 
             preferenceComponent.takeProfitTrailingCallbackPercentage = roundedValue;
-            ioComponent.writePreferences = true;
+            // ioComponent.writePreferences = true;
         });
     }
 }

@@ -52,7 +52,7 @@ public class WebsocketSystem : MonoBehaviour
                 // TODO: change to account mechanism
                 if (loginComponent.loggedIn)
                 {
-                    ioComponent.writeApiKey = true;
+                    // ioComponent.writeApiKey = true;
                     websocketComponent.syncApiKeyToServer = true;
                     // retrieveOrdersComponent.updateOrderStatus = true;
                 }
