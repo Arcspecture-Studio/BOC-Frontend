@@ -15,7 +15,7 @@ public class WebsocketComponent : MonoBehaviour
     public WebSocket generalSocket;
     [HideInInspector] public List<object> generalRequests = new();
     //[SerializedDictionary("Event Type", "List Of JSON String")]
-    public Dictionary<string, List<string>> generalResponses = new();
+    public Dictionary<WebsocketEventTypeEnum, List<string>> generalResponses = new();
     public bool connectGeneralSocket;
     public bool connectedGeneralSocket
     {
@@ -24,7 +24,7 @@ public class WebsocketComponent : MonoBehaviour
     [HideInInspector] public byte[] generalSocketIv = null;
     public bool syncApiKeyToServer; // TODO: no more sync api key to server
 
-    public void AddGeneralResponses(string key, string value)
+    public void AddGeneralResponses(WebsocketEventTypeEnum key, string value)
     {
         if (generalResponses.ContainsKey(key))
         {
@@ -36,7 +36,7 @@ public class WebsocketComponent : MonoBehaviour
             generalResponses.Add(key, datas);
         }
     }
-    public bool RemovesGeneralResponses(string key)
+    public bool RemovesGeneralResponses(WebsocketEventTypeEnum key)
     {
         if (generalResponses.ContainsKey(key))
         {
@@ -52,7 +52,7 @@ public class WebsocketComponent : MonoBehaviour
             return false;
         }
     }
-    public string RetrieveGeneralResponses(string key)
+    public string RetrieveGeneralResponses(WebsocketEventTypeEnum key)
     {
         if (generalResponses.ContainsKey(key))
         {

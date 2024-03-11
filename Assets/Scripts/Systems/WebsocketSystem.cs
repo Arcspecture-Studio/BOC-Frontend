@@ -1,6 +1,7 @@
 using UnityEngine;
 using WebSocketSharp;
 using Newtonsoft.Json;
+using System.Collections;
 
 public class WebsocketSystem : MonoBehaviour
 {
@@ -44,20 +45,12 @@ public class WebsocketSystem : MonoBehaviour
             if (websocketComponent.logging) Debug.Log(logPrefix + "Incoming message from: " + ((WebSocket)sender).Url + ", Data: " + e.Data);
 
             General.WebsocketGeneralResponse response = JsonConvert.DeserializeObject<General.WebsocketGeneralResponse>(e.Data, JsonSerializerConfig.settings);
-            if (response.eventType.Equals(WebsocketEventTypeEnum.CONNECTION_ID.ToString()))
+            if (response.eventType == WebsocketEventTypeEnum.CONNECTION_ESTABLISH)
             {
                 General.WebsocketConnectionEstablishedResponse connectionEstablishedResponse = JsonConvert.DeserializeObject<General.WebsocketConnectionEstablishedResponse>(e.Data, JsonSerializerConfig.settings);
                 websocketComponent.generalSocketIv = connectionEstablishedResponse.iv.data;
-
-                // TODO: change to account mechanism
-                if (loginComponent.loggedIn)
-                {
-                    // ioComponent.writeApiKey = true;
-                    websocketComponent.syncApiKeyToServer = true;
-                    // retrieveOrdersComponent.updateOrderStatus = true;
-                }
             }
-            else if (response.eventType.Equals(WebsocketEventTypeEnum.VERSION_CHECKING.ToString()))
+            else if (response.eventType == WebsocketEventTypeEnum.VERSION_CHECKING)
             {
                 // PENDING: now is when received this eventType VERSION_CHECKING straight means outdated, later need to check the body if the version is matching by {valid: true}
                 UnityMainThread.AddJob(() =>
@@ -72,7 +65,7 @@ public class WebsocketSystem : MonoBehaviour
                     });
                 });
             }
-            else if (response.eventType.Equals(WebsocketEventTypeEnum.CALL_API.ToString()))
+            else if (response.eventType == WebsocketEventTypeEnum.CALL_API)
             {
                 General.WebsocketCallApiResponse callApiResponse = JsonConvert.DeserializeObject<General.WebsocketCallApiResponse>(e.Data, JsonSerializerConfig.settings);
                 string logStatus = "Received";
@@ -90,7 +83,7 @@ public class WebsocketSystem : MonoBehaviour
                 if (callApiResponse.id.IsNullOrEmpty()) callApiResponse.id = "";
                 webrequestComponent.rawResponses.Add(callApiResponse.id, new Response(callApiResponse.id, logStatus, callApiResponse.responseJsonString));
             }
-            else if (response.eventType.Equals(WebsocketEventTypeEnum.ACCOUNT_OVERWRITE.ToString()))
+            else if (response.eventType == WebsocketEventTypeEnum.ACCOUNT_OVERWRITE)
             {
                 UnityMainThread.AddJob(() =>
                 {
@@ -104,7 +97,7 @@ public class WebsocketSystem : MonoBehaviour
                     });
                 });
             }
-            else if (response.eventType.Equals(WebsocketEventTypeEnum.INVALID_LOGIN_PHRASE.ToString()))
+            else if (response.eventType == WebsocketEventTypeEnum.INVALID_LOGIN_PHRASE)
             {
                 UnityMainThread.AddJob(() =>
                 {
@@ -148,11 +141,13 @@ public class WebsocketSystem : MonoBehaviour
             if (!generalSocket.IsAlive) generalSocket.ConnectAsync();
         }
     }
-    void ProcessGeneralRequests()
+    IEnumerator ProcessGeneralRequests()
     {
-        if (websocketComponent.generalRequests.Count == 0) return;
-        if (!websocketComponent.connectedGeneralSocket) return;
-        if (websocketComponent.generalSocketIv == null) return;
+        if (websocketComponent.generalRequests.Count == 0) yield break;
+        yield return new WaitUntil(() =>
+        websocketComponent.connectedGeneralSocket && websocketComponent.generalSocketIv != null);
+        if (websocketComponent.generalRequests.Count == 0) yield break;
+
         websocketComponent.generalRequests.ForEach(request =>
         {
             Send(request, generalSocket, true);

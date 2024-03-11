@@ -5,7 +5,7 @@ namespace General
     [Serializable]
     public class WebsocketGeneralResponse
     {
-        public string eventType;
+        public WebsocketEventTypeEnum eventType;
         public long eventTime;
     }
 }

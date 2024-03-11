@@ -1,6 +1,5 @@
 ﻿using Newtonsoft.Json;
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using UnityEngine;
@@ -19,7 +18,7 @@ public class IoSystem : MonoBehaviour
     SettingPageComponent settingPageComponent;
     QuickTabComponent quickTabComponent;
     string logPrefix = "[IoSystem] ";
-    bool readApiKeyAdy = false;
+    bool readTokenAdy = false;
 
     void Start()
     {
@@ -38,14 +37,12 @@ public class IoSystem : MonoBehaviour
         ioComponent.persistentPath = Application.persistentDataPath + Path.AltDirectorySeparatorChar;
 
         ioComponent.onChange_readToken.AddListener(ReadFromTokenFile);
-        ioComponent.readToken = true;
     }
     void Update()
     {
-        ReadFromPreferencesFile();
-        ReadFromApiKeyFile();
-        WriteIntoApiKeyFile();
-        WriteIntoPreferencesFile();
+        if (readTokenAdy) return;
+        readTokenAdy = true;
+        ioComponent.readToken = true;
     }
 
     void Write(string fileName, string jsonString)
@@ -61,7 +58,12 @@ public class IoSystem : MonoBehaviour
     void ReadFromTokenFile()
     {
         bool fileNotExist = !File.Exists(ioComponent.path + ioComponent.tokenFileName);
-        if (fileNotExist) return;
+        if (fileNotExist)
+        {
+            loginComponent.loginStatus = LoginPageStatusEnum.REGISTER;
+            // TODO: send version
+            return;
+        }
 
         StreamReader reader = new StreamReader(ioComponent.path + ioComponent.tokenFileName);
         string jsonString = reader.ReadToEnd();
@@ -72,14 +74,24 @@ public class IoSystem : MonoBehaviour
             TokenFile data = JsonConvert.DeserializeObject<TokenFile>(jsonString, JsonSerializerConfig.settings);
             loginComponent.loginStatus = LoginPageStatusEnum.LOGGED_IN;
             loginComponent.token = Encryption.Decrypt(data.token, SecretConfig.ENCRYPTION_ACCESS_TOKEN_32, data.cache);
+
+            // TODO: get initial data
         }
         catch (Exception ex)
         {
             Debug.LogError(logPrefix + ex);
-            string message = "Unable to read data from file named " + ioComponent.tokenFileName + " as the data has been manually modified.";
+            string message = "Unable to continue previous login session, please re-login.";
             promptComponent.ShowPrompt("ERROR", message, () => { promptComponent.active = false; });
+
+            loginComponent.loginStatus = LoginPageStatusEnum.LOGIN;
+            // TODO: send version
         }
     }
+    void SendVersionChecking()
+    {
+
+    }
+
     void WriteIntoApiKeyFile()
     {
         if (websocketComponent.generalSocketIv == null) return;
@@ -148,9 +160,9 @@ public class IoSystem : MonoBehaviour
         preferenceComponent.UpdateValue(preferenceFile);
         settingPageComponent.syncSetting = true;
         quickTabComponent.syncDataFromPreference = true;
-        if (!readApiKeyAdy)
+        // if (!readTokenAdy)
         {
-            readApiKeyAdy = true;
+            // readTokenAdy = true;
             // ioComponent.readApiKey = readApiKeyAdy;
         }
     }

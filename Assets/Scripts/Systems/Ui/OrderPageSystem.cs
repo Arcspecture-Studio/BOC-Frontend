@@ -419,12 +419,12 @@ public class OrderPageSystem : MonoBehaviour
     }
     void UpdateOrderStatus()
     {
-        string saveOrderString = websocketComponent.RetrieveGeneralResponses(WebsocketEventTypeEnum.SAVE_ORDER.ToString());
+        string saveOrderString = websocketComponent.RetrieveGeneralResponses(WebsocketEventTypeEnum.SAVE_ORDER);
         if (saveOrderString.IsNullOrEmpty()) return;
         General.WebsocketSaveOrderResponse response = JsonConvert.DeserializeObject<General.WebsocketSaveOrderResponse>(saveOrderString, JsonSerializerConfig.settings);
         if (response.orderId.Equals(orderPageComponent.orderId))
         {
-            websocketComponent.RemovesGeneralResponses(WebsocketEventTypeEnum.SAVE_ORDER.ToString());
+            websocketComponent.RemovesGeneralResponses(WebsocketEventTypeEnum.SAVE_ORDER);
             orderPageComponent.orderStatus = response.status;
             orderPageComponent.orderStatusError = response.statusError;
             // BUG: since server can now spawn order,  meaning frontend here haven't get balance (CalculateMargin function will wait for get balance to call), ady received SAVE_ORDER from server (because order just spawned at this timing)
@@ -492,12 +492,12 @@ public class OrderPageSystem : MonoBehaviour
     }
     void UpdatePositionInfo()
     {
-        string retrievePositionInfoString = websocketComponent.RetrieveGeneralResponses(WebsocketEventTypeEnum.RETRIEVE_POSITION_INFO.ToString());
+        string retrievePositionInfoString = websocketComponent.RetrieveGeneralResponses(WebsocketEventTypeEnum.RETRIEVE_POSITION_INFO);
         if (retrievePositionInfoString.IsNullOrEmpty()) return;
         General.WebsocketRetrievePositionInfoResponse response = JsonConvert.DeserializeObject<General.WebsocketRetrievePositionInfoResponse>(retrievePositionInfoString, JsonSerializerConfig.settings);
         if (response.orderId.Equals(orderPageComponent.orderId))
         {
-            websocketComponent.RemovesGeneralResponses(WebsocketEventTypeEnum.RETRIEVE_POSITION_INFO.ToString());
+            websocketComponent.RemovesGeneralResponses(WebsocketEventTypeEnum.RETRIEVE_POSITION_INFO);
             // BUG: since now server can spawn order, meaning frontend here haven't get exchangeInfo, server ady send RETRIEVE_POSITION_INFO (because order just spawned at this timing)
             if (response.averagePriceFilled.HasValue && platformComponent.pricePrecisions.ContainsKey(orderPageComponent.symbolDropdownComponent.selectedSymbol))
             {

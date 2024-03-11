@@ -31,10 +31,10 @@ public class RetrieveOrdersSystem : MonoBehaviour
 
     void GetOrdersFromServer()
     {
-        string retrieveOrdersString = websocketComponent.RetrieveGeneralResponses(WebsocketEventTypeEnum.RETRIEVE_ORDERS.ToString());
+        string retrieveOrdersString = websocketComponent.RetrieveGeneralResponses(WebsocketEventTypeEnum.RETRIEVE_ORDERS);
         if (retrieveOrdersString.IsNullOrEmpty()) return;
         General.WebsocketRetrieveOrdersResponse response = JsonConvert.DeserializeObject<General.WebsocketRetrieveOrdersResponse>(retrieveOrdersString, JsonSerializerConfig.settings);
-        websocketComponent.RemovesGeneralResponses(WebsocketEventTypeEnum.RETRIEVE_ORDERS.ToString());
+        websocketComponent.RemovesGeneralResponses(WebsocketEventTypeEnum.RETRIEVE_ORDERS);
         if (!retrieveOrdersComponent.ordersFromServer.TryAdd(platformComponent.tradingPlatform, response.orders))
         {
             retrieveOrdersComponent.ordersFromServer[platformComponent.tradingPlatform] = response.orders;

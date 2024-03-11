@@ -20,10 +20,10 @@ public class OrderPageSpawnOrderBasedOnServerSignalSystem : MonoBehaviour
     }
     void Update()
     {
-        string spawnOrderString = websocketComponent.RetrieveGeneralResponses(WebsocketEventTypeEnum.SPAWN_ORDER.ToString());
+        string spawnOrderString = websocketComponent.RetrieveGeneralResponses(WebsocketEventTypeEnum.SPAWN_ORDER);
         if (spawnOrderString.IsNullOrEmpty()) return;
         General.WebsocketSpawnOrderResponse response = JsonConvert.DeserializeObject<General.WebsocketSpawnOrderResponse>(spawnOrderString, JsonSerializerConfig.settings);
-        websocketComponent.RemovesGeneralResponses(WebsocketEventTypeEnum.SPAWN_ORDER.ToString());
+        websocketComponent.RemovesGeneralResponses(WebsocketEventTypeEnum.SPAWN_ORDER);
 
         if (response.order == null) // destroy
         {

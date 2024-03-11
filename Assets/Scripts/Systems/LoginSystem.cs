@@ -1,4 +1,3 @@
-using System;
 using UnityEngine;
 
 public class LoginSystem : MonoBehaviour
@@ -9,12 +8,17 @@ public class LoginSystem : MonoBehaviour
     {
         loginComponent = GlobalComponent.instance.loginComponent;
 
-        SwitchPageBasedOnLoginStatus();
         loginComponent.onChange_loginStatus.AddListener(SwitchPageBasedOnLoginStatus);
+
+        // Set initial state
+        loginComponent.pageObj.SetActive(true);
+        loginComponent.loginStatus = LoginPageStatusEnum.LOGGED_IN;
+        loginComponent.proceedButton.interactable = false;
     }
 
     void SwitchPageBasedOnLoginStatus()
     {
+        loginComponent.proceedButton.interactable = true;
         loginComponent.proceedButton.onClick.RemoveAllListeners();
         loginComponent.switchButton.onClick.RemoveAllListeners();
         loginComponent.confirmPasswordObj.SetActive(loginComponent.loginStatus == LoginPageStatusEnum.REGISTER);
@@ -47,6 +51,9 @@ public class LoginSystem : MonoBehaviour
                 loginComponent.emailInput.interactable = false;
                 loginComponent.passwordInput.interactable = false;
                 loginComponent.confirmPasswordInput.interactable = false;
+                loginComponent.emailInput.text = "";
+                loginComponent.passwordInput.text = "";
+                loginComponent.confirmPasswordInput.text = "";
                 break;
         }
     }

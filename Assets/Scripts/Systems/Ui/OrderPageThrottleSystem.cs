@@ -247,12 +247,12 @@ public class OrderPageThrottleSystem : MonoBehaviour
     }
     void UpdateOrderStatus()
     {
-        string saveThrottleOrderString = websocketComponent.RetrieveGeneralResponses(WebsocketEventTypeEnum.SAVE_THROTTLE_ORDER.ToString());
+        string saveThrottleOrderString = websocketComponent.RetrieveGeneralResponses(WebsocketEventTypeEnum.SAVE_THROTTLE_ORDER);
         if (saveThrottleOrderString.IsNullOrEmpty()) return;
         General.WebsocketSaveThrottleOrderResponse response = JsonConvert.DeserializeObject<General.WebsocketSaveThrottleOrderResponse>(saveThrottleOrderString, JsonSerializerConfig.settings);
         if (response.orderId.Equals(orderPageThrottleComponent.orderId) && response.parentOrderId.Equals(orderPageComponent.orderId))
         {
-            websocketComponent.RemovesGeneralResponses(WebsocketEventTypeEnum.SAVE_THROTTLE_ORDER.ToString());
+            websocketComponent.RemovesGeneralResponses(WebsocketEventTypeEnum.SAVE_THROTTLE_ORDER);
             orderPageThrottleComponent.orderStatus = response.status;
             orderPageThrottleComponent.orderStatusError = response.statusError;
             if (!response.errorJsonString.IsNullOrEmpty())

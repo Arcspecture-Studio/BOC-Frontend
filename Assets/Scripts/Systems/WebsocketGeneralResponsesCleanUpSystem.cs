@@ -21,7 +21,7 @@ public class WebsocketGeneralResponsesCleanUpSystem : MonoBehaviour
 
     void RetrievePositionInfo()
     {
-        string retrievePositionInfoString = websocketComponent.RetrieveGeneralResponses(WebsocketEventTypeEnum.RETRIEVE_POSITION_INFO.ToString());
+        string retrievePositionInfoString = websocketComponent.RetrieveGeneralResponses(WebsocketEventTypeEnum.RETRIEVE_POSITION_INFO);
         if (retrievePositionInfoString.IsNullOrEmpty()) return;
         General.WebsocketRetrievePositionInfoResponse response = JsonConvert.DeserializeObject<General.WebsocketRetrievePositionInfoResponse>(retrievePositionInfoString, JsonSerializerConfig.settings);
 
@@ -35,12 +35,12 @@ public class WebsocketGeneralResponsesCleanUpSystem : MonoBehaviour
         });
         if (!orderExist)
         {
-            websocketComponent.RemovesGeneralResponses(WebsocketEventTypeEnum.RETRIEVE_POSITION_INFO.ToString());
+            websocketComponent.RemovesGeneralResponses(WebsocketEventTypeEnum.RETRIEVE_POSITION_INFO);
         }
     }
     void SaveOrder()
     {
-        string saveOrderString = websocketComponent.RetrieveGeneralResponses(WebsocketEventTypeEnum.SAVE_ORDER.ToString());
+        string saveOrderString = websocketComponent.RetrieveGeneralResponses(WebsocketEventTypeEnum.SAVE_ORDER);
         if (saveOrderString.IsNullOrEmpty()) return;
         General.WebsocketSaveOrderResponse response = JsonConvert.DeserializeObject<General.WebsocketSaveOrderResponse>(saveOrderString, JsonSerializerConfig.settings);
 
@@ -54,12 +54,12 @@ public class WebsocketGeneralResponsesCleanUpSystem : MonoBehaviour
         });
         if (!orderExist)
         {
-            websocketComponent.RemovesGeneralResponses(WebsocketEventTypeEnum.SAVE_ORDER.ToString());
+            websocketComponent.RemovesGeneralResponses(WebsocketEventTypeEnum.SAVE_ORDER);
         }
     }
     void SaveThrottleOrder()
     {
-        string saveThrottleOrderString = websocketComponent.RetrieveGeneralResponses(WebsocketEventTypeEnum.SAVE_THROTTLE_ORDER.ToString());
+        string saveThrottleOrderString = websocketComponent.RetrieveGeneralResponses(WebsocketEventTypeEnum.SAVE_THROTTLE_ORDER);
         if (saveThrottleOrderString.IsNullOrEmpty()) return;
         General.WebsocketSaveThrottleOrderResponse response = JsonConvert.DeserializeObject<General.WebsocketSaveThrottleOrderResponse>(saveThrottleOrderString, JsonSerializerConfig.settings);
 
@@ -76,7 +76,7 @@ public class WebsocketGeneralResponsesCleanUpSystem : MonoBehaviour
         });
         if (!orderExist)
         {
-            websocketComponent.RemovesGeneralResponses(WebsocketEventTypeEnum.SAVE_THROTTLE_ORDER.ToString());
+            websocketComponent.RemovesGeneralResponses(WebsocketEventTypeEnum.SAVE_THROTTLE_ORDER);
         }
     }
 }
