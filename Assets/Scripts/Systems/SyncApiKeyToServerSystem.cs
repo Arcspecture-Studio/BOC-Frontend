@@ -13,7 +13,7 @@ public class SyncApiKeyToServerSystem : MonoBehaviour
         binanceComponent = GlobalComponent.instance.binanceComponent;
         binanceTestnetComponent = GlobalComponent.instance.binanceTestnetComponent;
         websocketComponent = GlobalComponent.instance.websocketComponent;
-        loginComponent = GlobalComponent.instance.loginComponent;
+        loginComponent = GlobalComponent.instance.loginComponentOld;
     }
     void Update()
     {

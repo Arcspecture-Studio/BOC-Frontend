@@ -27,7 +27,7 @@ public class IoSystem : MonoBehaviour
         websocketComponent = GlobalComponent.instance.websocketComponent;
         binanceComponent = GlobalComponent.instance.binanceComponent;
         binanceTestnetComponent = GlobalComponent.instance.binanceTestnetComponent;
-        loginComponent = GlobalComponent.instance.loginComponent;
+        loginComponent = GlobalComponent.instance.loginComponentOld;
         promptComponent = GlobalComponent.instance.promptComponent;
         platformComponent = GlobalComponent.instance.platformComponent;
         preferenceComponent = GlobalComponent.instance.preferenceComponent;

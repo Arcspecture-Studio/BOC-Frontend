@@ -35,7 +35,7 @@ public class BinanceSystem : MonoBehaviour
     void Start()
     {
         webrequestComponent = GlobalComponent.instance.webrequestComponent;
-        loginComponent = GlobalComponent.instance.loginComponent;
+        loginComponent = GlobalComponent.instance.loginComponentOld;
         ioComponent = GlobalComponent.instance.ioComponent;
         retrieveOrdersComponent = GlobalComponent.instance.retrieveOrdersComponent;
         platformComponent = GlobalComponent.instance.platformComponent;

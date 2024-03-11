@@ -26,7 +26,7 @@ public class WebrequestSystem : MonoBehaviour
         websocketComponent = GlobalComponent.instance.websocketComponent;
         platformComponent = GlobalComponent.instance.platformComponent;
         promptComponent = GlobalComponent.instance.promptComponent;
-        loginComponent = GlobalComponent.instance.loginComponent;
+        loginComponent = GlobalComponent.instance.loginComponentOld;
     }
     void Update()
     {

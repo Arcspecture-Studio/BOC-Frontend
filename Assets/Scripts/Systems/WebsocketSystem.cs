@@ -18,7 +18,7 @@ public class WebsocketSystem : MonoBehaviour
         websocketComponent = GlobalComponent.instance.websocketComponent;
         webrequestComponent = GlobalComponent.instance.webrequestComponent;
         ioComponent = GlobalComponent.instance.ioComponent;
-        loginComponent = GlobalComponent.instance.loginComponent;
+        loginComponent = GlobalComponent.instance.loginComponentOld;
         promptComponent = GlobalComponent.instance.promptComponent;
 
         websocketComponent.connectGeneralSocket = true;

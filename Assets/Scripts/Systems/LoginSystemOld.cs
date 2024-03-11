@@ -18,7 +18,7 @@ public class LoginSystemOld : MonoBehaviour
 
     void Start()
     {
-        loginComponent = GlobalComponent.instance.loginComponent;
+        loginComponent = GlobalComponent.instance.loginComponentOld;
         binanceComponent = GlobalComponent.instance.binanceComponent;
         binanceTestnetComponent = GlobalComponent.instance.binanceTestnetComponent;
         platformComponent = GlobalComponent.instance.platformComponent;

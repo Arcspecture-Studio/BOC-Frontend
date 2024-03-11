@@ -11,7 +11,7 @@ public class SettingPageSystem : MonoBehaviour
     void Start()
     {
         settingPageComponent = GlobalComponent.instance.settingPageComponent;
-        loginComponent = GlobalComponent.instance.loginComponent;
+        loginComponent = GlobalComponent.instance.loginComponentOld;
 
         settingPageComponent.logoutButton.onClick.AddListener(() =>
         {
