@@ -8,18 +8,18 @@ namespace General
         public WebsocketThrottleOrderIdRequest orderRequest;
         public WebsocketDataActionEnum actionToTake;
 
-        public WebsocketSaveThrottleOrderRequest(string orderId, string parentOrderId, PlatformEnum platform, bool submit = false) : base(WebsocketEventTypeEnum.SAVE_THROTTLE_ORDER, platform)
+        public WebsocketSaveThrottleOrderRequest(string orderId, string parentOrderId, PlatformEnum platform, bool submit = false) : base(WebsocketEventTypeEnum.SAVE_THROTTLE_ORDER)
         {
             if (submit) actionToTake = WebsocketDataActionEnum.SUBMIT;
             else actionToTake = WebsocketDataActionEnum.DELETE;
             orderRequest = new WebsocketThrottleOrderIdRequest(orderId, parentOrderId);
         }
-        public WebsocketSaveThrottleOrderRequest(string orderId, string parentOrderId, PlatformEnum platform, OrderTypeEnum orderType) : base(WebsocketEventTypeEnum.SAVE_THROTTLE_ORDER, platform)
+        public WebsocketSaveThrottleOrderRequest(string orderId, string parentOrderId, PlatformEnum platform, OrderTypeEnum orderType) : base(WebsocketEventTypeEnum.SAVE_THROTTLE_ORDER)
         {
             actionToTake = WebsocketDataActionEnum.UPDATE;
             orderRequest = new WebsocketThrottleOrderRequest(orderId, parentOrderId, orderType);
         }
-        public WebsocketSaveThrottleOrderRequest(string orderId, string parentOrderId, PlatformEnum platform, CalculateThrottle throttlerCalculator, OrderTypeEnum orderType) : base(WebsocketEventTypeEnum.SAVE_THROTTLE_ORDER, platform)
+        public WebsocketSaveThrottleOrderRequest(string orderId, string parentOrderId, PlatformEnum platform, CalculateThrottle throttlerCalculator, OrderTypeEnum orderType) : base(WebsocketEventTypeEnum.SAVE_THROTTLE_ORDER)
         {
             actionToTake = WebsocketDataActionEnum.SAVE;
             orderRequest = new WebsocketThrottleOrderRequest(orderId, parentOrderId, throttlerCalculator, orderType);

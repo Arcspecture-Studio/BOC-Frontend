@@ -8,7 +8,7 @@ namespace General
         public WebsocketOrderIdRequest orderRequest;
         public WebsocketDataActionEnum actionToTake;
 
-        public WebsocketSaveOrderRequest(string orderId, PlatformEnum platform, bool submit = false) : base(WebsocketEventTypeEnum.SAVE_ORDER, platform)
+        public WebsocketSaveOrderRequest(string orderId, PlatformEnum platform, bool submit = false) : base(WebsocketEventTypeEnum.SAVE_ORDER)
         {
             if (submit) actionToTake = WebsocketDataActionEnum.SUBMIT;
             else actionToTake = WebsocketDataActionEnum.DELETE;
@@ -18,7 +18,7 @@ namespace General
             PlatformEnum platform,
             CalculateMargin marginCalculator,
             TakeProfitTypeEnum takeProfitType,
-            OrderTypeEnum orderType) : base(WebsocketEventTypeEnum.SAVE_ORDER, platform)
+            OrderTypeEnum orderType) : base(WebsocketEventTypeEnum.SAVE_ORDER)
         {
             actionToTake = WebsocketDataActionEnum.UPDATE;
             orderRequest = new WebsocketOrderRequest(orderId, marginCalculator, takeProfitType, orderType);
@@ -28,7 +28,7 @@ namespace General
             CalculateMargin marginCalculator,
             string symbol,
             TakeProfitTypeEnum takeProfitType,
-            OrderTypeEnum orderType) : base(WebsocketEventTypeEnum.SAVE_ORDER, platform)
+            OrderTypeEnum orderType) : base(WebsocketEventTypeEnum.SAVE_ORDER)
         {
             actionToTake = WebsocketDataActionEnum.SAVE;
             orderRequest = new WebsocketOrderRequest(orderId, marginCalculator, symbol, takeProfitType, orderType);

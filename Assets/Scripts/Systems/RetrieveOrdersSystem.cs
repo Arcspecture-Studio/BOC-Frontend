@@ -47,7 +47,7 @@ public class RetrieveOrdersSystem : MonoBehaviour
     }
     void RequestGetOrdersFromServer()
     {
-        General.WebsocketGeneralRequest request = new General.WebsocketGeneralRequest(WebsocketEventTypeEnum.RETRIEVE_ORDERS, platformComponent.tradingPlatform);
+        General.WebsocketGeneralRequest request = new General.WebsocketGeneralRequest(WebsocketEventTypeEnum.RETRIEVE_ORDERS);
         websocketComponent.generalRequests.Add(request);
         ordersReceived = false;
     }

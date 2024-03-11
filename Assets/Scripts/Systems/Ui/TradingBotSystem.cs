@@ -59,7 +59,7 @@ public class TradingBotSystem : MonoBehaviour
     }
     void SendRetrieveTradingBotsSignal()
     {
-        General.WebsocketGeneralRequest request = new General.WebsocketGeneralRequest(WebsocketEventTypeEnum.RETRIEVE_TRADING_BOTS, platformComponent.tradingPlatform);
+        General.WebsocketGeneralRequest request = new General.WebsocketGeneralRequest(WebsocketEventTypeEnum.RETRIEVE_TRADING_BOTS);
         websocketComponent.generalRequests.Add(request);
     }
     void RetrieveTradingBotsFromServer()

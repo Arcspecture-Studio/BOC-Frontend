@@ -1,19 +1,20 @@
 using System;
+using UnityEngine;
 
 namespace General
 {
     [Serializable]
     public class WebsocketGeneralRequest
     {
-        public string eventType;
+        public WebsocketEventTypeEnum eventType;
         public long eventTime;
-        public string platform;
+        public string version;
 
-        public WebsocketGeneralRequest(WebsocketEventTypeEnum eventType, PlatformEnum platform)
+        public WebsocketGeneralRequest(WebsocketEventTypeEnum eventType)
         {
-            this.eventType = eventType.ToString();
+            this.eventType = eventType;
             this.eventTime = Utils.CurrentTimestamp();
-            this.platform = platform.ToString();
+            this.version = Application.version;
         }
     }
 }

@@ -22,13 +22,13 @@ namespace General
         string atrInterval,
         int atrLength,
         double atrMultiplier,
-        bool isLong) : base(WebsocketEventTypeEnum.SAVE_QUICK_ORDER, platform)
+        bool isLong) : base(WebsocketEventTypeEnum.SAVE_QUICK_ORDER)
         {
             actionToTake = WebsocketDataActionEnum.SAVE;
             orderRequest = new WebsocketQuickOrderRequest(symbol, maxLossPercentage, maxLossAmount, weightedQuantity, quantityWeight, takeProfitType, riskRewardRatio, takeProfitTrailingCallbackPercentage, entryPrice, entryTimes, atrInterval, atrLength, atrMultiplier, isLong);
         }
 
-        public WebsocketSaveQuickOrderRequest(PlatformEnum platform, string orderId) : base(WebsocketEventTypeEnum.SAVE_QUICK_ORDER, platform)
+        public WebsocketSaveQuickOrderRequest(PlatformEnum platform, string orderId) : base(WebsocketEventTypeEnum.SAVE_QUICK_ORDER)
         {
             actionToTake = WebsocketDataActionEnum.DELETE;
             orderRequest = new WebsocketOrderIdRequest(orderId);

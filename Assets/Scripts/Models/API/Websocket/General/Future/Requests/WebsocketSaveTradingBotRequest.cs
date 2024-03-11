@@ -10,7 +10,7 @@ namespace General
         public BotTypeEnum botType;
         public QuickOrderSetting quickOrderSetting;
 
-        public WebsocketSaveTradingBotRequest(PlatformEnum platform, string botId) : base(WebsocketEventTypeEnum.SAVE_TRADING_BOT, platform)
+        public WebsocketSaveTradingBotRequest(PlatformEnum platform, string botId) : base(WebsocketEventTypeEnum.SAVE_TRADING_BOT)
         {
             actionToTake = WebsocketDataActionEnum.DELETE;
             this.botId = botId;
@@ -29,7 +29,7 @@ namespace General
         int entryTimes,
         string atrInterval,
         int atrLength,
-        double atrMultiplier) : base(WebsocketEventTypeEnum.SAVE_TRADING_BOT, platform)
+        double atrMultiplier) : base(WebsocketEventTypeEnum.SAVE_TRADING_BOT)
         {
             actionToTake = WebsocketDataActionEnum.SAVE;
             this.botId = botId;
