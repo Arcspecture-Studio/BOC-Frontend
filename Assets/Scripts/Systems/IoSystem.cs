@@ -101,69 +101,57 @@ public class IoSystem : MonoBehaviour
     }
     void ReadFromApiKeyFile()
     {
-        try
+        List<ApiKeyFile> datas = JsonConvert.DeserializeObject<List<ApiKeyFile>>("jsonString", JsonSerializerConfig.settings);
+        Dictionary<PlatformEnum, bool> loggedIn = new();
+        datas.ForEach(data =>
         {
-            List<ApiKeyFile> datas = JsonConvert.DeserializeObject<List<ApiKeyFile>>("jsonString", JsonSerializerConfig.settings);
-            Dictionary<PlatformEnum, bool> loggedIn = new();
-            datas.ForEach(data =>
+            websocketComponent.syncApiKeyToServer = true;
+            switch (data.platform)
             {
-                websocketComponent.syncApiKeyToServer = true;
-                switch (data.platform)
-                {
-                    case PlatformEnum.BINANCE:
-                        if (data.apiKey.IsNullOrEmpty() || data.apiSecret.IsNullOrEmpty()) break;
-                        loggedIn.TryAdd(PlatformEnum.BINANCE, true);
-                        binanceComponent.apiKey = data.apiKey;
-                        binanceComponent.apiSecret = data.apiSecret;
-                        binanceComponent.loginPhrase = data.loginPhrase;
-                        binanceComponent.getBalance = true;
-                        break;
-                    case PlatformEnum.BINANCE_TESTNET:
-                        if (data.apiKey.IsNullOrEmpty() || data.apiSecret.IsNullOrEmpty()) break;
-                        loggedIn.TryAdd(PlatformEnum.BINANCE_TESTNET, true);
-                        binanceTestnetComponent.apiKey = data.apiKey;
-                        binanceTestnetComponent.apiSecret = data.apiSecret;
-                        binanceTestnetComponent.loginPhrase = data.loginPhrase;
-                        binanceTestnetComponent.getBalance = true;
-                        break;
-                }
-            });
-            if (loggedIn.ContainsKey(preferenceComponent.tradingPlatform))
-            {
-                platformComponent.tradingPlatform = preferenceComponent.tradingPlatform;
+                case PlatformEnum.BINANCE:
+                    if (data.apiKey.IsNullOrEmpty() || data.apiSecret.IsNullOrEmpty()) break;
+                    loggedIn.TryAdd(PlatformEnum.BINANCE, true);
+                    binanceComponent.apiKey = data.apiKey;
+                    binanceComponent.apiSecret = data.apiSecret;
+                    binanceComponent.loginPhrase = data.loginPhrase;
+                    binanceComponent.getBalance = true;
+                    break;
+                case PlatformEnum.BINANCE_TESTNET:
+                    if (data.apiKey.IsNullOrEmpty() || data.apiSecret.IsNullOrEmpty()) break;
+                    loggedIn.TryAdd(PlatformEnum.BINANCE_TESTNET, true);
+                    binanceTestnetComponent.apiKey = data.apiKey;
+                    binanceTestnetComponent.apiSecret = data.apiSecret;
+                    binanceTestnetComponent.loginPhrase = data.loginPhrase;
+                    binanceTestnetComponent.getBalance = true;
+                    break;
             }
-            else
-            {
-                foreach (KeyValuePair<PlatformEnum, bool> logged in loggedIn)
-                {
-                    if (logged.Value)
-                    {
-                        platformComponent.tradingPlatform = logged.Key;
-                        break;
-                    }
-                }
-            }
+        });
+        if (loggedIn.ContainsKey(preferenceComponent.tradingPlatform))
+        {
+            platformComponent.tradingPlatform = preferenceComponent.tradingPlatform;
         }
-        catch (Exception ex)
+        else
         {
+            foreach (KeyValuePair<PlatformEnum, bool> logged in loggedIn)
+            {
+                if (logged.Value)
+                {
+                    platformComponent.tradingPlatform = logged.Key;
+                    break;
+                }
+            }
         }
     }
     void ReadFromPreferencesFile()
     {
-        try
+        PreferenceFile preferenceFile = JsonConvert.DeserializeObject<PreferenceFile>("jsonString", JsonSerializerConfig.settings);
+        preferenceComponent.UpdateValue(preferenceFile);
+        settingPageComponent.syncSetting = true;
+        quickTabComponent.syncDataFromPreference = true;
+        if (!readApiKeyAdy)
         {
-            PreferenceFile preferenceFile = JsonConvert.DeserializeObject<PreferenceFile>("jsonString", JsonSerializerConfig.settings);
-            preferenceComponent.UpdateValue(preferenceFile);
-            settingPageComponent.syncSetting = true;
-            quickTabComponent.syncDataFromPreference = true;
-            if (!readApiKeyAdy)
-            {
-                readApiKeyAdy = true;
-                // ioComponent.readApiKey = readApiKeyAdy;
-            }
-        }
-        catch (Exception ex)
-        {
+            readApiKeyAdy = true;
+            // ioComponent.readApiKey = readApiKeyAdy;
         }
     }
     void WriteIntoPreferencesFile()
