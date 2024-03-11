@@ -11,24 +11,7 @@ public class WebsocketComponent : MonoBehaviour
     public bool logging;
     public SslProtocols sslProtocols = SslProtocols.Tls12;
 
-    public WebSocket marketSocket;
-    [HideInInspector] public List<object> marketRequests = new();
-    public Dictionary<string, List<string>> marketResponses = new();
     [Header("Runtime")]
-    public bool connectMarketSocket;
-    public bool connectedMarketSocket
-    {
-        get { return marketSocket != null && marketSocket.IsAlive; }
-    }
-
-    public WebSocket userDataSocket;
-    public Dictionary<string, List<string>> userDataResponses = new();
-    public bool connectUserDataSocket;
-    public bool connectedUserDataSocket
-    {
-        get { return userDataSocket != null && userDataSocket.IsAlive; }
-    }
-
     public WebSocket generalSocket;
     [HideInInspector] public List<object> generalRequests = new();
     //[SerializedDictionary("Event Type", "List Of JSON String")]
@@ -38,9 +21,8 @@ public class WebsocketComponent : MonoBehaviour
     {
         get { return generalSocket != null && generalSocket.IsAlive; }
     }
-    [HideInInspector] public string generalSocketConnectionId = null;
     [HideInInspector] public byte[] generalSocketIv = null;
-    public bool syncApiKeyToServer;
+    public bool syncApiKeyToServer; // TODO: no more sync api key to server
 
     public void AddGeneralResponses(string key, string value)
     {

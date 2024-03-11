@@ -20,7 +20,6 @@ public class BinanceSystem : MonoBehaviour
         }
     }
     WebrequestComponent webrequestComponent;
-    WebsocketComponent websocketComponent;
     LoginComponent loginComponent;
     IoComponent ioComponent;
     RetrieveOrdersComponent retrieveOrdersComponent;
@@ -28,26 +27,20 @@ public class BinanceSystem : MonoBehaviour
     TradingBotComponent tradingBotComponent;
     MiniPromptComponent miniPromptComponent;
 
-    Binance.WebrequestRequest createListenKeyRequest = null;
     Binance.WebrequestRequest getExchangeInfoRequest = null;
-    Binance.WebrequestRequest getAccInfoRequest = null;
     Binance.WebrequestRequest getBalanceRequest = null;
 
-    float updateListenKeyTimer;
     string logPrefix = "[BinanceSystem] ";
 
     void Start()
     {
         webrequestComponent = GlobalComponent.instance.webrequestComponent;
-        websocketComponent = GlobalComponent.instance.websocketComponent;
         loginComponent = GlobalComponent.instance.loginComponent;
         ioComponent = GlobalComponent.instance.ioComponent;
         retrieveOrdersComponent = GlobalComponent.instance.retrieveOrdersComponent;
         platformComponent = GlobalComponent.instance.platformComponent;
         tradingBotComponent = GlobalComponent.instance.tradingBotComponent;
         miniPromptComponent = GlobalComponent.instance.miniPromptComponent;
-
-        //websocketComponent.connectMarketSocket = true;
     }
     void Update()
     {
@@ -154,77 +147,4 @@ public class BinanceSystem : MonoBehaviour
             }
         }
     }
-
-    #region Unused
-    void GetAccInfo()
-    {
-        if (!binanceComponent.getAccInfo) return;
-        binanceComponent.getAccInfo = false;
-        if (binanceComponent.walletBalances == null)
-        {
-            binanceComponent.walletBalances = new Dictionary<string, double>();
-        }
-        else
-        {
-            binanceComponent.walletBalances.Clear();
-        }
-        getAccInfoRequest = new Binance.WebrequestGetAccInfoRequest(testnet, binanceComponent.apiSecret);
-        webrequestComponent.requests.Add(getAccInfoRequest);
-    }
-    void ReceiveAccInfo()
-    {
-        if (getAccInfoRequest == null) return;
-        if (webrequestComponent.responses.ContainsKey(getAccInfoRequest.id))
-        {
-            Binance.WebrequestGetAccInfoResponse response = JsonConvert.DeserializeObject<Binance.WebrequestGetAccInfoResponse>(webrequestComponent.responses[getAccInfoRequest.id], JsonSerializerConfig.settings);
-            webrequestComponent.responses.Remove(getAccInfoRequest.id);
-            if (response.assets == null) return;
-            response.assets.ForEach(asset =>
-            {
-                if (!binanceComponent.walletBalances.TryAdd(asset.asset, double.Parse(asset.walletBalance)))
-                {
-                    binanceComponent.walletBalances[asset.asset] = double.Parse(asset.walletBalance);
-                }
-            });
-        }
-    }
-    #endregion
-    #region Execute at server
-    void CreateListenKey()
-    {
-        binanceComponent.listenKey = null;
-        createListenKeyRequest = new Binance.WebrequestCreateListenKeyRequest(testnet);
-        webrequestComponent.requests.Add(createListenKeyRequest);
-        updateListenKeyTimer = 0;
-    }
-    void ReceiveListenKey()
-    {
-        if (webrequestComponent.responses.ContainsKey(createListenKeyRequest.id))
-        {
-            Binance.WebrequestCreateListenKeyResponse response = JsonConvert.DeserializeObject<Binance.WebrequestCreateListenKeyResponse>(webrequestComponent.responses[createListenKeyRequest.id], JsonSerializerConfig.settings);
-            webrequestComponent.responses.Remove(createListenKeyRequest.id);
-            if (response.listenKey.IsNullOrEmpty())
-            {
-                CreateListenKey();
-                return;
-            }
-            binanceComponent.listenKey = response.listenKey;
-            websocketComponent.connectUserDataSocket = true;
-        }
-    }
-    void RenewListenKey()
-    {
-        if (binanceComponent.listenKey.IsNullOrEmpty()) return;
-        if (updateListenKeyTimer < BinanceConfig.UPDATE_LISTEN_KEY_INTERVAL)
-        {
-            updateListenKeyTimer += Time.deltaTime;
-        }
-        else
-        {
-            updateListenKeyTimer -= BinanceConfig.UPDATE_LISTEN_KEY_INTERVAL;
-            Binance.WebrequestRequest request = new Binance.WebrequestRenewListenKeyRequest(testnet);
-            webrequestComponent.requests.Add(request);
-        }
-    }
-    #endregion
 }

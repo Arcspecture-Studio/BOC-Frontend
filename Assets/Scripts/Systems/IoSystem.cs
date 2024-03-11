@@ -61,7 +61,7 @@ public class IoSystem : MonoBehaviour
     {
         if (!ioComponent.writeApiKey) return;
         ioComponent.writeApiKey = false;
-        if (websocketComponent.generalSocketConnectionId.IsNullOrEmpty() || websocketComponent.generalSocketIv == null) return;
+        if (websocketComponent.generalSocketIv == null) return;
         List<ApiKeyFile> data = new List<ApiKeyFile>();
         if (binanceComponent.loggedIn) data.Add(new ApiKeyFile(PlatformEnum.BINANCE, binanceComponent.apiKey, binanceComponent.apiSecret, binanceComponent.loginPhrase));
         if (binanceTestnetComponent.loggedIn) data.Add(new ApiKeyFile(PlatformEnum.BINANCE_TESTNET, binanceTestnetComponent.apiKey, binanceTestnetComponent.apiSecret, binanceTestnetComponent.loginPhrase));

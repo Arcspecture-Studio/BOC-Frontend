@@ -1,117 +1,38 @@
 using UnityEngine;
 using WebSocketSharp;
 using Newtonsoft.Json;
-using System.Collections.Generic;
 
 public class WebsocketSystem : MonoBehaviour
 {
-    PlatformComponent platformComponent;
     WebsocketComponent websocketComponent;
     WebrequestComponent webrequestComponent;
-    BinanceComponent binanceComponent;
-    BinanceComponent binanceTestnetComponent;
     IoComponent ioComponent;
     LoginComponent loginComponent;
     PromptComponent promptComponent;
-    RetrieveOrdersComponent retrieveOrdersComponent;
 
-    WebSocket marketSocket;
-    WebSocket userDataSocket;
     WebSocket generalSocket;
     string logPrefix = "[WebsocketSystem] ";
 
     void Start()
     {
-        platformComponent = GlobalComponent.instance.platformComponent;
         websocketComponent = GlobalComponent.instance.websocketComponent;
         webrequestComponent = GlobalComponent.instance.webrequestComponent;
-        binanceComponent = GlobalComponent.instance.binanceComponent;
-        binanceTestnetComponent = GlobalComponent.instance.binanceTestnetComponent;
         ioComponent = GlobalComponent.instance.ioComponent;
         loginComponent = GlobalComponent.instance.loginComponent;
         promptComponent = GlobalComponent.instance.promptComponent;
-        retrieveOrdersComponent = GlobalComponent.instance.retrieveOrdersComponent;
 
         websocketComponent.connectGeneralSocket = true;
     }
     void Update()
     {
         ProcessConnect();
-        ProcessMarketRequests();
         ProcessGeneralRequests();
     }
     void OnApplicationQuit()
     {
-        if (marketSocket != null && marketSocket.IsAlive) marketSocket.Close();
-        if (userDataSocket != null && userDataSocket.IsAlive) userDataSocket.Close();
         if (generalSocket != null && generalSocket.IsAlive) generalSocket.Close();
     }
 
-    void ListenMarketSocket()
-    {
-        marketSocket.OnOpen += (sender, e) =>
-        {
-            if (websocketComponent.logging) Debug.Log(logPrefix + "Connection open: " + ((WebSocket)sender).Url);
-        };
-        marketSocket.OnMessage += (sender, e) =>
-        {
-            if (websocketComponent.logging) Debug.Log(logPrefix + "Message received from: " + ((WebSocket)sender).Url + ", Data: " + e.Data);
-
-            Binance.WebsocketMarketResponse response = JsonConvert.DeserializeObject<Binance.WebsocketMarketResponse>(e.Data, JsonSerializerConfig.settings);
-            if (response.stream != null)
-            {
-                if (websocketComponent.marketResponses.ContainsKey(response.stream))
-                {
-                    websocketComponent.marketResponses[response.stream].Add(e.Data);
-                }
-                else
-                {
-                    List<string> datas = new() { e.Data };
-                    websocketComponent.marketResponses.Add(response.stream, datas);
-                }
-            }
-        };
-        marketSocket.OnError += (sender, e) =>
-        {
-            if (websocketComponent.logging) Debug.LogError(logPrefix + "Error at: " + ((WebSocket)sender).Url + ", Message: " + e.Message + ", Exception: " + e.Exception);
-        };
-        marketSocket.OnClose += (sender, e) =>
-        {
-            if (websocketComponent.logging) Debug.Log(logPrefix + "Connection closed at: " + ((WebSocket)sender).Url + ", Code: " + e.Code + ", WasClean: " + e.WasClean + ", Reason: " + e.Reason);
-            if (!e.WasClean) websocketComponent.connectMarketSocket = true;
-        };
-    }
-    void ListenUserDataSocket()
-    {
-        userDataSocket.OnOpen += (sender, e) =>
-        {
-            if (websocketComponent.logging) Debug.Log(logPrefix + "Connection open: " + ((WebSocket)sender).Url);
-        };
-        userDataSocket.OnMessage += (sender, e) =>
-        {
-            if (websocketComponent.logging) Debug.Log(logPrefix + "Message received from: " + ((WebSocket)sender).Url + ", Data: " + e.Data);
-
-            Binance.WebsocketUserDataResponse response = JsonConvert.DeserializeObject<Binance.WebsocketUserDataResponse>(e.Data, JsonSerializerConfig.settings);
-            if (websocketComponent.userDataResponses.ContainsKey(response.eventType))
-            {
-                websocketComponent.userDataResponses[response.eventType].Add(e.Data);
-            }
-            else
-            {
-                List<string> datas = new() { e.Data };
-                websocketComponent.userDataResponses.Add(response.eventType, datas);
-            }
-        };
-        userDataSocket.OnError += (sender, e) =>
-        {
-            if (websocketComponent.logging) Debug.LogError(logPrefix + "Error at: " + ((WebSocket)sender).Url + ", Message: " + e.Message + ", Exception: " + e.Exception);
-        };
-        userDataSocket.OnClose += (sender, e) =>
-        {
-            if (websocketComponent.logging) Debug.Log(logPrefix + "Connection closed at: " + ((WebSocket)sender).Url + ", Code: " + e.Code + ", WasClean: " + e.WasClean + ", Reason: " + e.Reason);
-            if (!e.WasClean) websocketComponent.connectUserDataSocket = true;
-        };
-    }
     void ListenGeneralSocket()
     {
         generalSocket.OnOpen += (sender, e) =>
@@ -126,8 +47,9 @@ public class WebsocketSystem : MonoBehaviour
             if (response.eventType.Equals(WebsocketEventTypeEnum.CONNECTION_ID.ToString()))
             {
                 General.WebsocketConnectionEstablishedResponse connectionEstablishedResponse = JsonConvert.DeserializeObject<General.WebsocketConnectionEstablishedResponse>(e.Data, JsonSerializerConfig.settings);
-                websocketComponent.generalSocketConnectionId = connectionEstablishedResponse.connectionId;
                 websocketComponent.generalSocketIv = connectionEstablishedResponse.iv.data;
+
+                // TODO: change to account mechanism
                 if (loginComponent.loggedIn)
                 {
                     ioComponent.writeApiKey = true;
@@ -211,44 +133,6 @@ public class WebsocketSystem : MonoBehaviour
     }
     void ProcessConnect()
     {
-        if (websocketComponent.connectMarketSocket)
-        {
-            websocketComponent.connectMarketSocket = false;
-            switch (platformComponent.tradingPlatform)
-            {
-                case PlatformEnum.BINANCE:
-                    marketSocket = new WebSocket(WebsocketConfig.BINANCE_HOST + WebsocketConfig.BINANCE_MARKET_PATH);
-                    break;
-                case PlatformEnum.BINANCE_TESTNET:
-                    marketSocket = new WebSocket(WebsocketConfig.BINANCE_HOST_TEST + WebsocketConfig.BINANCE_MARKET_PATH);
-                    break;
-                case PlatformEnum.MEXC:
-                    break;
-            }
-            marketSocket.SslConfiguration.EnabledSslProtocols = websocketComponent.sslProtocols;
-            ListenMarketSocket();
-            websocketComponent.marketSocket = marketSocket;
-            if (!marketSocket.IsAlive) marketSocket.ConnectAsync();
-        }
-        if (websocketComponent.connectUserDataSocket)
-        {
-            websocketComponent.connectUserDataSocket = false;
-            switch (platformComponent.tradingPlatform)
-            {
-                case PlatformEnum.BINANCE:
-                    userDataSocket = new WebSocket(WebsocketConfig.BINANCE_HOST + WebsocketConfig.BINANCE_USER_DATA_PATH + binanceComponent.listenKey);
-                    break;
-                case PlatformEnum.BINANCE_TESTNET:
-                    userDataSocket = new WebSocket(WebsocketConfig.BINANCE_HOST_TEST + WebsocketConfig.BINANCE_USER_DATA_PATH + binanceTestnetComponent.listenKey);
-                    break;
-                case PlatformEnum.MEXC:
-                    break;
-            }
-            userDataSocket.SslConfiguration.EnabledSslProtocols = websocketComponent.sslProtocols;
-            ListenUserDataSocket();
-            websocketComponent.userDataSocket = userDataSocket;
-            if (!userDataSocket.IsAlive) userDataSocket.ConnectAsync();
-        }
         if (websocketComponent.connectGeneralSocket)
         {
             websocketComponent.connectGeneralSocket = false;
@@ -264,21 +148,11 @@ public class WebsocketSystem : MonoBehaviour
             if (!generalSocket.IsAlive) generalSocket.ConnectAsync();
         }
     }
-    void ProcessMarketRequests()
-    {
-        if (websocketComponent.marketRequests.Count == 0) return;
-        if (!marketSocket.IsAlive) return;
-        websocketComponent.marketRequests.ForEach(request =>
-        {
-            Send(request, marketSocket);
-        });
-        websocketComponent.marketRequests.Clear();
-    }
     void ProcessGeneralRequests()
     {
         if (websocketComponent.generalRequests.Count == 0) return;
         if (!websocketComponent.connectedGeneralSocket) return;
-        if (websocketComponent.generalSocketConnectionId.IsNullOrEmpty() || websocketComponent.generalSocketIv == null) return;
+        if (websocketComponent.generalSocketIv == null) return;
         websocketComponent.generalRequests.ForEach(request =>
         {
             Send(request, generalSocket, true);
@@ -289,7 +163,7 @@ public class WebsocketSystem : MonoBehaviour
     {
         string jsonStr = JsonConvert.SerializeObject(request, JsonSerializerConfig.settings);
         if (websocketComponent.logging) Debug.Log(logPrefix + "Send message: " + jsonStr);
-        if (encrypt) jsonStr = Encryption.Encrypt(jsonStr, websocketComponent.generalSocketConnectionId, websocketComponent.generalSocketIv);
+        if (encrypt) jsonStr = Encryption.Encrypt(jsonStr, SecretConfig.ENCRYPTION_ACCESS_TOKEN_32, websocketComponent.generalSocketIv);
         socket.Send(jsonStr);
     }
 }

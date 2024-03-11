@@ -5,7 +5,6 @@ namespace General
     [Serializable]
     public class WebsocketConnectionEstablishedResponse : WebsocketGeneralResponse
     {
-        public string connectionId;
         public WebsocketConnectionEstablishedResponseIv iv;
     }
 
