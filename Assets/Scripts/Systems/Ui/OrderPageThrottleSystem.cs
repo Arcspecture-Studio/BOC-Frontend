@@ -236,7 +236,7 @@ public class OrderPageThrottleSystem : MonoBehaviour
     }
     void ShowPrompt(string message, bool goToEditMode = true)
     {
-        promptComponent.ShowPrompt("ERROR", message, () =>
+        promptComponent.ShowPrompt(PromptConstant.ERROR, message, () =>
         {
             promptComponent.active = false;
             if (goToEditMode)

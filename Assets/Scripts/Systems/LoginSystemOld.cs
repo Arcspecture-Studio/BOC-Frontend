@@ -157,21 +157,21 @@ public class LoginSystemOld : MonoBehaviour
             {
                 if (loginComponent.loginPhraseInput.text.IsNullOrEmpty())
                 {
-                    promptComponent.ShowPrompt("ERROR", "Personal Secret Login Phrase cannot be blank.", () =>
+                    promptComponent.ShowPrompt(PromptConstant.ERROR, "Personal Secret Login Phrase cannot be blank.", () =>
                     {
                         promptComponent.active = false;
                     });
                 }
                 else if (loginComponent.loginPhraseInput.text.Length < 20)
                 {
-                    promptComponent.ShowPrompt("ERROR", "Personal Secret Login Phrase must have minimum of 20 characters.", () =>
+                    promptComponent.ShowPrompt(PromptConstant.ERROR, "Personal Secret Login Phrase must have minimum of 20 characters.", () =>
                     {
                         promptComponent.active = false;
                     });
                 }
                 else if (loginComponent.apiKeyInput.text.IsNullOrEmpty() || loginComponent.secretKeyInput.text.IsNullOrEmpty())
                 {
-                    promptComponent.ShowPrompt("ERROR", "Key(s) cannot be blank.", () =>
+                    promptComponent.ShowPrompt(PromptConstant.ERROR, "Key(s) cannot be blank.", () =>
                     {
                         promptComponent.active = false;
                     });

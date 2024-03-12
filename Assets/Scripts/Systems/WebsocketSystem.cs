@@ -8,7 +8,7 @@ public class WebsocketSystem : MonoBehaviour
     WebsocketComponent websocketComponent;
     WebrequestComponent webrequestComponent;
     IoComponent ioComponent;
-    LoginComponentOld loginComponent;
+    LoginComponent loginComponent;
     PromptComponent promptComponent;
 
     WebSocket generalSocket;
@@ -19,7 +19,7 @@ public class WebsocketSystem : MonoBehaviour
         websocketComponent = GlobalComponent.instance.websocketComponent;
         webrequestComponent = GlobalComponent.instance.webrequestComponent;
         ioComponent = GlobalComponent.instance.ioComponent;
-        loginComponent = GlobalComponent.instance.loginComponentOld;
+        loginComponent = GlobalComponent.instance.loginComponent;
         promptComponent = GlobalComponent.instance.promptComponent;
 
         websocketComponent.connectGeneralSocket = true;
@@ -59,7 +59,7 @@ public class WebsocketSystem : MonoBehaviour
                 {
                     UnityMainThread.AddJob(() =>
                     {
-                        promptComponent.ShowPrompt("NOTICE", response.message, () =>
+                        promptComponent.ShowPrompt(PromptConstant.NOTICE, response.message, () =>
                         {
 #if UNITY_EDITOR
                             UnityEditor.EditorApplication.isPlaying = false;
@@ -67,6 +67,24 @@ public class WebsocketSystem : MonoBehaviour
                             Application.Quit();
 #endif
                         });
+                    });
+                }
+            }
+            else if (response.eventType == WebsocketEventTypeEnum.CREATE_ACCOUNT || response.eventType == WebsocketEventTypeEnum.GET_JWT)
+            {
+                if (response.success)
+                {
+                    General.WebsocketTokenResponse tokenResponse = JsonConvert.DeserializeObject<General.WebsocketTokenResponse>
+                    (rawData, JsonSerializerConfig.settings);
+                    loginComponent.token = tokenResponse.token;
+                    ioComponent.writeToken = true;
+                    // TODO: get initial data
+                }
+                else
+                {
+                    UnityMainThread.AddJob(() =>
+                    {
+                        promptComponent.ShowPrompt(PromptConstant.ERROR, response.message, () => promptComponent.active = false);
                     });
                 }
             }
@@ -151,7 +169,7 @@ public class WebsocketSystem : MonoBehaviour
     {
         if (websocketComponent.generalRequests.Count == 0) yield break;
         yield return new WaitUntil(() =>
-        websocketComponent.connectedGeneralSocket && websocketComponent.generalSocketIv != null);
+        websocketComponent.connectedGeneralSocket && websocketComponent.generalSocketIv.Length == EncryptionConfig.IV_LENGTH);
         if (websocketComponent.generalRequests.Count == 0) yield break;
 
         websocketComponent.generalRequests.ForEach(request =>

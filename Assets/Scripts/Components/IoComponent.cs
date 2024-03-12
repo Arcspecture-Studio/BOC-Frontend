@@ -25,4 +25,5 @@ public class IoComponent : MonoBehaviour
         set { onChange_readToken.Invoke(); }
     }
     [HideInInspector] public UnityEvent onChange_readToken = new();
+    public bool writeToken;
 }

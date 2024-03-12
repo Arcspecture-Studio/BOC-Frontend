@@ -177,7 +177,7 @@ public class WebrequestSystem : MonoBehaviour
                 if (!message.IsNullOrEmpty())
                 {
                     loginComponent.allowInput = true;
-                    promptComponent.ShowPrompt("ERROR", message, () =>
+                    promptComponent.ShowPrompt(PromptConstant.ERROR, message, () =>
                     {
                         promptComponent.active = false;
                     });

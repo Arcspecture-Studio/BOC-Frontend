@@ -40,9 +40,8 @@ public class IoSystem : MonoBehaviour
     }
     void Update()
     {
-        if (readTokenAdy) return;
-        readTokenAdy = true;
-        ioComponent.readToken = true;
+        ReadTokenFromUpdate();
+        WriteIntoTokenFileFromUpdate();
     }
 
     void Write(string fileName, string jsonString)
@@ -54,6 +53,17 @@ public class IoSystem : MonoBehaviour
         StreamWriter writer = new StreamWriter(ioComponent.path + fileName);
         writer.Write(jsonString);
         writer.Close();
+    }
+    void CheckVersion()
+    {
+        General.WebsocketGeneralRequest request = new(WebsocketEventTypeEnum.VERSION_CHECKING);
+        websocketComponent.generalRequests.Add(request);
+    }
+    void ReadTokenFromUpdate()
+    {
+        if (readTokenAdy) return;
+        readTokenAdy = true;
+        ioComponent.readToken = true;
     }
     void ReadFromTokenFile()
     {
@@ -72,109 +82,30 @@ public class IoSystem : MonoBehaviour
         try // to serialize the json string
         {
             TokenFile data = JsonConvert.DeserializeObject<TokenFile>(jsonString, JsonSerializerConfig.settings);
-            loginComponent.loginStatus = LoginPageStatusEnum.LOGGED_IN;
             loginComponent.token = Encryption.Decrypt(data.token, SecretConfig.ENCRYPTION_ACCESS_TOKEN_32, data.cache);
-
+            ioComponent.writeToken = true;
             // TODO: get initial data
         }
         catch (Exception ex)
         {
             Debug.LogError(logPrefix + ex);
-            string message = "Unable to continue previous login session, please re-login.";
-            promptComponent.ShowPrompt("ERROR", message, () => { promptComponent.active = false; });
+            promptComponent.ShowPrompt(PromptConstant.NOTICE, PromptConstant.UNABLE_TO_CONTINUE_LOGIN, () => { promptComponent.active = false; });
 
             loginComponent.loginStatus = LoginPageStatusEnum.LOGIN;
             CheckVersion();
         }
     }
-    void CheckVersion()
+    void WriteIntoTokenFileFromUpdate()
     {
-        General.WebsocketGeneralRequest request = new(WebsocketEventTypeEnum.VERSION_CHECKING);
-        websocketComponent.generalRequests.Add(request);
-    }
-    void GetInitialData()
-    {
+        if (!ioComponent.writeToken ||
+            websocketComponent.generalSocketIv.Length != EncryptionConfig.IV_LENGTH ||
+            loginComponent.token.IsNullOrEmpty()
+        ) return;
+        ioComponent.writeToken = false;
 
-    }
-
-    void WriteIntoApiKeyFile()
-    {
-        if (websocketComponent.generalSocketIv == null) return;
-        List<ApiKeyFile> data = new List<ApiKeyFile>();
-        if (binanceComponent.loggedIn) data.Add(new ApiKeyFile(PlatformEnum.BINANCE, binanceComponent.apiKey, binanceComponent.apiSecret, binanceComponent.loginPhrase));
-        if (binanceTestnetComponent.loggedIn) data.Add(new ApiKeyFile(PlatformEnum.BINANCE_TESTNET, binanceTestnetComponent.apiKey, binanceTestnetComponent.apiSecret, binanceTestnetComponent.loginPhrase));
-        if (data.Count == 0)
-        {
-            // if (File.Exists(ioComponent.path + ioComponent.apiKeyFileName))
-            // {
-            //     File.Delete(ioComponent.path + ioComponent.apiKeyFileName);
-            // }
-        }
-        else
-        {
-            string jsonString = JsonConvert.SerializeObject(data, JsonSerializerConfig.settings);
-            // Write(ioComponent.apiKeyFileName, jsonString);
-        }
-    }
-    void ReadFromApiKeyFile()
-    {
-        List<ApiKeyFile> datas = JsonConvert.DeserializeObject<List<ApiKeyFile>>("jsonString", JsonSerializerConfig.settings);
-        Dictionary<PlatformEnum, bool> loggedIn = new();
-        datas.ForEach(data =>
-        {
-            websocketComponent.syncApiKeyToServer = true;
-            switch (data.platform)
-            {
-                case PlatformEnum.BINANCE:
-                    if (data.apiKey.IsNullOrEmpty() || data.apiSecret.IsNullOrEmpty()) break;
-                    loggedIn.TryAdd(PlatformEnum.BINANCE, true);
-                    binanceComponent.apiKey = data.apiKey;
-                    binanceComponent.apiSecret = data.apiSecret;
-                    binanceComponent.loginPhrase = data.loginPhrase;
-                    binanceComponent.getBalance = true;
-                    break;
-                case PlatformEnum.BINANCE_TESTNET:
-                    if (data.apiKey.IsNullOrEmpty() || data.apiSecret.IsNullOrEmpty()) break;
-                    loggedIn.TryAdd(PlatformEnum.BINANCE_TESTNET, true);
-                    binanceTestnetComponent.apiKey = data.apiKey;
-                    binanceTestnetComponent.apiSecret = data.apiSecret;
-                    binanceTestnetComponent.loginPhrase = data.loginPhrase;
-                    binanceTestnetComponent.getBalance = true;
-                    break;
-            }
-        });
-        if (loggedIn.ContainsKey(preferenceComponent.tradingPlatform))
-        {
-            platformComponent.tradingPlatform = preferenceComponent.tradingPlatform;
-        }
-        else
-        {
-            foreach (KeyValuePair<PlatformEnum, bool> logged in loggedIn)
-            {
-                if (logged.Value)
-                {
-                    platformComponent.tradingPlatform = logged.Key;
-                    break;
-                }
-            }
-        }
-    }
-    void ReadFromPreferencesFile()
-    {
-        PreferenceFile preferenceFile = JsonConvert.DeserializeObject<PreferenceFile>("jsonString", JsonSerializerConfig.settings);
-        preferenceComponent.UpdateValue(preferenceFile);
-        settingPageComponent.syncSetting = true;
-        quickTabComponent.syncDataFromPreference = true;
-        // if (!readTokenAdy)
-        {
-            // readTokenAdy = true;
-            // ioComponent.readApiKey = readApiKeyAdy;
-        }
-    }
-    void WriteIntoPreferencesFile()
-    {
-        // if (!ioComponent.writePreferences) return;
-        // ioComponent.writePreferences = false;
-        // Write(ioComponent.preferencesFileName, preferenceComponent.GetJsonString());
+        string token = Encryption.Encrypt(loginComponent.token, SecretConfig.ENCRYPTION_ACCESS_TOKEN_32, websocketComponent.generalSocketIv);
+        TokenFile file = new(token, websocketComponent.generalSocketIv);
+        string jsonString = JsonConvert.SerializeObject(file, JsonSerializerConfig.settings);
+        Write(ioComponent.tokenFileName, jsonString);
     }
 }
