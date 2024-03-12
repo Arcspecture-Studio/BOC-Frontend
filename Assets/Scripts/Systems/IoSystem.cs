@@ -61,7 +61,7 @@ public class IoSystem : MonoBehaviour
         if (fileNotExist)
         {
             loginComponent.loginStatus = LoginPageStatusEnum.REGISTER;
-            // TODO: send version
+            CheckVersion();
             return;
         }
 
@@ -84,10 +84,15 @@ public class IoSystem : MonoBehaviour
             promptComponent.ShowPrompt("ERROR", message, () => { promptComponent.active = false; });
 
             loginComponent.loginStatus = LoginPageStatusEnum.LOGIN;
-            // TODO: send version
+            CheckVersion();
         }
     }
-    void SendVersionChecking()
+    void CheckVersion()
+    {
+        General.WebsocketGeneralRequest request = new(WebsocketEventTypeEnum.VERSION_CHECKING);
+        websocketComponent.generalRequests.Add(request);
+    }
+    void GetInitialData()
     {
 
     }

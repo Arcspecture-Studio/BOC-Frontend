@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Newtonsoft.Json;
 
 public static class Utils
 {
@@ -133,5 +134,17 @@ public static class Utils
             }
         }
         return values;
+    }
+    public static bool IsJson(string str)
+    {
+        try
+        {
+            JsonConvert.DeserializeObject(str);
+            return true;
+        }
+        catch (JsonException)
+        {
+            return false;
+        }
     }
 }

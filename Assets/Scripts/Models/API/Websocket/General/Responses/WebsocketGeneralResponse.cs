@@ -7,5 +7,7 @@ namespace General
     {
         public WebsocketEventTypeEnum eventType;
         public long eventTime;
+        public bool success;
+        public string message;
     }
 }

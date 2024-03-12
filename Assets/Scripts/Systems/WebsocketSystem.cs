@@ -27,7 +27,7 @@ public class WebsocketSystem : MonoBehaviour
     void Update()
     {
         ProcessConnect();
-        ProcessGeneralRequests();
+        StartCoroutine(ProcessGeneralRequests());
     }
     void OnApplicationQuit()
     {
@@ -42,77 +42,83 @@ public class WebsocketSystem : MonoBehaviour
         };
         generalSocket.OnMessage += (sender, e) =>
         {
-            if (websocketComponent.logging) Debug.Log(logPrefix + "Incoming message from: " + ((WebSocket)sender).Url + ", Data: " + e.Data);
+            string rawData = e.Data;
+            if (!Utils.IsJson(e.Data)) rawData = Encryption.Decrypt(e.Data, SecretConfig.ENCRYPTION_ACCESS_TOKEN_32, websocketComponent.generalSocketIv);
+            if (websocketComponent.logging) Debug.Log(logPrefix + "Incoming message from: " + ((WebSocket)sender).Url + ", Data: " + rawData);
 
-            General.WebsocketGeneralResponse response = JsonConvert.DeserializeObject<General.WebsocketGeneralResponse>(e.Data, JsonSerializerConfig.settings);
+            General.WebsocketGeneralResponse response = JsonConvert.DeserializeObject<General.WebsocketGeneralResponse>(rawData, JsonSerializerConfig.settings);
             if (response.eventType == WebsocketEventTypeEnum.CONNECTION_ESTABLISH)
             {
-                General.WebsocketConnectionEstablishedResponse connectionEstablishedResponse = JsonConvert.DeserializeObject<General.WebsocketConnectionEstablishedResponse>(e.Data, JsonSerializerConfig.settings);
+                General.WebsocketConnectionEstablishedResponse connectionEstablishedResponse = JsonConvert.DeserializeObject
+                <General.WebsocketConnectionEstablishedResponse>(rawData, JsonSerializerConfig.settings);
                 websocketComponent.generalSocketIv = connectionEstablishedResponse.iv.data;
             }
             else if (response.eventType == WebsocketEventTypeEnum.VERSION_CHECKING)
             {
-                // PENDING: now is when received this eventType VERSION_CHECKING straight means outdated, later need to check the body if the version is matching by {valid: true}
-                UnityMainThread.AddJob(() =>
+                if (!response.success)
                 {
-                    promptComponent.ShowPrompt("NOTICE", "App version is outdated, please update your app to latest version.", () =>
+                    UnityMainThread.AddJob(() =>
                     {
+                        promptComponent.ShowPrompt("NOTICE", response.message, () =>
+                        {
 #if UNITY_EDITOR
-                        UnityEditor.EditorApplication.isPlaying = false;
+                            UnityEditor.EditorApplication.isPlaying = false;
 #else
-                        Application.Quit();
+                            Application.Quit();
 #endif
+                        });
                     });
-                });
-            }
-            else if (response.eventType == WebsocketEventTypeEnum.CALL_API)
-            {
-                General.WebsocketCallApiResponse callApiResponse = JsonConvert.DeserializeObject<General.WebsocketCallApiResponse>(e.Data, JsonSerializerConfig.settings);
-                string logStatus = "Received";
-                if (callApiResponse.rejectByServer.HasValue)
-                {
-                    if (callApiResponse.rejectByServer.Value)
-                    {
-                        logStatus = "Server returned error";
-                    }
-                    else
-                    {
-                        logStatus = "HTTP Error";
-                    }
                 }
-                if (callApiResponse.id.IsNullOrEmpty()) callApiResponse.id = "";
-                webrequestComponent.rawResponses.Add(callApiResponse.id, new Response(callApiResponse.id, logStatus, callApiResponse.responseJsonString));
             }
-            else if (response.eventType == WebsocketEventTypeEnum.ACCOUNT_OVERWRITE)
-            {
-                UnityMainThread.AddJob(() =>
-                {
-                    promptComponent.ShowPrompt("NOTICE", "Your account has been logged in from other device.", () =>
-                    {
-#if UNITY_EDITOR
-                        UnityEditor.EditorApplication.isPlaying = false;
-#else
-                        Application.Quit();
-#endif
-                    });
-                });
-            }
-            else if (response.eventType == WebsocketEventTypeEnum.INVALID_LOGIN_PHRASE)
-            {
-                UnityMainThread.AddJob(() =>
-                {
-                    string message = "Login failed with invalid personal secret login phrase, please try to login again.";
-                    loginComponent.allowInput = true;
-                    promptComponent.ShowPrompt("ERROR", message, () =>
-                    {
-                        promptComponent.active = false;
-                    });
-                });
-            }
-            else
-            {
-                websocketComponent.AddGeneralResponses(response.eventType, e.Data);
-            }
+
+            //             else if (response.eventType == WebsocketEventTypeEnum.CALL_API)
+            //             {
+            //                 General.WebsocketCallApiResponse callApiResponse = JsonConvert.DeserializeObject<General.WebsocketCallApiResponse>(rawData, JsonSerializerConfig.settings);
+            //                 string logStatus = "Received";
+            //                 if (callApiResponse.rejectByServer.HasValue)
+            //                 {
+            //                     if (callApiResponse.rejectByServer.Value)
+            //                     {
+            //                         logStatus = "Server returned error";
+            //                     }
+            //                     else
+            //                     {
+            //                         logStatus = "HTTP Error";
+            //                     }
+            //                 }
+            //                 if (callApiResponse.id.IsNullOrEmpty()) callApiResponse.id = "";
+            //                 webrequestComponent.rawResponses.Add(callApiResponse.id, new Response(callApiResponse.id, logStatus, callApiResponse.responseJsonString));
+            //             }
+            //             else if (response.eventType == WebsocketEventTypeEnum.ACCOUNT_OVERWRITE)
+            //             {
+            //                 UnityMainThread.AddJob(() =>
+            //                 {
+            //                     promptComponent.ShowPrompt("NOTICE", "Your account has been logged in from other device.", () =>
+            //                     {
+            // #if UNITY_EDITOR
+            //                         UnityEditor.EditorApplication.isPlaying = false;
+            // #else
+            //                         Application.Quit();
+            // #endif
+            //                     });
+            //                 });
+            //             }
+            //             else if (response.eventType == WebsocketEventTypeEnum.INVALID_LOGIN_PHRASE)
+            //             {
+            //                 UnityMainThread.AddJob(() =>
+            //                 {
+            //                     string message = "Login failed with invalid personal secret login phrase, please try to login again.";
+            //                     loginComponent.allowInput = true;
+            //                     promptComponent.ShowPrompt("ERROR", message, () =>
+            //                     {
+            //                         promptComponent.active = false;
+            //                     });
+            //                 });
+            //             }
+            //             else
+            //             {
+            //                 websocketComponent.AddGeneralResponses(response.eventType, rawData);
+            //             }
         };
         generalSocket.OnError += (sender, e) =>
         {
