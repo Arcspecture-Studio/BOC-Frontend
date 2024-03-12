@@ -88,7 +88,10 @@ public class WebsocketSystem : MonoBehaviour
                     });
                 }
             }
-
+            else
+            {
+                websocketComponent.AddGeneralResponses(response.eventType, rawData);
+            }
             //             else if (response.eventType == WebsocketEventTypeEnum.CALL_API)
             //             {
             //                 General.WebsocketCallApiResponse callApiResponse = JsonConvert.DeserializeObject<General.WebsocketCallApiResponse>(rawData, JsonSerializerConfig.settings);
@@ -106,36 +109,6 @@ public class WebsocketSystem : MonoBehaviour
             //                 }
             //                 if (callApiResponse.id.IsNullOrEmpty()) callApiResponse.id = "";
             //                 webrequestComponent.rawResponses.Add(callApiResponse.id, new Response(callApiResponse.id, logStatus, callApiResponse.responseJsonString));
-            //             }
-            //             else if (response.eventType == WebsocketEventTypeEnum.ACCOUNT_OVERWRITE)
-            //             {
-            //                 UnityMainThread.AddJob(() =>
-            //                 {
-            //                     promptComponent.ShowPrompt("NOTICE", "Your account has been logged in from other device.", () =>
-            //                     {
-            // #if UNITY_EDITOR
-            //                         UnityEditor.EditorApplication.isPlaying = false;
-            // #else
-            //                         Application.Quit();
-            // #endif
-            //                     });
-            //                 });
-            //             }
-            //             else if (response.eventType == WebsocketEventTypeEnum.INVALID_LOGIN_PHRASE)
-            //             {
-            //                 UnityMainThread.AddJob(() =>
-            //                 {
-            //                     string message = "Login failed with invalid personal secret login phrase, please try to login again.";
-            //                     loginComponent.allowInput = true;
-            //                     promptComponent.ShowPrompt("ERROR", message, () =>
-            //                     {
-            //                         promptComponent.active = false;
-            //                     });
-            //                 });
-            //             }
-            //             else
-            //             {
-            //                 websocketComponent.AddGeneralResponses(response.eventType, rawData);
             //             }
         };
         generalSocket.OnError += (sender, e) =>

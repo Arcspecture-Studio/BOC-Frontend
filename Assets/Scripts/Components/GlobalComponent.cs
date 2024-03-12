@@ -28,4 +28,5 @@ public class GlobalComponent : MonoBehaviour
     public HideAllPanelComponent hideAllPanelComponent;
     public TradingBotComponent tradingBotComponent;
     public MiniPromptComponent miniPromptComponent;
+    public GetInitialDataComponent getInitialDataComponent;
 }
