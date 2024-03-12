@@ -1,4 +1,5 @@
 using UnityEngine;
+using WebSocketSharp;
 
 public class GetInitialDataSystem : MonoBehaviour
 {
@@ -18,5 +19,11 @@ public class GetInitialDataSystem : MonoBehaviour
     {
         General.WebsocketGeneralRequest request = new(WebsocketEventTypeEnum.GET_INITIAL_DATA);
         websocketComponent.generalRequests.Add(request);
+    }
+    void GetInitialDataResponse()
+    {
+        string jsonString = websocketComponent.RetrieveGeneralResponses(WebsocketEventTypeEnum.GET_INITIAL_DATA);
+        if (jsonString.IsNullOrEmpty()) return;
+        // TODO:
     }
 }
