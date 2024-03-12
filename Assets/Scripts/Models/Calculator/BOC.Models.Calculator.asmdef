@@ -1,7 +1,10 @@
 {
-    "name": "Configs",
+    "name": "BOC.Models.Calculator",
     "rootNamespace": "",
-    "references": [],
+    "references": [
+        "GUID:fd5c2314a4dbfdf438b1f9fd2cec138d",
+        "GUID:2e5e43ee6d53d854787725cc2a59d04a"
+    ],
     "includePlatforms": [],
     "excludePlatforms": [],
     "allowUnsafeCode": false,

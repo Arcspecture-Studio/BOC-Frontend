@@ -1,9 +1,7 @@
 {
-    "name": "Models.API.Webrequest",
+    "name": "BOC.Enums",
     "rootNamespace": "",
-    "references": [
-        "GUID:597d3c3569af0344d9a041a7eb28def8"
-    ],
+    "references": [],
     "includePlatforms": [],
     "excludePlatforms": [],
     "allowUnsafeCode": false,
