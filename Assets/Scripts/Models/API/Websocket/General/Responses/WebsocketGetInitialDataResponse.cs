@@ -1,23 +1,33 @@
+#pragma warning disable CS8632
+
 using System;
 using System.Collections.Generic;
 
 namespace General
 {
     [Serializable]
-    public class WebsocketGetInitialDataResponse<T> : WebsocketGeneralResponse
+    public class WebsocketGetInitialDataResponse<T> : WebsocketGetRuntimeDataResponse
     {
         public string defaultProfileId;
         public WebsocketGetInitialDataAccountData accountData;
-        public T platformData;
+        public T? platformData;
     }
     [Serializable]
     public class WebsocketGetInitialDataAccountData
     {
-        public Dictionary<string, WebsocketGetInitialDataProfileData> profiles;
+        public Dictionary<string, WebsocketGetInitialDataProfile> profiles;
         public List<PlatformEnum> platformList;
     }
     [Serializable]
-    public class WebsocketGetInitialDataProfileData
+    public class WebsocketGetInitialDataProfile
+    {
+        public string _id;
+        public string name;
+        public PlatformEnum activePlatform;
+        public WebsocketGetInitialDataProfilePerference preference;
+    }
+    [Serializable]
+    public class WebsocketGetInitialDataProfilePerference
     {
         public string symbol;
         public double lossPercentage;

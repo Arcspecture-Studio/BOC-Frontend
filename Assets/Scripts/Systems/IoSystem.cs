@@ -17,6 +17,7 @@ public class IoSystem : MonoBehaviour
     PreferenceComponent preferenceComponent;
     SettingPageComponent settingPageComponent;
     QuickTabComponent quickTabComponent;
+    GetInitialDataComponent getInitialDataComponent;
     string logPrefix = "[IoSystem] ";
     bool readTokenAdy = false;
 
@@ -32,6 +33,7 @@ public class IoSystem : MonoBehaviour
         preferenceComponent = GlobalComponent.instance.preferenceComponent;
         settingPageComponent = GlobalComponent.instance.settingPageComponent;
         quickTabComponent = GlobalComponent.instance.quickTabComponent;
+        getInitialDataComponent = GlobalComponent.instance.getInitialDataComponent;
 
         ioComponent.editorPath = Application.dataPath + Path.AltDirectorySeparatorChar + "Saved Data" + Path.AltDirectorySeparatorChar;
         ioComponent.persistentPath = Application.persistentDataPath + Path.AltDirectorySeparatorChar;
@@ -84,7 +86,7 @@ public class IoSystem : MonoBehaviour
             TokenFile data = JsonConvert.DeserializeObject<TokenFile>(jsonString, JsonSerializerConfig.settings);
             loginComponent.token = Encryption.Decrypt(data.token, SecretConfig.ENCRYPTION_ACCESS_TOKEN_32, data.cache);
             ioComponent.writeToken = true;
-            // TODO: get initial data
+            getInitialDataComponent.getInitialData = true;
         }
         catch (Exception ex)
         {

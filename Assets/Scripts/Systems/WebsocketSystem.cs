@@ -10,6 +10,7 @@ public class WebsocketSystem : MonoBehaviour
     IoComponent ioComponent;
     LoginComponent loginComponent;
     PromptComponent promptComponent;
+    GetInitialDataComponent getInitialDataComponent;
 
     WebSocket generalSocket;
     string logPrefix = "[WebsocketSystem] ";
@@ -21,6 +22,7 @@ public class WebsocketSystem : MonoBehaviour
         ioComponent = GlobalComponent.instance.ioComponent;
         loginComponent = GlobalComponent.instance.loginComponent;
         promptComponent = GlobalComponent.instance.promptComponent;
+        getInitialDataComponent = GlobalComponent.instance.getInitialDataComponent;
 
         websocketComponent.connectGeneralSocket = true;
     }
@@ -78,7 +80,7 @@ public class WebsocketSystem : MonoBehaviour
                     (rawData, JsonSerializerConfig.settings);
                     loginComponent.token = tokenResponse.token;
                     ioComponent.writeToken = true;
-                    // TODO: get initial data
+                    getInitialDataComponent.getInitialData = true;
                 }
                 else
                 {
