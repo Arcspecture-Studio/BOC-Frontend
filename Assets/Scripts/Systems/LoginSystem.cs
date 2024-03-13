@@ -27,11 +27,11 @@ public class LoginSystem : MonoBehaviour
     }
     void Update()
     {
-        GetCreateAccountResponse();
+        CreateAccountResponse();
         GetLoginResponse();
     }
 
-    void GetCreateAccountResponse()
+    void CreateAccountResponse()
     {
         string jsonString = websocketComponent.RetrieveGeneralResponses(WebsocketEventTypeEnum.CREATE_ACCOUNT);
         if (jsonString.IsNullOrEmpty()) return;
@@ -59,10 +59,10 @@ public class LoginSystem : MonoBehaviour
         }
         else
         {
+            AllowForInteraction(true);
             promptComponent.ShowPrompt(PromptConstant.ERROR, tokenResponse.message, () =>
             {
                 promptComponent.active = false;
-                AllowForInteraction(true);
             });
         }
     }

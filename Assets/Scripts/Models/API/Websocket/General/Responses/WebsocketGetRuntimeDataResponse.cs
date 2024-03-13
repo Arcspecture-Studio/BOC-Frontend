@@ -1,5 +1,3 @@
-#pragma warning disable CS8632
-
 using System;
 
 namespace General

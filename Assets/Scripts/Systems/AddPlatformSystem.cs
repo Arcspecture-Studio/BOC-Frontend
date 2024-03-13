@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using Newtonsoft.Json;
 using TMPro;
 using UnityEngine;
 using WebSocketSharp;
@@ -22,14 +23,18 @@ public class AddPlatformSystem : MonoBehaviour
         // Set initial state
         addPlatformComponent.gameObject.SetActive(false);
         addPlatformComponent.onEnable.AddListener(() => OnComponentEnable());
-        addPlatformComponent.platformsDropdown.onValueChanged.AddListener(value => UpdatePageStatus());
+        addPlatformComponent.platformsDropdown.onValueChanged.AddListener(value => UpdateObjectState());
         addPlatformComponent.proceedButton.onClick.AddListener(() => AddOrRemovePlatform());
         InitializePlatformDropdownOptions();
+    }
+    void Update()
+    {
+        AddPlatformResponse();
     }
     void OnComponentEnable()
     {
         if (addPlatformComponent == null) return;
-        UpdatePageStatus();
+        UpdateObjectState();
     }
     void InitializePlatformDropdownOptions()
     {
@@ -41,7 +46,7 @@ public class AddPlatformSystem : MonoBehaviour
         };
         addPlatformComponent.platformsDropdown.options = optionDataList;
     }
-    void UpdatePageStatus()
+    void UpdateObjectState()
     {
         addPlatformComponent.backButtonObj.SetActive(platformComponent.activePlatform > PlatformEnum.NONE);
         for (int i = 0; i < addPlatformComponent.platformsDropdown.options.Count; i++)
@@ -70,9 +75,8 @@ public class AddPlatformSystem : MonoBehaviour
                 addPlatformComponent.platformsDropdown.options[i].text = platformEnum.ToString();
                 if (addPlatformComponent.platformsDropdown.value == i)
                 {
-                    addPlatformComponent.apiKeyInput.text = "";
+                    ClearInput();
                     addPlatformComponent.apiKeyObj.SetActive(true);
-                    addPlatformComponent.apiSecretInput.text = "";
                     addPlatformComponent.apiSecretObj.SetActive(true);
                     addPlatformComponent.proceedButtonText.text = PromptConstant.CONNECT;
                 }
@@ -94,6 +98,19 @@ public class AddPlatformSystem : MonoBehaviour
             return true;
         }
         return false;
+    }
+    void AllowForInteraction(bool yes)
+    {
+        addPlatformComponent.platformsDropdown.interactable = yes;
+        addPlatformComponent.apiKeyInput.interactable = yes;
+        addPlatformComponent.apiSecretInput.interactable = yes;
+        addPlatformComponent.proceedButton.interactable = yes;
+        addPlatformComponent.backButton.interactable = yes;
+    }
+    void ClearInput()
+    {
+        addPlatformComponent.apiKeyInput.text = "";
+        addPlatformComponent.apiSecretInput.text = "";
     }
     void AddOrRemovePlatform()
     {
@@ -127,5 +144,37 @@ public class AddPlatformSystem : MonoBehaviour
             request = new General.WebsocketRemovePlatformRequest(loginComponent.token, selectedPlatform);
         }
         websocketComponent.generalRequests.Add(request);
+
+        AllowForInteraction(false);
+    }
+    void AddPlatformResponse()
+    {
+        string jsonString = websocketComponent.RetrieveGeneralResponses(WebsocketEventTypeEnum.ADD_PLATFORM);
+        if (jsonString.IsNullOrEmpty()) return;
+        websocketComponent.RemovesGeneralResponses(WebsocketEventTypeEnum.ADD_PLATFORM);
+        General.WebsocketAddPlatformResponse response = JsonConvert.DeserializeObject
+        <General.WebsocketAddPlatformResponse>(jsonString, JsonSerializerConfig.settings);
+
+        AllowForInteraction(true);
+        if (!response.success)
+        {
+            ClearInput();
+            promptComponent.ShowPrompt(PromptConstant.ERROR, response.message, () =>
+            {
+                promptComponent.active = false;
+            });
+            return;
+        }
+
+        switch (response.platform)
+        {
+            case PlatformEnum.BINANCE:
+                GlobalComponent.instance.binanceComponent.loggedIn = true;
+                break;
+            case PlatformEnum.BINANCE_TESTNET:
+                GlobalComponent.instance.binanceTestnetComponent.loggedIn = true;
+                break;
+        }
+        UpdateObjectState();
     }
 }
