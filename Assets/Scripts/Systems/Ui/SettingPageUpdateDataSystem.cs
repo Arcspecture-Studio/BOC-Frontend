@@ -122,9 +122,9 @@ public class SettingPageUpdateDataSystem : MonoBehaviour
     }
     void UpdateInfo()
     {
-        if (activePlatform != platformComponent.tradingPlatform)
+        if (activePlatform != platformComponent.activePlatform)
         {
-            activePlatform = platformComponent.tradingPlatform;
+            activePlatform = platformComponent.activePlatform;
             settingPageComponent.activePlatformText.text = activePlatform.ToString().Replace("_", " ");
         }
         if (platformComponent.walletBalances != null)

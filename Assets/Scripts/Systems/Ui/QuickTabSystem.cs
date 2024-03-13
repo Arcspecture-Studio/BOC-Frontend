@@ -64,7 +64,7 @@ public class QuickTabSystem : MonoBehaviour
             double normalizedMarginWeightDistributionValue = preferenceComponent.marginWeightDistributionValue * OrderConfig.MARGIN_WEIGHT_DISTRIBUTION_RANGE;
             double entryPrice = quickTabComponent.entryPriceInput.text.IsNullOrEmpty() ? -1 : double.Parse(quickTabComponent.entryPriceInput.text);
             websocketComponent.generalRequests.Add(new General.WebsocketSaveQuickOrderRequest(
-               platformComponent.tradingPlatform,
+               platformComponent.activePlatform,
                preferenceComponent.symbol,
                preferenceComponent.lossPercentage,
                preferenceComponent.lossAmount,

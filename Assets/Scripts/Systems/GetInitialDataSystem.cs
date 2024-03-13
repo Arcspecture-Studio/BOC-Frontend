@@ -7,12 +7,16 @@ public class GetInitialDataSystem : MonoBehaviour
     GetInitialDataComponent getInitialDataComponent;
     WebsocketComponent websocketComponent;
     LoginComponent loginComponent;
+    AddPlatformComponent addPlatformComponent;
+    PlatformComponent platformComponent;
 
     void Start()
     {
         getInitialDataComponent = GlobalComponent.instance.getInitialDataComponent;
         websocketComponent = GlobalComponent.instance.websocketComponent;
         loginComponent = GlobalComponent.instance.loginComponent;
+        addPlatformComponent = GlobalComponent.instance.addPlatformComponent;
+        platformComponent = GlobalComponent.instance.platformComponent;
 
         getInitialDataComponent.onChange_getInitialData.AddListener(GetInitialData);
     }
@@ -39,11 +43,11 @@ public class GetInitialDataSystem : MonoBehaviour
 
         if (response.accountData.platformList.Count == 0)
         {
-            // TODO: add platform
+            addPlatformComponent.gameObject.SetActive(true);
             return;
         }
-        PlatformEnum activePlatform = response.accountData.profiles[response.defaultProfileId].activePlatform.Value;
-        switch (activePlatform)
+        platformComponent.activePlatform = response.accountData.profiles[response.defaultProfileId].activePlatform.Value;
+        switch (platformComponent.activePlatform)
         {
             case PlatformEnum.BINANCE:
             case PlatformEnum.BINANCE_TESTNET:

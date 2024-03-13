@@ -16,8 +16,6 @@ namespace General
                 case PlatformEnum.BINANCE_TESTNET:
                     request = new Binance.WebrequestFeeRequest(true, apiSecret, symbol);
                     break;
-                case PlatformEnum.MEXC:
-                    break;
             }
             return request;
         }

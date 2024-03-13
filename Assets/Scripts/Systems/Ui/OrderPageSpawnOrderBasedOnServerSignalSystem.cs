@@ -44,11 +44,11 @@ public class OrderPageSpawnOrderBasedOnServerSignalSystem : MonoBehaviour
             #endregion
 
             #region Add into retrieveOrdersComponent.ordersFromServer[platformComponent.tradingPlatform]
-            if (retrieveOrdersComponent.ordersFromServer.ContainsKey(platformComponent.tradingPlatform))
+            if (retrieveOrdersComponent.ordersFromServer.ContainsKey(platformComponent.activePlatform))
             {
-                if (!retrieveOrdersComponent.ordersFromServer[platformComponent.tradingPlatform].TryAdd(response.orderId, response.order))
+                if (!retrieveOrdersComponent.ordersFromServer[platformComponent.activePlatform].TryAdd(response.orderId, response.order))
                 {
-                    retrieveOrdersComponent.ordersFromServer[platformComponent.tradingPlatform][response.orderId] = response.order;
+                    retrieveOrdersComponent.ordersFromServer[platformComponent.activePlatform][response.orderId] = response.order;
                 }
             }
             #endregion

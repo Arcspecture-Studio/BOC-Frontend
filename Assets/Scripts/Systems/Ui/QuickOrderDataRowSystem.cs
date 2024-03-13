@@ -28,7 +28,7 @@ public class QuickOrderDataRowSystem : MonoBehaviour
     }
     void OnClick_CloseButton()
     {
-        websocketComponent.generalRequests.Add(new General.WebsocketSaveQuickOrderRequest(platformComponent.tradingPlatform, quickOrderDataRowComponent.orderId));
+        websocketComponent.generalRequests.Add(new General.WebsocketSaveQuickOrderRequest(platformComponent.activePlatform, quickOrderDataRowComponent.orderId));
         quickOrderDataRowComponent.closeButton.interactable = false;
     }
 }

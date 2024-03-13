@@ -21,7 +21,7 @@ public class LoginSystem : MonoBehaviour
         loginComponent.onChange_loginStatus.AddListener(SwitchPageBasedOnLoginStatus);
 
         // Set initial state
-        loginComponent.pageObj.SetActive(true);
+        loginComponent.gameObject.SetActive(true);
         loginComponent.loginStatus = LoginPageStatusEnum.LOGGED_IN;
         AllowForInteraction(false);
     }
@@ -83,15 +83,15 @@ public class LoginSystem : MonoBehaviour
             (loginComponent.loginStatus == LoginPageStatusEnum.REGISTER && loginComponent.confirmPasswordInput.text.IsNullOrEmpty())
         )
         {
-            string message = "Password can't be empty.";
+            string message = PromptConstant.PASSWORD_EMPTY;
             if (loginComponent.emailInput.text.IsNullOrEmpty())
             {
-                message = "Email can't be empty.";
+                message = PromptConstant.EMAIL_EMPTY;
             }
             else if (!loginComponent.emailInput.text.Contains("@") ||
                     !loginComponent.emailInput.text.Contains("."))
             {
-                message = "Email format invalid";
+                message = PromptConstant.EMAIL_INVALID;
             }
             promptComponent.ShowPrompt(PromptConstant.ERROR, message, () =>
             {
@@ -111,9 +111,9 @@ public class LoginSystem : MonoBehaviour
         switch (loginComponent.loginStatus)
         {
             case LoginPageStatusEnum.REGISTER:
-                loginComponent.proceedButtonText.text = loginComponent.registerKeyword;
+                loginComponent.proceedButtonText.text = PromptConstant.REGISTER;
                 loginComponent.proceedButton.onClick.AddListener(Register);
-                loginComponent.switchButtonText.text = loginComponent.switchToLoginKeyword;
+                loginComponent.switchButtonText.text = PromptConstant.SWITCH_TO_LOGIN;
                 loginComponent.switchButton.onClick.AddListener(SwitchToLogin);
                 loginComponent.switchButtonObj.SetActive(true);
                 loginComponent.emailInput.interactable = true;
@@ -121,9 +121,9 @@ public class LoginSystem : MonoBehaviour
                 loginComponent.confirmPasswordInput.interactable = true;
                 break;
             case LoginPageStatusEnum.LOGIN:
-                loginComponent.proceedButtonText.text = loginComponent.loginKeyword;
+                loginComponent.proceedButtonText.text = PromptConstant.LOGIN;
                 loginComponent.proceedButton.onClick.AddListener(Login);
-                loginComponent.switchButtonText.text = loginComponent.switchToRegisterKeyword;
+                loginComponent.switchButtonText.text = PromptConstant.SWITCH_TO_REGISTER;
                 loginComponent.switchButton.onClick.AddListener(SwitchToRegister);
                 loginComponent.switchButtonObj.SetActive(true);
                 loginComponent.emailInput.interactable = true;
@@ -131,7 +131,7 @@ public class LoginSystem : MonoBehaviour
                 loginComponent.confirmPasswordInput.interactable = true;
                 break;
             case LoginPageStatusEnum.LOGGED_IN:
-                loginComponent.proceedButtonText.text = loginComponent.logoutKeyword;
+                loginComponent.proceedButtonText.text = PromptConstant.LOGOUT;
                 loginComponent.proceedButton.onClick.AddListener(Logout);
                 loginComponent.switchButtonObj.SetActive(false);
                 loginComponent.emailInput.interactable = false;

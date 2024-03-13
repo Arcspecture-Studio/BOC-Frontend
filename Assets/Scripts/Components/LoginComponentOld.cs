@@ -29,7 +29,7 @@ public class LoginComponentOld : MonoBehaviour
         get
         {
             string data = null;
-            switch (GlobalComponent.instance.platformComponent.tradingPlatform)
+            switch (GlobalComponent.instance.platformComponent.activePlatform)
             {
                 case PlatformEnum.BINANCE:
                     data = GlobalComponent.instance.binanceComponent.loginPhrase;
@@ -37,22 +37,18 @@ public class LoginComponentOld : MonoBehaviour
                 case PlatformEnum.BINANCE_TESTNET:
                     data = GlobalComponent.instance.binanceTestnetComponent.loginPhrase;
                     break;
-                case PlatformEnum.MEXC:
-                    break;
             }
             return data;
         }
         set
         {
-            switch (GlobalComponent.instance.platformComponent.tradingPlatform)
+            switch (GlobalComponent.instance.platformComponent.activePlatform)
             {
                 case PlatformEnum.BINANCE:
                     GlobalComponent.instance.binanceComponent.loginPhrase = value;
                     break;
                 case PlatformEnum.BINANCE_TESTNET:
                     GlobalComponent.instance.binanceTestnetComponent.loginPhrase = value;
-                    break;
-                case PlatformEnum.MEXC:
                     break;
             }
         }
@@ -62,7 +58,7 @@ public class LoginComponentOld : MonoBehaviour
         get
         {
             bool data = false;
-            switch (GlobalComponent.instance.platformComponent.tradingPlatform)
+            switch (GlobalComponent.instance.platformComponent.activePlatform)
             {
                 case PlatformEnum.BINANCE:
                     data = GlobalComponent.instance.binanceComponent.loggedIn;
@@ -70,22 +66,18 @@ public class LoginComponentOld : MonoBehaviour
                 case PlatformEnum.BINANCE_TESTNET:
                     data = GlobalComponent.instance.binanceTestnetComponent.loggedIn;
                     break;
-                case PlatformEnum.MEXC:
-                    break;
             }
             return data;
         }
         set
         {
-            switch (GlobalComponent.instance.platformComponent.tradingPlatform)
+            switch (GlobalComponent.instance.platformComponent.activePlatform)
             {
                 case PlatformEnum.BINANCE:
                     GlobalComponent.instance.binanceComponent.loggedIn = value;
                     break;
                 case PlatformEnum.BINANCE_TESTNET:
                     GlobalComponent.instance.binanceTestnetComponent.loggedIn = value;
-                    break;
-                case PlatformEnum.MEXC:
                     break;
             }
         }

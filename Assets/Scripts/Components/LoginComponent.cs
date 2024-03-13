@@ -6,7 +6,6 @@ using UnityEngine.UI;
 public class LoginComponent : MonoBehaviour
 {
     [Header("Reference")]
-    public GameObject pageObj;
     public TMP_InputField emailInput;
     public TMP_InputField passwordInput;
     public TMP_InputField confirmPasswordInput;
@@ -16,13 +15,6 @@ public class LoginComponent : MonoBehaviour
     public Button switchButton;
     public TMP_Text switchButtonText;
     public GameObject switchButtonObj;
-
-    [Header("Config")]
-    public string loginKeyword;
-    public string registerKeyword;
-    public string switchToRegisterKeyword;
-    public string switchToLoginKeyword;
-    public string logoutKeyword;
 
     [Header("Runtime")]
     [SerializeField] private LoginPageStatusEnum _loginStatus;

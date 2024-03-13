@@ -38,7 +38,7 @@ public class LoginSystemOld : MonoBehaviour
             // ioComponent.writeApiKey = true;
             UpdateDropdownOptions();
 
-            General.WebsocketLogoutRequest request = new General.WebsocketLogoutRequest(platformComponent.tradingPlatform);
+            General.WebsocketLogoutRequest request = new General.WebsocketLogoutRequest(platformComponent.activePlatform);
             websocketComponent.generalRequests.Add(request);
         });
 
@@ -92,12 +92,8 @@ public class LoginSystemOld : MonoBehaviour
         if (binanceTestnetComponent.loggedIn) binanceTestnet += " (Logged In)";
         optionDataList.Add(new TMP_Dropdown.OptionData(binanceTestnet));
 
-        string mexc = PlatformEnum.MEXC.ToString();
-        if (true) mexc += " (Coming Soon)"; // PENDING: replace with mexcComponent.loggedIn
-        optionDataList.Add(new TMP_Dropdown.OptionData(mexc));
-
         loginComponent.platformsDropdown.AddOptions(optionDataList);
-        int tradingPlatform = (int)platformComponent.tradingPlatform;
+        int tradingPlatform = (int)platformComponent.activePlatform;
         if (loginComponent.platformsDropdown.value == tradingPlatform)
         {
             OnPlatformValueChanged(tradingPlatform);
@@ -112,22 +108,16 @@ public class LoginSystemOld : MonoBehaviour
         switch (value)
         {
             case ((int)PlatformEnum.BINANCE):
-                platformComponent.tradingPlatform = PlatformEnum.BINANCE;
+                platformComponent.activePlatform = PlatformEnum.BINANCE;
                 UpdateUiBehaviour(binanceComponent.loggedIn);
                 loginComponent.loginButton.interactable = true;
                 loginComponent.logoutButton.interactable = true;
                 break;
             case ((int)PlatformEnum.BINANCE_TESTNET):
-                platformComponent.tradingPlatform = PlatformEnum.BINANCE_TESTNET;
+                platformComponent.activePlatform = PlatformEnum.BINANCE_TESTNET;
                 UpdateUiBehaviour(binanceTestnetComponent.loggedIn);
                 loginComponent.loginButton.interactable = true;
                 loginComponent.logoutButton.interactable = true;
-                break;
-            case ((int)PlatformEnum.MEXC):
-                platformComponent.tradingPlatform = PlatformEnum.MEXC;
-                UpdateUiBehaviour(true); // PENDING: replace with mexcComponent.loggedIn
-                loginComponent.loginButton.interactable = false;
-                loginComponent.logoutButton.interactable = false;
                 break;
         }
         RemoveInputText();

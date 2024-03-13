@@ -26,7 +26,7 @@ public class OrderPageTakeProfitTrailingCallbackPercentageSystem : MonoBehaviour
         if (orderPageComponent == null) return;
         orderPageSystem = orderPageComponent.GetComponent<OrderPageSystem>();
 
-        switch (platformComponent.tradingPlatform)
+        switch (platformComponent.activePlatform)
         {
             case PlatformEnum.BINANCE:
             case PlatformEnum.BINANCE_TESTNET:
@@ -65,7 +65,7 @@ public class OrderPageTakeProfitTrailingCallbackPercentageSystem : MonoBehaviour
     {
         if (settingPageComponent == null) return;
 
-        switch (platformComponent.tradingPlatform)
+        switch (platformComponent.activePlatform)
         {
             case PlatformEnum.BINANCE:
             case PlatformEnum.BINANCE_TESTNET:

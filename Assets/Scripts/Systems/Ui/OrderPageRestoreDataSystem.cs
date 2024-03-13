@@ -44,11 +44,11 @@ public class OrderPageRestoreDataSystem : MonoBehaviour
     }
     void ReadData()
     {
-        if (retrieveOrdersComponent.ordersFromServer.ContainsKey(platformComponent.tradingPlatform))
+        if (retrieveOrdersComponent.ordersFromServer.ContainsKey(platformComponent.activePlatform))
         {
-            if (retrieveOrdersComponent.ordersFromServer[platformComponent.tradingPlatform].ContainsKey(orderPageComponent.orderId))
+            if (retrieveOrdersComponent.ordersFromServer[platformComponent.activePlatform].ContainsKey(orderPageComponent.orderId))
             {
-                orderData = retrieveOrdersComponent.ordersFromServer[platformComponent.tradingPlatform][orderPageComponent.orderId];
+                orderData = retrieveOrdersComponent.ordersFromServer[platformComponent.activePlatform][orderPageComponent.orderId];
                 return;
             }
         }

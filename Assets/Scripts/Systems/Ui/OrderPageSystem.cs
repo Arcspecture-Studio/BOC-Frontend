@@ -432,7 +432,7 @@ public class OrderPageSystem : MonoBehaviour
                 orderPageComponent.resultComponent.orderInfoDataObject.transform.GetChild(3).GetComponent<TMP_Text>().text = orderPageComponent.orderStatus.ToString();
             if (!response.errorJsonString.IsNullOrEmpty())
             {
-                switch (platformComponent.tradingPlatform)
+                switch (platformComponent.activePlatform)
                 {
                     case PlatformEnum.BINANCE:
                     case PlatformEnum.BINANCE_TESTNET:
@@ -454,7 +454,7 @@ public class OrderPageSystem : MonoBehaviour
             orderPageComponent.saveToServer = false;
             websocketComponent.generalRequests.Add(new General.WebsocketSaveOrderRequest(
                 orderPageComponent.orderId,
-                platformComponent.tradingPlatform,
+                platformComponent.activePlatform,
                 orderPageComponent.marginCalculator,
                 orderPageComponent.symbolDropdownComponent.selectedSymbol,
                 (TakeProfitTypeEnum)orderPageComponent.takeProfitTypeDropdown.value,
@@ -466,7 +466,7 @@ public class OrderPageSystem : MonoBehaviour
             orderPageComponent.updateToServer = false;
             websocketComponent.generalRequests.Add(new General.WebsocketSaveOrderRequest(
                 orderPageComponent.orderId,
-                platformComponent.tradingPlatform,
+                platformComponent.activePlatform,
                 orderPageComponent.marginCalculator,
                 (TakeProfitTypeEnum)orderPageComponent.takeProfitTypeDropdown.value,
                 (OrderTypeEnum)orderPageComponent.orderTypeDropdown.value
@@ -477,7 +477,7 @@ public class OrderPageSystem : MonoBehaviour
             orderPageComponent.submitToServer = false;
             websocketComponent.generalRequests.Add(new General.WebsocketSaveOrderRequest(
                orderPageComponent.orderId,
-               platformComponent.tradingPlatform,
+               platformComponent.activePlatform,
                true
             ));
         }
@@ -486,7 +486,7 @@ public class OrderPageSystem : MonoBehaviour
             orderPageComponent.deleteFromServer = false;
             websocketComponent.generalRequests.Add(new General.WebsocketSaveOrderRequest(
                 orderPageComponent.orderId,
-                platformComponent.tradingPlatform
+                platformComponent.activePlatform
             ));
         }
     }

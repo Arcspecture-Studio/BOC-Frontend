@@ -35,13 +35,13 @@ public class RetrieveOrdersSystem : MonoBehaviour
         if (retrieveOrdersString.IsNullOrEmpty()) return;
         General.WebsocketRetrieveOrdersResponse response = JsonConvert.DeserializeObject<General.WebsocketRetrieveOrdersResponse>(retrieveOrdersString, JsonSerializerConfig.settings);
         websocketComponent.RemovesGeneralResponses(WebsocketEventTypeEnum.RETRIEVE_ORDERS);
-        if (!retrieveOrdersComponent.ordersFromServer.TryAdd(platformComponent.tradingPlatform, response.orders))
+        if (!retrieveOrdersComponent.ordersFromServer.TryAdd(platformComponent.activePlatform, response.orders))
         {
-            retrieveOrdersComponent.ordersFromServer[platformComponent.tradingPlatform] = response.orders;
+            retrieveOrdersComponent.ordersFromServer[platformComponent.activePlatform] = response.orders;
         }
-        if (!retrieveOrdersComponent.quickOrdersFromServer.TryAdd(platformComponent.tradingPlatform, response.quickOrders))
+        if (!retrieveOrdersComponent.quickOrdersFromServer.TryAdd(platformComponent.activePlatform, response.quickOrders))
         {
-            retrieveOrdersComponent.quickOrdersFromServer[platformComponent.tradingPlatform] = response.quickOrders;
+            retrieveOrdersComponent.quickOrdersFromServer[platformComponent.activePlatform] = response.quickOrders;
         }
         ordersReceived = true;
     }
@@ -75,9 +75,9 @@ public class RetrieveOrdersSystem : MonoBehaviour
 
         #region Get orders according to platform
         yield return new WaitUntil(() => ordersReceived);
-        Dictionary<string, General.WebsocketRetrieveOrdersData> ordersFromServer = retrieveOrdersComponent.ordersFromServer.ContainsKey(platformComponent.tradingPlatform) ?
-            retrieveOrdersComponent.ordersFromServer[platformComponent.tradingPlatform] : null;
-        quickTabComponent.quickOrdersFromServer = retrieveOrdersComponent.quickOrdersFromServer.ContainsKey(platformComponent.tradingPlatform) ? retrieveOrdersComponent.quickOrdersFromServer[platformComponent.tradingPlatform] : null;
+        Dictionary<string, General.WebsocketRetrieveOrdersData> ordersFromServer = retrieveOrdersComponent.ordersFromServer.ContainsKey(platformComponent.activePlatform) ?
+            retrieveOrdersComponent.ordersFromServer[platformComponent.activePlatform] : null;
+        quickTabComponent.quickOrdersFromServer = retrieveOrdersComponent.quickOrdersFromServer.ContainsKey(platformComponent.activePlatform) ? retrieveOrdersComponent.quickOrdersFromServer[platformComponent.activePlatform] : null;
         #endregion
 
         #region Instantiate orders
@@ -107,8 +107,8 @@ public class RetrieveOrdersSystem : MonoBehaviour
 
         #region Get orders according to platform
         yield return new WaitUntil(() => ordersReceived);
-        Dictionary<string, General.WebsocketRetrieveOrdersData> ordersFromServer = retrieveOrdersComponent.ordersFromServer.ContainsKey(platformComponent.tradingPlatform) ?
-            retrieveOrdersComponent.ordersFromServer[platformComponent.tradingPlatform] : null;
+        Dictionary<string, General.WebsocketRetrieveOrdersData> ordersFromServer = retrieveOrdersComponent.ordersFromServer.ContainsKey(platformComponent.activePlatform) ?
+            retrieveOrdersComponent.ordersFromServer[platformComponent.activePlatform] : null;
         #endregion
 
         #region Update existing order status 

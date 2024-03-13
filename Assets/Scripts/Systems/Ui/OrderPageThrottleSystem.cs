@@ -257,7 +257,7 @@ public class OrderPageThrottleSystem : MonoBehaviour
             orderPageThrottleComponent.orderStatusError = response.statusError;
             if (!response.errorJsonString.IsNullOrEmpty())
             {
-                switch (platformComponent.tradingPlatform)
+                switch (platformComponent.activePlatform)
                 {
                     case PlatformEnum.BINANCE:
                     case PlatformEnum.BINANCE_TESTNET:
@@ -280,7 +280,7 @@ public class OrderPageThrottleSystem : MonoBehaviour
             websocketComponent.generalRequests.Add(new General.WebsocketSaveThrottleOrderRequest(
                 orderPageThrottleComponent.orderId,
                 orderPageComponent.orderId,
-                platformComponent.tradingPlatform,
+                platformComponent.activePlatform,
                 orderPageThrottleComponent.throttleCalculator,
                 (OrderTypeEnum)orderPageThrottleComponent.orderTypeDropdown.value
             ));
@@ -291,7 +291,7 @@ public class OrderPageThrottleSystem : MonoBehaviour
             websocketComponent.generalRequests.Add(new General.WebsocketSaveThrottleOrderRequest(
                 orderPageThrottleComponent.orderId,
                 orderPageComponent.orderId,
-                platformComponent.tradingPlatform,
+                platformComponent.activePlatform,
                 (OrderTypeEnum)orderPageThrottleComponent.orderTypeDropdown.value
             ));
         }
@@ -301,7 +301,7 @@ public class OrderPageThrottleSystem : MonoBehaviour
             websocketComponent.generalRequests.Add(new General.WebsocketSaveThrottleOrderRequest(
                 orderPageThrottleComponent.orderId,
                 orderPageComponent.orderId,
-                platformComponent.tradingPlatform,
+                platformComponent.activePlatform,
                 true
             ));
         }
@@ -311,7 +311,7 @@ public class OrderPageThrottleSystem : MonoBehaviour
             websocketComponent.generalRequests.Add(new General.WebsocketSaveThrottleOrderRequest(
                 orderPageThrottleComponent.orderId,
                 orderPageComponent.orderId,
-                platformComponent.tradingPlatform
+                platformComponent.activePlatform
             ));
         }
     }

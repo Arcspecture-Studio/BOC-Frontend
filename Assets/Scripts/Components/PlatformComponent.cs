@@ -3,12 +3,12 @@ using UnityEngine;
 
 public class PlatformComponent : MonoBehaviour
 {
-    public PlatformEnum tradingPlatform;
+    public PlatformEnum activePlatform;
     public bool testnet
     {
         get
         {
-            return tradingPlatform.ToString().Contains("TESTNET");
+            return activePlatform.ToString().Contains("TESTNET");
         }
     }
     public string apiKey
@@ -16,7 +16,7 @@ public class PlatformComponent : MonoBehaviour
         get
         {
             string data = string.Empty;
-            switch (tradingPlatform)
+            switch (activePlatform)
             {
                 case PlatformEnum.BINANCE:
                     data = GlobalComponent.instance.binanceComponent.apiKey;
@@ -24,22 +24,18 @@ public class PlatformComponent : MonoBehaviour
                 case PlatformEnum.BINANCE_TESTNET:
                     data = GlobalComponent.instance.binanceTestnetComponent.apiKey;
                     break;
-                case PlatformEnum.MEXC:
-                    break;
             }
             return data;
         }
         set
         {
-            switch (tradingPlatform)
+            switch (activePlatform)
             {
                 case PlatformEnum.BINANCE:
                     GlobalComponent.instance.binanceComponent.apiKey = value;
                     break;
                 case PlatformEnum.BINANCE_TESTNET:
                     GlobalComponent.instance.binanceTestnetComponent.apiKey = value;
-                    break;
-                case PlatformEnum.MEXC:
                     break;
             }
         }
@@ -49,7 +45,7 @@ public class PlatformComponent : MonoBehaviour
         get
         {
             string data = string.Empty;
-            switch (tradingPlatform)
+            switch (activePlatform)
             {
                 case PlatformEnum.BINANCE:
                     data = GlobalComponent.instance.binanceComponent.apiSecret;
@@ -57,22 +53,18 @@ public class PlatformComponent : MonoBehaviour
                 case PlatformEnum.BINANCE_TESTNET:
                     data = GlobalComponent.instance.binanceTestnetComponent.apiSecret;
                     break;
-                case PlatformEnum.MEXC:
-                    break;
             }
             return data;
         }
         set
         {
-            switch (tradingPlatform)
+            switch (activePlatform)
             {
                 case PlatformEnum.BINANCE:
                     GlobalComponent.instance.binanceComponent.apiSecret = value;
                     break;
                 case PlatformEnum.BINANCE_TESTNET:
                     GlobalComponent.instance.binanceTestnetComponent.apiSecret = value;
-                    break;
-                case PlatformEnum.MEXC:
                     break;
             }
         }
@@ -82,7 +74,7 @@ public class PlatformComponent : MonoBehaviour
         get
         {
             List<string> data = new List<string>();
-            switch (tradingPlatform)
+            switch (activePlatform)
             {
                 case PlatformEnum.BINANCE:
                     data = GlobalComponent.instance.binanceComponent.allSymbols;
@@ -90,22 +82,18 @@ public class PlatformComponent : MonoBehaviour
                 case PlatformEnum.BINANCE_TESTNET:
                     data = GlobalComponent.instance.binanceTestnetComponent.allSymbols;
                     break;
-                case PlatformEnum.MEXC:
-                    break;
             }
             return data;
         }
         set
         {
-            switch (tradingPlatform)
+            switch (activePlatform)
             {
                 case PlatformEnum.BINANCE:
                     GlobalComponent.instance.binanceComponent.allSymbols = value;
                     break;
                 case PlatformEnum.BINANCE_TESTNET:
                     GlobalComponent.instance.binanceTestnetComponent.allSymbols = value;
-                    break;
-                case PlatformEnum.MEXC:
                     break;
             }
         }
@@ -115,7 +103,7 @@ public class PlatformComponent : MonoBehaviour
         get
         {
             Dictionary<string, string> data = new();
-            switch (tradingPlatform)
+            switch (activePlatform)
             {
                 case PlatformEnum.BINANCE:
                     data = GlobalComponent.instance.binanceComponent.marginAssets;
@@ -123,22 +111,18 @@ public class PlatformComponent : MonoBehaviour
                 case PlatformEnum.BINANCE_TESTNET:
                     data = GlobalComponent.instance.binanceTestnetComponent.marginAssets;
                     break;
-                case PlatformEnum.MEXC:
-                    break;
             }
             return data;
         }
         set
         {
-            switch (tradingPlatform)
+            switch (activePlatform)
             {
                 case PlatformEnum.BINANCE:
                     GlobalComponent.instance.binanceComponent.marginAssets = value;
                     break;
                 case PlatformEnum.BINANCE_TESTNET:
                     GlobalComponent.instance.binanceTestnetComponent.marginAssets = value;
-                    break;
-                case PlatformEnum.MEXC:
                     break;
             }
         }
@@ -148,7 +132,7 @@ public class PlatformComponent : MonoBehaviour
         get
         {
             Dictionary<string, long> data = new Dictionary<string, long>();
-            switch (tradingPlatform)
+            switch (activePlatform)
             {
                 case PlatformEnum.BINANCE:
                     data = GlobalComponent.instance.binanceComponent.quantityPrecisions;
@@ -156,22 +140,18 @@ public class PlatformComponent : MonoBehaviour
                 case PlatformEnum.BINANCE_TESTNET:
                     data = GlobalComponent.instance.binanceTestnetComponent.quantityPrecisions;
                     break;
-                case PlatformEnum.MEXC:
-                    break;
             }
             return data;
         }
         set
         {
-            switch (tradingPlatform)
+            switch (activePlatform)
             {
                 case PlatformEnum.BINANCE:
                     GlobalComponent.instance.binanceComponent.quantityPrecisions = value;
                     break;
                 case PlatformEnum.BINANCE_TESTNET:
                     GlobalComponent.instance.binanceTestnetComponent.quantityPrecisions = value;
-                    break;
-                case PlatformEnum.MEXC:
                     break;
             }
         }
@@ -181,7 +161,7 @@ public class PlatformComponent : MonoBehaviour
         get
         {
             Dictionary<string, long> data = new Dictionary<string, long>();
-            switch (tradingPlatform)
+            switch (activePlatform)
             {
                 case PlatformEnum.BINANCE:
                     data = GlobalComponent.instance.binanceComponent.pricePrecisions;
@@ -189,22 +169,18 @@ public class PlatformComponent : MonoBehaviour
                 case PlatformEnum.BINANCE_TESTNET:
                     data = GlobalComponent.instance.binanceTestnetComponent.pricePrecisions;
                     break;
-                case PlatformEnum.MEXC:
-                    break;
             }
             return data;
         }
         set
         {
-            switch (tradingPlatform)
+            switch (activePlatform)
             {
                 case PlatformEnum.BINANCE:
                     GlobalComponent.instance.binanceComponent.pricePrecisions = value;
                     break;
                 case PlatformEnum.BINANCE_TESTNET:
                     GlobalComponent.instance.binanceTestnetComponent.pricePrecisions = value;
-                    break;
-                case PlatformEnum.MEXC:
                     break;
             }
         }
@@ -214,7 +190,7 @@ public class PlatformComponent : MonoBehaviour
         get
         {
             Dictionary<string, double?> data = new Dictionary<string, double?>();
-            switch (tradingPlatform)
+            switch (activePlatform)
             {
                 case PlatformEnum.BINANCE:
                     data = GlobalComponent.instance.binanceComponent.fees;
@@ -222,22 +198,18 @@ public class PlatformComponent : MonoBehaviour
                 case PlatformEnum.BINANCE_TESTNET:
                     data = GlobalComponent.instance.binanceTestnetComponent.fees;
                     break;
-                case PlatformEnum.MEXC:
-                    break;
             }
             return data;
         }
         set
         {
-            switch (tradingPlatform)
+            switch (activePlatform)
             {
                 case PlatformEnum.BINANCE:
                     GlobalComponent.instance.binanceComponent.fees = value;
                     break;
                 case PlatformEnum.BINANCE_TESTNET:
                     GlobalComponent.instance.binanceTestnetComponent.fees = value;
-                    break;
-                case PlatformEnum.MEXC:
                     break;
             }
         }
@@ -247,7 +219,7 @@ public class PlatformComponent : MonoBehaviour
         get
         {
             Dictionary<string, double> data = new Dictionary<string, double>();
-            switch (tradingPlatform)
+            switch (activePlatform)
             {
                 case PlatformEnum.BINANCE:
                     data = GlobalComponent.instance.binanceComponent.walletBalances;
@@ -255,22 +227,18 @@ public class PlatformComponent : MonoBehaviour
                 case PlatformEnum.BINANCE_TESTNET:
                     data = GlobalComponent.instance.binanceTestnetComponent.walletBalances;
                     break;
-                case PlatformEnum.MEXC:
-                    break;
             }
             return data;
         }
         set
         {
-            switch (tradingPlatform)
+            switch (activePlatform)
             {
                 case PlatformEnum.BINANCE:
                     GlobalComponent.instance.binanceComponent.walletBalances = value;
                     break;
                 case PlatformEnum.BINANCE_TESTNET:
                     GlobalComponent.instance.binanceTestnetComponent.walletBalances = value;
-                    break;
-                case PlatformEnum.MEXC:
                     break;
             }
         }
@@ -280,7 +248,7 @@ public class PlatformComponent : MonoBehaviour
         get
         {
             bool data = false;
-            switch (tradingPlatform)
+            switch (activePlatform)
             {
                 case PlatformEnum.BINANCE:
                     data = GlobalComponent.instance.binanceComponent.getBalance;
@@ -288,22 +256,18 @@ public class PlatformComponent : MonoBehaviour
                 case PlatformEnum.BINANCE_TESTNET:
                     data = GlobalComponent.instance.binanceTestnetComponent.getBalance;
                     break;
-                case PlatformEnum.MEXC:
-                    break;
             }
             return data;
         }
         set
         {
-            switch (tradingPlatform)
+            switch (activePlatform)
             {
                 case PlatformEnum.BINANCE:
                     GlobalComponent.instance.binanceComponent.getBalance = value;
                     break;
                 case PlatformEnum.BINANCE_TESTNET:
                     GlobalComponent.instance.binanceTestnetComponent.getBalance = value;
-                    break;
-                case PlatformEnum.MEXC:
                     break;
             }
         }

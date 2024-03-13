@@ -141,7 +141,7 @@ public class WebrequestSystem : MonoBehaviour
             {
                 JObject response = JsonConvert.DeserializeObject<JObject>(rawResponse.responseJsonString, JsonSerializerConfig.settings);
                 string message = null;
-                switch (platformComponent.tradingPlatform)
+                switch (platformComponent.activePlatform)
                 {
                     case PlatformEnum.BINANCE:
                     case PlatformEnum.BINANCE_TESTNET:

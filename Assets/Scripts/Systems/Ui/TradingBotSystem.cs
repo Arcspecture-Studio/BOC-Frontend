@@ -34,12 +34,12 @@ public class TradingBotSystem : MonoBehaviour
         switch (value)
         {
             case BotTypeEnum.NONE:
-                websocketComponent.generalRequests.Add(new General.WebsocketSaveTradingBotRequest(platformComponent.tradingPlatform, platformComponent.apiKey));
+                websocketComponent.generalRequests.Add(new General.WebsocketSaveTradingBotRequest(platformComponent.activePlatform, platformComponent.apiKey));
                 break;
             case BotTypeEnum.PREMIUM_INDEX:
                 double normalizedMarginWeightDistributionValue = preferenceComponent.marginWeightDistributionValue * OrderConfig.MARGIN_WEIGHT_DISTRIBUTION_RANGE;
                 websocketComponent.generalRequests.Add(new General.WebsocketSaveTradingBotRequest(
-                    platformComponent.tradingPlatform,
+                    platformComponent.activePlatform,
                     platformComponent.apiKey,
                     preferenceComponent.symbol,
                     preferenceComponent.lossPercentage,

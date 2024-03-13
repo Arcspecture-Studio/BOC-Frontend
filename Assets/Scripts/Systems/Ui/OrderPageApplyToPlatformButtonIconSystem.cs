@@ -16,18 +16,14 @@ public class OrderPageApplyToPlatformButtonIconSystem : MonoBehaviour
     }
     void Update()
     {
-        if (platform == platformComponent.tradingPlatform) return;
-        platform = platformComponent.tradingPlatform;
-        switch(platform)
+        if (platform == platformComponent.activePlatform) return;
+        platform = platformComponent.activePlatform;
+        switch (platform)
         {
             case PlatformEnum.BINANCE:
             case PlatformEnum.BINANCE_TESTNET:
                 binance.enabled = true;
                 mexc.enabled = false;
-                break;
-            case PlatformEnum.MEXC:
-                binance.enabled = false;
-                mexc.enabled = true;
                 break;
         }
     }
