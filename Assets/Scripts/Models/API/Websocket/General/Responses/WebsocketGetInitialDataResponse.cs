@@ -23,7 +23,7 @@ namespace General
     {
         public string _id;
         public string name;
-        public PlatformEnum activePlatform;
+        public PlatformEnum? activePlatform;
         public WebsocketGetInitialDataProfilePerference preference;
     }
     [Serializable]

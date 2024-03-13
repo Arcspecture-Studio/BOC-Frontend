@@ -42,7 +42,7 @@ public class GetInitialDataSystem : MonoBehaviour
             // TODO: add platform
             return;
         }
-        PlatformEnum activePlatform = response.accountData.profiles[response.defaultProfileId].activePlatform;
+        PlatformEnum activePlatform = response.accountData.profiles[response.defaultProfileId].activePlatform.Value;
         switch (activePlatform)
         {
             case PlatformEnum.BINANCE:
