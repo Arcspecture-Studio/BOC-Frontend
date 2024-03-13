@@ -35,7 +35,8 @@ public class LoginSystem : MonoBehaviour
             !loginComponent.emailInput.text.Contains("@") ||
             !loginComponent.emailInput.text.Contains(".") ||
             loginComponent.passwordInput.text.IsNullOrEmpty() ||
-            loginComponent.confirmPasswordInput.text.IsNullOrEmpty())
+            (loginComponent.loginStatus == LoginPageStatusEnum.REGISTER && loginComponent.confirmPasswordInput.text.IsNullOrEmpty())
+        )
         {
             string message = "Password can't be empty.";
             if (loginComponent.emailInput.text.IsNullOrEmpty())
@@ -130,7 +131,7 @@ public class LoginSystem : MonoBehaviour
     {
         if (InvalidateInput()) return;
 
-        General.WebsocketAccountRequest request = new(WebsocketEventTypeEnum.LOGIN, loginComponent.emailInput.text, loginComponent.passwordInput.text);
+        General.WebsocketAccountRequest request = new(WebsocketEventTypeEnum.GET_JWT, loginComponent.emailInput.text, loginComponent.passwordInput.text);
         websocketComponent.generalRequests.Add(request);
 
         AllowForInteraction(false);

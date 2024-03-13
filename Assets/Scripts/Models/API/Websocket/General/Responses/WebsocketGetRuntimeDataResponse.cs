@@ -7,8 +7,8 @@ namespace General
     [Serializable]
     public class WebsocketGetRuntimeDataResponse : WebsocketGeneralResponse
     {
-        public string? orders;
-        public string? quickOrders;
-        public string? tradingBots;
+        public object? orders;
+        public object? quickOrders;
+        public object? tradingBots;
     }
 }

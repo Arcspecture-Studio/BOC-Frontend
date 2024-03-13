@@ -4,11 +4,11 @@ using System;
 public class TokenFile
 {
     public string token;
-    public byte[] cache;
+    public byte[] key;
 
-    public TokenFile(string token, byte[] cache)
+    public TokenFile(string token, byte[] key)
     {
         this.token = token;
-        this.cache = cache;
+        this.key = key;
     }
 }

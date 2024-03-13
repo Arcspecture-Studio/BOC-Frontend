@@ -84,7 +84,7 @@ public class IoSystem : MonoBehaviour
         try // to serialize the json string
         {
             TokenFile data = JsonConvert.DeserializeObject<TokenFile>(jsonString, JsonSerializerConfig.settings);
-            loginComponent.token = Encryption.Decrypt(data.token, SecretConfig.ENCRYPTION_ACCESS_TOKEN_32, data.cache);
+            loginComponent.token = Encryption.Decrypt(data.token, SecretConfig.ENCRYPTION_ACCESS_TOKEN_32, data.key);
             ioComponent.writeToken = true;
             getInitialDataComponent.getInitialData = true;
         }

@@ -1,4 +1,4 @@
 public static class EncryptionConfig
 {
-    public static readonly long IV_LENGTH = 16;
+    public static readonly int IV_LENGTH = 16;
 }
