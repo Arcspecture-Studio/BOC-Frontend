@@ -1,3 +1,4 @@
+using Newtonsoft.Json;
 using UnityEngine;
 using WebSocketSharp;
 
@@ -6,12 +7,16 @@ public class LoginSystem : MonoBehaviour
     LoginComponent loginComponent;
     PromptComponent promptComponent;
     WebsocketComponent websocketComponent;
+    IoComponent ioComponent;
+    GetInitialDataComponent getInitialDataComponent;
 
     void Start()
     {
         loginComponent = GlobalComponent.instance.loginComponent;
         promptComponent = GlobalComponent.instance.promptComponent;
         websocketComponent = GlobalComponent.instance.websocketComponent;
+        ioComponent = GlobalComponent.instance.ioComponent;
+        getInitialDataComponent = GlobalComponent.instance.getInitialDataComponent;
 
         loginComponent.onChange_loginStatus.AddListener(SwitchPageBasedOnLoginStatus);
 
@@ -20,7 +25,47 @@ public class LoginSystem : MonoBehaviour
         loginComponent.loginStatus = LoginPageStatusEnum.LOGGED_IN;
         AllowForInteraction(false);
     }
+    void Update()
+    {
+        GetCreateAccountResponse();
+        GetLoginResponse();
+    }
 
+    void GetCreateAccountResponse()
+    {
+        string jsonString = websocketComponent.RetrieveGeneralResponses(WebsocketEventTypeEnum.CREATE_ACCOUNT);
+        if (jsonString.IsNullOrEmpty()) return;
+        websocketComponent.RemovesGeneralResponses(WebsocketEventTypeEnum.CREATE_ACCOUNT);
+
+        HandleResponse(jsonString);
+    }
+    void GetLoginResponse()
+    {
+        string jsonString = websocketComponent.RetrieveGeneralResponses(WebsocketEventTypeEnum.GET_JWT);
+        if (jsonString.IsNullOrEmpty()) return;
+        websocketComponent.RemovesGeneralResponses(WebsocketEventTypeEnum.GET_JWT);
+
+        HandleResponse(jsonString);
+    }
+    void HandleResponse(string jsonString)
+    {
+        General.WebsocketTokenResponse tokenResponse = JsonConvert.DeserializeObject
+        <General.WebsocketTokenResponse>(jsonString, JsonSerializerConfig.settings);
+        if (tokenResponse.success)
+        {
+            loginComponent.token = tokenResponse.token;
+            ioComponent.writeToken = true;
+            getInitialDataComponent.getInitialData = true;
+        }
+        else
+        {
+            promptComponent.ShowPrompt(PromptConstant.ERROR, tokenResponse.message, () =>
+            {
+                promptComponent.active = false;
+                AllowForInteraction(true);
+            });
+        }
+    }
     void AllowForInteraction(bool yes)
     {
         loginComponent.emailInput.interactable = yes;

@@ -72,28 +72,11 @@ public class WebsocketSystem : MonoBehaviour
                     });
                 }
             }
-            else if (response.eventType == WebsocketEventTypeEnum.CREATE_ACCOUNT || response.eventType == WebsocketEventTypeEnum.GET_JWT)
-            {
-                if (response.success)
-                {
-                    General.WebsocketTokenResponse tokenResponse = JsonConvert.DeserializeObject<General.WebsocketTokenResponse>
-                    (rawData, JsonSerializerConfig.settings);
-                    loginComponent.token = tokenResponse.token;
-                    ioComponent.writeToken = true;
-                    getInitialDataComponent.getInitialData = true;
-                }
-                else
-                {
-                    UnityMainThread.AddJob(() =>
-                    {
-                        promptComponent.ShowPrompt(PromptConstant.ERROR, response.message, () => promptComponent.active = false);
-                    });
-                }
-            }
             else
             {
                 websocketComponent.AddGeneralResponses(response.eventType, rawData);
             }
+
             //             else if (response.eventType == WebsocketEventTypeEnum.CALL_API)
             //             {
             //                 General.WebsocketCallApiResponse callApiResponse = JsonConvert.DeserializeObject<General.WebsocketCallApiResponse>(rawData, JsonSerializerConfig.settings);
