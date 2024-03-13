@@ -6,11 +6,11 @@ using System.Collections.Generic;
 namespace General
 {
     [Serializable]
-    public class WebsocketGetInitialDataResponse<T> : WebsocketGetRuntimeDataResponse
+    public class WebsocketGetInitialDataResponse : WebsocketGetRuntimeDataResponse
     {
         public string defaultProfileId;
         public WebsocketGetInitialDataAccountData accountData;
-        public T? platformData;
+        public object? platformData;
     }
     [Serializable]
     public class WebsocketGetInitialDataAccountData

@@ -34,8 +34,22 @@ public class GetInitialDataSystem : MonoBehaviour
         if (jsonString.IsNullOrEmpty()) return;
         websocketComponent.RemovesGeneralResponses(WebsocketEventTypeEnum.GET_INITIAL_DATA);
 
-        General.WebsocketGetInitialDataResponse<object> response = JsonConvert.DeserializeObject
-        <General.WebsocketGetInitialDataResponse<object>>(jsonString, JsonSerializerConfig.settings);
-        Debug.Log(response.platformData == null);
+        General.WebsocketGetInitialDataResponse response = JsonConvert.DeserializeObject
+        <General.WebsocketGetInitialDataResponse>(jsonString, JsonSerializerConfig.settings);
+
+        if (response.accountData.platformList.Count == 0)
+        {
+            // TODO: add platform
+            return;
+        }
+        PlatformEnum activePlatform = response.accountData.profiles[response.defaultProfileId].activePlatform;
+        switch (activePlatform)
+        {
+            case PlatformEnum.BINANCE:
+            case PlatformEnum.BINANCE_TESTNET:
+                Binance.WebsocketPlatformDataResponse platformData = JsonConvert.DeserializeObject
+                <Binance.WebsocketPlatformDataResponse>(response.platformData.ToString(), JsonSerializerConfig.settings);
+                break;
+        }
     }
 }
