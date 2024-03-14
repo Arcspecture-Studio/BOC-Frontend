@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using Newtonsoft.Json;
 using TMPro;
@@ -7,7 +8,6 @@ using WebSocketSharp;
 public class PlatformSystem : MonoBehaviour
 {
     PlatformComponent platformComponent;
-    PlatformComponentOld platformComponentOld;
     WebsocketComponent websocketComponent;
     LoginComponent loginComponent;
     PromptComponent promptComponent;
@@ -15,7 +15,6 @@ public class PlatformSystem : MonoBehaviour
     void Start()
     {
         platformComponent = GlobalComponent.instance.platformComponent;
-        platformComponentOld = GlobalComponent.instance.platformComponentOld;
         websocketComponent = GlobalComponent.instance.websocketComponent;
         loginComponent = GlobalComponent.instance.loginComponent;
         promptComponent = GlobalComponent.instance.promptComponent;
@@ -30,6 +29,7 @@ public class PlatformSystem : MonoBehaviour
     void Update()
     {
         AddPlatformResponse();
+        RemovePlatformResponse();
     }
     void OnComponentEnable()
     {
@@ -48,23 +48,23 @@ public class PlatformSystem : MonoBehaviour
     }
     void UpdateObjectState()
     {
-        platformComponent.backButtonObj.SetActive(platformComponentOld.activePlatform > PlatformEnum.NONE);
         for (int i = 0; i < platformComponent.platformsDropdown.options.Count; i++)
         {
             PlatformEnum platformEnum = (PlatformEnum)i;
-            BinanceComponent binanceComponent = GlobalComponent.instance.binanceComponent;
+            PlatformTemplateComponent platformTemplateComponent = GlobalComponent.instance.binanceComponent;
             switch (platformEnum)
             {
                 case PlatformEnum.BINANCE_TESTNET:
-                    binanceComponent = GlobalComponent.instance.binanceTestnetComponent;
+                    platformTemplateComponent = GlobalComponent.instance.binanceTestnetComponent;
                     break;
             }
 
-            if (binanceComponent.loggedIn)
+            if (platformTemplateComponent.loggedIn)
             {
                 platformComponent.platformsDropdown.options[i].text = platformEnum.ToString() + " (" + PromptConstant.CONNECTED + ")";
                 if (platformComponent.platformsDropdown.value == i)
                 {
+                    platformComponent.backButtonObj.SetActive(true);
                     platformComponent.apiKeyObj.SetActive(false);
                     platformComponent.apiSecretObj.SetActive(false);
                     platformComponent.proceedButtonText.text = PromptConstant.DISCONNECT;
@@ -76,6 +76,7 @@ public class PlatformSystem : MonoBehaviour
                 if (platformComponent.platformsDropdown.value == i)
                 {
                     ClearInput();
+                    platformComponent.backButtonObj.SetActive(false);
                     platformComponent.apiKeyObj.SetActive(true);
                     platformComponent.apiSecretObj.SetActive(true);
                     platformComponent.proceedButtonText.text = PromptConstant.CONNECT;
@@ -114,8 +115,6 @@ public class PlatformSystem : MonoBehaviour
     }
     void AddOrRemovePlatform()
     {
-        if (InvalidateInput()) return;
-
         PlatformEnum selectedPlatform = (PlatformEnum)platformComponent.platformsDropdown.value;
 
         bool add = true;
@@ -132,6 +131,7 @@ public class PlatformSystem : MonoBehaviour
         General.WebsocketGeneralRequest request;
         if (add)
         {
+            if (InvalidateInput()) return;
             request = new General.WebsocketAddPlatformRequest(
                 loginComponent.token,
                 platformComponent.apiKeyInput.text,
@@ -152,6 +152,19 @@ public class PlatformSystem : MonoBehaviour
         string jsonString = websocketComponent.RetrieveGeneralResponses(WebsocketEventTypeEnum.ADD_PLATFORM);
         if (jsonString.IsNullOrEmpty()) return;
         websocketComponent.RemovesGeneralResponses(WebsocketEventTypeEnum.ADD_PLATFORM);
+
+        HandleResponse(jsonString, true);
+    }
+    void RemovePlatformResponse()
+    {
+        string jsonString = websocketComponent.RetrieveGeneralResponses(WebsocketEventTypeEnum.REMOVE_PLATFORM);
+        if (jsonString.IsNullOrEmpty()) return;
+        websocketComponent.RemovesGeneralResponses(WebsocketEventTypeEnum.REMOVE_PLATFORM);
+
+        HandleResponse(jsonString, false);
+    }
+    void HandleResponse(string jsonString, bool loggedIn)
+    {
         General.WebsocketAddOrRemovePlatformResponse response = JsonConvert.DeserializeObject
         <General.WebsocketAddOrRemovePlatformResponse>(jsonString, JsonSerializerConfig.settings);
 
@@ -169,10 +182,10 @@ public class PlatformSystem : MonoBehaviour
         switch (response.platform)
         {
             case PlatformEnum.BINANCE:
-                GlobalComponent.instance.binanceComponent.loggedIn = true;
+                GlobalComponent.instance.binanceComponent.loggedIn = loggedIn;
                 break;
             case PlatformEnum.BINANCE_TESTNET:
-                GlobalComponent.instance.binanceTestnetComponent.loggedIn = true;
+                GlobalComponent.instance.binanceTestnetComponent.loggedIn = loggedIn;
                 break;
         }
         UpdateObjectState();

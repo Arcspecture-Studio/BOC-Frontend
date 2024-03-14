@@ -26623,7 +26623,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c18e5719758882342bac385305256059, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  platformComponent: {fileID: 1439778820}
+  platformComponentOld: {fileID: 1439778820}
   binanceComponent: {fileID: 1439778811}
   binanceTestnetComponent: {fileID: 1459617760}
   websocketComponent: {fileID: 1439778812}
@@ -26642,7 +26642,7 @@ MonoBehaviour:
   tradingBotComponent: {fileID: 680527084}
   miniPromptComponent: {fileID: 792923717748285592}
   getInitialDataComponent: {fileID: 1439778837}
-  addPlatformComponent: {fileID: 1527012472}
+  platformComponent: {fileID: 1527012472}
 --- !u!114 &1439778811
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -26655,17 +26655,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9b474cf24ceebc64fb4634e5a625df3f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  loggedIn: 0
   apiKey: 
   apiSecret: 
-  loginPhrase: 
-  loggedIn: 0
-  listenKey: 
   allSymbols:
   - btcusdt
   - ethusdt
-  getAccInfo: 0
-  getExchangeInfo: 0
   getBalance: 0
+  loginPhrase: 
+  getExchangeInfo: 0
 --- !u!114 &1439778812
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -26861,6 +26859,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ba69f70d27c132a45ace5c39ac24778b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  loggedIn: 0
+  apiKey: 
+  apiSecret: 
+  allSymbols: []
+  getBalance: 0
   activePlatform: -1
 --- !u!114 &1439778821
 MonoBehaviour:
@@ -27536,15 +27539,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9b474cf24ceebc64fb4634e5a625df3f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  loggedIn: 0
   apiKey: 
   apiSecret: 
-  loginPhrase: 
-  loggedIn: 0
-  listenKey: 
   allSymbols: []
-  getAccInfo: 0
-  getExchangeInfo: 0
   getBalance: 0
+  loginPhrase: 
+  getExchangeInfo: 0
 --- !u!114 &1459617761
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -28869,7 +28870,7 @@ GameObject:
   - component: {fileID: 1527012471}
   - component: {fileID: 1527012472}
   m_Layer: 5
-  m_Name: Add Platform Page
+  m_Name: Platform Page
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -28914,6 +28915,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e60992f6f51d9934a8f892c6179b6c01, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  loggedIn: 0
+  apiKey: 
+  apiSecret: 
+  allSymbols: []
+  getBalance: 0
   platformsDropdown: {fileID: 2064388103}
   apiKeyInput: {fileID: 677908912}
   apiKeyObj: {fileID: 961014174}
