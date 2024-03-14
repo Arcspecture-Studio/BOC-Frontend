@@ -7,7 +7,7 @@ public class GetInitialDataSystem : MonoBehaviour
     GetInitialDataComponent getInitialDataComponent;
     WebsocketComponent websocketComponent;
     LoginComponent loginComponent;
-    AddPlatformComponent addPlatformComponent;
+    PlatformComponent platformComponent;
     PlatformComponentOld platformComponentOld;
     PromptComponent promptComponent;
 
@@ -16,7 +16,7 @@ public class GetInitialDataSystem : MonoBehaviour
         getInitialDataComponent = GlobalComponent.instance.getInitialDataComponent;
         websocketComponent = GlobalComponent.instance.websocketComponent;
         loginComponent = GlobalComponent.instance.loginComponent;
-        addPlatformComponent = GlobalComponent.instance.addPlatformComponent;
+        platformComponent = GlobalComponent.instance.platformComponent;
         platformComponentOld = GlobalComponent.instance.platformComponentOld;
         promptComponent = GlobalComponent.instance.promptComponent;
 
@@ -55,7 +55,7 @@ public class GetInitialDataSystem : MonoBehaviour
         if (response.accountData.platformList.Count == 0)
         {
             loginComponent.gameObject.SetActive(false);
-            addPlatformComponent.gameObject.SetActive(true);
+            platformComponent.gameObject.SetActive(true);
             return;
         }
         platformComponentOld.activePlatform = response.accountData.profiles[response.defaultProfileId].activePlatform.Value;

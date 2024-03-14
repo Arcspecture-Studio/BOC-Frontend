@@ -29,5 +29,5 @@ public class GlobalComponent : MonoBehaviour
     public TradingBotComponent tradingBotComponent;
     public MiniPromptComponent miniPromptComponent;
     public GetInitialDataComponent getInitialDataComponent;
-    public AddPlatformComponent addPlatformComponent;
+    public PlatformComponent platformComponent;
 }

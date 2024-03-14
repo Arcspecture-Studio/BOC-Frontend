@@ -3,7 +3,7 @@ using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.UI;
 
-public class AddPlatformComponent : MonoBehaviour
+public class PlatformComponent : MonoBehaviour
 {
     [Header("Reference")]
     public TMP_Dropdown platformsDropdown;
