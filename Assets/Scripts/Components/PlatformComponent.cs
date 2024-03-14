@@ -1,17 +1,46 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
 
-public class PlatformComponent : MonoBehaviour
+public class PlatformComponent : PlatformTemplateComponent
 {
     public PlatformEnum activePlatform;
-    public bool testnet
+    public bool activePlatformTestnet
     {
         get
         {
             return activePlatform.ToString().Contains("TESTNET");
         }
     }
-    public string apiKey
+    public new bool loggedIn
+    {
+        get
+        {
+            bool data = false;
+            switch (activePlatform)
+            {
+                case PlatformEnum.BINANCE:
+                    data = GlobalComponent.instance.binanceComponent.loggedIn;
+                    break;
+                case PlatformEnum.BINANCE_TESTNET:
+                    data = GlobalComponent.instance.binanceTestnetComponent.loggedIn;
+                    break;
+            }
+            return data;
+        }
+        set
+        {
+            switch (activePlatform)
+            {
+                case PlatformEnum.BINANCE:
+                    GlobalComponent.instance.binanceComponent.loggedIn = value;
+                    break;
+                case PlatformEnum.BINANCE_TESTNET:
+                    GlobalComponent.instance.binanceTestnetComponent.loggedIn = value;
+                    break;
+            }
+        }
+    }
+    public new string apiKey
     {
         get
         {
@@ -40,7 +69,7 @@ public class PlatformComponent : MonoBehaviour
             }
         }
     }
-    public string apiSecret
+    public new string apiSecret
     {
         get
         {
@@ -69,11 +98,11 @@ public class PlatformComponent : MonoBehaviour
             }
         }
     }
-    public List<string> allSymbols
+    public new List<string> allSymbols
     {
         get
         {
-            List<string> data = new List<string>();
+            List<string> data = new();
             switch (activePlatform)
             {
                 case PlatformEnum.BINANCE:
@@ -98,7 +127,7 @@ public class PlatformComponent : MonoBehaviour
             }
         }
     }
-    public Dictionary<string, string> marginAssets
+    public new Dictionary<string, string> marginAssets
     {
         get
         {
@@ -127,11 +156,11 @@ public class PlatformComponent : MonoBehaviour
             }
         }
     }
-    public Dictionary<string, long> quantityPrecisions
+    public new Dictionary<string, long> quantityPrecisions
     {
         get
         {
-            Dictionary<string, long> data = new Dictionary<string, long>();
+            Dictionary<string, long> data = new();
             switch (activePlatform)
             {
                 case PlatformEnum.BINANCE:
@@ -156,11 +185,11 @@ public class PlatformComponent : MonoBehaviour
             }
         }
     }
-    public Dictionary<string, long> pricePrecisions
+    public new Dictionary<string, long> pricePrecisions
     {
         get
         {
-            Dictionary<string, long> data = new Dictionary<string, long>();
+            Dictionary<string, long> data = new();
             switch (activePlatform)
             {
                 case PlatformEnum.BINANCE:
@@ -185,11 +214,11 @@ public class PlatformComponent : MonoBehaviour
             }
         }
     }
-    public Dictionary<string, double?> fees
+    public new Dictionary<string, double?> fees
     {
         get
         {
-            Dictionary<string, double?> data = new Dictionary<string, double?>();
+            Dictionary<string, double?> data = new();
             switch (activePlatform)
             {
                 case PlatformEnum.BINANCE:
@@ -214,11 +243,11 @@ public class PlatformComponent : MonoBehaviour
             }
         }
     }
-    public Dictionary<string, double> walletBalances
+    public new Dictionary<string, double> walletBalances
     {
         get
         {
-            Dictionary<string, double> data = new Dictionary<string, double>();
+            Dictionary<string, double> data = new();
             switch (activePlatform)
             {
                 case PlatformEnum.BINANCE:
@@ -243,7 +272,7 @@ public class PlatformComponent : MonoBehaviour
             }
         }
     }
-    public bool getBalance
+    public new bool getBalance
     {
         get
         {

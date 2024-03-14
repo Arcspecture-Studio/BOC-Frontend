@@ -45,7 +45,7 @@ public class WebsocketSystem : MonoBehaviour
         generalSocket.OnMessage += (sender, e) =>
         {
             string rawData = e.Data;
-            if (!Utils.IsJson(e.Data)) rawData = Encryption.Decrypt(e.Data, SecretConfig.ENCRYPTION_ACCESS_TOKEN_32, websocketComponent.generalSocketIv);
+            if (!Utils.IsJsonString(e.Data)) rawData = Encryption.Decrypt(e.Data, SecretConfig.ENCRYPTION_ACCESS_TOKEN_32, websocketComponent.generalSocketIv);
             if (websocketComponent.logging) Debug.Log(logPrefix + "Incoming message from: " + ((WebSocket)sender).Url + ", Data: " + rawData);
 
             General.WebsocketGeneralResponse response = JsonConvert.DeserializeObject<General.WebsocketGeneralResponse>(rawData, JsonSerializerConfig.settings);

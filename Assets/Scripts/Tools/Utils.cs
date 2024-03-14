@@ -5,6 +5,18 @@ using Newtonsoft.Json;
 
 public static class Utils
 {
+    public static bool IsJsonString(string str)
+    {
+        try
+        {
+            JsonConvert.DeserializeObject(str);
+            return true;
+        }
+        catch (JsonException)
+        {
+            return false;
+        }
+    }
     public static double PriceRatio(double initialPrice, double finalPrice)
     {
         return finalPrice / initialPrice;
@@ -134,17 +146,5 @@ public static class Utils
             }
         }
         return values;
-    }
-    public static bool IsJson(string str)
-    {
-        try
-        {
-            JsonConvert.DeserializeObject(str);
-            return true;
-        }
-        catch (JsonException)
-        {
-            return false;
-        }
     }
 }

@@ -9,6 +9,7 @@ public class GetInitialDataSystem : MonoBehaviour
     LoginComponent loginComponent;
     AddPlatformComponent addPlatformComponent;
     PlatformComponent platformComponent;
+    PromptComponent promptComponent;
 
     void Start()
     {
@@ -17,6 +18,7 @@ public class GetInitialDataSystem : MonoBehaviour
         loginComponent = GlobalComponent.instance.loginComponent;
         addPlatformComponent = GlobalComponent.instance.addPlatformComponent;
         platformComponent = GlobalComponent.instance.platformComponent;
+        promptComponent = GlobalComponent.instance.promptComponent;
 
         getInitialDataComponent.onChange_getInitialData.AddListener(GetInitialData);
     }
@@ -41,12 +43,22 @@ public class GetInitialDataSystem : MonoBehaviour
         General.WebsocketGetInitialDataResponse response = JsonConvert.DeserializeObject
         <General.WebsocketGetInitialDataResponse>(jsonString, JsonSerializerConfig.settings);
 
+        if (!response.success)
+        {
+            promptComponent.ShowPrompt(PromptConstant.ERROR, response.message, () =>
+            {
+                promptComponent.active = false;
+            });
+            return;
+        }
+
         if (response.accountData.platformList.Count == 0)
         {
+            loginComponent.gameObject.SetActive(false);
             addPlatformComponent.gameObject.SetActive(true);
             return;
         }
-        platformComponent.activePlatform = response.accountData.profiles[response.defaultProfileId].activePlatform.Value;
+        platformComponent.activePlatform = response.accountData.profiles[response.defaultProfileId].activePlatform.Value; // TODO: make active platform sync with dropdown ui
         switch (platformComponent.activePlatform)
         {
             case PlatformEnum.BINANCE:

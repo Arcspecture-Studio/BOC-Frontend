@@ -3,7 +3,7 @@ using System;
 namespace General
 {
     [Serializable]
-    public class WebsocketAddPlatformResponse : WebsocketGeneralResponse
+    public class WebsocketAddOrRemovePlatformResponse : WebsocketGeneralResponse
     {
         public PlatformEnum platform;
     }

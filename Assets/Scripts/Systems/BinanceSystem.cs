@@ -138,7 +138,7 @@ public class BinanceSystem : MonoBehaviour
             });
             binanceComponent.loggedIn = true;
             // ioComponent.writeApiKey = true;
-            if (platformComponent.testnet == testnet)
+            if (platformComponent.activePlatformTestnet == testnet)
             {
                 loginComponent.gameObj.SetActive(false);
                 retrieveOrdersComponent.destroyOrders = true;
