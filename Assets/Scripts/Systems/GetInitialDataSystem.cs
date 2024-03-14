@@ -58,7 +58,7 @@ public class GetInitialDataSystem : MonoBehaviour
             addPlatformComponent.gameObject.SetActive(true);
             return;
         }
-        platformComponent.activePlatform = response.accountData.profiles[response.defaultProfileId].activePlatform.Value; // TODO: make active platform sync with dropdown ui
+        platformComponent.activePlatform = response.accountData.profiles[response.defaultProfileId].activePlatform.Value;
         switch (platformComponent.activePlatform)
         {
             case PlatformEnum.BINANCE:
