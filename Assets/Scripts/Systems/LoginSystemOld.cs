@@ -8,7 +8,7 @@ public class LoginSystemOld : MonoBehaviour
     LoginComponentOld loginComponent;
     BinanceComponent binanceComponent;
     BinanceComponent binanceTestnetComponent;
-    PlatformComponent platformComponent;
+    PlatformComponentOld platformComponentOld;
     WebsocketComponent websocketComponent;
     RetrieveOrdersComponent retrieveOrdersComponent;
     PromptComponent promptComponent;
@@ -21,7 +21,7 @@ public class LoginSystemOld : MonoBehaviour
         loginComponent = GlobalComponent.instance.loginComponentOld;
         binanceComponent = GlobalComponent.instance.binanceComponent;
         binanceTestnetComponent = GlobalComponent.instance.binanceTestnetComponent;
-        platformComponent = GlobalComponent.instance.platformComponent;
+        platformComponentOld = GlobalComponent.instance.platformComponentOld;
         websocketComponent = GlobalComponent.instance.websocketComponent;
         retrieveOrdersComponent = GlobalComponent.instance.retrieveOrdersComponent;
         promptComponent = GlobalComponent.instance.promptComponent;
@@ -38,7 +38,7 @@ public class LoginSystemOld : MonoBehaviour
             // ioComponent.writeApiKey = true;
             UpdateDropdownOptions();
 
-            General.WebsocketLogoutRequest request = new General.WebsocketLogoutRequest(platformComponent.activePlatform);
+            General.WebsocketLogoutRequest request = new General.WebsocketLogoutRequest(platformComponentOld.activePlatform);
             websocketComponent.generalRequests.Add(request);
         });
 
@@ -93,7 +93,7 @@ public class LoginSystemOld : MonoBehaviour
         optionDataList.Add(new TMP_Dropdown.OptionData(binanceTestnet));
 
         loginComponent.platformsDropdown.AddOptions(optionDataList);
-        int tradingPlatform = (int)platformComponent.activePlatform;
+        int tradingPlatform = (int)platformComponentOld.activePlatform;
         if (loginComponent.platformsDropdown.value == tradingPlatform)
         {
             OnPlatformValueChanged(tradingPlatform);
@@ -108,13 +108,13 @@ public class LoginSystemOld : MonoBehaviour
         switch (value)
         {
             case ((int)PlatformEnum.BINANCE):
-                platformComponent.activePlatform = PlatformEnum.BINANCE;
+                platformComponentOld.activePlatform = PlatformEnum.BINANCE;
                 UpdateUiBehaviour(binanceComponent.loggedIn);
                 loginComponent.loginButton.interactable = true;
                 loginComponent.logoutButton.interactable = true;
                 break;
             case ((int)PlatformEnum.BINANCE_TESTNET):
-                platformComponent.activePlatform = PlatformEnum.BINANCE_TESTNET;
+                platformComponentOld.activePlatform = PlatformEnum.BINANCE_TESTNET;
                 UpdateUiBehaviour(binanceTestnetComponent.loggedIn);
                 loginComponent.loginButton.interactable = true;
                 loginComponent.logoutButton.interactable = true;
@@ -171,11 +171,11 @@ public class LoginSystemOld : MonoBehaviour
                     loginComponent.allowInput = false;
 
                     loginComponent.loginPhrase = loginComponent.loginPhraseInput.text;
-                    platformComponent.apiKey = loginComponent.apiKeyInput.text;
-                    platformComponent.apiSecret = loginComponent.secretKeyInput.text;
+                    platformComponentOld.apiKey = loginComponent.apiKeyInput.text;
+                    platformComponentOld.apiSecret = loginComponent.secretKeyInput.text;
                     RemoveInputText();
                     websocketComponent.syncApiKeyToServer = true;
-                    platformComponent.getBalance = true;
+                    platformComponentOld.getBalance = true;
                 }
             });
         }

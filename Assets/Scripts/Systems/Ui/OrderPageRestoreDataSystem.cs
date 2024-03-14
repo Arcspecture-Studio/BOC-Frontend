@@ -9,7 +9,7 @@ public class OrderPageRestoreDataSystem : MonoBehaviour
 {
     OrderPageComponent orderPageComponent;
     RetrieveOrdersComponent retrieveOrdersComponent;
-    PlatformComponent platformComponent;
+    PlatformComponentOld platformComponentOld;
     PreferenceComponent preferenceComponent;
 
     WebsocketRetrieveOrdersData orderData = null;
@@ -18,7 +18,7 @@ public class OrderPageRestoreDataSystem : MonoBehaviour
     {
         orderPageComponent = GetComponent<OrderPageComponent>();
         retrieveOrdersComponent = GlobalComponent.instance.retrieveOrdersComponent;
-        platformComponent = GlobalComponent.instance.platformComponent;
+        platformComponentOld = GlobalComponent.instance.platformComponentOld;
         preferenceComponent = GlobalComponent.instance.preferenceComponent;
 
         if (!preferenceComponent.symbol.IsNullOrEmpty())
@@ -44,11 +44,11 @@ public class OrderPageRestoreDataSystem : MonoBehaviour
     }
     void ReadData()
     {
-        if (retrieveOrdersComponent.ordersFromServer.ContainsKey(platformComponent.activePlatform))
+        if (retrieveOrdersComponent.ordersFromServer.ContainsKey(platformComponentOld.activePlatform))
         {
-            if (retrieveOrdersComponent.ordersFromServer[platformComponent.activePlatform].ContainsKey(orderPageComponent.orderId))
+            if (retrieveOrdersComponent.ordersFromServer[platformComponentOld.activePlatform].ContainsKey(orderPageComponent.orderId))
             {
-                orderData = retrieveOrdersComponent.ordersFromServer[platformComponent.activePlatform][orderPageComponent.orderId];
+                orderData = retrieveOrdersComponent.ordersFromServer[platformComponentOld.activePlatform][orderPageComponent.orderId];
                 return;
             }
         }
@@ -90,9 +90,9 @@ public class OrderPageRestoreDataSystem : MonoBehaviour
         orderPageComponent.marginDistributionModeDropdown.value = orderData.marginCalculator.weightedQuantity ? 1 : 0;
         orderPageComponent.marginWeightDistributionValueSlider.value = (float)orderData.marginCalculator.quantityWeight / OrderConfig.MARGIN_WEIGHT_DISTRIBUTION_RANGE;
         orderPageComponent.marginCalculator = orderData.marginCalculator;
-        orderPageComponent.positionInfoAvgEntryPriceFilledText.text = Utils.RoundNDecimal(orderData.averagePriceFilled, platformComponent.pricePrecisions[orderPageComponent.symbolDropdownComponent.selectedSymbol]).ToString();
-        orderPageComponent.positionInfoQuantityFilledText.text = Utils.RoundNDecimal(orderData.quantityFilled, platformComponent.quantityPrecisions[orderPageComponent.symbolDropdownComponent.selectedSymbol]).ToString();
-        orderPageComponent.positionInfoActualTakeProfitPriceText.text = Utils.RoundNDecimal(orderData.actualTakeProfitPrice, platformComponent.pricePrecisions[orderPageComponent.symbolDropdownComponent.selectedSymbol]).ToString();
+        orderPageComponent.positionInfoAvgEntryPriceFilledText.text = Utils.RoundNDecimal(orderData.averagePriceFilled, platformComponentOld.pricePrecisions[orderPageComponent.symbolDropdownComponent.selectedSymbol]).ToString();
+        orderPageComponent.positionInfoQuantityFilledText.text = Utils.RoundNDecimal(orderData.quantityFilled, platformComponentOld.quantityPrecisions[orderPageComponent.symbolDropdownComponent.selectedSymbol]).ToString();
+        orderPageComponent.positionInfoActualTakeProfitPriceText.text = Utils.RoundNDecimal(orderData.actualTakeProfitPrice, platformComponentOld.pricePrecisions[orderPageComponent.symbolDropdownComponent.selectedSymbol]).ToString();
         orderPageComponent.positionInfoPaidFundingAmount.text = orderData.paidFundingAmount.ToString();
         foreach (KeyValuePair<string, WebsocketRetrieveThrottleOrdersData> throttleOrder in orderData.throttleOrders)
         {

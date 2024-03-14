@@ -8,7 +8,7 @@ public class SettingPageUpdateDataSystem : MonoBehaviour
     PreferenceComponent preferenceComponent;
     SettingPageComponent settingPageComponent;
     IoComponent ioComponent;
-    PlatformComponent platformComponent;
+    PlatformComponentOld platformComponentOld;
     OrderPagesComponent orderPagesComponent;
 
     PlatformEnum? activePlatform = null;
@@ -23,7 +23,7 @@ public class SettingPageUpdateDataSystem : MonoBehaviour
         preferenceComponent = GlobalComponent.instance.preferenceComponent;
         settingPageComponent = GlobalComponent.instance.settingPageComponent;
         ioComponent = GlobalComponent.instance.ioComponent;
-        platformComponent = GlobalComponent.instance.platformComponent;
+        platformComponentOld = GlobalComponent.instance.platformComponentOld;
         orderPagesComponent = GlobalComponent.instance.orderPagesComponent;
 
         SyncSettingToPreference();
@@ -122,26 +122,26 @@ public class SettingPageUpdateDataSystem : MonoBehaviour
     }
     void UpdateInfo()
     {
-        if (activePlatform != platformComponent.activePlatform)
+        if (activePlatform != platformComponentOld.activePlatform)
         {
-            activePlatform = platformComponent.activePlatform;
+            activePlatform = platformComponentOld.activePlatform;
             settingPageComponent.activePlatformText.text = activePlatform.ToString().Replace("_", " ");
         }
-        if (platformComponent.walletBalances != null)
+        if (platformComponentOld.walletBalances != null)
         {
-            if (platformComponent.walletBalances.ContainsKey(usdt))
+            if (platformComponentOld.walletBalances.ContainsKey(usdt))
             {
-                if (balanceUsdt != platformComponent.walletBalances[usdt])
+                if (balanceUsdt != platformComponentOld.walletBalances[usdt])
                 {
-                    balanceUsdt = platformComponent.walletBalances[usdt];
+                    balanceUsdt = platformComponentOld.walletBalances[usdt];
                     settingPageComponent.balanceUdstText.text = Utils.TruncTwoDecimal(balanceUsdt.Value).ToString();
                 }
             }
-            if (platformComponent.walletBalances.ContainsKey(busd))
+            if (platformComponentOld.walletBalances.ContainsKey(busd))
             {
-                if (balanceBusd != platformComponent.walletBalances[busd])
+                if (balanceBusd != platformComponentOld.walletBalances[busd])
                 {
-                    balanceBusd = platformComponent.walletBalances[busd];
+                    balanceBusd = platformComponentOld.walletBalances[busd];
                     settingPageComponent.balanceBusdText.text = Utils.TruncTwoDecimal(balanceBusd.Value).ToString();
                 }
             }

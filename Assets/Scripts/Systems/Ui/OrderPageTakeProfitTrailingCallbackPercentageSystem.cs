@@ -9,14 +9,14 @@ public class OrderPageTakeProfitTrailingCallbackPercentageSystem : MonoBehaviour
     [SerializeField] SettingPageComponent settingPageComponent;
     PreferenceComponent preferenceComponent;
     IoComponent ioComponent;
-    PlatformComponent platformComponent;
+    PlatformComponentOld platformComponentOld;
     OrderPageSystem orderPageSystem;
 
     void Start()
     {
         preferenceComponent = GlobalComponent.instance.preferenceComponent;
         ioComponent = GlobalComponent.instance.ioComponent;
-        platformComponent = GlobalComponent.instance.platformComponent;
+        platformComponentOld = GlobalComponent.instance.platformComponentOld;
 
         ForOrderPageComponent();
         ForSettingPageComponent();
@@ -26,7 +26,7 @@ public class OrderPageTakeProfitTrailingCallbackPercentageSystem : MonoBehaviour
         if (orderPageComponent == null) return;
         orderPageSystem = orderPageComponent.GetComponent<OrderPageSystem>();
 
-        switch (platformComponent.activePlatform)
+        switch (platformComponentOld.activePlatform)
         {
             case PlatformEnum.BINANCE:
             case PlatformEnum.BINANCE_TESTNET:
@@ -65,7 +65,7 @@ public class OrderPageTakeProfitTrailingCallbackPercentageSystem : MonoBehaviour
     {
         if (settingPageComponent == null) return;
 
-        switch (platformComponent.activePlatform)
+        switch (platformComponentOld.activePlatform)
         {
             case PlatformEnum.BINANCE:
             case PlatformEnum.BINANCE_TESTNET:

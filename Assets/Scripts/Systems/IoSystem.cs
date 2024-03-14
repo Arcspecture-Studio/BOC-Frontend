@@ -13,7 +13,7 @@ public class IoSystem : MonoBehaviour
     BinanceComponent binanceTestnetComponent;
     LoginComponent loginComponent;
     PromptComponent promptComponent;
-    PlatformComponent platformComponent;
+    PlatformComponentOld platformComponentOld;
     PreferenceComponent preferenceComponent;
     SettingPageComponent settingPageComponent;
     QuickTabComponent quickTabComponent;
@@ -29,7 +29,7 @@ public class IoSystem : MonoBehaviour
         binanceTestnetComponent = GlobalComponent.instance.binanceTestnetComponent;
         loginComponent = GlobalComponent.instance.loginComponent;
         promptComponent = GlobalComponent.instance.promptComponent;
-        platformComponent = GlobalComponent.instance.platformComponent;
+        platformComponentOld = GlobalComponent.instance.platformComponentOld;
         preferenceComponent = GlobalComponent.instance.preferenceComponent;
         settingPageComponent = GlobalComponent.instance.settingPageComponent;
         quickTabComponent = GlobalComponent.instance.quickTabComponent;

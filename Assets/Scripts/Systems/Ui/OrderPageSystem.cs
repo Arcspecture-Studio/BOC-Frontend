@@ -9,7 +9,7 @@ using MongoDB.Bson;
 public class OrderPageSystem : MonoBehaviour
 {
     OrderPageComponent orderPageComponent;
-    PlatformComponent platformComponent;
+    PlatformComponentOld platformComponentOld;
     PreferenceComponent preferenceComponent;
     WebsocketComponent websocketComponent;
     PromptComponent promptComponent;
@@ -21,7 +21,7 @@ public class OrderPageSystem : MonoBehaviour
     void Start()
     {
         orderPageComponent = GetComponent<OrderPageComponent>();
-        platformComponent = GlobalComponent.instance.platformComponent;
+        platformComponentOld = GlobalComponent.instance.platformComponentOld;
         preferenceComponent = GlobalComponent.instance.preferenceComponent;
         websocketComponent = GlobalComponent.instance.websocketComponent;
         promptComponent = GlobalComponent.instance.promptComponent;
@@ -163,7 +163,7 @@ public class OrderPageSystem : MonoBehaviour
         {
             #region Prepare data
             // get input
-            string walletUnit = platformComponent.marginAssets[orderPageComponent.symbolDropdownComponent.selectedSymbol.ToUpper()];
+            string walletUnit = platformComponentOld.marginAssets[orderPageComponent.symbolDropdownComponent.selectedSymbol.ToUpper()];
             double maxLossPercentage = orderPageComponent.maxLossPercentageInput.text.IsNullOrEmpty() ? double.NaN :
                 double.Parse(orderPageComponent.maxLossPercentageInput.text);
             double amountToLoss = orderPageComponent.maxLossAmountInput.text.IsNullOrEmpty() ? double.NaN :
@@ -219,14 +219,14 @@ public class OrderPageSystem : MonoBehaviour
                 }
             }
 
-            platformComponent.walletBalances = new Dictionary<string, double>();
-            platformComponent.getBalance = true;
-            yield return new WaitUntil(() => platformComponent.walletBalances.ContainsKey(walletUnit));
-            double currentWalletBalance = platformComponent.walletBalances[walletUnit];
+            platformComponentOld.walletBalances = new Dictionary<string, double>();
+            platformComponentOld.getBalance = true;
+            yield return new WaitUntil(() => platformComponentOld.walletBalances.ContainsKey(walletUnit));
+            double currentWalletBalance = platformComponentOld.walletBalances[walletUnit];
 
-            yield return new WaitUntil(() => platformComponent.fees.ContainsKey(orderPageComponent.symbolDropdownComponent.selectedSymbol)
-            && platformComponent.fees[orderPageComponent.symbolDropdownComponent.selectedSymbol].HasValue);
-            double feeRate = platformComponent.fees[orderPageComponent.symbolDropdownComponent.selectedSymbol].Value;
+            yield return new WaitUntil(() => platformComponentOld.fees.ContainsKey(orderPageComponent.symbolDropdownComponent.selectedSymbol)
+            && platformComponentOld.fees[orderPageComponent.symbolDropdownComponent.selectedSymbol].HasValue);
+            double feeRate = platformComponentOld.fees[orderPageComponent.symbolDropdownComponent.selectedSymbol].Value;
             #endregion
 
             #region Create calculator instance
@@ -240,8 +240,8 @@ public class OrderPageSystem : MonoBehaviour
                     riskRewardRatio,
                     takeProfitTrailingCallbackPercentage,
                     feeRate,
-                    platformComponent.quantityPrecisions[orderPageComponent.symbolDropdownComponent.selectedSymbol],
-                    platformComponent.pricePrecisions[orderPageComponent.symbolDropdownComponent.selectedSymbol],
+                    platformComponentOld.quantityPrecisions[orderPageComponent.symbolDropdownComponent.selectedSymbol],
+                    platformComponentOld.pricePrecisions[orderPageComponent.symbolDropdownComponent.selectedSymbol],
                     orderPageComponent.marginDistributionModeDropdown.value == 1,
                     normalizedMarginWeightDistributionValue);
             #endregion
@@ -432,7 +432,7 @@ public class OrderPageSystem : MonoBehaviour
                 orderPageComponent.resultComponent.orderInfoDataObject.transform.GetChild(3).GetComponent<TMP_Text>().text = orderPageComponent.orderStatus.ToString();
             if (!response.errorJsonString.IsNullOrEmpty())
             {
-                switch (platformComponent.activePlatform)
+                switch (platformComponentOld.activePlatform)
                 {
                     case PlatformEnum.BINANCE:
                     case PlatformEnum.BINANCE_TESTNET:
@@ -454,7 +454,7 @@ public class OrderPageSystem : MonoBehaviour
             orderPageComponent.saveToServer = false;
             websocketComponent.generalRequests.Add(new General.WebsocketSaveOrderRequest(
                 orderPageComponent.orderId,
-                platformComponent.activePlatform,
+                platformComponentOld.activePlatform,
                 orderPageComponent.marginCalculator,
                 orderPageComponent.symbolDropdownComponent.selectedSymbol,
                 (TakeProfitTypeEnum)orderPageComponent.takeProfitTypeDropdown.value,
@@ -466,7 +466,7 @@ public class OrderPageSystem : MonoBehaviour
             orderPageComponent.updateToServer = false;
             websocketComponent.generalRequests.Add(new General.WebsocketSaveOrderRequest(
                 orderPageComponent.orderId,
-                platformComponent.activePlatform,
+                platformComponentOld.activePlatform,
                 orderPageComponent.marginCalculator,
                 (TakeProfitTypeEnum)orderPageComponent.takeProfitTypeDropdown.value,
                 (OrderTypeEnum)orderPageComponent.orderTypeDropdown.value
@@ -477,7 +477,7 @@ public class OrderPageSystem : MonoBehaviour
             orderPageComponent.submitToServer = false;
             websocketComponent.generalRequests.Add(new General.WebsocketSaveOrderRequest(
                orderPageComponent.orderId,
-               platformComponent.activePlatform,
+               platformComponentOld.activePlatform,
                true
             ));
         }
@@ -486,7 +486,7 @@ public class OrderPageSystem : MonoBehaviour
             orderPageComponent.deleteFromServer = false;
             websocketComponent.generalRequests.Add(new General.WebsocketSaveOrderRequest(
                 orderPageComponent.orderId,
-                platformComponent.activePlatform
+                platformComponentOld.activePlatform
             ));
         }
     }
@@ -499,17 +499,17 @@ public class OrderPageSystem : MonoBehaviour
         {
             websocketComponent.RemovesGeneralResponses(WebsocketEventTypeEnum.RETRIEVE_POSITION_INFO);
             // BUG: since now server can spawn order, meaning frontend here haven't get exchangeInfo, server ady send RETRIEVE_POSITION_INFO (because order just spawned at this timing)
-            if (response.averagePriceFilled.HasValue && platformComponent.pricePrecisions.ContainsKey(orderPageComponent.symbolDropdownComponent.selectedSymbol))
+            if (response.averagePriceFilled.HasValue && platformComponentOld.pricePrecisions.ContainsKey(orderPageComponent.symbolDropdownComponent.selectedSymbol))
             {
-                orderPageComponent.positionInfoAvgEntryPriceFilledText.text = Utils.RoundNDecimal(response.averagePriceFilled.Value, platformComponent.pricePrecisions[orderPageComponent.symbolDropdownComponent.selectedSymbol]).ToString();
+                orderPageComponent.positionInfoAvgEntryPriceFilledText.text = Utils.RoundNDecimal(response.averagePriceFilled.Value, platformComponentOld.pricePrecisions[orderPageComponent.symbolDropdownComponent.selectedSymbol]).ToString();
             }
-            if (response.quantityFilled.HasValue && platformComponent.quantityPrecisions.ContainsKey(orderPageComponent.symbolDropdownComponent.selectedSymbol))
+            if (response.quantityFilled.HasValue && platformComponentOld.quantityPrecisions.ContainsKey(orderPageComponent.symbolDropdownComponent.selectedSymbol))
             {
-                orderPageComponent.positionInfoQuantityFilledText.text = Utils.RoundNDecimal(response.quantityFilled.Value, platformComponent.quantityPrecisions[orderPageComponent.symbolDropdownComponent.selectedSymbol]).ToString();
+                orderPageComponent.positionInfoQuantityFilledText.text = Utils.RoundNDecimal(response.quantityFilled.Value, platformComponentOld.quantityPrecisions[orderPageComponent.symbolDropdownComponent.selectedSymbol]).ToString();
             }
-            if (response.actualTakeProfitPrice.HasValue && platformComponent.pricePrecisions.ContainsKey(orderPageComponent.symbolDropdownComponent.selectedSymbol))
+            if (response.actualTakeProfitPrice.HasValue && platformComponentOld.pricePrecisions.ContainsKey(orderPageComponent.symbolDropdownComponent.selectedSymbol))
             {
-                orderPageComponent.positionInfoActualTakeProfitPriceText.text = Utils.RoundNDecimal(response.actualTakeProfitPrice.Value, platformComponent.pricePrecisions[orderPageComponent.symbolDropdownComponent.selectedSymbol]).ToString();
+                orderPageComponent.positionInfoActualTakeProfitPriceText.text = Utils.RoundNDecimal(response.actualTakeProfitPrice.Value, platformComponentOld.pricePrecisions[orderPageComponent.symbolDropdownComponent.selectedSymbol]).ToString();
             }
             if (response.paidFundingAmount.HasValue)
             {

@@ -10,7 +10,7 @@ public class GlobalComponent : MonoBehaviour
         else Destroy(gameObject);
     }
 
-    public PlatformComponent platformComponent;
+    public PlatformComponentOld platformComponentOld;
     public BinanceComponent binanceComponent;
     public BinanceComponent binanceTestnetComponent;
     public WebsocketComponent websocketComponent;

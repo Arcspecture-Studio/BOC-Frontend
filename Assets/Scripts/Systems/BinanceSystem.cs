@@ -23,7 +23,7 @@ public class BinanceSystem : MonoBehaviour
     LoginComponentOld loginComponent;
     IoComponent ioComponent;
     RetrieveOrdersComponent retrieveOrdersComponent;
-    PlatformComponent platformComponent;
+    PlatformComponentOld platformComponentOld;
     TradingBotComponent tradingBotComponent;
     MiniPromptComponent miniPromptComponent;
 
@@ -38,7 +38,7 @@ public class BinanceSystem : MonoBehaviour
         loginComponent = GlobalComponent.instance.loginComponentOld;
         ioComponent = GlobalComponent.instance.ioComponent;
         retrieveOrdersComponent = GlobalComponent.instance.retrieveOrdersComponent;
-        platformComponent = GlobalComponent.instance.platformComponent;
+        platformComponentOld = GlobalComponent.instance.platformComponentOld;
         tradingBotComponent = GlobalComponent.instance.tradingBotComponent;
         miniPromptComponent = GlobalComponent.instance.miniPromptComponent;
     }
@@ -138,7 +138,7 @@ public class BinanceSystem : MonoBehaviour
             });
             binanceComponent.loggedIn = true;
             // ioComponent.writeApiKey = true;
-            if (platformComponent.activePlatformTestnet == testnet)
+            if (platformComponentOld.activePlatformTestnet == testnet)
             {
                 loginComponent.gameObj.SetActive(false);
                 retrieveOrdersComponent.destroyOrders = true;

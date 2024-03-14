@@ -15,7 +15,7 @@ public class WebrequestSystem : MonoBehaviour
 {
     WebrequestComponent webrequestComponent;
     WebsocketComponent websocketComponent;
-    PlatformComponent platformComponent;
+    PlatformComponentOld platformComponentOld;
     PromptComponent promptComponent;
     LoginComponentOld loginComponent;
     string logPrefix = "[WebrequestSystem] ";
@@ -24,7 +24,7 @@ public class WebrequestSystem : MonoBehaviour
     {
         webrequestComponent = GlobalComponent.instance.webrequestComponent;
         websocketComponent = GlobalComponent.instance.websocketComponent;
-        platformComponent = GlobalComponent.instance.platformComponent;
+        platformComponentOld = GlobalComponent.instance.platformComponentOld;
         promptComponent = GlobalComponent.instance.promptComponent;
         loginComponent = GlobalComponent.instance.loginComponentOld;
     }
@@ -74,7 +74,7 @@ public class WebrequestSystem : MonoBehaviour
     void SetHeader(UnityWebRequest webRequest)
     {
         webRequest.SetRequestHeader("Content-Type", "application/json");
-        webRequest.SetRequestHeader("X-MBX-APIKEY", platformComponent.apiKey);
+        webRequest.SetRequestHeader("X-MBX-APIKEY", platformComponentOld.apiKey);
     }
     void ResponseHandler(UnityWebRequest webRequest, string id)
     {
@@ -141,7 +141,7 @@ public class WebrequestSystem : MonoBehaviour
             {
                 JObject response = JsonConvert.DeserializeObject<JObject>(rawResponse.responseJsonString, JsonSerializerConfig.settings);
                 string message = null;
-                switch (platformComponent.activePlatform)
+                switch (platformComponentOld.activePlatform)
                 {
                     case PlatformEnum.BINANCE:
                     case PlatformEnum.BINANCE_TESTNET:
@@ -158,8 +158,8 @@ public class WebrequestSystem : MonoBehaviour
                                     case -2014: // API-key format invalid.
                                     case -2015: // Invalid API-key, IP, or permissions for action, request ip: 130.176.146.87
                                     case -1022: // Signature for this request is not valid.
-                                        platformComponent.apiKey = null;
-                                        platformComponent.apiSecret = null;
+                                        platformComponentOld.apiKey = null;
+                                        platformComponentOld.apiSecret = null;
                                         if (code.Value == -2014 || code.Value == -2015)
                                         {
                                             message = "Login failed with invalid or expired api key, please try to login again. (Binance Error Code: " + code.Value + ")";

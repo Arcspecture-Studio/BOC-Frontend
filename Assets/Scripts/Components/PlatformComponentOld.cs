@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
 
-public class PlatformComponent : PlatformTemplateComponent
+public class PlatformComponentOld : PlatformTemplateComponent
 {
     public PlatformEnum activePlatform;
     public bool activePlatformTestnet

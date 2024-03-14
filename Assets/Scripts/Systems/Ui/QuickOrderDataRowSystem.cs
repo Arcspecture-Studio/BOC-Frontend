@@ -4,13 +4,13 @@ public class QuickOrderDataRowSystem : MonoBehaviour
 {
     QuickOrderDataRowComponent quickOrderDataRowComponent;
     WebsocketComponent websocketComponent;
-    PlatformComponent platformComponent;
+    PlatformComponentOld platformComponentOld;
 
     void Start()
     {
         quickOrderDataRowComponent = GetComponent<QuickOrderDataRowComponent>();
         websocketComponent = GlobalComponent.instance.websocketComponent;
-        platformComponent = GlobalComponent.instance.platformComponent;
+        platformComponentOld = GlobalComponent.instance.platformComponentOld;
 
         quickOrderDataRowComponent.closeButton.onClick.AddListener(OnClick_CloseButton);
         RestoreData();
@@ -28,7 +28,7 @@ public class QuickOrderDataRowSystem : MonoBehaviour
     }
     void OnClick_CloseButton()
     {
-        websocketComponent.generalRequests.Add(new General.WebsocketSaveQuickOrderRequest(platformComponent.activePlatform, quickOrderDataRowComponent.orderId));
+        websocketComponent.generalRequests.Add(new General.WebsocketSaveQuickOrderRequest(platformComponentOld.activePlatform, quickOrderDataRowComponent.orderId));
         quickOrderDataRowComponent.closeButton.interactable = false;
     }
 }

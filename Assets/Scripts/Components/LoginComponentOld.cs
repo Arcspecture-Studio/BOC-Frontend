@@ -29,7 +29,7 @@ public class LoginComponentOld : MonoBehaviour
         get
         {
             string data = null;
-            switch (GlobalComponent.instance.platformComponent.activePlatform)
+            switch (GlobalComponent.instance.platformComponentOld.activePlatform)
             {
                 case PlatformEnum.BINANCE:
                     data = GlobalComponent.instance.binanceComponent.loginPhrase;
@@ -42,7 +42,7 @@ public class LoginComponentOld : MonoBehaviour
         }
         set
         {
-            switch (GlobalComponent.instance.platformComponent.activePlatform)
+            switch (GlobalComponent.instance.platformComponentOld.activePlatform)
             {
                 case PlatformEnum.BINANCE:
                     GlobalComponent.instance.binanceComponent.loginPhrase = value;
@@ -58,7 +58,7 @@ public class LoginComponentOld : MonoBehaviour
         get
         {
             bool data = false;
-            switch (GlobalComponent.instance.platformComponent.activePlatform)
+            switch (GlobalComponent.instance.platformComponentOld.activePlatform)
             {
                 case PlatformEnum.BINANCE:
                     data = GlobalComponent.instance.binanceComponent.loggedIn;
@@ -71,7 +71,7 @@ public class LoginComponentOld : MonoBehaviour
         }
         set
         {
-            switch (GlobalComponent.instance.platformComponent.activePlatform)
+            switch (GlobalComponent.instance.platformComponentOld.activePlatform)
             {
                 case PlatformEnum.BINANCE:
                     GlobalComponent.instance.binanceComponent.loggedIn = value;

@@ -7,7 +7,7 @@ using WebSocketSharp;
 public class AddPlatformSystem : MonoBehaviour
 {
     AddPlatformComponent addPlatformComponent;
-    PlatformComponent platformComponent;
+    PlatformComponentOld platformComponentOld;
     WebsocketComponent websocketComponent;
     LoginComponent loginComponent;
     PromptComponent promptComponent;
@@ -15,7 +15,7 @@ public class AddPlatformSystem : MonoBehaviour
     void Start()
     {
         addPlatformComponent = GlobalComponent.instance.addPlatformComponent;
-        platformComponent = GlobalComponent.instance.platformComponent;
+        platformComponentOld = GlobalComponent.instance.platformComponentOld;
         websocketComponent = GlobalComponent.instance.websocketComponent;
         loginComponent = GlobalComponent.instance.loginComponent;
         promptComponent = GlobalComponent.instance.promptComponent;
@@ -48,7 +48,7 @@ public class AddPlatformSystem : MonoBehaviour
     }
     void UpdateObjectState()
     {
-        addPlatformComponent.backButtonObj.SetActive(platformComponent.activePlatform > PlatformEnum.NONE);
+        addPlatformComponent.backButtonObj.SetActive(platformComponentOld.activePlatform > PlatformEnum.NONE);
         for (int i = 0; i < addPlatformComponent.platformsDropdown.options.Count; i++)
         {
             PlatformEnum platformEnum = (PlatformEnum)i;
@@ -152,8 +152,8 @@ public class AddPlatformSystem : MonoBehaviour
         string jsonString = websocketComponent.RetrieveGeneralResponses(WebsocketEventTypeEnum.ADD_PLATFORM);
         if (jsonString.IsNullOrEmpty()) return;
         websocketComponent.RemovesGeneralResponses(WebsocketEventTypeEnum.ADD_PLATFORM);
-        General.WebsocketAddPlatformResponse response = JsonConvert.DeserializeObject
-        <General.WebsocketAddPlatformResponse>(jsonString, JsonSerializerConfig.settings);
+        General.WebsocketAddOrRemovePlatformResponse response = JsonConvert.DeserializeObject
+        <General.WebsocketAddOrRemovePlatformResponse>(jsonString, JsonSerializerConfig.settings);
 
         AllowForInteraction(true);
         if (!response.success)
