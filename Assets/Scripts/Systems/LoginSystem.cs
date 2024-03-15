@@ -21,8 +21,8 @@ public class LoginSystem : MonoBehaviour
         loginComponent.onChange_loginStatus.AddListener(SwitchPageBasedOnLoginStatus);
 
         // Set initial state
-        loginComponent.gameObject.SetActive(true);
         loginComponent.loginStatus = LoginPageStatusEnum.LOGGED_IN;
+        loginComponent.gameObject.SetActive(true);
         AllowForInteraction(false);
     }
     void Update()
@@ -105,6 +105,7 @@ public class LoginSystem : MonoBehaviour
     void SwitchPageBasedOnLoginStatus()
     {
         AllowForInteraction(true);
+        loginComponent.gameObject.SetActive(loginComponent.loginStatus != LoginPageStatusEnum.LOGGED_IN);
         loginComponent.proceedButton.onClick.RemoveAllListeners();
         loginComponent.switchButton.onClick.RemoveAllListeners();
         loginComponent.confirmPasswordObj.SetActive(loginComponent.loginStatus == LoginPageStatusEnum.REGISTER);

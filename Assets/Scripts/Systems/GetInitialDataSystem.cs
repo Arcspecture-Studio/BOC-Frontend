@@ -52,7 +52,7 @@ public class GetInitialDataSystem : MonoBehaviour
             return;
         }
 
-        loginComponent.gameObject.SetActive(false);
+        loginComponent.loginStatus = LoginPageStatusEnum.LOGGED_IN;
         if (response.accountData.platformList.Count == 0)
         {
             platformComponent.gameObject.SetActive(true);
@@ -62,13 +62,24 @@ public class GetInitialDataSystem : MonoBehaviour
         profileComponent.profiles = response.accountData.profiles;
         profileComponent.activeProfileId = response.defaultProfileId;
 
+        foreach (PlatformEnum platform in response.accountData.platformList)
+        {
+            switch (platform)
+            {
+                case PlatformEnum.BINANCE:
+                    GlobalComponent.instance.binanceComponent.loggedIn = true;
+                    break;
+                case PlatformEnum.BINANCE_TESTNET:
+                    GlobalComponent.instance.binanceTestnetComponent.loggedIn = true;
+                    break;
+            }
+        }
+
         platformComponent.activePlatform = profileComponent.activeProfile.activePlatform.Value;
         switch (platformComponent.activePlatform)
         {
             case PlatformEnum.BINANCE:
             case PlatformEnum.BINANCE_TESTNET:
-                platformComponent.loggedIn = true;
-
                 Binance.WebsocketPlatformDataResponse platformData = JsonConvert.DeserializeObject
                 <Binance.WebsocketPlatformDataResponse>(response.platformData.ToString(), JsonSerializerConfig.settings);
                 // TODO: proceed to handle platform data (get balance and exchange info)
