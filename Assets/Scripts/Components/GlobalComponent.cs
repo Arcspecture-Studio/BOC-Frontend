@@ -19,7 +19,6 @@ public class GlobalComponent : MonoBehaviour
     public OrderPagesComponent orderPagesComponent;
     public PreferenceComponent preferenceComponent;
     public PromptComponent promptComponent;
-    public LoginComponentOld loginComponentOld;
     public LoginComponent loginComponent;
     public IoComponent ioComponent;
     public RetrieveOrdersComponent retrieveOrdersComponent;

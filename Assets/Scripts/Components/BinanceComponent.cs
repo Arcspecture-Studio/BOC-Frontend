@@ -1,6 +1,5 @@
 public class BinanceComponent : PlatformTemplateComponent
 {
-    public string loginPhrase = null; // TODO: remove
     public bool getExchangeInfo;
 
     void Start()

@@ -22,7 +22,6 @@ public class WebsocketComponent : MonoBehaviour
         get { return generalSocket != null && generalSocket.IsAlive; }
     }
     [HideInInspector] public byte[] generalSocketIv;
-    public bool syncApiKeyToServer; // TODO: no more sync api key to server
 
     public void AddGeneralResponses(WebsocketEventTypeEnum key, string value)
     {

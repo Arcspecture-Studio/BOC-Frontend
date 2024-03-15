@@ -22,7 +22,11 @@ public class PlatformSystem : MonoBehaviour
         // Set initial state
         platformComponent.gameObject.SetActive(false);
         platformComponent.onEnable.AddListener(() => OnComponentEnable());
-        platformComponent.platformsDropdown.onValueChanged.AddListener(value => UpdateObjectState());
+        platformComponent.platformsDropdown.onValueChanged.AddListener(value =>
+        {
+            UpdateObjectState();
+            UpdateActivePlatformOnServer();
+        });
         platformComponent.proceedButton.onClick.AddListener(() => AddOrRemovePlatform());
         platformComponent.backButton.onClick.AddListener(() => platformComponent.gameObject.SetActive(false));
         InitializePlatformDropdownOptions();
@@ -187,7 +191,22 @@ public class PlatformSystem : MonoBehaviour
         }
         platformTemplateComponent.loggedIn = loggedIn;
         UpdateObjectState();
+        // TODO: consider not using apiKey in frontend, when calling webrequest api, server assign the apikey onto request
         platformTemplateComponent.apiKey = platformComponent.apiKeyInput.text;
         platformTemplateComponent.apiSecret = platformComponent.apiSecretInput.text;
+    }
+    void UpdateActivePlatformOnServer()
+    {
+        if (platformComponent.loggedIn)
+        {
+            // TODO: update profile's active platform
+            // General.WebsocketGeneralRequest request = new General.WebsocketAddPlatformRequest(
+            //     loginComponent.token,
+            //     platformComponent.apiKeyInput.text,
+            //     platformComponent.apiSecretInput.text,
+            //     platformComponent.activePlatform
+            // );
+            // websocketComponent.generalRequests.Add(request);
+        }
     }
 }

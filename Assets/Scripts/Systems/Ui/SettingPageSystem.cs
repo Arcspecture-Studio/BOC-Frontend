@@ -4,18 +4,16 @@ using UnityEngine;
 public class SettingPageSystem : MonoBehaviour
 {
     SettingPageComponent settingPageComponent;
-    LoginComponentOld loginComponent;
 
     bool? active = null;
     Tween tween = null;
     void Start()
     {
         settingPageComponent = GlobalComponent.instance.settingPageComponent;
-        loginComponent = GlobalComponent.instance.loginComponentOld;
 
         settingPageComponent.logoutButton.onClick.AddListener(() =>
         {
-            loginComponent.changePlatform = true;
+            // loginComponent.changePlatform = true;
             settingPageComponent.active = false;
         });
     }

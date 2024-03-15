@@ -20,7 +20,6 @@ public class BinanceSystem : MonoBehaviour
         }
     }
     WebrequestComponent webrequestComponent;
-    LoginComponentOld loginComponent;
     IoComponent ioComponent;
     RetrieveOrdersComponent retrieveOrdersComponent;
     PlatformComponentOld platformComponentOld;
@@ -35,7 +34,6 @@ public class BinanceSystem : MonoBehaviour
     void Start()
     {
         webrequestComponent = GlobalComponent.instance.webrequestComponent;
-        loginComponent = GlobalComponent.instance.loginComponentOld;
         ioComponent = GlobalComponent.instance.ioComponent;
         retrieveOrdersComponent = GlobalComponent.instance.retrieveOrdersComponent;
         platformComponentOld = GlobalComponent.instance.platformComponentOld;
@@ -140,7 +138,7 @@ public class BinanceSystem : MonoBehaviour
             // ioComponent.writeApiKey = true;
             if (platformComponentOld.activePlatformTestnet == testnet)
             {
-                loginComponent.gameObj.SetActive(false);
+                // loginComponent.gameObj.SetActive(false);
                 retrieveOrdersComponent.destroyOrders = true;
                 retrieveOrdersComponent.instantiateOrders = true;
                 tradingBotComponent.getTradingBots = true;

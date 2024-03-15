@@ -56,6 +56,9 @@ public class GetInitialDataSystem : MonoBehaviour
             platformComponent.gameObject.SetActive(true);
             return;
         }
+
+        // TODO: proceed to handle profile
+
         platformComponent.activePlatform = response.accountData.profiles[response.defaultProfileId].activePlatform.Value;
         switch (platformComponent.activePlatform)
         {

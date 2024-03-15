@@ -17,7 +17,6 @@ public class WebrequestSystem : MonoBehaviour
     WebsocketComponent websocketComponent;
     PlatformComponentOld platformComponentOld;
     PromptComponent promptComponent;
-    LoginComponentOld loginComponent;
     string logPrefix = "[WebrequestSystem] ";
 
     void Start()
@@ -26,7 +25,6 @@ public class WebrequestSystem : MonoBehaviour
         websocketComponent = GlobalComponent.instance.websocketComponent;
         platformComponentOld = GlobalComponent.instance.platformComponentOld;
         promptComponent = GlobalComponent.instance.promptComponent;
-        loginComponent = GlobalComponent.instance.loginComponentOld;
     }
     void Update()
     {
@@ -176,7 +174,7 @@ public class WebrequestSystem : MonoBehaviour
                 }
                 if (!message.IsNullOrEmpty())
                 {
-                    loginComponent.allowInput = true;
+                    // loginComponent.allowInput = true;
                     promptComponent.ShowPrompt(PromptConstant.ERROR, message, () =>
                     {
                         promptComponent.active = false;
