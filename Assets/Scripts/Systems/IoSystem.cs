@@ -39,6 +39,7 @@ public class IoSystem : MonoBehaviour
         ioComponent.persistentPath = Application.persistentDataPath + Path.AltDirectorySeparatorChar;
 
         ioComponent.onChange_readToken.AddListener(ReadFromTokenFile);
+        ioComponent.onChange_deleteToken.AddListener(DeleteTokenFile);
     }
     void Update()
     {
@@ -72,7 +73,7 @@ public class IoSystem : MonoBehaviour
         bool fileNotExist = !File.Exists(ioComponent.path + ioComponent.tokenFileName);
         if (fileNotExist)
         {
-            loginComponent.loginStatus = LoginPageStatusEnum.REGISTER;
+            loginComponent.loginStatus = LoginPageStatusEnum.LOGIN;
             CheckVersion();
             return;
         }
@@ -85,8 +86,6 @@ public class IoSystem : MonoBehaviour
         {
             TokenFile data = JsonConvert.DeserializeObject<TokenFile>(jsonString, JsonSerializerConfig.settings);
             loginComponent.token = Encryption.Decrypt(data.token, SecretConfig.ENCRYPTION_ACCESS_TOKEN_32, data.key);
-            ioComponent.writeToken = true;
-            getInitialDataComponent.getInitialData = true;
         }
         catch (Exception ex)
         {
@@ -109,5 +108,9 @@ public class IoSystem : MonoBehaviour
         TokenFile file = new(token, websocketComponent.generalSocketIv);
         string jsonString = JsonConvert.SerializeObject(file, JsonSerializerConfig.settings);
         Write(ioComponent.tokenFileName, jsonString);
+    }
+    void DeleteTokenFile()
+    {
+        File.Delete(ioComponent.path + ioComponent.tokenFileName);
     }
 }

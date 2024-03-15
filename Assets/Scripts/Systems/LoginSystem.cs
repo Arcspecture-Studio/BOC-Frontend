@@ -19,6 +19,8 @@ public class LoginSystem : MonoBehaviour
         getInitialDataComponent = GlobalComponent.instance.getInitialDataComponent;
 
         loginComponent.onChange_loginStatus.AddListener(SwitchPageBasedOnLoginStatus);
+        loginComponent.onChange_token.AddListener(OnTokenUpdated);
+        loginComponent.onChange_logoutNow.AddListener(Logout);
 
         // Set initial state
         loginComponent.loginStatus = LoginPageStatusEnum.LOGGED_IN;
@@ -29,6 +31,7 @@ public class LoginSystem : MonoBehaviour
     {
         CreateAccountResponse();
         GetLoginResponse();
+        RevokeJwtResponse();
     }
 
     void CreateAccountResponse()
@@ -49,18 +52,39 @@ public class LoginSystem : MonoBehaviour
     }
     void HandleResponse(string jsonString)
     {
-        General.WebsocketTokenResponse tokenResponse = JsonConvert.DeserializeObject
+        General.WebsocketTokenResponse response = JsonConvert.DeserializeObject
         <General.WebsocketTokenResponse>(jsonString, JsonSerializerConfig.settings);
-        if (tokenResponse.success)
+        if (response.success)
         {
-            loginComponent.token = tokenResponse.token;
-            ioComponent.writeToken = true;
-            getInitialDataComponent.getInitialData = true;
+            loginComponent.token = response.token;
         }
         else
         {
             AllowForInteraction(true);
-            promptComponent.ShowPrompt(PromptConstant.ERROR, tokenResponse.message, () =>
+            promptComponent.ShowPrompt(PromptConstant.ERROR, response.message, () =>
+            {
+                promptComponent.active = false;
+            });
+        }
+    }
+    void RevokeJwtResponse()
+    {
+        string jsonString = websocketComponent.RetrieveGeneralResponses(WebsocketEventTypeEnum.REVOKE_JWT);
+        if (jsonString.IsNullOrEmpty()) return;
+        websocketComponent.RemovesGeneralResponses(WebsocketEventTypeEnum.REVOKE_JWT);
+
+        General.WebsocketGeneralResponse response = JsonConvert.DeserializeObject
+            <General.WebsocketGeneralResponse>(jsonString, JsonSerializerConfig.settings);
+
+        GlobalComponent.instance.settingPageComponent.logoutButton.interactable = true;
+        if (response.success)
+        {
+            loginComponent.loginStatus = LoginPageStatusEnum.LOGIN;
+            ioComponent.deleteToken = true;
+        }
+        else
+        {
+            promptComponent.ShowPrompt(PromptConstant.ERROR, response.message, () =>
             {
                 promptComponent.active = false;
             });
@@ -144,6 +168,12 @@ public class LoginSystem : MonoBehaviour
                 break;
         }
     }
+    void OnTokenUpdated()
+    {
+        if (loginComponent.token.IsNullOrEmpty()) return;
+        ioComponent.writeToken = true;
+        getInitialDataComponent.getInitialData = true;
+    }
     void SwitchToRegister()
     {
         loginComponent.loginStatus = LoginPageStatusEnum.REGISTER;
@@ -184,6 +214,10 @@ public class LoginSystem : MonoBehaviour
     }
     void Logout()
     {
-
+        if (loginComponent.loginStatus == LoginPageStatusEnum.LOGGED_IN)
+        {
+            General.WebsocketGeneralRequest request = new(WebsocketEventTypeEnum.REVOKE_JWT, loginComponent.token);
+            websocketComponent.generalRequests.Add(request);
+        }
     }
 }

@@ -28,5 +28,24 @@ public class LoginComponent : MonoBehaviour
         get { return _loginStatus; }
     }
     [HideInInspector] public UnityEvent onChange_loginStatus = new();
-    public string token;
+    public string _token;
+    public string token
+    {
+        set
+        {
+            _token = value;
+            onChange_token.Invoke();
+        }
+        get { return _token; }
+    }
+    [HideInInspector] public UnityEvent onChange_token = new();
+    public bool logoutNow
+    {
+        set
+        {
+            onChange_logoutNow.Invoke();
+        }
+    }
+    [HideInInspector] public UnityEvent onChange_logoutNow = new();
+
 }

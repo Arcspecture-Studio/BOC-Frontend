@@ -31,6 +31,7 @@ public class SettingPageComponent : MonoBehaviour
     public TMP_Text takeProfitTrailingCallbackPercentageMaxText;
     public TMP_InputField takeProfitTrailingCallbackPercentageInput;
     public TMP_Dropdown orderTypeDropdown;
+    public Button switchPlatformButton;
     public Button logoutButton;
 
     [Header("Config")]
