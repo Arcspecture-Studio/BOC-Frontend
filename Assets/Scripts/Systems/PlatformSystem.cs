@@ -115,14 +115,12 @@ public class PlatformSystem : MonoBehaviour
     }
     void AddOrRemovePlatform()
     {
-        PlatformEnum selectedPlatform = (PlatformEnum)platformComponent.platformsDropdown.value;
-
         bool add = true;
-        switch (selectedPlatform)
+        switch (platformComponent.activePlatform)
         {
             case PlatformEnum.BINANCE:
             case PlatformEnum.BINANCE_TESTNET:
-                BinanceComponent binanceComponent = selectedPlatform == PlatformEnum.BINANCE ?
+                BinanceComponent binanceComponent = platformComponent.activePlatform == PlatformEnum.BINANCE ?
                 GlobalComponent.instance.binanceComponent : GlobalComponent.instance.binanceTestnetComponent;
                 add = !binanceComponent.loggedIn;
                 break;
@@ -136,12 +134,12 @@ public class PlatformSystem : MonoBehaviour
                 loginComponent.token,
                 platformComponent.apiKeyInput.text,
                 platformComponent.apiSecretInput.text,
-                selectedPlatform
+                platformComponent.activePlatform
             );
         }
         else
         {
-            request = new General.WebsocketRemovePlatformRequest(loginComponent.token, selectedPlatform);
+            request = new General.WebsocketRemovePlatformRequest(loginComponent.token, platformComponent.activePlatform);
         }
         websocketComponent.generalRequests.Add(request);
 
@@ -179,15 +177,16 @@ public class PlatformSystem : MonoBehaviour
             return;
         }
 
+        PlatformTemplateComponent platformTemplateComponent = GlobalComponent.instance.binanceComponent;
         switch (response.platform)
         {
-            case PlatformEnum.BINANCE:
-                GlobalComponent.instance.binanceComponent.loggedIn = loggedIn;
-                break;
             case PlatformEnum.BINANCE_TESTNET:
-                GlobalComponent.instance.binanceTestnetComponent.loggedIn = loggedIn;
+                platformTemplateComponent = GlobalComponent.instance.binanceTestnetComponent;
                 break;
         }
+        platformTemplateComponent.loggedIn = loggedIn;
         UpdateObjectState();
+        platformTemplateComponent.apiKey = platformComponent.apiKeyInput.text;
+        platformTemplateComponent.apiSecret = platformComponent.apiSecretInput.text;
     }
 }
