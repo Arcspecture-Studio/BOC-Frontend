@@ -205,6 +205,8 @@ public class PlatformSystem : MonoBehaviour
         profileComponent.activeProfile.activePlatform = platformComponent.activePlatform;
 
         // TODO: send profile's active platform
+        // TODO: profile UI (DO THIS FIRST)
+
         // General.WebsocketGeneralRequest request = new General.WebsocketAddPlatformRequest(
         //     loginComponent.token,
         //     platformComponent.apiKeyInput.text,
