@@ -11,6 +11,7 @@ public class PlatformSystem : MonoBehaviour
     WebsocketComponent websocketComponent;
     LoginComponent loginComponent;
     PromptComponent promptComponent;
+    ProfileComponent profileComponent;
 
     void Start()
     {
@@ -18,6 +19,7 @@ public class PlatformSystem : MonoBehaviour
         websocketComponent = GlobalComponent.instance.websocketComponent;
         loginComponent = GlobalComponent.instance.loginComponent;
         promptComponent = GlobalComponent.instance.promptComponent;
+        profileComponent = GlobalComponent.instance.profileComponent;
 
         // Set initial state
         platformComponent.gameObject.SetActive(false);
@@ -25,7 +27,7 @@ public class PlatformSystem : MonoBehaviour
         platformComponent.platformsDropdown.onValueChanged.AddListener(value =>
         {
             UpdateObjectState();
-            UpdateActivePlatformOnServer();
+            UpdateProfileActivePlatformOnServer();
         });
         platformComponent.proceedButton.onClick.AddListener(() => AddOrRemovePlatform());
         platformComponent.backButton.onClick.AddListener(() => platformComponent.gameObject.SetActive(false));
@@ -195,18 +197,20 @@ public class PlatformSystem : MonoBehaviour
         platformTemplateComponent.apiKey = platformComponent.apiKeyInput.text;
         platformTemplateComponent.apiSecret = platformComponent.apiSecretInput.text;
     }
-    void UpdateActivePlatformOnServer()
+    void UpdateProfileActivePlatformOnServer()
     {
-        if (platformComponent.loggedIn)
-        {
-            // TODO: update profile's active platform
-            // General.WebsocketGeneralRequest request = new General.WebsocketAddPlatformRequest(
-            //     loginComponent.token,
-            //     platformComponent.apiKeyInput.text,
-            //     platformComponent.apiSecretInput.text,
-            //     platformComponent.activePlatform
-            // );
-            // websocketComponent.generalRequests.Add(request);
-        }
+        if (!platformComponent.loggedIn) return;
+        if (profileComponent.activeProfile == null) return;
+
+        profileComponent.activeProfile.activePlatform = platformComponent.activePlatform;
+
+        // TODO: send profile's active platform
+        // General.WebsocketGeneralRequest request = new General.WebsocketAddPlatformRequest(
+        //     loginComponent.token,
+        //     platformComponent.apiKeyInput.text,
+        //     platformComponent.apiSecretInput.text,
+        //     platformComponent.activePlatform
+        // );
+        // websocketComponent.generalRequests.Add(request);
     }
 }

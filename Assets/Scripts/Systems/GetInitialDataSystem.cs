@@ -9,6 +9,7 @@ public class GetInitialDataSystem : MonoBehaviour
     LoginComponent loginComponent;
     PlatformComponent platformComponent;
     PromptComponent promptComponent;
+    ProfileComponent profileComponent;
 
     void Start()
     {
@@ -17,6 +18,7 @@ public class GetInitialDataSystem : MonoBehaviour
         loginComponent = GlobalComponent.instance.loginComponent;
         platformComponent = GlobalComponent.instance.platformComponent;
         promptComponent = GlobalComponent.instance.promptComponent;
+        profileComponent = GlobalComponent.instance.profileComponent;
 
         getInitialDataComponent.onChange_getInitialData.AddListener(GetInitialData);
     }
@@ -57,13 +59,16 @@ public class GetInitialDataSystem : MonoBehaviour
             return;
         }
 
-        // TODO: proceed to handle profile
+        profileComponent.profiles = response.accountData.profiles;
+        profileComponent.activeProfileId = response.defaultProfileId;
 
-        platformComponent.activePlatform = response.accountData.profiles[response.defaultProfileId].activePlatform.Value;
+        platformComponent.activePlatform = profileComponent.activeProfile.activePlatform.Value;
         switch (platformComponent.activePlatform)
         {
             case PlatformEnum.BINANCE:
             case PlatformEnum.BINANCE_TESTNET:
+                platformComponent.loggedIn = true;
+
                 Binance.WebsocketPlatformDataResponse platformData = JsonConvert.DeserializeObject
                 <Binance.WebsocketPlatformDataResponse>(response.platformData.ToString(), JsonSerializerConfig.settings);
                 // TODO: proceed to handle platform data (get balance and exchange info)

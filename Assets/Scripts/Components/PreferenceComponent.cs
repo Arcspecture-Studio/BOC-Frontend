@@ -21,23 +21,23 @@ public class PreferenceComponent : MonoBehaviour
     public int atrLength;
     public double atrMultiplier;
 
-    public void UpdateValue(PreferenceFile preferenceFile)
-    {
-        tradingPlatform = preferenceFile.tradingPlatform.GetValueOrDefault(tradingPlatform);
-        symbol = preferenceFile.symbol.IsNullOrEmpty() ? symbol : preferenceFile.symbol;
-        lossPercentage = preferenceFile.lossPercentage.GetValueOrDefault(lossPercentage);
-        lossAmount = preferenceFile.lossAmount.GetValueOrDefault(lossAmount);
-        marginDistributionMode = preferenceFile.marginDistributionMode.GetValueOrDefault(marginDistributionMode);
-        marginWeightDistributionValue = preferenceFile.marginWeightDistributionValue.GetValueOrDefault(marginWeightDistributionValue);
-        takeProfitType = preferenceFile.takeProfitType.GetValueOrDefault(takeProfitType);
-        riskRewardRatio = preferenceFile.riskRewardRatio.GetValueOrDefault(riskRewardRatio);
-        takeProfitTrailingCallbackPercentage = preferenceFile.takeProfitTrailingCallbackPercentage.GetValueOrDefault(takeProfitTrailingCallbackPercentage);
-        orderType = preferenceFile.orderType.GetValueOrDefault(orderType);
-        quickEntryTimes = preferenceFile.quickEntryTimes.GetValueOrDefault(quickEntryTimes);
-        atrTimeframe = preferenceFile.atrTimeframe.GetValueOrDefault(atrTimeframe);
-        atrLength = preferenceFile.atrLength.GetValueOrDefault(atrLength);
-        atrMultiplier = preferenceFile.atrMultiplier.GetValueOrDefault(atrMultiplier);
-    }
+    // public void UpdateValue(PreferenceFile preferenceFile)
+    // {
+    //     tradingPlatform = preferenceFile.tradingPlatform.GetValueOrDefault(tradingPlatform);
+    //     symbol = preferenceFile.symbol.IsNullOrEmpty() ? symbol : preferenceFile.symbol;
+    //     lossPercentage = preferenceFile.lossPercentage.GetValueOrDefault(lossPercentage);
+    //     lossAmount = preferenceFile.lossAmount.GetValueOrDefault(lossAmount);
+    //     marginDistributionMode = preferenceFile.marginDistributionMode.GetValueOrDefault(marginDistributionMode);
+    //     marginWeightDistributionValue = preferenceFile.marginWeightDistributionValue.GetValueOrDefault(marginWeightDistributionValue);
+    //     takeProfitType = preferenceFile.takeProfitType.GetValueOrDefault(takeProfitType);
+    //     riskRewardRatio = preferenceFile.riskRewardRatio.GetValueOrDefault(riskRewardRatio);
+    //     takeProfitTrailingCallbackPercentage = preferenceFile.takeProfitTrailingCallbackPercentage.GetValueOrDefault(takeProfitTrailingCallbackPercentage);
+    //     orderType = preferenceFile.orderType.GetValueOrDefault(orderType);
+    //     quickEntryTimes = preferenceFile.quickEntryTimes.GetValueOrDefault(quickEntryTimes);
+    //     atrTimeframe = preferenceFile.atrTimeframe.GetValueOrDefault(atrTimeframe);
+    //     atrLength = preferenceFile.atrLength.GetValueOrDefault(atrLength);
+    //     atrMultiplier = preferenceFile.atrMultiplier.GetValueOrDefault(atrMultiplier);
+    // }
     public string GetJsonString()
     {
         JObject json = new()

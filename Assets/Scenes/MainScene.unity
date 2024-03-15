@@ -23620,6 +23620,7 @@ GameObject:
   - component: {fileID: 1439778830}
   - component: {fileID: 1439778808}
   - component: {fileID: 1439778820}
+  - component: {fileID: 1439778840}
   - component: {fileID: 1439778821}
   - component: {fileID: 1439778811}
   - component: {fileID: 1439778812}
@@ -23641,6 +23642,7 @@ GameObject:
   - component: {fileID: 1439778831}
   - component: {fileID: 1439778832}
   - component: {fileID: 1439778836}
+  - component: {fileID: 1439778839}
   m_Layer: 0
   m_Name: Global Object
   m_TagString: Untagged
@@ -23707,6 +23709,7 @@ MonoBehaviour:
   miniPromptComponent: {fileID: 792923717748285592}
   getInitialDataComponent: {fileID: 1439778837}
   platformComponent: {fileID: 1527012472}
+  profileComponent: {fileID: 1439778840}
 --- !u!114 &1439778811
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -23724,7 +23727,6 @@ MonoBehaviour:
   apiSecret: 
   allSymbols: []
   getBalance: 0
-  loginPhrase: 
   getExchangeInfo: 0
 --- !u!114 &1439778812
 MonoBehaviour:
@@ -24124,6 +24126,31 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 661c0bf560d6de8419f2d8ebdecaf03b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &1439778839
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1439778804}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4043570d34d605d4c954d15285c91689, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &1439778840
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1439778804}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ffe03625218c3e64793f9f5d0f016e26, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  activeProfileId: 
 --- !u!1 &1442244242
 GameObject:
   m_ObjectHideFlags: 0
@@ -24552,7 +24579,6 @@ MonoBehaviour:
   apiSecret: 
   allSymbols: []
   getBalance: 0
-  loginPhrase: 
   getExchangeInfo: 0
 --- !u!114 &1459617761
 MonoBehaviour:

@@ -29,4 +29,5 @@ public class GlobalComponent : MonoBehaviour
     public MiniPromptComponent miniPromptComponent;
     public GetInitialDataComponent getInitialDataComponent;
     public PlatformComponent platformComponent;
+    public ProfileComponent profileComponent;
 }
