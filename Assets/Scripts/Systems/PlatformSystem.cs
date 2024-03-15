@@ -24,6 +24,7 @@ public class PlatformSystem : MonoBehaviour
         platformComponent.onEnable.AddListener(() => OnComponentEnable());
         platformComponent.platformsDropdown.onValueChanged.AddListener(value => UpdateObjectState());
         platformComponent.proceedButton.onClick.AddListener(() => AddOrRemovePlatform());
+        platformComponent.backButton.onClick.AddListener(() => platformComponent.gameObject.SetActive(false));
         InitializePlatformDropdownOptions();
     }
     void Update()

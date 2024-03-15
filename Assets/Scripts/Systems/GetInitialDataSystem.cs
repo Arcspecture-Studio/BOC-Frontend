@@ -50,9 +50,9 @@ public class GetInitialDataSystem : MonoBehaviour
             return;
         }
 
+        loginComponent.gameObject.SetActive(false);
         if (response.accountData.platformList.Count == 0)
         {
-            loginComponent.gameObject.SetActive(false);
             platformComponent.gameObject.SetActive(true);
             return;
         }
@@ -63,6 +63,7 @@ public class GetInitialDataSystem : MonoBehaviour
             case PlatformEnum.BINANCE_TESTNET:
                 Binance.WebsocketPlatformDataResponse platformData = JsonConvert.DeserializeObject
                 <Binance.WebsocketPlatformDataResponse>(response.platformData.ToString(), JsonSerializerConfig.settings);
+                // TODO: proceed to handle platform data (get balance and exchange info)
                 break;
         }
     }
