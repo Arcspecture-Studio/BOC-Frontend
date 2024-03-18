@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using Newtonsoft.Json;
 using UnityEngine;
 using WebSocketSharp;
@@ -10,6 +11,7 @@ public class GetInitialDataSystem : MonoBehaviour
     PlatformComponent platformComponent;
     PromptComponent promptComponent;
     ProfileComponent profileComponent;
+    SettingPageComponent settingPageComponent;
 
     void Start()
     {
@@ -19,6 +21,7 @@ public class GetInitialDataSystem : MonoBehaviour
         platformComponent = GlobalComponent.instance.platformComponent;
         promptComponent = GlobalComponent.instance.promptComponent;
         profileComponent = GlobalComponent.instance.profileComponent;
+        settingPageComponent = GlobalComponent.instance.settingPageComponent;
 
         getInitialDataComponent.onChange_getInitialData.AddListener(GetInitialData);
     }
@@ -80,10 +83,20 @@ public class GetInitialDataSystem : MonoBehaviour
         {
             case PlatformEnum.BINANCE:
             case PlatformEnum.BINANCE_TESTNET:
-                Binance.WebsocketPlatformDataResponse platformData = JsonConvert.DeserializeObject
-                <Binance.WebsocketPlatformDataResponse>(response.platformData.ToString(), JsonSerializerConfig.settings);
-                // TODO: proceed to handle platform data (get balance and exchange info)
+                UpdateBinancePlatformData(response);
                 break;
+        }
+        settingPageComponent.syncInfo = true;
+    }
+    void UpdateBinancePlatformData(General.WebsocketGetInitialDataResponse response)
+    {
+        Binance.WebsocketPlatformDataResponse platformData = JsonConvert.DeserializeObject
+        <Binance.WebsocketPlatformDataResponse>(response.platformData.ToString(), JsonSerializerConfig.settings);
+
+        platformComponent.walletBalances = new();
+        foreach (KeyValuePair<string, Binance.WebrequestGetBalanceResponseData> balance in platformData.balances)
+        {
+            platformComponent.walletBalances.Add(balance.Key, double.Parse(balance.Value.balance));
         }
     }
 }

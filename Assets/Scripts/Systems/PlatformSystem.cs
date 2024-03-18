@@ -196,6 +196,7 @@ public class PlatformSystem : MonoBehaviour
         // TODO: consider not using apiKey in frontend, when calling webrequest api, server assign the apikey onto request
         platformTemplateComponent.apiKey = platformComponent.apiKeyInput.text;
         platformTemplateComponent.apiSecret = platformComponent.apiSecretInput.text;
+        // TODO: request get initial data
     }
     void UpdateProfileActivePlatformOnServer()
     {
@@ -205,7 +206,6 @@ public class PlatformSystem : MonoBehaviour
         profileComponent.activeProfile.activePlatform = platformComponent.activePlatform;
 
         // TODO: send profile's active platform
-        // TODO: profile UI (DO THIS FIRST)
 
         // General.WebsocketGeneralRequest request = new General.WebsocketAddPlatformRequest(
         //     loginComponent.token,

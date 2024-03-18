@@ -38,22 +38,22 @@ public class SettingPageUpdateDataSystem : MonoBehaviour
 
     void UpdatePlatformDropdownList()
     {
-        settingPageComponent.platformsDropdown.ClearOptions();
+        // settingPageComponent.platformsDropdown.ClearOptions();
         List<TMP_Dropdown.OptionData> optionDataList = new List<TMP_Dropdown.OptionData>();
 
         foreach (PlatformEnum value in Enum.GetValues(typeof(PlatformEnum)))
         {
             optionDataList.Add(new TMP_Dropdown.OptionData(value.ToString().Replace("_", " ")));
         }
-        settingPageComponent.platformsDropdown.AddOptions(optionDataList);
-        settingPageComponent.platformsDropdown.value = (int)preferenceComponent.tradingPlatform;
+        // settingPageComponent.platformsDropdown.AddOptions(optionDataList);
+        // settingPageComponent.platformsDropdown.value = (int)preferenceComponent.tradingPlatform;
     }
     void SyncSettingFromPreference()
     {
         if (!settingPageComponent.syncSetting) return;
         settingPageComponent.syncSetting = false;
 
-        settingPageComponent.platformsDropdown.value = (int)preferenceComponent.tradingPlatform;
+        // settingPageComponent.platformsDropdown.value = (int)preferenceComponent.tradingPlatform;
         settingPageComponent.symbolInput.text = preferenceComponent.symbol;
         settingPageComponent.lossPercentageInput.text = preferenceComponent.lossPercentage == 0 ? "" : preferenceComponent.lossPercentage.ToString();
         settingPageComponent.lossAmountInput.text = preferenceComponent.lossAmount == 0 ? "" : preferenceComponent.lossAmount.ToString();
@@ -68,11 +68,11 @@ public class SettingPageUpdateDataSystem : MonoBehaviour
     }
     void SyncSettingToPreference()
     {
-        settingPageComponent.platformsDropdown.onValueChanged.AddListener(value =>
-        {
-            preferenceComponent.tradingPlatform = (PlatformEnum)value;
-            // ioComponent.writePreferences = true;
-        });
+        // settingPageComponent.platformsDropdown.onValueChanged.AddListener(value =>
+        // {
+        // preferenceComponent.tradingPlatform = (PlatformEnum)value;
+        // ioComponent.writePreferences = true;
+        // });
         settingPageComponent.symbolInput.onValueChanged.AddListener(value =>
         {
             settingPageComponent.symbolInput.text = value.ToUpper();
@@ -134,7 +134,7 @@ public class SettingPageUpdateDataSystem : MonoBehaviour
                 if (balanceUsdt != platformComponentOld.walletBalances[usdt])
                 {
                     balanceUsdt = platformComponentOld.walletBalances[usdt];
-                    settingPageComponent.balanceUdstText.text = Utils.TruncTwoDecimal(balanceUsdt.Value).ToString();
+                    // settingPageComponent.balanceUdstText.text = Utils.TruncTwoDecimal(balanceUsdt.Value).ToString();
                 }
             }
             if (platformComponentOld.walletBalances.ContainsKey(busd))
@@ -142,7 +142,7 @@ public class SettingPageUpdateDataSystem : MonoBehaviour
                 if (balanceBusd != platformComponentOld.walletBalances[busd])
                 {
                     balanceBusd = platformComponentOld.walletBalances[busd];
-                    settingPageComponent.balanceBusdText.text = Utils.TruncTwoDecimal(balanceBusd.Value).ToString();
+                    // settingPageComponent.balanceBusdText.text = Utils.TruncTwoDecimal(balanceBusd.Value).ToString();
                 }
             }
         }
