@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
 
-public class PlatformComponentOld : PlatformTemplateComponent
+public class PlatformComponentOld : MonoBehaviour
 {
     public PlatformEnum activePlatform;
     public bool activePlatformTestnet
@@ -11,7 +11,7 @@ public class PlatformComponentOld : PlatformTemplateComponent
             return activePlatform.ToString().Contains("TESTNET");
         }
     }
-    public new bool loggedIn
+    public bool loggedIn
     {
         get
         {
@@ -40,65 +40,7 @@ public class PlatformComponentOld : PlatformTemplateComponent
             }
         }
     }
-    public new string apiKey
-    {
-        get
-        {
-            string data = string.Empty;
-            switch (activePlatform)
-            {
-                case PlatformEnum.BINANCE:
-                    data = GlobalComponent.instance.binanceComponent.apiKey;
-                    break;
-                case PlatformEnum.BINANCE_TESTNET:
-                    data = GlobalComponent.instance.binanceTestnetComponent.apiKey;
-                    break;
-            }
-            return data;
-        }
-        set
-        {
-            switch (activePlatform)
-            {
-                case PlatformEnum.BINANCE:
-                    GlobalComponent.instance.binanceComponent.apiKey = value;
-                    break;
-                case PlatformEnum.BINANCE_TESTNET:
-                    GlobalComponent.instance.binanceTestnetComponent.apiKey = value;
-                    break;
-            }
-        }
-    }
-    public new string apiSecret
-    {
-        get
-        {
-            string data = string.Empty;
-            switch (activePlatform)
-            {
-                case PlatformEnum.BINANCE:
-                    data = GlobalComponent.instance.binanceComponent.apiSecret;
-                    break;
-                case PlatformEnum.BINANCE_TESTNET:
-                    data = GlobalComponent.instance.binanceTestnetComponent.apiSecret;
-                    break;
-            }
-            return data;
-        }
-        set
-        {
-            switch (activePlatform)
-            {
-                case PlatformEnum.BINANCE:
-                    GlobalComponent.instance.binanceComponent.apiSecret = value;
-                    break;
-                case PlatformEnum.BINANCE_TESTNET:
-                    GlobalComponent.instance.binanceTestnetComponent.apiSecret = value;
-                    break;
-            }
-        }
-    }
-    public new List<string> allSymbols
+    public List<string> allSymbols
     {
         get
         {
@@ -127,7 +69,7 @@ public class PlatformComponentOld : PlatformTemplateComponent
             }
         }
     }
-    public new Dictionary<string, string> marginAssets
+    public Dictionary<string, string> marginAssets
     {
         get
         {
@@ -156,7 +98,7 @@ public class PlatformComponentOld : PlatformTemplateComponent
             }
         }
     }
-    public new Dictionary<string, long> quantityPrecisions
+    public Dictionary<string, long> quantityPrecisions
     {
         get
         {
@@ -185,7 +127,7 @@ public class PlatformComponentOld : PlatformTemplateComponent
             }
         }
     }
-    public new Dictionary<string, long> pricePrecisions
+    public Dictionary<string, long> pricePrecisions
     {
         get
         {
@@ -214,7 +156,7 @@ public class PlatformComponentOld : PlatformTemplateComponent
             }
         }
     }
-    public new Dictionary<string, double?> fees
+    public Dictionary<string, double?> fees
     {
         get
         {
@@ -243,7 +185,7 @@ public class PlatformComponentOld : PlatformTemplateComponent
             }
         }
     }
-    public new Dictionary<string, double> walletBalances
+    public Dictionary<string, double> walletBalances
     {
         get
         {
@@ -272,7 +214,7 @@ public class PlatformComponentOld : PlatformTemplateComponent
             }
         }
     }
-    public new bool getBalance
+    public bool getBalance
     {
         get
         {

@@ -65,64 +65,6 @@ public class PlatformComponent : PlatformTemplateComponent
             }
         }
     }
-    public new string apiKey
-    {
-        get
-        {
-            string data = string.Empty;
-            switch (activePlatform)
-            {
-                case PlatformEnum.BINANCE:
-                    data = GlobalComponent.instance.binanceComponent.apiKey;
-                    break;
-                case PlatformEnum.BINANCE_TESTNET:
-                    data = GlobalComponent.instance.binanceTestnetComponent.apiKey;
-                    break;
-            }
-            return data;
-        }
-        set
-        {
-            switch (activePlatform)
-            {
-                case PlatformEnum.BINANCE:
-                    GlobalComponent.instance.binanceComponent.apiKey = value;
-                    break;
-                case PlatformEnum.BINANCE_TESTNET:
-                    GlobalComponent.instance.binanceTestnetComponent.apiKey = value;
-                    break;
-            }
-        }
-    }
-    public new string apiSecret
-    {
-        get
-        {
-            string data = string.Empty;
-            switch (activePlatform)
-            {
-                case PlatformEnum.BINANCE:
-                    data = GlobalComponent.instance.binanceComponent.apiSecret;
-                    break;
-                case PlatformEnum.BINANCE_TESTNET:
-                    data = GlobalComponent.instance.binanceTestnetComponent.apiSecret;
-                    break;
-            }
-            return data;
-        }
-        set
-        {
-            switch (activePlatform)
-            {
-                case PlatformEnum.BINANCE:
-                    GlobalComponent.instance.binanceComponent.apiSecret = value;
-                    break;
-                case PlatformEnum.BINANCE_TESTNET:
-                    GlobalComponent.instance.binanceTestnetComponent.apiSecret = value;
-                    break;
-            }
-        }
-    }
     public new List<string> allSymbols
     {
         get

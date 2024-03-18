@@ -4,8 +4,6 @@ using UnityEngine;
 public class PlatformTemplateComponent : MonoBehaviour
 {
     public bool loggedIn;
-    public string apiKey;
-    public string apiSecret;
     public List<string> allSymbols;
     public Dictionary<string, string> marginAssets;
     public Dictionary<string, long> quantityPrecisions;

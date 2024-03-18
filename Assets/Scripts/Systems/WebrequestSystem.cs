@@ -25,6 +25,8 @@ public class WebrequestSystem : MonoBehaviour
         websocketComponent = GlobalComponent.instance.websocketComponent;
         platformComponentOld = GlobalComponent.instance.platformComponentOld;
         promptComponent = GlobalComponent.instance.promptComponent;
+
+        // TODO:
     }
     void Update()
     {
@@ -72,7 +74,7 @@ public class WebrequestSystem : MonoBehaviour
     void SetHeader(UnityWebRequest webRequest)
     {
         webRequest.SetRequestHeader("Content-Type", "application/json");
-        webRequest.SetRequestHeader("X-MBX-APIKEY", platformComponentOld.apiKey);
+        // webRequest.SetRequestHeader("X-MBX-APIKEY", platformComponentOld.apiKey);
     }
     void ResponseHandler(UnityWebRequest webRequest, string id)
     {
@@ -156,8 +158,8 @@ public class WebrequestSystem : MonoBehaviour
                                     case -2014: // API-key format invalid.
                                     case -2015: // Invalid API-key, IP, or permissions for action, request ip: 130.176.146.87
                                     case -1022: // Signature for this request is not valid.
-                                        platformComponentOld.apiKey = null;
-                                        platformComponentOld.apiSecret = null;
+                                        // platformComponentOld.apiKey = null;
+                                        // platformComponentOld.apiSecret = null;
                                         if (code.Value == -2014 || code.Value == -2015)
                                         {
                                             message = "Login failed with invalid or expired api key, please try to login again. (Binance Error Code: " + code.Value + ")";

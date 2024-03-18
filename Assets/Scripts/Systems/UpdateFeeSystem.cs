@@ -51,9 +51,9 @@ public class UpdateFeeSystem : MonoBehaviour
     }
     void GetFee()
     {
-        Request request = General.WebrequestFeeRequest.Get(platformComponentOld.activePlatform, platformComponentOld.apiSecret, selectedSymbol);
-        requests.Add(request);
-        webrequestComponent.requests.Add(request);
+        // Request request = General.WebrequestFeeRequest.Get(platformComponentOld.activePlatform, platformComponentOld.apiSecret, selectedSymbol);
+        // requests.Add(request);
+        // webrequestComponent.requests.Add(request);
     }
     void ReceiveFees()
     {

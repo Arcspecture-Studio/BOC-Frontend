@@ -193,10 +193,7 @@ public class PlatformSystem : MonoBehaviour
         }
         platformTemplateComponent.loggedIn = loggedIn;
         UpdateObjectState();
-        // TODO: consider not using apiKey in frontend, when calling webrequest api, server assign the apikey onto request
-        platformTemplateComponent.apiKey = platformComponent.apiKeyInput.text;
-        platformTemplateComponent.apiSecret = platformComponent.apiSecretInput.text;
-        // TODO: request get initial data
+        GlobalComponent.instance.getInitialDataComponent.getInitialData = true;
     }
     void UpdateProfileActivePlatformOnServer()
     {

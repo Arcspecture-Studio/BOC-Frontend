@@ -34,13 +34,13 @@ public class TradingBotSystem : MonoBehaviour
         switch (value)
         {
             case BotTypeEnum.NONE:
-                websocketComponent.generalRequests.Add(new General.WebsocketSaveTradingBotRequest(platformComponentOld.activePlatform, platformComponentOld.apiKey));
+                // websocketComponent.generalRequests.Add(new General.WebsocketSaveTradingBotRequest(platformComponentOld.activePlatform, platformComponentOld.apiKey));
                 break;
             case BotTypeEnum.PREMIUM_INDEX:
                 double normalizedMarginWeightDistributionValue = preferenceComponent.marginWeightDistributionValue * OrderConfig.MARGIN_WEIGHT_DISTRIBUTION_RANGE;
                 websocketComponent.generalRequests.Add(new General.WebsocketSaveTradingBotRequest(
                     platformComponentOld.activePlatform,
-                    platformComponentOld.apiKey,
+                    "",// platformComponentOld.apiKey,
                     preferenceComponent.symbol,
                     preferenceComponent.lossPercentage,
                     preferenceComponent.lossAmount,
@@ -69,7 +69,7 @@ public class TradingBotSystem : MonoBehaviour
         General.WebsocketRetrieveTradingBotsResponse response = JsonConvert.DeserializeObject<General.WebsocketRetrieveTradingBotsResponse>(retrieveTradingBotsString, JsonSerializerConfig.settings);
         websocketComponent.RemovesGeneralResponses(WebsocketEventTypeEnum.RETRIEVE_TRADING_BOTS);
         General.WebsocketRetrieveTradingBotsResponseData data;
-        if (response.tradingBots.TryGetValue(platformComponentOld.apiKey, out data))
+        if (response.tradingBots.TryGetValue(""/*platformComponentOld.apiKey*/, out data))
         {
             tradingBotComponent.tradingBotDropdown.value = (int)data.botType;
         }
