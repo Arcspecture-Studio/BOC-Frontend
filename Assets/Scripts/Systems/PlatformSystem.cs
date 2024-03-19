@@ -24,13 +24,13 @@ public class PlatformSystem : MonoBehaviour
         // Set initial state
         platformComponent.gameObject.SetActive(false);
         platformComponent.onEnable.AddListener(() => OnComponentEnable());
-        platformComponent.platformsDropdown.onValueChanged.AddListener(value =>
+        platformComponent.platformsDropdown.onValueChanged.AddListener(value => UpdateObjectState());
+        platformComponent.proceedButton.onClick.AddListener(() => AddOrRemovePlatform());
+        platformComponent.backButton.onClick.AddListener(() =>
         {
-            UpdateObjectState();
+            platformComponent.gameObject.SetActive(false);
             UpdateProfileActivePlatformOnServer();
         });
-        platformComponent.proceedButton.onClick.AddListener(() => AddOrRemovePlatform());
-        platformComponent.backButton.onClick.AddListener(() => platformComponent.gameObject.SetActive(false));
         InitializePlatformDropdownOptions();
     }
     void Update()

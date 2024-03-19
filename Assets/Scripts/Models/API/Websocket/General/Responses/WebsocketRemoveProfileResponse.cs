@@ -6,5 +6,6 @@ namespace General
     public class WebsocketRemoveProfileResponse : WebsocketGeneralResponse
     {
         public string profileId;
+        public string newDefaultProfileId;
     }
 }

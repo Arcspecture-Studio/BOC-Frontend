@@ -18,13 +18,20 @@ public class SettingPageComponent : MonoBehaviour
 
     #region Profile
     public TMP_Dropdown profileDropdown;
-    public GameObject newProfileButtonObj;
-    public Button newProfileButton;
-    public GameObject newProfileNameInputObj;
-    public TMP_InputField newProfileNameInput;
     public GameObject addProfileButtonObj;
     public Button addProfileButton;
+    public GameObject addProfileNameInputObj;
+    public TMP_InputField addProfileNameInput;
+    public GameObject confirmAddProfileButtonObj;
+    public Button confirmAddProfileButton;
     public Button cancelAddProfileButton;
+    public GameObject renameProfileButtonObj;
+    public Button renameProfileButton;
+    public GameObject renameProfileNameInputObj;
+    public TMP_InputField renameProfileNameInput;
+    public GameObject confirmRenameProfileButtonObj;
+    public Button confirmRenameProfileButton;
+    public Button cancelRenameProfileButton;
     public Button removeProfileButton;
     public GameObject removeProfileButtonObj;
     public Button switchPlatformButton;
@@ -84,4 +91,15 @@ public class SettingPageComponent : MonoBehaviour
         }
     }
     [HideInInspector] public UnityEvent onChange_showAddNewProfileButton = new();
+    public bool _showRenameProfileButton;
+    public bool showRenameProfileButton
+    {
+        get { return _showRenameProfileButton; }
+        set
+        {
+            _showRenameProfileButton = value;
+            onChange_showRenameProfileButton.Invoke();
+        }
+    }
+    [HideInInspector] public UnityEvent onChange_showRenameProfileButton = new();
 }

@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using Newtonsoft.Json;
 using TMPro;
@@ -24,25 +23,37 @@ public class SettingPageProfileSystem : MonoBehaviour
         websocketComponent = GlobalComponent.instance.websocketComponent;
         promptComponent = GlobalComponent.instance.promptComponent;
 
-        settingPageComponent.onChange_updateProfile.AddListener(UpdateProfileUI);
-        settingPageComponent.onChange_showAddNewProfileButton.AddListener(OnShowAddNewProfileButton);
-        settingPageComponent.profileDropdown.onValueChanged.AddListener(OnProfileDropdownValueChanged);
-        settingPageComponent.newProfileButton.onClick.AddListener(() =>
-        settingPageComponent.showAddNewProfileButton = true);
-        settingPageComponent.cancelAddProfileButton.onClick.AddListener(() =>
-        settingPageComponent.showAddNewProfileButton = false);
-        settingPageComponent.addProfileButton.onClick.AddListener(OnAddProfile);
-        settingPageComponent.removeProfileButton.onClick.AddListener(OnRemoveProfile);
+        DefineListeners();
+        OnShowAddNewProfileButton();
+        OnShowRenameProfileButton();
     }
     void Update()
     {
-        OnAddProfileResposne();
+        OnProfileDropdownValueChanged();
+
+        OnAddProfileResponse();
         OnRemoveProfileResponse();
+        OnUpdateProfileResponse();
     }
 
+    void DefineListeners()
+    {
+        settingPageComponent.onChange_updateProfile.AddListener(UpdateProfileUI);
+        settingPageComponent.onChange_showAddNewProfileButton.AddListener(OnShowAddNewProfileButton);
+        settingPageComponent.onChange_showRenameProfileButton.AddListener(OnShowRenameProfileButton);
+
+        settingPageComponent.addProfileButton.onClick.AddListener(() => settingPageComponent.showAddNewProfileButton = true);
+        settingPageComponent.cancelAddProfileButton.onClick.AddListener(() => settingPageComponent.showAddNewProfileButton = false);
+        settingPageComponent.confirmAddProfileButton.onClick.AddListener(OnAddProfile);
+
+        settingPageComponent.renameProfileButton.onClick.AddListener(() => settingPageComponent.showRenameProfileButton = true);
+        settingPageComponent.cancelRenameProfileButton.onClick.AddListener(() => settingPageComponent.showRenameProfileButton = false);
+        settingPageComponent.confirmRenameProfileButton.onClick.AddListener(OnRenameProfile);
+
+        settingPageComponent.removeProfileButton.onClick.AddListener(OnRemoveProfile);
+    }
     void UpdateProfileUI()
     {
-        OnShowAddNewProfileButton();
         UpdateProfileDropdownUI();
     }
     void UpdateProfileDropdownUI()
@@ -60,30 +71,47 @@ public class SettingPageProfileSystem : MonoBehaviour
     }
     void OnShowAddNewProfileButton()
     {
-        settingPageComponent.newProfileButtonObj.SetActive(!settingPageComponent.showAddNewProfileButton);
-        settingPageComponent.newProfileNameInputObj.SetActive(settingPageComponent.showAddNewProfileButton);
-        settingPageComponent.addProfileButtonObj.SetActive(settingPageComponent.showAddNewProfileButton);
+        settingPageComponent.addProfileButtonObj.SetActive(!settingPageComponent.showAddNewProfileButton);
+        settingPageComponent.addProfileNameInputObj.SetActive(settingPageComponent.showAddNewProfileButton);
+        settingPageComponent.confirmAddProfileButtonObj.SetActive(settingPageComponent.showAddNewProfileButton);
+        if (settingPageComponent.showAddNewProfileButton)
+        {
+            settingPageComponent.addProfileNameInput.text = "";
+        }
     }
-    void OnProfileDropdownValueChanged(int value)
+    void OnShowRenameProfileButton()
     {
-        profileComponent.activeProfileId = profileIndexToIds[value];
+        settingPageComponent.renameProfileButtonObj.SetActive(!settingPageComponent.showRenameProfileButton);
+        settingPageComponent.renameProfileNameInputObj.SetActive(settingPageComponent.showRenameProfileButton);
+        settingPageComponent.confirmRenameProfileButtonObj.SetActive(settingPageComponent.showRenameProfileButton);
+        if (settingPageComponent.showRenameProfileButton)
+        {
+            settingPageComponent.renameProfileNameInput.text = profileComponent.activeProfile.name;
+        }
+    }
+    void OnProfileDropdownValueChanged()
+    {
+        if (profileIndexToIds == null || profileIndexToIds.Count == 0) return;
+        if (profileIndexToIds.IndexOf(profileComponent.activeProfileId) == settingPageComponent.profileDropdown.value) return;
+        profileComponent.activeProfileId = profileIndexToIds[settingPageComponent.profileDropdown.value];
 
-        // TODO: sync activeProfileId to server's defaultProfileId
+        General.WebsocketUpdateProfileRequest request = new(loginComponent.token, profileComponent.activeProfileId, true);
+        websocketComponent.generalRequests.Add(request);
     }
     void OnAddProfile()
     {
-        if (settingPageComponent.newProfileNameInput.text.IsNullOrEmpty())
+        if (settingPageComponent.addProfileNameInput.text.IsNullOrEmpty())
         {
             promptComponent.ShowPrompt(PromptConstant.ERROR, PromptConstant.PROFILE_NAME_EMPTY,
             () => promptComponent.active = false);
             return;
         }
-        General.WebsocketAddProfileRequest request = new(loginComponent.token, settingPageComponent.newProfileNameInput.text, platformComponent.activePlatform);
+        General.WebsocketAddProfileRequest request = new(loginComponent.token, settingPageComponent.addProfileNameInput.text, platformComponent.activePlatform);
         websocketComponent.generalRequests.Add(request);
 
-        settingPageComponent.addProfileButton.interactable = false;
+        settingPageComponent.confirmAddProfileButton.interactable = false;
     }
-    void OnAddProfileResposne()
+    void OnAddProfileResponse()
     {
         string jsonString = websocketComponent.RetrieveGeneralResponses(WebsocketEventTypeEnum.ADD_PROFILE);
         if (jsonString.IsNullOrEmpty()) return;
@@ -92,7 +120,7 @@ public class SettingPageProfileSystem : MonoBehaviour
         General.WebsocketAddProfileResponse response = JsonConvert.DeserializeObject
         <General.WebsocketAddProfileResponse>(jsonString, JsonSerializerConfig.settings);
 
-        settingPageComponent.addProfileButton.interactable = true;
+        settingPageComponent.confirmAddProfileButton.interactable = true;
         if (!response.success)
         {
             promptComponent.ShowPrompt(PromptConstant.ERROR, response.message,
@@ -103,8 +131,9 @@ public class SettingPageProfileSystem : MonoBehaviour
         settingPageComponent.showAddNewProfileButton = false;
 
         profileComponent.profiles.Add(response.profile._id, response.profile);
+        profileComponent.activeProfileId = response.profile._id;
         settingPageComponent.updateProfile = true;
-        settingPageComponent.profileDropdown.value = profileComponent.profiles.Count - 1;
+        settingPageComponent.profileDropdown.value = profileIndexToIds.IndexOf(profileComponent.activeProfileId);
     }
     void OnRemoveProfile()
     {
@@ -139,7 +168,52 @@ public class SettingPageProfileSystem : MonoBehaviour
         }
 
         profileComponent.profiles.Remove(response.profileId);
+        profileComponent.activeProfileId = response.newDefaultProfileId;
         settingPageComponent.updateProfile = true;
-        settingPageComponent.profileDropdown.value = profileComponent.profiles.Count - 1;
+        settingPageComponent.profileDropdown.value = profileIndexToIds.IndexOf(profileComponent.activeProfileId);
+    }
+    void OnRenameProfile()
+    {
+        if (settingPageComponent.renameProfileNameInput.text.IsNullOrEmpty())
+        {
+            promptComponent.ShowPrompt(PromptConstant.ERROR, PromptConstant.PROFILE_NAME_EMPTY,
+            () => promptComponent.active = false);
+            return;
+        }
+        General.WebsocketUpdateProfileRequest request = new(loginComponent.token, profileComponent.activeProfile._id, settingPageComponent.renameProfileNameInput.text);
+        websocketComponent.generalRequests.Add(request);
+
+        settingPageComponent.confirmRenameProfileButton.interactable = false;
+    }
+    void OnUpdateProfileResponse()
+    {
+        string jsonString = websocketComponent.RetrieveGeneralResponses(WebsocketEventTypeEnum.UPDATE_PROFILE);
+        if (jsonString.IsNullOrEmpty()) return;
+        websocketComponent.RemovesGeneralResponses(WebsocketEventTypeEnum.UPDATE_PROFILE);
+
+        General.WebsocketUpdateProfileResponse response = JsonConvert.DeserializeObject
+        <General.WebsocketUpdateProfileResponse>(jsonString, JsonSerializerConfig.settings);
+
+        if (!response.success)
+        {
+            promptComponent.ShowPrompt(PromptConstant.ERROR, response.message,
+            () => promptComponent.active = false);
+            return;
+        }
+
+        switch (response.property)
+        {
+            case UpdateProfilePropertyEnum.name:
+                OnRenameProfileResponse(response);
+                break;
+        }
+    }
+    void OnRenameProfileResponse(General.WebsocketUpdateProfileResponse response)
+    {
+        settingPageComponent.confirmRenameProfileButton.interactable = true;
+
+        profileComponent.profiles[response.profileId].name = settingPageComponent.renameProfileNameInput.text;
+        settingPageComponent.showRenameProfileButton = false;
+        settingPageComponent.updateProfile = true;
     }
 }

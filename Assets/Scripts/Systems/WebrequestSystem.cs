@@ -26,7 +26,7 @@ public class WebrequestSystem : MonoBehaviour
         platformComponentOld = GlobalComponent.instance.platformComponentOld;
         promptComponent = GlobalComponent.instance.promptComponent;
 
-        // TODO:
+        // TODO: Remove code that call api locally + apiKey and apiSecret handled by server
     }
     void Update()
     {
