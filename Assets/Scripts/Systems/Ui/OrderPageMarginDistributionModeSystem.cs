@@ -3,7 +3,7 @@ using UnityEngine;
 public class OrderPageMarginDistributionModeSystem : MonoBehaviour
 {
     [SerializeField] OrderPageComponent orderPageComponent;
-    [SerializeField] SettingPageComponent settingPageComponent; // TODO:
+    [SerializeField] SettingPageComponent settingPageComponent;
 
     void Start()
     {

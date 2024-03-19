@@ -88,7 +88,7 @@ public class OrderPageRestoreDataSystem : MonoBehaviour
         orderPageComponent.takeProfitTrailingCallbackPercentageInput.text = orderData.marginCalculator.takeProfitTrailingCallbackPercentage.ToString();
         orderPageComponent.orderTypeDropdown.value = (int)orderData.orderType;
         orderPageComponent.marginDistributionModeDropdown.value = orderData.marginCalculator.weightedQuantity ? 1 : 0;
-        orderPageComponent.marginWeightDistributionValueSlider.value = (float)orderData.marginCalculator.quantityWeight / OrderConfig.MARGIN_WEIGHT_DISTRIBUTION_RANGE;
+        orderPageComponent.marginWeightDistributionValueSlider.value = (float)orderData.marginCalculator.quantityWeight;
         orderPageComponent.marginCalculator = orderData.marginCalculator;
         orderPageComponent.positionInfoAvgEntryPriceFilledText.text = Utils.RoundNDecimal(orderData.averagePriceFilled, platformComponentOld.pricePrecisions[orderPageComponent.symbolDropdownComponent.selectedSymbol]).ToString();
         orderPageComponent.positionInfoQuantityFilledText.text = Utils.RoundNDecimal(orderData.quantityFilled, platformComponentOld.quantityPrecisions[orderPageComponent.symbolDropdownComponent.selectedSymbol]).ToString();

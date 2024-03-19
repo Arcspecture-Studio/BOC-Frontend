@@ -383,7 +383,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: -1
+  m_text: -5
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -1172,7 +1172,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 1
+  m_text: 5
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -12790,7 +12790,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 2033694428}
   m_HandleRect: {fileID: 2033694427}
   m_Direction: 2
-  m_Value: -0.0000009832181
+  m_Value: -0.0000012101146
   m_Size: 0.533526
   m_NumberOfSteps: 0
   m_OnValueChanged:
@@ -27233,8 +27233,8 @@ MonoBehaviour:
   m_FillRect: {fileID: 1293817976}
   m_HandleRect: {fileID: 1341402021}
   m_Direction: 0
-  m_MinValue: -1
-  m_MaxValue: 1
+  m_MinValue: -5
+  m_MaxValue: 5
   m_WholeNumbers: 0
   m_Value: 0
   m_OnValueChanged:
@@ -30780,7 +30780,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0, y: 807.0007}
+  m_AnchoredPosition: {x: 0, y: 807.001}
   m_SizeDelta: {x: 0, y: 1730}
   m_Pivot: {x: 0, y: 1}
 --- !u!114 &1185559201
@@ -36979,20 +36979,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e09ba3e4c39ce124bb6537a45d9e8688, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  tradingPlatform: 0
-  symbol: ETHUSDT
-  lossPercentage: 0.1
-  lossAmount: 0
-  marginDistributionMode: 0
-  marginWeightDistributionValue: 0.3
-  takeProfitType: 0
-  riskRewardRatio: 1.2
-  takeProfitTrailingCallbackPercentage: 1
-  orderType: 0
-  quickEntryTimes: 2
-  atrTimeframe: 5
-  atrLength: 13
-  atrMultiplier: 2
 --- !u!114 &1439778824
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -39672,7 +39658,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6dae899bf612f0b489db703262bd22cd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  settingPageComponent: {fileID: 0}
 --- !u!114 &1529361107
 MonoBehaviour:
   m_ObjectHideFlags: 0

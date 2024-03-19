@@ -7,13 +7,11 @@ public class OrderPageMarginWeightDistributionValueSystem : MonoBehaviour
 {
     [SerializeField] OrderPageComponent orderPageComponent;
     [SerializeField] SettingPageComponent settingPageComponent;
-    // PreferenceComponent preferenceComponent;
-    IoComponent ioComponent;
+    ProfileComponent profileComponent;
 
     void Start()
     {
-        // preferenceComponent = GlobalComponent.instance.preferenceComponent;
-        ioComponent = GlobalComponent.instance.ioComponent;
+        profileComponent = GlobalComponent.instance.profileComponent;
 
         ForOrderPageComponent();
         ForSettingPageComponent();
@@ -47,10 +45,10 @@ public class OrderPageMarginWeightDistributionValueSystem : MonoBehaviour
             settingPageComponent.marginWeightDistributionValueSlider.value = (float)roundedValue;
             settingPageComponent.marginWeightDistributionValueInput.text = roundedValue.ToString();
 
-            // preferenceComponent.marginWeightDistributionValue = roundedValue;
+            profileComponent.activeProfile.preference.marginWeightDistributionValue = roundedValue;
         });
         EventTrigger.Entry pointerUpEvent = new() { eventID = EventTriggerType.PointerUp };
-        // pointerUpEvent.callback.AddListener(eventData => ioComponent.writePreferences = true);
+        pointerUpEvent.callback.AddListener(eventData => settingPageComponent.updatePreferenceToServer = true);
         settingPageComponent.marginWeightDistributionValueSliderTrigger.triggers.Add(pointerUpEvent);
         settingPageComponent.marginWeightDistributionValueInput.onSubmit.AddListener(value =>
         {
@@ -60,8 +58,8 @@ public class OrderPageMarginWeightDistributionValueSystem : MonoBehaviour
             settingPageComponent.marginWeightDistributionValueInput.text = roundedValue.ToString();
             settingPageComponent.marginWeightDistributionValueSlider.value = (float)roundedValue;
 
-            // preferenceComponent.marginWeightDistributionValue = roundedValue;
-            // ioComponent.writePreferences = true;
+            profileComponent.activeProfile.preference.marginWeightDistributionValue = roundedValue;
+            settingPageComponent.updatePreferenceToServer = true;
         });
     }
 }

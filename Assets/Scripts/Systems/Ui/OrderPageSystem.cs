@@ -181,7 +181,6 @@ public class OrderPageSystem : MonoBehaviour
                 double.Parse(orderPageComponent.takeProfitInput.text);
             double riskRewardRatio = orderPageComponent.riskRewardRatioInput.text.IsNullOrEmpty() ? /*preferenceComponent.riskRewardRatio*/1.2 : double.Parse(orderPageComponent.riskRewardRatioInput.text);
             double takeProfitTrailingCallbackPercentage = orderPageComponent.takeProfitTrailingCallbackPercentageInput.text.IsNullOrEmpty() ? /*preferenceComponent.takeProfitTrailingCallbackPercentage*/0.3 : double.Parse(orderPageComponent.takeProfitTrailingCallbackPercentageInput.text);
-            double normalizedMarginWeightDistributionValue = orderPageComponent.marginWeightDistributionValueSlider.value * OrderConfig.MARGIN_WEIGHT_DISTRIBUTION_RANGE;
 
             // validate input
             if (walletUnit.IsNullOrEmpty())
@@ -243,7 +242,7 @@ public class OrderPageSystem : MonoBehaviour
                     platformComponentOld.quantityPrecisions[orderPageComponent.symbolDropdownComponent.selectedSymbol],
                     platformComponentOld.pricePrecisions[orderPageComponent.symbolDropdownComponent.selectedSymbol],
                     orderPageComponent.marginDistributionModeDropdown.value == 1,
-                    normalizedMarginWeightDistributionValue);
+                    orderPageComponent.marginWeightDistributionValueSlider.value);
             #endregion
         }
 

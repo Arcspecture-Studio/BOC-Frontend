@@ -16,7 +16,8 @@ public class SettingPagePreferenceSystem : MonoBehaviour
         loginComponent = GlobalComponent.instance.loginComponent;
         websocketComponent = GlobalComponent.instance.websocketComponent;
 
-        settingPageComponent.onChange_updatePreference.AddListener(UpdateUIFromProfile);
+        settingPageComponent.onChange_updatePreferenceUI.AddListener(UpdateUIFromProfile);
+        settingPageComponent.onChange_updatePreferenceToServer.AddListener(UpdatePreferenceToServer);
 
         DefineOnUIChangedListeners();
     }
@@ -27,30 +28,29 @@ public class SettingPagePreferenceSystem : MonoBehaviour
         settingPageComponent.symbolInput.onEndEdit.AddListener(value =>
         {
             profileComponent.activeProfile.preference.symbol = value;
-            UpdatePreferenceToServer();
+            settingPageComponent.updatePreferenceToServer = true;
         });
         settingPageComponent.lossPercentageInput.onEndEdit.AddListener(value =>
         {
             if (value == "") value = "0";
             profileComponent.activeProfile.preference.lossPercentage = double.Parse(value);
-            UpdatePreferenceToServer();
+            settingPageComponent.updatePreferenceToServer = true;
         });
         settingPageComponent.lossAmountInput.onEndEdit.AddListener(value =>
         {
             if (value == "") value = "0";
             profileComponent.activeProfile.preference.lossAmount = double.Parse(value);
-            UpdatePreferenceToServer();
+            settingPageComponent.updatePreferenceToServer = true;
         });
         settingPageComponent.marginDistributionModeDropdown.onValueChanged.AddListener(value =>
         {
             profileComponent.activeProfile.preference.marginDistributionMode = (MarginDistributionModeEnum)value;
-            UpdatePreferenceToServer();
+            settingPageComponent.updatePreferenceToServer = true;
         });
-        // TODO: marginWeightDistribution
         settingPageComponent.takeProfitTypeDropdown.onValueChanged.AddListener(value =>
         {
             profileComponent.activeProfile.preference.takeProfitType = (TakeProfitTypeEnum)value;
-            UpdatePreferenceToServer();
+            settingPageComponent.updatePreferenceToServer = true;
         });
         settingPageComponent.riskRewardRatioInput.onEndEdit.AddListener(value =>
         {
@@ -60,12 +60,12 @@ public class SettingPagePreferenceSystem : MonoBehaviour
                 settingPageComponent.riskRewardRatioInput.text = value;
             }
             profileComponent.activeProfile.preference.riskRewardRatio = double.Parse(value);
-            UpdatePreferenceToServer();
+            settingPageComponent.updatePreferenceToServer = true;
         });
         settingPageComponent.orderTypeDropdown.onValueChanged.AddListener(value =>
         {
             profileComponent.activeProfile.preference.orderType = (OrderTypeEnum)value;
-            UpdatePreferenceToServer();
+            settingPageComponent.updatePreferenceToServer = true;
         });
     }
     void UpdatePreferenceToServer()
