@@ -199,17 +199,11 @@ public class PlatformSystem : MonoBehaviour
     {
         if (!platformComponent.loggedIn) return;
         if (profileComponent.activeProfile == null) return;
+        if (profileComponent.activeProfile.activePlatform == platformComponent.activePlatform) return;
 
         profileComponent.activeProfile.activePlatform = platformComponent.activePlatform;
 
-        // TODO: send profile's active platform
-
-        // General.WebsocketGeneralRequest request = new General.WebsocketAddPlatformRequest(
-        //     loginComponent.token,
-        //     platformComponent.apiKeyInput.text,
-        //     platformComponent.apiSecretInput.text,
-        //     platformComponent.activePlatform
-        // );
-        // websocketComponent.generalRequests.Add(request);
+        General.WebsocketUpdateProfileRequest request = new(loginComponent.token, profileComponent.activeProfile._id, profileComponent.activeProfile.activePlatform.Value);
+        websocketComponent.generalRequests.Add(request);
     }
 }
