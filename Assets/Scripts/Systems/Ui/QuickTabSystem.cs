@@ -9,7 +9,7 @@ public class QuickTabSystem : MonoBehaviour
     QuickTabComponent quickTabComponent;
     WebsocketComponent websocketComponent;
     PlatformComponentOld platformComponentOld;
-    PreferenceComponent preferenceComponent;
+    // PreferenceComponent preferenceComponent;
 
     bool? active = null;
     Tween tween = null;
@@ -20,7 +20,7 @@ public class QuickTabSystem : MonoBehaviour
         quickTabComponent = GlobalComponent.instance.quickTabComponent;
         websocketComponent = GlobalComponent.instance.websocketComponent;
         platformComponentOld = GlobalComponent.instance.platformComponentOld;
-        preferenceComponent = GlobalComponent.instance.preferenceComponent;
+        // preferenceComponent = GlobalComponent.instance.preferenceComponent;
 
         quickTabComponent.onChange_quickOrdersFromServer.AddListener(OnChange_QuickOrdersFromServer);
         InitializeButtonListener();
@@ -61,25 +61,25 @@ public class QuickTabSystem : MonoBehaviour
         if (quickTabComponent.saveToServer)
         {
             quickTabComponent.saveToServer = false;
-            double normalizedMarginWeightDistributionValue = preferenceComponent.marginWeightDistributionValue * OrderConfig.MARGIN_WEIGHT_DISTRIBUTION_RANGE;
-            double entryPrice = quickTabComponent.entryPriceInput.text.IsNullOrEmpty() ? -1 : double.Parse(quickTabComponent.entryPriceInput.text);
-            websocketComponent.generalRequests.Add(new General.WebsocketSaveQuickOrderRequest(
-               platformComponentOld.activePlatform,
-               preferenceComponent.symbol,
-               preferenceComponent.lossPercentage,
-               preferenceComponent.lossAmount,
-               preferenceComponent.marginDistributionMode == MarginDistributionModeEnum.WEIGHTED,
-               normalizedMarginWeightDistributionValue,
-               preferenceComponent.takeProfitType,
-               preferenceComponent.riskRewardRatio,
-               preferenceComponent.takeProfitTrailingCallbackPercentage,
-               entryPrice,
-               int.Parse(quickTabComponent.entryTimesInput.text),
-               WebsocketIntervalEnum.array[quickTabComponent.atrTimeframeDropdown.value],
-               int.Parse(quickTabComponent.atrLengthInput.text),
-               double.Parse(quickTabComponent.atrMultiplierInput.text),
-               quickTabComponent.isLong
-            ));
+            // double normalizedMarginWeightDistributionValue = preferenceComponent.marginWeightDistributionValue * OrderConfig.MARGIN_WEIGHT_DISTRIBUTION_RANGE;
+            // double entryPrice = quickTabComponent.entryPriceInput.text.IsNullOrEmpty() ? -1 : double.Parse(quickTabComponent.entryPriceInput.text);
+            // websocketComponent.generalRequests.Add(new General.WebsocketSaveQuickOrderRequest(
+            //    platformComponentOld.activePlatform,
+            //    preferenceComponent.symbol,
+            //    preferenceComponent.lossPercentage,
+            //    preferenceComponent.lossAmount,
+            //    preferenceComponent.marginDistributionMode == MarginDistributionModeEnum.WEIGHTED,
+            //    normalizedMarginWeightDistributionValue,
+            //    preferenceComponent.takeProfitType,
+            //    preferenceComponent.riskRewardRatio,
+            //    preferenceComponent.takeProfitTrailingCallbackPercentage,
+            //    entryPrice,
+            //    int.Parse(quickTabComponent.entryTimesInput.text),
+            //    WebsocketIntervalEnum.array[quickTabComponent.atrTimeframeDropdown.value],
+            //    int.Parse(quickTabComponent.atrLengthInput.text),
+            //    double.Parse(quickTabComponent.atrMultiplierInput.text),
+            //    quickTabComponent.isLong
+            // ));
         }
     }
     void MovePage()

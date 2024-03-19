@@ -14,7 +14,6 @@ public class IoSystem : MonoBehaviour
     LoginComponent loginComponent;
     PromptComponent promptComponent;
     PlatformComponentOld platformComponentOld;
-    PreferenceComponent preferenceComponent;
     SettingPageComponent settingPageComponent;
     QuickTabComponent quickTabComponent;
     GetInitialDataComponent getInitialDataComponent;
@@ -30,7 +29,6 @@ public class IoSystem : MonoBehaviour
         loginComponent = GlobalComponent.instance.loginComponent;
         promptComponent = GlobalComponent.instance.promptComponent;
         platformComponentOld = GlobalComponent.instance.platformComponentOld;
-        preferenceComponent = GlobalComponent.instance.preferenceComponent;
         settingPageComponent = GlobalComponent.instance.settingPageComponent;
         quickTabComponent = GlobalComponent.instance.quickTabComponent;
         getInitialDataComponent = GlobalComponent.instance.getInitialDataComponent;

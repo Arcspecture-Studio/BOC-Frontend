@@ -5,7 +5,7 @@ using UnityEngine;
 
 public class SettingPageUpdateDataSystem : MonoBehaviour
 {
-    PreferenceComponent preferenceComponent;
+    // PreferenceComponent preferenceComponent;
     SettingPageComponent settingPageComponent;
     IoComponent ioComponent;
     PlatformComponentOld platformComponentOld;
@@ -20,7 +20,7 @@ public class SettingPageUpdateDataSystem : MonoBehaviour
 
     void Start()
     {
-        preferenceComponent = GlobalComponent.instance.preferenceComponent;
+        // preferenceComponent = GlobalComponent.instance.preferenceComponent;
         settingPageComponent = GlobalComponent.instance.settingPageComponent;
         ioComponent = GlobalComponent.instance.ioComponent;
         platformComponentOld = GlobalComponent.instance.platformComponentOld;
@@ -54,17 +54,17 @@ public class SettingPageUpdateDataSystem : MonoBehaviour
         settingPageComponent.syncSetting = false;
 
         // settingPageComponent.platformsDropdown.value = (int)preferenceComponent.tradingPlatform;
-        settingPageComponent.symbolInput.text = preferenceComponent.symbol;
-        settingPageComponent.lossPercentageInput.text = preferenceComponent.lossPercentage == 0 ? "" : preferenceComponent.lossPercentage.ToString();
-        settingPageComponent.lossAmountInput.text = preferenceComponent.lossAmount == 0 ? "" : preferenceComponent.lossAmount.ToString();
-        settingPageComponent.marginDistributionModeDropdown.value = (int)preferenceComponent.marginDistributionMode;
-        settingPageComponent.marginWeightDistributionValueSlider.value = (float)preferenceComponent.marginWeightDistributionValue;
-        settingPageComponent.marginWeightDistributionValueInput.text = preferenceComponent.marginWeightDistributionValue.ToString();
-        settingPageComponent.takeProfitTypeDropdown.value = (int)preferenceComponent.takeProfitType;
-        settingPageComponent.riskRewardRatioInput.text = preferenceComponent.riskRewardRatio.ToString();
-        settingPageComponent.takeProfitTrailingCallbackPercentageSlider.value = (float)preferenceComponent.takeProfitTrailingCallbackPercentage;
-        settingPageComponent.takeProfitTrailingCallbackPercentageInput.text = preferenceComponent.takeProfitTrailingCallbackPercentage.ToString();
-        settingPageComponent.orderTypeDropdown.value = (int)preferenceComponent.orderType;
+        // settingPageComponent.symbolInput.text = preferenceComponent.symbol;
+        // settingPageComponent.lossPercentageInput.text = preferenceComponent.lossPercentage == 0 ? "" : preferenceComponent.lossPercentage.ToString();
+        // settingPageComponent.lossAmountInput.text = preferenceComponent.lossAmount == 0 ? "" : preferenceComponent.lossAmount.ToString();
+        // settingPageComponent.marginDistributionModeDropdown.value = (int)preferenceComponent.marginDistributionMode;
+        // settingPageComponent.marginWeightDistributionValueSlider.value = (float)preferenceComponent.marginWeightDistributionValue;
+        // settingPageComponent.marginWeightDistributionValueInput.text = preferenceComponent.marginWeightDistributionValue.ToString();
+        // settingPageComponent.takeProfitTypeDropdown.value = (int)preferenceComponent.takeProfitType;
+        // settingPageComponent.riskRewardRatioInput.text = preferenceComponent.riskRewardRatio.ToString();
+        // settingPageComponent.takeProfitTrailingCallbackPercentageSlider.value = (float)preferenceComponent.takeProfitTrailingCallbackPercentage;
+        // settingPageComponent.takeProfitTrailingCallbackPercentageInput.text = preferenceComponent.takeProfitTrailingCallbackPercentage.ToString();
+        // settingPageComponent.orderTypeDropdown.value = (int)preferenceComponent.orderType;
     }
     void SyncSettingToPreference()
     {
@@ -79,29 +79,29 @@ public class SettingPageUpdateDataSystem : MonoBehaviour
         });
         settingPageComponent.symbolInput.onEndEdit.AddListener(value =>
         {
-            preferenceComponent.symbol = value;
+            // preferenceComponent.symbol = value;
             // ioComponent.writePreferences = true;
         });
         settingPageComponent.lossPercentageInput.onEndEdit.AddListener(value =>
         {
             if (value == "") value = "0";
-            preferenceComponent.lossPercentage = double.Parse(value);
+            // preferenceComponent.lossPercentage = double.Parse(value);
             // ioComponent.writePreferences = true;
         });
         settingPageComponent.lossAmountInput.onEndEdit.AddListener(value =>
         {
             if (value == "") value = "0";
-            preferenceComponent.lossAmount = double.Parse(value);
+            // preferenceComponent.lossAmount = double.Parse(value);
             // ioComponent.writePreferences = true;
         });
         settingPageComponent.marginDistributionModeDropdown.onValueChanged.AddListener(value =>
         {
-            preferenceComponent.marginDistributionMode = (MarginDistributionModeEnum)value;
+            // preferenceComponent.marginDistributionMode = (MarginDistributionModeEnum)value;
             // ioComponent.writePreferences = true;
         });
         settingPageComponent.takeProfitTypeDropdown.onValueChanged.AddListener(value =>
         {
-            preferenceComponent.takeProfitType = (TakeProfitTypeEnum)value;
+            // preferenceComponent.takeProfitType = (TakeProfitTypeEnum)value;
             // ioComponent.writePreferences = true;
         });
         settingPageComponent.riskRewardRatioInput.onEndEdit.AddListener(value =>
@@ -111,12 +111,12 @@ public class SettingPageUpdateDataSystem : MonoBehaviour
                 value = "1";
                 settingPageComponent.riskRewardRatioInput.text = value;
             }
-            preferenceComponent.riskRewardRatio = double.Parse(value);
+            // preferenceComponent.riskRewardRatio = double.Parse(value);
             // ioComponent.writePreferences = true;
         });
         settingPageComponent.orderTypeDropdown.onValueChanged.AddListener(value =>
         {
-            preferenceComponent.orderType = (OrderTypeEnum)value;
+            // preferenceComponent.orderType = (OrderTypeEnum)value;
             // ioComponent.writePreferences = true;
         });
     }

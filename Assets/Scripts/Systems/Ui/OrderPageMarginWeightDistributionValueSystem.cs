@@ -7,12 +7,12 @@ public class OrderPageMarginWeightDistributionValueSystem : MonoBehaviour
 {
     [SerializeField] OrderPageComponent orderPageComponent;
     [SerializeField] SettingPageComponent settingPageComponent;
-    PreferenceComponent preferenceComponent;
+    // PreferenceComponent preferenceComponent;
     IoComponent ioComponent;
 
     void Start()
     {
-        preferenceComponent = GlobalComponent.instance.preferenceComponent;
+        // preferenceComponent = GlobalComponent.instance.preferenceComponent;
         ioComponent = GlobalComponent.instance.ioComponent;
 
         ForOrderPageComponent();
@@ -47,7 +47,7 @@ public class OrderPageMarginWeightDistributionValueSystem : MonoBehaviour
             settingPageComponent.marginWeightDistributionValueSlider.value = (float)roundedValue;
             settingPageComponent.marginWeightDistributionValueInput.text = roundedValue.ToString();
 
-            preferenceComponent.marginWeightDistributionValue = roundedValue;
+            // preferenceComponent.marginWeightDistributionValue = roundedValue;
         });
         EventTrigger.Entry pointerUpEvent = new() { eventID = EventTriggerType.PointerUp };
         // pointerUpEvent.callback.AddListener(eventData => ioComponent.writePreferences = true);
@@ -60,7 +60,7 @@ public class OrderPageMarginWeightDistributionValueSystem : MonoBehaviour
             settingPageComponent.marginWeightDistributionValueInput.text = roundedValue.ToString();
             settingPageComponent.marginWeightDistributionValueSlider.value = (float)roundedValue;
 
-            preferenceComponent.marginWeightDistributionValue = roundedValue;
+            // preferenceComponent.marginWeightDistributionValue = roundedValue;
             // ioComponent.writePreferences = true;
         });
     }

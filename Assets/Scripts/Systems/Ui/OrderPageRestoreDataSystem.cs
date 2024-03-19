@@ -10,7 +10,7 @@ public class OrderPageRestoreDataSystem : MonoBehaviour
     OrderPageComponent orderPageComponent;
     RetrieveOrdersComponent retrieveOrdersComponent;
     PlatformComponentOld platformComponentOld;
-    PreferenceComponent preferenceComponent;
+    // PreferenceComponent preferenceComponent;
 
     WebsocketRetrieveOrdersData orderData = null;
 
@@ -19,21 +19,21 @@ public class OrderPageRestoreDataSystem : MonoBehaviour
         orderPageComponent = GetComponent<OrderPageComponent>();
         retrieveOrdersComponent = GlobalComponent.instance.retrieveOrdersComponent;
         platformComponentOld = GlobalComponent.instance.platformComponentOld;
-        preferenceComponent = GlobalComponent.instance.preferenceComponent;
+        // preferenceComponent = GlobalComponent.instance.preferenceComponent;
 
-        if (!preferenceComponent.symbol.IsNullOrEmpty())
-        {
-            orderPageComponent.symbolDropdownComponent.selectedSymbol = preferenceComponent.symbol.ToUpper();
-        }
-        orderPageComponent.maxLossPercentageInput.text = preferenceComponent.lossPercentage == 0 ? "" : preferenceComponent.lossPercentage.ToString();
-        orderPageComponent.maxLossAmountInput.text = preferenceComponent.lossAmount == 0 ? "" : preferenceComponent.lossAmount.ToString();
-        orderPageComponent.marginDistributionModeDropdown.value = (int)preferenceComponent.marginDistributionMode;
-        orderPageComponent.marginWeightDistributionValueSlider.value = (float)preferenceComponent.marginWeightDistributionValue;
-        orderPageComponent.takeProfitTypeDropdown.value = (int)preferenceComponent.takeProfitType;
-        orderPageComponent.riskRewardRatioInput.text = preferenceComponent.riskRewardRatio.ToString();
-        orderPageComponent.takeProfitTrailingCallbackPercentageSlider.value = (float)preferenceComponent.takeProfitTrailingCallbackPercentage;
-        orderPageComponent.takeProfitTrailingCallbackPercentageInput.text = preferenceComponent.takeProfitTrailingCallbackPercentage.ToString();
-        orderPageComponent.orderTypeDropdown.value = (int)preferenceComponent.orderType;
+        // if (!preferenceComponent.symbol.IsNullOrEmpty())
+        // {
+        //     orderPageComponent.symbolDropdownComponent.selectedSymbol = preferenceComponent.symbol.ToUpper();
+        // }
+        // orderPageComponent.maxLossPercentageInput.text = preferenceComponent.lossPercentage == 0 ? "" : preferenceComponent.lossPercentage.ToString();
+        // orderPageComponent.maxLossAmountInput.text = preferenceComponent.lossAmount == 0 ? "" : preferenceComponent.lossAmount.ToString();
+        // orderPageComponent.marginDistributionModeDropdown.value = (int)preferenceComponent.marginDistributionMode;
+        // orderPageComponent.marginWeightDistributionValueSlider.value = (float)preferenceComponent.marginWeightDistributionValue;
+        // orderPageComponent.takeProfitTypeDropdown.value = (int)preferenceComponent.takeProfitType;
+        // orderPageComponent.riskRewardRatioInput.text = preferenceComponent.riskRewardRatio.ToString();
+        // orderPageComponent.takeProfitTrailingCallbackPercentageSlider.value = (float)preferenceComponent.takeProfitTrailingCallbackPercentage;
+        // orderPageComponent.takeProfitTrailingCallbackPercentageInput.text = preferenceComponent.takeProfitTrailingCallbackPercentage.ToString();
+        // orderPageComponent.orderTypeDropdown.value = (int)preferenceComponent.orderType;
     }
     void Update()
     {

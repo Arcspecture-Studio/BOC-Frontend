@@ -17,7 +17,6 @@ public class GlobalComponent : MonoBehaviour
     public WebrequestComponent webrequestComponent;
     public InputComponent inputComponent;
     public OrderPagesComponent orderPagesComponent;
-    public PreferenceComponent preferenceComponent;
     public PromptComponent promptComponent;
     public LoginComponent loginComponent;
     public IoComponent ioComponent;

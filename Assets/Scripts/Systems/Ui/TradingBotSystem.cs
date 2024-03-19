@@ -7,7 +7,7 @@ public class TradingBotSystem : MonoBehaviour
     TradingBotComponent tradingBotComponent;
     WebsocketComponent websocketComponent;
     PlatformComponentOld platformComponentOld;
-    PreferenceComponent preferenceComponent;
+    // PreferenceComponent preferenceComponent;
     QuickTabComponent quickTabComponent;
     MiniPromptComponent miniPromptComponent;
 
@@ -16,7 +16,7 @@ public class TradingBotSystem : MonoBehaviour
         tradingBotComponent = GlobalComponent.instance.tradingBotComponent;
         websocketComponent = GlobalComponent.instance.websocketComponent;
         platformComponentOld = GlobalComponent.instance.platformComponentOld;
-        preferenceComponent = GlobalComponent.instance.preferenceComponent;
+        // preferenceComponent = GlobalComponent.instance.preferenceComponent;
         quickTabComponent = GlobalComponent.instance.quickTabComponent;
         miniPromptComponent = GlobalComponent.instance.miniPromptComponent;
 
@@ -36,25 +36,25 @@ public class TradingBotSystem : MonoBehaviour
             case BotTypeEnum.NONE:
                 // websocketComponent.generalRequests.Add(new General.WebsocketSaveTradingBotRequest(platformComponentOld.activePlatform, platformComponentOld.apiKey));
                 break;
-            case BotTypeEnum.PREMIUM_INDEX:
-                double normalizedMarginWeightDistributionValue = preferenceComponent.marginWeightDistributionValue * OrderConfig.MARGIN_WEIGHT_DISTRIBUTION_RANGE;
-                websocketComponent.generalRequests.Add(new General.WebsocketSaveTradingBotRequest(
-                    platformComponentOld.activePlatform,
-                    "",// platformComponentOld.apiKey,
-                    preferenceComponent.symbol,
-                    preferenceComponent.lossPercentage,
-                    preferenceComponent.lossAmount,
-                    preferenceComponent.marginDistributionMode == MarginDistributionModeEnum.WEIGHTED,
-                    normalizedMarginWeightDistributionValue,
-                    preferenceComponent.takeProfitType,
-                    preferenceComponent.riskRewardRatio,
-                    preferenceComponent.takeProfitTrailingCallbackPercentage,
-                    int.Parse(quickTabComponent.entryTimesInput.text),
-                    WebsocketIntervalEnum.array[quickTabComponent.atrTimeframeDropdown.value],
-                    int.Parse(quickTabComponent.atrLengthInput.text),
-                    double.Parse(quickTabComponent.atrMultiplierInput.text)
-                ));
-                break;
+                // case BotTypeEnum.PREMIUM_INDEX:
+                //     double normalizedMarginWeightDistributionValue = preferenceComponent.marginWeightDistributionValue * OrderConfig.MARGIN_WEIGHT_DISTRIBUTION_RANGE;
+                //     websocketComponent.generalRequests.Add(new General.WebsocketSaveTradingBotRequest(
+                //         platformComponentOld.activePlatform,
+                //         "",// platformComponentOld.apiKey,
+                //         preferenceComponent.symbol,
+                //         preferenceComponent.lossPercentage,
+                //         preferenceComponent.lossAmount,
+                //         preferenceComponent.marginDistributionMode == MarginDistributionModeEnum.WEIGHTED,
+                //         normalizedMarginWeightDistributionValue,
+                //         preferenceComponent.takeProfitType,
+                //         preferenceComponent.riskRewardRatio,
+                //         preferenceComponent.takeProfitTrailingCallbackPercentage,
+                //         int.Parse(quickTabComponent.entryTimesInput.text),
+                //         WebsocketIntervalEnum.array[quickTabComponent.atrTimeframeDropdown.value],
+                //         int.Parse(quickTabComponent.atrLengthInput.text),
+                //         double.Parse(quickTabComponent.atrMultiplierInput.text)
+                //     ));
+                //     break;
         }
     }
     void SendRetrieveTradingBotsSignal()

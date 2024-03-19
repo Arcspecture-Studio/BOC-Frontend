@@ -10,7 +10,7 @@ public class OrderPageSystem : MonoBehaviour
 {
     OrderPageComponent orderPageComponent;
     PlatformComponentOld platformComponentOld;
-    PreferenceComponent preferenceComponent;
+    // PreferenceComponent preferenceComponent;
     WebsocketComponent websocketComponent;
     PromptComponent promptComponent;
 
@@ -22,7 +22,7 @@ public class OrderPageSystem : MonoBehaviour
     {
         orderPageComponent = GetComponent<OrderPageComponent>();
         platformComponentOld = GlobalComponent.instance.platformComponentOld;
-        preferenceComponent = GlobalComponent.instance.preferenceComponent;
+        // preferenceComponent = GlobalComponent.instance.preferenceComponent;
         websocketComponent = GlobalComponent.instance.websocketComponent;
         promptComponent = GlobalComponent.instance.promptComponent;
 
@@ -179,8 +179,8 @@ public class OrderPageSystem : MonoBehaviour
                 double.Parse(orderPageComponent.stopLossInput.text);
             double takeProfitPrice = orderPageComponent.takeProfitInput.text.IsNullOrEmpty() ? double.NaN :
                 double.Parse(orderPageComponent.takeProfitInput.text);
-            double riskRewardRatio = orderPageComponent.riskRewardRatioInput.text.IsNullOrEmpty() ? preferenceComponent.riskRewardRatio : double.Parse(orderPageComponent.riskRewardRatioInput.text);
-            double takeProfitTrailingCallbackPercentage = orderPageComponent.takeProfitTrailingCallbackPercentageInput.text.IsNullOrEmpty() ? preferenceComponent.takeProfitTrailingCallbackPercentage : double.Parse(orderPageComponent.takeProfitTrailingCallbackPercentageInput.text);
+            double riskRewardRatio = orderPageComponent.riskRewardRatioInput.text.IsNullOrEmpty() ? /*preferenceComponent.riskRewardRatio*/1.2 : double.Parse(orderPageComponent.riskRewardRatioInput.text);
+            double takeProfitTrailingCallbackPercentage = orderPageComponent.takeProfitTrailingCallbackPercentageInput.text.IsNullOrEmpty() ? /*preferenceComponent.takeProfitTrailingCallbackPercentage*/0.3 : double.Parse(orderPageComponent.takeProfitTrailingCallbackPercentageInput.text);
             double normalizedMarginWeightDistributionValue = orderPageComponent.marginWeightDistributionValueSlider.value * OrderConfig.MARGIN_WEIGHT_DISTRIBUTION_RANGE;
 
             // validate input
