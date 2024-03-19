@@ -65,6 +65,7 @@ public class GetInitialDataSystem : MonoBehaviour
         profileComponent.profiles = response.accountData.profiles;
         profileComponent.activeProfileId = response.defaultProfileId;
         settingPageComponent.updateProfile = true;
+        settingPageComponent.updatePreference = true;
 
         foreach (PlatformEnum platform in response.accountData.platformList)
         {

@@ -102,4 +102,9 @@ public class SettingPageComponent : MonoBehaviour
         }
     }
     [HideInInspector] public UnityEvent onChange_showRenameProfileButton = new();
+    public bool updatePreference
+    {
+        set { onChange_updatePreference.Invoke(); }
+    }
+    [HideInInspector] public UnityEvent onChange_updatePreference = new();
 }

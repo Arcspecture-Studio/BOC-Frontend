@@ -5,7 +5,7 @@ public class OrderPageTakeProfitTypeSystem : MonoBehaviour
     [SerializeField] OrderPageComponent orderPageComponent;
     [SerializeField] SettingPageComponent settingPageComponent;
 
-    const int takeOnReturnTrailingEnum = (int)TakeProfitTypeEnum.TAKE_ON_RETURN_TRAILING;
+    const int takeOnReturnTrailingEnum = (int)TakeProfitTypeEnum.TRAILING;
     void Start()
     {
         ForOrderPageComponent();
