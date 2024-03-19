@@ -6,6 +6,7 @@ public class SettingPageSystem : MonoBehaviour
     SettingPageComponent settingPageComponent;
     PlatformComponent platformComponent;
     LoginComponent loginComponent;
+    PromptComponent promptComponent;
 
     bool? active = null;
     Tween tween = null;
@@ -14,6 +15,7 @@ public class SettingPageSystem : MonoBehaviour
         settingPageComponent = GlobalComponent.instance.settingPageComponent;
         platformComponent = GlobalComponent.instance.platformComponent;
         loginComponent = GlobalComponent.instance.loginComponent;
+        promptComponent = GlobalComponent.instance.promptComponent;
 
         settingPageComponent.switchPlatformButton.onClick.AddListener(() =>
         {
@@ -22,9 +24,17 @@ public class SettingPageSystem : MonoBehaviour
         });
         settingPageComponent.logoutButton.onClick.AddListener(() =>
         {
-            loginComponent.logoutNow = true;
-            settingPageComponent.logoutButton.interactable = false;
-            settingPageComponent.active = false;
+            promptComponent.ShowSelection(PromptConstant.LOGOUT, PromptConstant.LOGOUT_CONFIRM, PromptConstant.YES_PROCEED, PromptConstant.NO, () =>
+            {
+                loginComponent.logoutNow = true;
+                settingPageComponent.logoutButton.interactable = false;
+                settingPageComponent.active = false;
+
+                promptComponent.active = false;
+            }, () =>
+            {
+                promptComponent.active = false;
+            });
         });
     }
     void Update()

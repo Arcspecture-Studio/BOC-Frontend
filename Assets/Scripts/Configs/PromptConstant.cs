@@ -17,6 +17,7 @@
     public static readonly string PASSWORD_MISMATCH = "Password does not matched with confirm password.";
     public static readonly string LOGIN = "Login";
     public static readonly string LOGOUT = "Logout";
+    public static readonly string LOGOUT_CONFIRM = "Are you sure to log out now?";
     public static readonly string REGISTER = "Register";
     public static readonly string SWITCH_TO_REGISTER = "Dont' have account? Click here to register";
     public static readonly string SWITCH_TO_LOGIN = "Already have account? Click here to login";
