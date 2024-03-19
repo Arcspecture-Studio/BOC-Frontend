@@ -25,6 +25,8 @@ public class SettingPageComponent : MonoBehaviour
     public GameObject addProfileButtonObj;
     public Button addProfileButton;
     public Button cancelAddProfileButton;
+    public Button removeProfileButton;
+    public GameObject removeProfileButtonObj;
     public Button switchPlatformButton;
     public Button logoutButton;
     #endregion
