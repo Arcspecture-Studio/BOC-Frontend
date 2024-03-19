@@ -61,9 +61,9 @@ public class SettingPageComponent : MonoBehaviour
     [Header("Runtime")]
     public bool active = false;
     public bool syncSetting = false;
-    public bool syncInfo
+    public bool updateInfo
     {
-        set { onChange_syncInfo.Invoke(); }
+        set { onChange_updateInfo.Invoke(); }
     }
-    [HideInInspector] public UnityEvent onChange_syncInfo = new();
+    [HideInInspector] public UnityEvent onChange_updateInfo = new();
 }

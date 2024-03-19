@@ -64,6 +64,7 @@ public class GetInitialDataSystem : MonoBehaviour
 
         profileComponent.profiles = response.accountData.profiles;
         profileComponent.activeProfileId = response.defaultProfileId;
+        settingPageComponent.updateProfile = true;
 
         foreach (PlatformEnum platform in response.accountData.platformList)
         {
@@ -86,7 +87,7 @@ public class GetInitialDataSystem : MonoBehaviour
                 UpdateBinancePlatformData(response);
                 break;
         }
-        settingPageComponent.syncInfo = true;
+        settingPageComponent.updateInfo = true;
     }
     void UpdateBinancePlatformData(General.WebsocketGetInitialDataResponse response)
     {
@@ -98,5 +99,7 @@ public class GetInitialDataSystem : MonoBehaviour
         {
             platformComponent.walletBalances.Add(balance.Key, double.Parse(balance.Value.balance));
         }
+
+        // TODO: exchange info
     }
 }

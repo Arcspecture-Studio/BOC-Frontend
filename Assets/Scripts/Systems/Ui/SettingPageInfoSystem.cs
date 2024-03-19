@@ -9,6 +9,7 @@ public class SettingPageInfoSystem : MonoBehaviour
     OrderPagesComponent orderPagesComponent;
 
     Dictionary<string, TMP_Text> walletBalances = new();
+    int totalOrders = -1;
 
     void Start()
     {
@@ -16,13 +17,16 @@ public class SettingPageInfoSystem : MonoBehaviour
         platformComponent = GlobalComponent.instance.platformComponent;
         orderPagesComponent = GlobalComponent.instance.orderPagesComponent;
 
-        settingPageComponent.onChange_syncInfo.AddListener(() => UpdateInfoUI());
+        settingPageComponent.onChange_updateInfo.AddListener(UpdateInfoUI);
+    }
+    void Update()
+    {
+        UpdateTotalOrders();
     }
 
     void UpdateInfoUI()
     {
         settingPageComponent.activePlatformText.text = platformComponent.activePlatform.ToString();
-        settingPageComponent.totalOrdersText.text = orderPagesComponent.transform.childCount.ToString();
         foreach (KeyValuePair<string, double> walletBalance in platformComponent.walletBalances)
         {
             if (walletBalance.Value == 0)
@@ -42,5 +46,11 @@ public class SettingPageInfoSystem : MonoBehaviour
             walletBalances[walletBalance.Key].transform.parent.gameObject.SetActive(true);
             walletBalances[walletBalance.Key].text = Utils.TruncTwoDecimal(walletBalance.Value).ToString();
         }
+    }
+    void UpdateTotalOrders()
+    {
+        if (totalOrders == orderPagesComponent.transform.childCount) return;
+        totalOrders = orderPagesComponent.transform.childCount;
+        settingPageComponent.totalOrdersText.text = totalOrders.ToString();
     }
 }
