@@ -9,7 +9,7 @@ namespace Binance
         {
             path = "/fapi/v1/depth";
             requestType = WebrequestRequestTypeEnum.GET;
-            uri = host + path + "?symbol=" + symbol + "&limit=" + limit;
+            queries = "symbol=" + symbol + "&limit=" + limit;
         }
     }
 }

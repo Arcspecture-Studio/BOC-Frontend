@@ -60,7 +60,7 @@ public class BinanceSystem : MonoBehaviour
         {
             binanceComponent.walletBalances.Clear();
         }
-        // getBalanceRequest = new Binance.WebrequestGetBalanceRequest(testnet, binanceComponent.apiSecret);
+        getBalanceRequest = new Binance.WebrequestGetBalanceRequest(testnet);
         webrequestComponent.requests.Add(getBalanceRequest);
     }
     void ReceiveBalance()

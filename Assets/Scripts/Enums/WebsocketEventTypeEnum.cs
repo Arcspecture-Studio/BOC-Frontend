@@ -36,6 +36,7 @@
     SPAWN_ORDER,
     #endregion
 
+    #region Old Events
     // Both Way
     SAVE_ORDER,
     SAVE_THROTTLE_ORDER,
@@ -56,4 +57,5 @@
     INVALID_LOGIN_PHRASE,
     RETRIEVE_POSITION_INFO,
     SPAWN_QUICK_ORDER,
+    #endregion
 }

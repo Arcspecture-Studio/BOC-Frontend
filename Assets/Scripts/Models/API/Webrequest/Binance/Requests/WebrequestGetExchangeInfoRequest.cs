@@ -9,8 +9,6 @@ namespace Binance
         {
             path = "/fapi/v1/exchangeInfo";
             requestType = WebrequestRequestTypeEnum.GET;
-
-            uri = host + path;
         }
     }
 }

@@ -25,8 +25,6 @@ public class WebrequestSystem : MonoBehaviour
         websocketComponent = GlobalComponent.instance.websocketComponent;
         platformComponentOld = GlobalComponent.instance.platformComponentOld;
         promptComponent = GlobalComponent.instance.promptComponent;
-
-        // TODO: Remove code that call api locally + apiKey and apiSecret handled by server
     }
     void Update()
     {
@@ -34,91 +32,91 @@ public class WebrequestSystem : MonoBehaviour
         ListenForIncomingResponse();
     }
 
-    IEnumerator GetRequest(Request request)
-    {
-        using (UnityWebRequest webRequest = UnityWebRequest.Get(request.uri))
-        {
-            SetHeader(webRequest);
-            yield return webRequest.SendWebRequest();
-            ResponseHandler(webRequest, request.id);
-        }
-    }
-    IEnumerator PostRequest(Request request)
-    {
-        using (UnityWebRequest webRequest = UnityWebRequest.Post(request.uri, ""))
-        {
-            SetHeader(webRequest);
-            yield return webRequest.SendWebRequest();
-            ResponseHandler(webRequest, request.id);
-        }
-    }
-    IEnumerator PutRequest(Request request)
-    {
-        using (UnityWebRequest webRequest = UnityWebRequest.Put(request.uri, ""))
-        {
-            SetHeader(webRequest);
-            yield return webRequest.SendWebRequest();
-            ResponseHandler(webRequest, request.id);
-        }
-    }
-    IEnumerator DeleteRequest(Request request)
-    {
-        using (UnityWebRequest webRequest = UnityWebRequest.Delete(request.uri))
-        {
-            webRequest.downloadHandler = new DownloadHandlerBuffer();
-            SetHeader(webRequest);
-            yield return webRequest.SendWebRequest();
-            ResponseHandler(webRequest, request.id);
-        }
-    }
-    void SetHeader(UnityWebRequest webRequest)
-    {
-        webRequest.SetRequestHeader("Content-Type", "application/json");
-        // webRequest.SetRequestHeader("X-MBX-APIKEY", platformComponentOld.apiKey);
-    }
-    void ResponseHandler(UnityWebRequest webRequest, string id)
-    {
-        string logStatus = "Received";
-        switch (webRequest.result)
-        {
-            case UnityWebRequest.Result.ConnectionError:
-            case UnityWebRequest.Result.DataProcessingError:
-                logStatus = "Error";
-                break;
-            case UnityWebRequest.Result.ProtocolError:
-                logStatus = "HTTP Error";
-                break;
-        }
-        webrequestComponent.rawResponses.Add(id, new Response(id, logStatus, webRequest.downloadHandler.text));
-    }
+    #region Process Request Locally, for reference only, currently unused
+    // IEnumerator GetRequest(Request request)
+    // {
+    //     using (UnityWebRequest webRequest = UnityWebRequest.Get(request.uri))
+    //     {
+    //         SetHeader(webRequest);
+    //         yield return webRequest.SendWebRequest();
+    //         ResponseHandler(webRequest, request.id);
+    //     }
+    // }
+    // IEnumerator PostRequest(Request request)
+    // {
+    //     using (UnityWebRequest webRequest = UnityWebRequest.Post(request.uri, ""))
+    //     {
+    //         SetHeader(webRequest);
+    //         yield return webRequest.SendWebRequest();
+    //         ResponseHandler(webRequest, request.id);
+    //     }
+    // }
+    // IEnumerator PutRequest(Request request)
+    // {
+    //     using (UnityWebRequest webRequest = UnityWebRequest.Put(request.uri, ""))
+    //     {
+    //         SetHeader(webRequest);
+    //         yield return webRequest.SendWebRequest();
+    //         ResponseHandler(webRequest, request.id);
+    //     }
+    // }
+    // IEnumerator DeleteRequest(Request request)
+    // {
+    //     using (UnityWebRequest webRequest = UnityWebRequest.Delete(request.uri))
+    //     {
+    //         webRequest.downloadHandler = new DownloadHandlerBuffer();
+    //         SetHeader(webRequest);
+    //         yield return webRequest.SendWebRequest();
+    //         ResponseHandler(webRequest, request.id);
+    //     }
+    // }
+    // void SetHeader(UnityWebRequest webRequest)
+    // {
+    //     webRequest.SetRequestHeader("Content-Type", "application/json");
+    //     // webRequest.SetRequestHeader("X-MBX-APIKEY", platformComponentOld.apiKey);
+    // }
+    // void ResponseHandler(UnityWebRequest webRequest, string id)
+    // {
+    //     string logStatus = "Received";
+    //     switch (webRequest.result)
+    //     {
+    //         case UnityWebRequest.Result.ConnectionError:
+    //         case UnityWebRequest.Result.DataProcessingError:
+    //             logStatus = "Error";
+    //             break;
+    //         case UnityWebRequest.Result.ProtocolError:
+    //             logStatus = "HTTP Error";
+    //             break;
+    //     }
+    //     webrequestComponent.rawResponses.Add(id, new Response(id, logStatus, webRequest.downloadHandler.text));
+    // }
+    #endregion
+
     void ProcessRequests()
     {
         if (webrequestComponent.requests.Count == 0) return;
         webrequestComponent.requests.ForEach(request =>
         {
-            if (webrequestComponent.processRequestAtServer)
-            {
-                General.WebsocketCallApiRequest callApiRequest = new General.WebsocketCallApiRequest(request);
-                websocketComponent.generalRequests.Add(callApiRequest);
-            }
-            else
-            {
-                switch (request.requestType)
-                {
-                    case WebrequestRequestTypeEnum.GET:
-                        StartCoroutine(GetRequest(request));
-                        break;
-                    case WebrequestRequestTypeEnum.POST:
-                        StartCoroutine(PostRequest(request));
-                        break;
-                    case WebrequestRequestTypeEnum.PUT:
-                        StartCoroutine(PutRequest(request));
-                        break;
-                    case WebrequestRequestTypeEnum.DELETE:
-                        StartCoroutine(DeleteRequest(request));
-                        break;
-                }
-            }
+            General.WebsocketCallApiRequest callApiRequest = new General.WebsocketCallApiRequest(request);
+            websocketComponent.generalRequests.Add(callApiRequest);
+
+            #region Process Request Locally, for reference only, currently unused
+            // switch (request.requestType)
+            // {
+            //     case WebrequestRequestTypeEnum.GET:
+            //         StartCoroutine(GetRequest(request));
+            //         break;
+            //     case WebrequestRequestTypeEnum.POST:
+            //         StartCoroutine(PostRequest(request));
+            //         break;
+            //     case WebrequestRequestTypeEnum.PUT:
+            //         StartCoroutine(PutRequest(request));
+            //         break;
+            //     case WebrequestRequestTypeEnum.DELETE:
+            //         StartCoroutine(DeleteRequest(request));
+            //         break;
+            // }
+            #endregion
         });
         webrequestComponent.requests.Clear();
     }
@@ -158,8 +156,8 @@ public class WebrequestSystem : MonoBehaviour
                                     case -2014: // API-key format invalid.
                                     case -2015: // Invalid API-key, IP, or permissions for action, request ip: 130.176.146.87
                                     case -1022: // Signature for this request is not valid.
-                                        // platformComponentOld.apiKey = null;
-                                        // platformComponentOld.apiSecret = null;
+                                                // platformComponentOld.apiKey = null;
+                                                // platformComponentOld.apiSecret = null;
                                         if (code.Value == -2014 || code.Value == -2015)
                                         {
                                             message = "Login failed with invalid or expired api key, please try to login again. (Binance Error Code: " + code.Value + ")";

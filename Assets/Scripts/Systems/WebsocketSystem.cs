@@ -72,29 +72,28 @@ public class WebsocketSystem : MonoBehaviour
                     });
                 }
             }
+            else if (response.eventType == WebsocketEventTypeEnum.CALL_API)
+            {
+                General.WebsocketCallApiResponse callApiResponse = JsonConvert.DeserializeObject<General.WebsocketCallApiResponse>(rawData, JsonSerializerConfig.settings);
+                string logStatus = "Received";
+                if (callApiResponse.rejectByServer.HasValue)
+                {
+                    if (callApiResponse.rejectByServer.Value)
+                    {
+                        logStatus = "Server returned error";
+                    }
+                    else
+                    {
+                        logStatus = "HTTP Error";
+                    }
+                }
+                if (callApiResponse.id.IsNullOrEmpty()) callApiResponse.id = "";
+                webrequestComponent.rawResponses.Add(callApiResponse.id, new Response(callApiResponse.id, logStatus, callApiResponse.responseJsonString));
+            }
             else
             {
                 websocketComponent.AddGeneralResponses(response.eventType, rawData);
             }
-
-            //             else if (response.eventType == WebsocketEventTypeEnum.CALL_API)
-            //             {
-            //                 General.WebsocketCallApiResponse callApiResponse = JsonConvert.DeserializeObject<General.WebsocketCallApiResponse>(rawData, JsonSerializerConfig.settings);
-            //                 string logStatus = "Received";
-            //                 if (callApiResponse.rejectByServer.HasValue)
-            //                 {
-            //                     if (callApiResponse.rejectByServer.Value)
-            //                     {
-            //                         logStatus = "Server returned error";
-            //                     }
-            //                     else
-            //                     {
-            //                         logStatus = "HTTP Error";
-            //                     }
-            //                 }
-            //                 if (callApiResponse.id.IsNullOrEmpty()) callApiResponse.id = "";
-            //                 webrequestComponent.rawResponses.Add(callApiResponse.id, new Response(callApiResponse.id, logStatus, callApiResponse.responseJsonString));
-            //             }
         };
         generalSocket.OnError += (sender, e) =>
         {
