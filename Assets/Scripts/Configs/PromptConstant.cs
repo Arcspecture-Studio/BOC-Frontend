@@ -27,4 +27,5 @@
     public static readonly string EMAIL_INVALID = "Email format invalid.";
     public static readonly string PASSWORD_EMPTY = "Password can't be empty.";
     public static readonly string API_KEY_EMPTY = "Api key/secret can't be empty.";
+    public static readonly string PROFILE_NAME_EMPTY = "Profile name can't be empty.";
 }

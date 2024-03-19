@@ -66,4 +66,20 @@ public class SettingPageComponent : MonoBehaviour
         set { onChange_updateInfo.Invoke(); }
     }
     [HideInInspector] public UnityEvent onChange_updateInfo = new();
+    public bool updateProfile
+    {
+        set { onChange_updateProfile.Invoke(); }
+    }
+    [HideInInspector] public UnityEvent onChange_updateProfile = new();
+    public bool _showAddNewProfileButton;
+    public bool showAddNewProfileButton
+    {
+        get { return _showAddNewProfileButton; }
+        set
+        {
+            _showAddNewProfileButton = value;
+            onChange_showAddNewProfileButton.Invoke();
+        }
+    }
+    [HideInInspector] public UnityEvent onChange_showAddNewProfileButton = new();
 }

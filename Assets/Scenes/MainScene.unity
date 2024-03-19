@@ -16697,14 +16697,14 @@ MonoBehaviour:
   m_VerticalScrollbarEventHandler: {fileID: 0}
   m_LayoutGroup: {fileID: 0}
   m_ScrollSensitivity: 1
-  m_ContentType: 3
+  m_ContentType: 0
   m_InputType: 0
   m_AsteriskChar: 42
-  m_KeyboardType: 2
+  m_KeyboardType: 0
   m_LineType: 0
   m_HideMobileInput: 0
   m_HideSoftKeyboard: 0
-  m_CharacterValidation: 3
+  m_CharacterValidation: 0
   m_RegexValue: 
   m_GlobalPointSize: 14
   m_CharacterLimit: 0
@@ -17401,8 +17401,9 @@ GameObject:
   - component: {fileID: 680527079}
   - component: {fileID: 680527080}
   - component: {fileID: 680527081}
-  - component: {fileID: 680527082}
   - component: {fileID: 680527083}
+  - component: {fileID: 680527084}
+  - component: {fileID: 680527082}
   m_Layer: 5
   m_Name: Setting Page
   m_TagString: Untagged
@@ -17484,7 +17485,14 @@ MonoBehaviour:
   inactiveToActiveXMovement: -400
   active: 0
   syncSetting: 0
-  onChange_syncInfo:
+  onChange_updateInfo:
+    m_PersistentCalls:
+      m_Calls: []
+  onChange_updateProfile:
+    m_PersistentCalls:
+      m_Calls: []
+  _showAddNewProfileButton: 0
+  onChange_showAddNewProfileButton:
     m_PersistentCalls:
       m_Calls: []
 --- !u!114 &680527081
@@ -17521,6 +17529,18 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 8bf4198ed30cacf439e26967af68ff81, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &680527084
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 680527078}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7a93c9fd95bab92409139997c3fb9429, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1 &680781932
@@ -38163,7 +38183,14 @@ MonoBehaviour:
   inactiveToActiveXMovement: -400
   active: 0
   syncSetting: 0
-  onChange_syncInfo:
+  onChange_updateInfo:
+    m_PersistentCalls:
+      m_Calls: []
+  onChange_updateProfile:
+    m_PersistentCalls:
+      m_Calls: []
+  _showAddNewProfileButton: 0
+  onChange_showAddNewProfileButton:
     m_PersistentCalls:
       m_Calls: []
 --- !u!114 &1529361105
