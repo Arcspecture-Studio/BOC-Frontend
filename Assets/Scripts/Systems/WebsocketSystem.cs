@@ -7,10 +7,7 @@ public class WebsocketSystem : MonoBehaviour
 {
     WebsocketComponent websocketComponent;
     WebrequestComponent webrequestComponent;
-    IoComponent ioComponent;
-    LoginComponent loginComponent;
     PromptComponent promptComponent;
-    GetInitialDataComponent getInitialDataComponent;
 
     WebSocket generalSocket;
     string logPrefix = "[WebsocketSystem] ";
@@ -19,10 +16,7 @@ public class WebsocketSystem : MonoBehaviour
     {
         websocketComponent = GlobalComponent.instance.websocketComponent;
         webrequestComponent = GlobalComponent.instance.webrequestComponent;
-        ioComponent = GlobalComponent.instance.ioComponent;
-        loginComponent = GlobalComponent.instance.loginComponent;
         promptComponent = GlobalComponent.instance.promptComponent;
-        getInitialDataComponent = GlobalComponent.instance.getInitialDataComponent;
 
         websocketComponent.connectGeneralSocket = true;
     }
