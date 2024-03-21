@@ -81,26 +81,8 @@ public class GetInitialDataSystem : MonoBehaviour
         }
 
         platformComponent.activePlatform = profileComponent.activeProfile.activePlatform.Value;
-        switch (platformComponent.activePlatform)
-        {
-            case PlatformEnum.BINANCE:
-            case PlatformEnum.BINANCE_TESTNET:
-                UpdateBinancePlatformData(response);
-                break;
-        }
+        platformComponent.processInitialData = response;
+
         settingPageComponent.updateInfo = true;
-    }
-    void UpdateBinancePlatformData(General.WebsocketGetInitialDataResponse response)
-    {
-        Binance.WebsocketPlatformDataResponse platformData = JsonConvert.DeserializeObject
-        <Binance.WebsocketPlatformDataResponse>(response.platformData.ToString(), JsonSerializerConfig.settings);
-
-        platformComponent.walletBalances = new();
-        foreach (KeyValuePair<string, Binance.WebrequestGetBalanceResponseData> balance in platformData.balances)
-        {
-            platformComponent.walletBalances.Add(balance.Key, double.Parse(balance.Value.balance));
-        }
-
-        // TODO: exchange info
     }
 }

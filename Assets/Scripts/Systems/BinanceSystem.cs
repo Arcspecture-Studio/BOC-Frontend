@@ -20,10 +20,6 @@ public class BinanceSystem : MonoBehaviour
         }
     }
     WebrequestComponent webrequestComponent;
-    IoComponent ioComponent;
-    RetrieveOrdersComponent retrieveOrdersComponent;
-    PlatformComponentOld platformComponentOld;
-    TradingBotComponent tradingBotComponent;
     MiniPromptComponent miniPromptComponent;
 
     Binance.WebrequestRequest getExchangeInfoRequest = null;
@@ -34,32 +30,20 @@ public class BinanceSystem : MonoBehaviour
     void Start()
     {
         webrequestComponent = GlobalComponent.instance.webrequestComponent;
-        ioComponent = GlobalComponent.instance.ioComponent;
-        retrieveOrdersComponent = GlobalComponent.instance.retrieveOrdersComponent;
-        platformComponentOld = GlobalComponent.instance.platformComponentOld;
-        tradingBotComponent = GlobalComponent.instance.tradingBotComponent;
         miniPromptComponent = GlobalComponent.instance.miniPromptComponent;
+
+        binanceComponent.onChange_getBalance.AddListener(GetBalance);
+        binanceComponent.onChange_getExchangeInfo.AddListener(GetExchangeInfo);
+        binanceComponent.onChange_processInitialData.AddListener(ProcessInitialData);
     }
     void Update()
     {
-        GetExchangeInfo();
-        ReceiveExchangeInfo();
-        GetBalance();
         ReceiveBalance();
+        ReceiveExchangeInfo();
     }
 
     void GetBalance()
     {
-        if (!binanceComponent.getBalance) return;
-        binanceComponent.getBalance = false;
-        if (binanceComponent.walletBalances == null)
-        {
-            binanceComponent.walletBalances = new Dictionary<string, double>();
-        }
-        else
-        {
-            binanceComponent.walletBalances.Clear();
-        }
         getBalanceRequest = new Binance.WebrequestGetBalanceRequest(testnet);
         webrequestComponent.requests.Add(getBalanceRequest);
     }
@@ -79,28 +63,18 @@ public class BinanceSystem : MonoBehaviour
             }
             webrequestComponent.responses.Remove(getBalanceRequest.id);
             if (response == null || response.Count == 0) return;
+
             miniPromptComponent.message = "Balance Updated";
+
+            binanceComponent.walletBalances.Clear();
             response.ForEach(asset =>
             {
-                if (!binanceComponent.walletBalances.TryAdd(asset.asset, double.Parse(asset.balance)))
-                {
-                    binanceComponent.walletBalances[asset.asset] = double.Parse(asset.balance);
-                }
+                binanceComponent.walletBalances.Add(asset.asset, double.Parse(asset.balance));
             });
-            if (!binanceComponent.loggedIn)
-            {
-                binanceComponent.getExchangeInfo = true;
-            }
         }
     }
     void GetExchangeInfo()
     {
-        if (!binanceComponent.getExchangeInfo) return;
-        binanceComponent.getExchangeInfo = false;
-        binanceComponent.allSymbols.Clear();
-        binanceComponent.marginAssets.Clear();
-        binanceComponent.quantityPrecisions.Clear();
-        binanceComponent.pricePrecisions.Clear();
         getExchangeInfoRequest = new Binance.WebrequestGetExchangeInfoRequest(testnet);
         webrequestComponent.requests.Add(getExchangeInfoRequest);
     }
@@ -116,12 +90,14 @@ public class BinanceSystem : MonoBehaviour
                 binanceComponent.getExchangeInfo = true;
                 return;
             }
+
+            binanceComponent.allSymbols.Clear();
+            binanceComponent.marginAssets.Clear();
+            binanceComponent.quantityPrecisions.Clear();
+            binanceComponent.pricePrecisions.Clear();
             response.symbols.ForEach(symbol =>
             {
-                if (!binanceComponent.allSymbols.Contains(symbol.symbol))
-                {
-                    binanceComponent.allSymbols.Add(symbol.symbol);
-                }
+                binanceComponent.allSymbols.Add(symbol.symbol);
                 binanceComponent.marginAssets.TryAdd(symbol.symbol, symbol.marginAsset);
                 binanceComponent.quantityPrecisions.TryAdd(symbol.symbol, symbol.quantityPrecision);
                 long pricePrecision = symbol.pricePrecision;
@@ -134,15 +110,41 @@ public class BinanceSystem : MonoBehaviour
                 });
                 binanceComponent.pricePrecisions.TryAdd(symbol.symbol, pricePrecision);
             });
-            binanceComponent.loggedIn = true;
-            // ioComponent.writeApiKey = true;
-            if (platformComponentOld.activePlatformTestnet == testnet)
-            {
-                // loginComponent.gameObj.SetActive(false);
-                retrieveOrdersComponent.destroyOrders = true;
-                retrieveOrdersComponent.instantiateOrders = true;
-                tradingBotComponent.getTradingBots = true;
-            }
         }
+    }
+    void ProcessInitialData(General.WebsocketGetInitialDataResponse response)
+    {
+        Binance.WebsocketPlatformDataResponse platformData = JsonConvert.DeserializeObject
+        <Binance.WebsocketPlatformDataResponse>(response.platformData.ToString(), JsonSerializerConfig.settings);
+
+        #region Balances
+        binanceComponent.walletBalances.Clear();
+        foreach (KeyValuePair<string, Binance.WebrequestGetBalanceResponseData> balance in platformData.balances)
+        {
+            binanceComponent.walletBalances.Add(balance.Key, double.Parse(balance.Value.balance));
+        }
+        #endregion
+
+        #region Exchange info
+        binanceComponent.allSymbols.Clear();
+        binanceComponent.marginAssets.Clear();
+        binanceComponent.quantityPrecisions.Clear();
+        binanceComponent.pricePrecisions.Clear();
+        foreach (KeyValuePair<string, Binance.WebrequestGetExchangeInfoResponseSymbol> exchangeInfo in platformData.exchangeInfos)
+        {
+            binanceComponent.allSymbols.Add(exchangeInfo.Value.symbol);
+            binanceComponent.marginAssets.Add(exchangeInfo.Value.symbol, exchangeInfo.Value.marginAsset);
+            binanceComponent.quantityPrecisions.Add(exchangeInfo.Value.symbol, exchangeInfo.Value.quantityPrecision);
+            long pricePrecision = exchangeInfo.Value.pricePrecision;
+            exchangeInfo.Value.filters.ForEach(filter =>
+           {
+               if (filter.tickSize != null)
+               {
+                   pricePrecision = Math.Min(Utils.CountDecimalPlaces(double.Parse(filter.tickSize)), pricePrecision);
+               }
+           });
+            binanceComponent.pricePrecisions.TryAdd(exchangeInfo.Value.symbol, pricePrecision);
+        }
+        #endregion
     }
 }

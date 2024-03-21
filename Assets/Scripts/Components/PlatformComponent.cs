@@ -17,7 +17,8 @@ public class PlatformComponent : PlatformTemplateComponent
     public Button backButton;
     public GameObject backButtonObj;
 
-    // [Header("Runtime")]
+    [Header("Runtime")]
+    [HideInInspector] public UnityEvent onEnable = new();
     public PlatformEnum activePlatform
     {
         get
@@ -241,20 +242,6 @@ public class PlatformComponent : PlatformTemplateComponent
     }
     public new bool getBalance
     {
-        get
-        {
-            bool data = false;
-            switch (activePlatform)
-            {
-                case PlatformEnum.BINANCE:
-                    data = GlobalComponent.instance.binanceComponent.getBalance;
-                    break;
-                case PlatformEnum.BINANCE_TESTNET:
-                    data = GlobalComponent.instance.binanceTestnetComponent.getBalance;
-                    break;
-            }
-            return data;
-        }
         set
         {
             switch (activePlatform)
@@ -268,7 +255,21 @@ public class PlatformComponent : PlatformTemplateComponent
             }
         }
     }
-    [HideInInspector] public UnityEvent onEnable = new();
+    public new General.WebsocketGetInitialDataResponse processInitialData
+    {
+        set
+        {
+            switch (activePlatform)
+            {
+                case PlatformEnum.BINANCE:
+                    GlobalComponent.instance.binanceComponent.processInitialData = value;
+                    break;
+                case PlatformEnum.BINANCE_TESTNET:
+                    GlobalComponent.instance.binanceTestnetComponent.processInitialData = value;
+                    break;
+            }
+        }
+    }
 
     public void OnEnable()
     {

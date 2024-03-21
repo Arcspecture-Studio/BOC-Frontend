@@ -1,13 +1,11 @@
+using UnityEngine;
+using UnityEngine.Events;
+
 public class BinanceComponent : PlatformTemplateComponent
 {
-    public bool getExchangeInfo;
-
-    void Start()
+    public bool getExchangeInfo
     {
-        loggedIn = false;
-        marginAssets = new();
-        quantityPrecisions = new();
-        pricePrecisions = new();
-        fees = new();
+        set { onChange_getExchangeInfo.Invoke(); }
     }
+    [HideInInspector] public UnityEvent onChange_getExchangeInfo = new();
 }

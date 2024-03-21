@@ -216,20 +216,6 @@ public class PlatformComponentOld : MonoBehaviour
     }
     public bool getBalance
     {
-        get
-        {
-            bool data = false;
-            switch (activePlatform)
-            {
-                case PlatformEnum.BINANCE:
-                    data = GlobalComponent.instance.binanceComponent.getBalance;
-                    break;
-                case PlatformEnum.BINANCE_TESTNET:
-                    data = GlobalComponent.instance.binanceTestnetComponent.getBalance;
-                    break;
-            }
-            return data;
-        }
         set
         {
             switch (activePlatform)
