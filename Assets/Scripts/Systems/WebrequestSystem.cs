@@ -1,14 +1,11 @@
-#pragma warning disable CS0162
 #pragma warning disable CS8632
 #pragma warning disable CS0168
 
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.Networking;
 using WebSocketSharp;
 
 public class WebrequestSystem : MonoBehaviour
@@ -31,66 +28,6 @@ public class WebrequestSystem : MonoBehaviour
         ProcessRequests();
         ListenForIncomingResponse();
     }
-
-    #region Process Request Locally, for reference only, currently unused
-    // IEnumerator GetRequest(Request request)
-    // {
-    //     using (UnityWebRequest webRequest = UnityWebRequest.Get(request.uri))
-    //     {
-    //         SetHeader(webRequest);
-    //         yield return webRequest.SendWebRequest();
-    //         ResponseHandler(webRequest, request.id);
-    //     }
-    // }
-    // IEnumerator PostRequest(Request request)
-    // {
-    //     using (UnityWebRequest webRequest = UnityWebRequest.Post(request.uri, ""))
-    //     {
-    //         SetHeader(webRequest);
-    //         yield return webRequest.SendWebRequest();
-    //         ResponseHandler(webRequest, request.id);
-    //     }
-    // }
-    // IEnumerator PutRequest(Request request)
-    // {
-    //     using (UnityWebRequest webRequest = UnityWebRequest.Put(request.uri, ""))
-    //     {
-    //         SetHeader(webRequest);
-    //         yield return webRequest.SendWebRequest();
-    //         ResponseHandler(webRequest, request.id);
-    //     }
-    // }
-    // IEnumerator DeleteRequest(Request request)
-    // {
-    //     using (UnityWebRequest webRequest = UnityWebRequest.Delete(request.uri))
-    //     {
-    //         webRequest.downloadHandler = new DownloadHandlerBuffer();
-    //         SetHeader(webRequest);
-    //         yield return webRequest.SendWebRequest();
-    //         ResponseHandler(webRequest, request.id);
-    //     }
-    // }
-    // void SetHeader(UnityWebRequest webRequest)
-    // {
-    //     webRequest.SetRequestHeader("Content-Type", "application/json");
-    //     // webRequest.SetRequestHeader("X-MBX-APIKEY", platformComponentOld.apiKey);
-    // }
-    // void ResponseHandler(UnityWebRequest webRequest, string id)
-    // {
-    //     string logStatus = "Received";
-    //     switch (webRequest.result)
-    //     {
-    //         case UnityWebRequest.Result.ConnectionError:
-    //         case UnityWebRequest.Result.DataProcessingError:
-    //             logStatus = "Error";
-    //             break;
-    //         case UnityWebRequest.Result.ProtocolError:
-    //             logStatus = "HTTP Error";
-    //             break;
-    //     }
-    //     webrequestComponent.rawResponses.Add(id, new Response(id, logStatus, webRequest.downloadHandler.text));
-    // }
-    #endregion
 
     void ProcessRequests()
     {
@@ -188,4 +125,64 @@ public class WebrequestSystem : MonoBehaviour
             webrequestComponent.rawResponses.Remove(rawResponse.id);
         };
     }
+
+    #region Process Request Locally, for reference only, currently unused
+    // IEnumerator GetRequest(Request request)
+    // {
+    //     using (UnityWebRequest webRequest = UnityWebRequest.Get(request.uri))
+    //     {
+    //         SetHeader(webRequest);
+    //         yield return webRequest.SendWebRequest();
+    //         ResponseHandler(webRequest, request.id);
+    //     }
+    // }
+    // IEnumerator PostRequest(Request request)
+    // {
+    //     using (UnityWebRequest webRequest = UnityWebRequest.Post(request.uri, ""))
+    //     {
+    //         SetHeader(webRequest);
+    //         yield return webRequest.SendWebRequest();
+    //         ResponseHandler(webRequest, request.id);
+    //     }
+    // }
+    // IEnumerator PutRequest(Request request)
+    // {
+    //     using (UnityWebRequest webRequest = UnityWebRequest.Put(request.uri, ""))
+    //     {
+    //         SetHeader(webRequest);
+    //         yield return webRequest.SendWebRequest();
+    //         ResponseHandler(webRequest, request.id);
+    //     }
+    // }
+    // IEnumerator DeleteRequest(Request request)
+    // {
+    //     using (UnityWebRequest webRequest = UnityWebRequest.Delete(request.uri))
+    //     {
+    //         webRequest.downloadHandler = new DownloadHandlerBuffer();
+    //         SetHeader(webRequest);
+    //         yield return webRequest.SendWebRequest();
+    //         ResponseHandler(webRequest, request.id);
+    //     }
+    // }
+    // void SetHeader(UnityWebRequest webRequest)
+    // {
+    //     webRequest.SetRequestHeader("Content-Type", "application/json");
+    //     // webRequest.SetRequestHeader("X-MBX-APIKEY", platformComponentOld.apiKey);
+    // }
+    // void ResponseHandler(UnityWebRequest webRequest, string id)
+    // {
+    //     string logStatus = "Received";
+    //     switch (webRequest.result)
+    //     {
+    //         case UnityWebRequest.Result.ConnectionError:
+    //         case UnityWebRequest.Result.DataProcessingError:
+    //             logStatus = "Error";
+    //             break;
+    //         case UnityWebRequest.Result.ProtocolError:
+    //             logStatus = "HTTP Error";
+    //             break;
+    //     }
+    //     webrequestComponent.rawResponses.Add(id, new Response(id, logStatus, webRequest.downloadHandler.text));
+    // }
+    #endregion
 }
