@@ -7,7 +7,7 @@ public class OrderPagesSpawnOrderBasedOnServerSignalSystem : MonoBehaviour
     WebsocketComponent websocketComponent;
     OrderPagesComponent orderPagesComponent;
     RetrieveOrdersComponent retrieveOrdersComponent;
-    PlatformComponentOld platformComponentOld;
+    PlatformComponent platformComponent;
     HideAllPanelComponent hideAllPanelComponent;
 
     void Start()
@@ -15,7 +15,7 @@ public class OrderPagesSpawnOrderBasedOnServerSignalSystem : MonoBehaviour
         websocketComponent = GlobalComponent.instance.websocketComponent;
         orderPagesComponent = GlobalComponent.instance.orderPagesComponent;
         retrieveOrdersComponent = GlobalComponent.instance.retrieveOrdersComponent;
-        platformComponentOld = GlobalComponent.instance.platformComponentOld;
+        platformComponent = GlobalComponent.instance.platformComponent;
         hideAllPanelComponent = GlobalComponent.instance.hideAllPanelComponent;
     }
     void Update()
@@ -43,12 +43,12 @@ public class OrderPagesSpawnOrderBasedOnServerSignalSystem : MonoBehaviour
             orderPagesComponent.currentPageIndex = orderPagesComponent.transform.childCount;
             #endregion
 
-            #region Add into retrieveOrdersComponent.ordersFromServer[platformComponentOld.tradingPlatform]
-            if (retrieveOrdersComponent.ordersFromServer.ContainsKey(platformComponentOld.activePlatform))
+            #region Add into retrieveOrdersComponent.ordersFromServer[platformComponentOld.activePlatform]
+            if (retrieveOrdersComponent.ordersFromServer.ContainsKey(platformComponent.activePlatform))
             {
-                if (!retrieveOrdersComponent.ordersFromServer[platformComponentOld.activePlatform].TryAdd(response.orderId, response.order))
+                if (!retrieveOrdersComponent.ordersFromServer[platformComponent.activePlatform].TryAdd(response.orderId, response.order))
                 {
-                    retrieveOrdersComponent.ordersFromServer[platformComponentOld.activePlatform][response.orderId] = response.order;
+                    retrieveOrdersComponent.ordersFromServer[platformComponent.activePlatform][response.orderId] = response.order;
                 }
             }
             #endregion

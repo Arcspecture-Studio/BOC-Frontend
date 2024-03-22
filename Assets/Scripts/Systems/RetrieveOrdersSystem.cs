@@ -8,7 +8,7 @@ public class RetrieveOrdersSystem : MonoBehaviour
 {
     WebsocketComponent websocketComponent;
     RetrieveOrdersComponent retrieveOrdersComponent;
-    PlatformComponentOld platformComponentOld;
+    PlatformComponent platformComponent;
     OrderPagesComponent orderPagesComponent;
     QuickTabComponent quickTabComponent;
 
@@ -17,7 +17,7 @@ public class RetrieveOrdersSystem : MonoBehaviour
     {
         websocketComponent = GlobalComponent.instance.websocketComponent;
         retrieveOrdersComponent = GlobalComponent.instance.retrieveOrdersComponent;
-        platformComponentOld = GlobalComponent.instance.platformComponentOld;
+        platformComponent = GlobalComponent.instance.platformComponent;
         orderPagesComponent = GlobalComponent.instance.orderPagesComponent;
         quickTabComponent = GlobalComponent.instance.quickTabComponent;
     }
@@ -35,13 +35,13 @@ public class RetrieveOrdersSystem : MonoBehaviour
         if (retrieveOrdersString.IsNullOrEmpty()) return;
         General.WebsocketRetrieveOrdersResponse response = JsonConvert.DeserializeObject<General.WebsocketRetrieveOrdersResponse>(retrieveOrdersString, JsonSerializerConfig.settings);
         websocketComponent.RemovesGeneralResponses(WebsocketEventTypeEnum.RETRIEVE_ORDERS);
-        if (!retrieveOrdersComponent.ordersFromServer.TryAdd(platformComponentOld.activePlatform, response.orders))
+        if (!retrieveOrdersComponent.ordersFromServer.TryAdd(platformComponent.activePlatform, response.orders))
         {
-            retrieveOrdersComponent.ordersFromServer[platformComponentOld.activePlatform] = response.orders;
+            retrieveOrdersComponent.ordersFromServer[platformComponent.activePlatform] = response.orders;
         }
-        if (!retrieveOrdersComponent.quickOrdersFromServer.TryAdd(platformComponentOld.activePlatform, response.quickOrders))
+        if (!retrieveOrdersComponent.quickOrdersFromServer.TryAdd(platformComponent.activePlatform, response.quickOrders))
         {
-            retrieveOrdersComponent.quickOrdersFromServer[platformComponentOld.activePlatform] = response.quickOrders;
+            retrieveOrdersComponent.quickOrdersFromServer[platformComponent.activePlatform] = response.quickOrders;
         }
         ordersReceived = true;
     }
@@ -75,9 +75,9 @@ public class RetrieveOrdersSystem : MonoBehaviour
 
         #region Get orders according to platform
         yield return new WaitUntil(() => ordersReceived);
-        Dictionary<string, General.WebsocketRetrieveOrdersData> ordersFromServer = retrieveOrdersComponent.ordersFromServer.ContainsKey(platformComponentOld.activePlatform) ?
-            retrieveOrdersComponent.ordersFromServer[platformComponentOld.activePlatform] : null;
-        quickTabComponent.quickOrdersFromServer = retrieveOrdersComponent.quickOrdersFromServer.ContainsKey(platformComponentOld.activePlatform) ? retrieveOrdersComponent.quickOrdersFromServer[platformComponentOld.activePlatform] : null;
+        Dictionary<string, General.WebsocketRetrieveOrdersData> ordersFromServer = retrieveOrdersComponent.ordersFromServer.ContainsKey(platformComponent.activePlatform) ?
+            retrieveOrdersComponent.ordersFromServer[platformComponent.activePlatform] : null;
+        quickTabComponent.quickOrdersFromServer = retrieveOrdersComponent.quickOrdersFromServer.ContainsKey(platformComponent.activePlatform) ? retrieveOrdersComponent.quickOrdersFromServer[platformComponent.activePlatform] : null;
         #endregion
 
         #region Instantiate orders
@@ -107,8 +107,8 @@ public class RetrieveOrdersSystem : MonoBehaviour
 
         #region Get orders according to platform
         yield return new WaitUntil(() => ordersReceived);
-        Dictionary<string, General.WebsocketRetrieveOrdersData> ordersFromServer = retrieveOrdersComponent.ordersFromServer.ContainsKey(platformComponentOld.activePlatform) ?
-            retrieveOrdersComponent.ordersFromServer[platformComponentOld.activePlatform] : null;
+        Dictionary<string, General.WebsocketRetrieveOrdersData> ordersFromServer = retrieveOrdersComponent.ordersFromServer.ContainsKey(platformComponent.activePlatform) ?
+            retrieveOrdersComponent.ordersFromServer[platformComponent.activePlatform] : null;
         #endregion
 
         #region Update existing order status 

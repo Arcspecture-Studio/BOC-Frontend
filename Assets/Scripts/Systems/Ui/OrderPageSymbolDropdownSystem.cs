@@ -6,7 +6,7 @@ public class OrderPageSymbolDropdownSystem : MonoBehaviour, IPointerEnterHandler
 {
     [SerializeField] OrderPageSymbolDropdownComponent orderPageSymbolDropdownComponent;
 
-    PlatformComponentOld platformComponentOld;
+    PlatformComponent platformComponent;
     InputComponent inputComponent;
     TMP_Dropdown dropdown;
 
@@ -14,7 +14,7 @@ public class OrderPageSymbolDropdownSystem : MonoBehaviour, IPointerEnterHandler
 
     void Start()
     {
-        platformComponentOld = GlobalComponent.instance.platformComponentOld;
+        platformComponent = GlobalComponent.instance.platformComponent;
         inputComponent = GlobalComponent.instance.inputComponent;
         dropdown = GetComponent<TMP_Dropdown>();
 
@@ -22,7 +22,7 @@ public class OrderPageSymbolDropdownSystem : MonoBehaviour, IPointerEnterHandler
         {
             if (hover)
             {
-                orderPageSymbolDropdownComponent.symbols = platformComponentOld.allSymbols;
+                orderPageSymbolDropdownComponent.symbols = platformComponent.allSymbols;
                 UpdateOptions();
             }
         };
@@ -46,7 +46,7 @@ public class OrderPageSymbolDropdownSystem : MonoBehaviour, IPointerEnterHandler
 
     public void OnSearchChanged(string value)
     {
-        orderPageSymbolDropdownComponent.symbols = platformComponentOld.allSymbols.FindAll(symbol => symbol.Contains(value.ToUpper()));
+        orderPageSymbolDropdownComponent.symbols = platformComponent.allSymbols.FindAll(symbol => symbol.Contains(value.ToUpper()));
         UpdateOptions();
     }
     void UpdateOptions()
@@ -57,10 +57,10 @@ public class OrderPageSymbolDropdownSystem : MonoBehaviour, IPointerEnterHandler
     }
     void SyncAllSymbols()
     {
-        if (orderPageSymbolDropdownComponent.allSymbolsCount == platformComponentOld.allSymbols.Count) return;
-        orderPageSymbolDropdownComponent.allSymbolsCount = platformComponentOld.allSymbols.Count;
+        if (orderPageSymbolDropdownComponent.allSymbolsCount == platformComponent.allSymbols.Count) return;
+        orderPageSymbolDropdownComponent.allSymbolsCount = platformComponent.allSymbols.Count;
 
-        orderPageSymbolDropdownComponent.symbols = platformComponentOld.allSymbols;
+        orderPageSymbolDropdownComponent.symbols = platformComponent.allSymbols;
         UpdateOptions();
     }
 }

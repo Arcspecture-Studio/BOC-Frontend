@@ -8,7 +8,7 @@ public class OrderPageThrottleSystem : MonoBehaviour
     OrderPageThrottleComponent orderPageThrottleComponent;
     OrderPageComponent orderPageComponent;
     PromptComponent promptComponent;
-    PlatformComponentOld platformComponentOld;
+    PlatformComponent platformComponent;
     WebsocketComponent websocketComponent;
 
     bool? lockForEdit = null;
@@ -16,7 +16,7 @@ public class OrderPageThrottleSystem : MonoBehaviour
     void Start()
     {
         websocketComponent = GlobalComponent.instance.websocketComponent;
-        platformComponentOld = GlobalComponent.instance.platformComponentOld;
+        platformComponent = GlobalComponent.instance.platformComponent;
         promptComponent = GlobalComponent.instance.promptComponent;
         orderPageThrottleComponent = GetComponent<OrderPageThrottleComponent>();
         orderPageComponent = orderPageThrottleComponent.transform.parent.GetComponent<OrderPageThrottleParentComponent>().orderPageComponent;
@@ -257,7 +257,7 @@ public class OrderPageThrottleSystem : MonoBehaviour
             orderPageThrottleComponent.orderStatusError = response.statusError;
             if (!response.errorJsonString.IsNullOrEmpty())
             {
-                switch (platformComponentOld.activePlatform)
+                switch (platformComponent.activePlatform)
                 {
                     case PlatformEnum.BINANCE:
                     case PlatformEnum.BINANCE_TESTNET:
@@ -280,7 +280,7 @@ public class OrderPageThrottleSystem : MonoBehaviour
             websocketComponent.generalRequests.Add(new General.WebsocketSaveThrottleOrderRequest(
                 orderPageThrottleComponent.orderId,
                 orderPageComponent.orderId,
-                platformComponentOld.activePlatform,
+                platformComponent.activePlatform,
                 orderPageThrottleComponent.throttleCalculator,
                 (OrderTypeEnum)orderPageThrottleComponent.orderTypeDropdown.value
             ));
@@ -291,7 +291,7 @@ public class OrderPageThrottleSystem : MonoBehaviour
             websocketComponent.generalRequests.Add(new General.WebsocketSaveThrottleOrderRequest(
                 orderPageThrottleComponent.orderId,
                 orderPageComponent.orderId,
-                platformComponentOld.activePlatform,
+                platformComponent.activePlatform,
                 (OrderTypeEnum)orderPageThrottleComponent.orderTypeDropdown.value
             ));
         }
@@ -301,7 +301,7 @@ public class OrderPageThrottleSystem : MonoBehaviour
             websocketComponent.generalRequests.Add(new General.WebsocketSaveThrottleOrderRequest(
                 orderPageThrottleComponent.orderId,
                 orderPageComponent.orderId,
-                platformComponentOld.activePlatform,
+                platformComponent.activePlatform,
                 true
             ));
         }
@@ -311,7 +311,7 @@ public class OrderPageThrottleSystem : MonoBehaviour
             websocketComponent.generalRequests.Add(new General.WebsocketSaveThrottleOrderRequest(
                 orderPageThrottleComponent.orderId,
                 orderPageComponent.orderId,
-                platformComponentOld.activePlatform
+                platformComponent.activePlatform
             ));
         }
     }

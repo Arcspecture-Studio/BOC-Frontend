@@ -6,18 +6,18 @@ public class OrderPageApplyToPlatformButtonIconSystem : MonoBehaviour
     [SerializeField] Image binance;
     [SerializeField] Image mexc;
 
-    PlatformComponentOld platformComponentOld;
+    PlatformComponent platformComponent;
 
     PlatformEnum? platform = null;
 
     void Start()
     {
-        platformComponentOld = GlobalComponent.instance.platformComponentOld;
+        platformComponent = GlobalComponent.instance.platformComponent;
     }
     void Update()
     {
-        if (platform == platformComponentOld.activePlatform) return;
-        platform = platformComponentOld.activePlatform;
+        if (platform == platformComponent.activePlatform) return;
+        platform = platformComponent.activePlatform;
         switch (platform)
         {
             case PlatformEnum.BINANCE:

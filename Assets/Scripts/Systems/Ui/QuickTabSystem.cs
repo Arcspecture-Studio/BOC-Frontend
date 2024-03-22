@@ -8,7 +8,7 @@ public class QuickTabSystem : MonoBehaviour
 {
     QuickTabComponent quickTabComponent;
     WebsocketComponent websocketComponent;
-    PlatformComponentOld platformComponentOld;
+    PlatformComponent platformComponent;
     // PreferenceComponent preferenceComponent;
 
     bool? active = null;
@@ -19,7 +19,7 @@ public class QuickTabSystem : MonoBehaviour
     {
         quickTabComponent = GlobalComponent.instance.quickTabComponent;
         websocketComponent = GlobalComponent.instance.websocketComponent;
-        platformComponentOld = GlobalComponent.instance.platformComponentOld;
+        platformComponent = GlobalComponent.instance.platformComponent;
         // preferenceComponent = GlobalComponent.instance.preferenceComponent;
 
         quickTabComponent.onChange_quickOrdersFromServer.AddListener(OnChange_QuickOrdersFromServer);
@@ -64,7 +64,7 @@ public class QuickTabSystem : MonoBehaviour
             // double normalizedMarginWeightDistributionValue = preferenceComponent.marginWeightDistributionValue * OrderConfig.MARGIN_WEIGHT_DISTRIBUTION_RANGE;
             // double entryPrice = quickTabComponent.entryPriceInput.text.IsNullOrEmpty() ? -1 : double.Parse(quickTabComponent.entryPriceInput.text);
             // websocketComponent.generalRequests.Add(new General.WebsocketSaveQuickOrderRequest(
-            //    platformComponentOld.activePlatform,
+            //    platformComponent.activePlatform,
             //    preferenceComponent.symbol,
             //    preferenceComponent.lossPercentage,
             //    preferenceComponent.lossAmount,

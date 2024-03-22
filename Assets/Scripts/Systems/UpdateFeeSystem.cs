@@ -10,7 +10,7 @@ using WebSocketSharp;
 public class UpdateFeeSystem : MonoBehaviour
 {
     OrderPageSymbolDropdownComponent orderPageSymbolDropdownComponent;
-    PlatformComponentOld platformComponentOld;
+    PlatformComponent platformComponent;
     WebrequestComponent webrequestComponent;
 
     List<Request> requests;
@@ -20,7 +20,7 @@ public class UpdateFeeSystem : MonoBehaviour
     void Start()
     {
         orderPageSymbolDropdownComponent = GetComponent<OrderPageSymbolDropdownComponent>();
-        platformComponentOld = GlobalComponent.instance.platformComponentOld;
+        platformComponent = GlobalComponent.instance.platformComponent;
         webrequestComponent = GlobalComponent.instance.webrequestComponent;
 
         requests = new List<Request>();
@@ -37,9 +37,9 @@ public class UpdateFeeSystem : MonoBehaviour
         if (selectedSymbol == orderPageSymbolDropdownComponent.selectedSymbol) return;
         selectedSymbol = orderPageSymbolDropdownComponent.selectedSymbol;
         if (selectedSymbol.Length <= 0) return;
-        if (!platformComponentOld.fees.ContainsKey(selectedSymbol))
+        if (!platformComponent.fees.ContainsKey(selectedSymbol))
         {
-            platformComponentOld.fees.Add(selectedSymbol, null);
+            platformComponent.fees.Add(selectedSymbol, null);
             GetFee();
         }
     }
@@ -51,7 +51,7 @@ public class UpdateFeeSystem : MonoBehaviour
     }
     void GetFee()
     {
-        Request request = General.WebrequestFeeRequest.Get(platformComponentOld.activePlatform, selectedSymbol);
+        Request request = General.WebrequestFeeRequest.Get(platformComponent.activePlatform, selectedSymbol);
         requests.Add(request);
         webrequestComponent.requests.Add(request);
     }
@@ -76,7 +76,7 @@ public class UpdateFeeSystem : MonoBehaviour
                         }
                         else
                         {
-                            platformComponentOld.fees[symbol] = Math.Max(double.Parse(makerCommissionRate), double.Parse(takerCommissionRate));
+                            platformComponent.fees[symbol] = Math.Max(double.Parse(makerCommissionRate), double.Parse(takerCommissionRate));
                         }
                         break;
                 }

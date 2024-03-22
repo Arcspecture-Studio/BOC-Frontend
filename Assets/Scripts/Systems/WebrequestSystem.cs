@@ -12,7 +12,7 @@ public class WebrequestSystem : MonoBehaviour
 {
     WebrequestComponent webrequestComponent;
     WebsocketComponent websocketComponent;
-    PlatformComponentOld platformComponentOld;
+    PlatformComponent platformComponent;
     PromptComponent promptComponent;
     string logPrefix = "[WebrequestSystem] ";
 
@@ -20,7 +20,7 @@ public class WebrequestSystem : MonoBehaviour
     {
         webrequestComponent = GlobalComponent.instance.webrequestComponent;
         websocketComponent = GlobalComponent.instance.websocketComponent;
-        platformComponentOld = GlobalComponent.instance.platformComponentOld;
+        platformComponent = GlobalComponent.instance.platformComponent;
         promptComponent = GlobalComponent.instance.promptComponent;
     }
     void Update()
@@ -76,7 +76,7 @@ public class WebrequestSystem : MonoBehaviour
             {
                 JObject response = JsonConvert.DeserializeObject<JObject>(rawResponse.responseJsonString, JsonSerializerConfig.settings);
                 string message = null;
-                switch (platformComponentOld.activePlatform)
+                switch (platformComponent.activePlatform)
                 {
                     case PlatformEnum.BINANCE:
                     case PlatformEnum.BINANCE_TESTNET:
@@ -93,8 +93,8 @@ public class WebrequestSystem : MonoBehaviour
                                     case -2014: // API-key format invalid.
                                     case -2015: // Invalid API-key, IP, or permissions for action, request ip: 130.176.146.87
                                     case -1022: // Signature for this request is not valid.
-                                                // platformComponentOld.apiKey = null;
-                                                // platformComponentOld.apiSecret = null;
+                                                // platformComponent.apiKey = null;
+                                                // platformComponent.apiSecret = null;
                                         if (code.Value == -2014 || code.Value == -2015)
                                         {
                                             message = "Login failed with invalid or expired api key, please try to login again. (Binance Error Code: " + code.Value + ")";
@@ -167,7 +167,7 @@ public class WebrequestSystem : MonoBehaviour
     // void SetHeader(UnityWebRequest webRequest)
     // {
     //     webRequest.SetRequestHeader("Content-Type", "application/json");
-    //     // webRequest.SetRequestHeader("X-MBX-APIKEY", platformComponentOld.apiKey);
+    //     // webRequest.SetRequestHeader("X-MBX-APIKEY", platformComponent.apiKey);
     // }
     // void ResponseHandler(UnityWebRequest webRequest, string id)
     // {

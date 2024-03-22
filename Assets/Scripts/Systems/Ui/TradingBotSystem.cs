@@ -6,7 +6,7 @@ public class TradingBotSystem : MonoBehaviour
 {
     TradingBotComponent tradingBotComponent;
     WebsocketComponent websocketComponent;
-    PlatformComponentOld platformComponentOld;
+    PlatformComponent platformComponent;
     // PreferenceComponent preferenceComponent;
     QuickTabComponent quickTabComponent;
     MiniPromptComponent miniPromptComponent;
@@ -15,7 +15,7 @@ public class TradingBotSystem : MonoBehaviour
     {
         tradingBotComponent = GlobalComponent.instance.tradingBotComponent;
         websocketComponent = GlobalComponent.instance.websocketComponent;
-        platformComponentOld = GlobalComponent.instance.platformComponentOld;
+        platformComponent = GlobalComponent.instance.platformComponent;
         // preferenceComponent = GlobalComponent.instance.preferenceComponent;
         quickTabComponent = GlobalComponent.instance.quickTabComponent;
         miniPromptComponent = GlobalComponent.instance.miniPromptComponent;
@@ -34,13 +34,13 @@ public class TradingBotSystem : MonoBehaviour
         switch (value)
         {
             case BotTypeEnum.NONE:
-                // websocketComponent.generalRequests.Add(new General.WebsocketSaveTradingBotRequest(platformComponentOld.activePlatform, platformComponentOld.apiKey));
+                // websocketComponent.generalRequests.Add(new General.WebsocketSaveTradingBotRequest(platformComponent.activePlatform, platformComponent.apiKey));
                 break;
                 // case BotTypeEnum.PREMIUM_INDEX:
                 //     double normalizedMarginWeightDistributionValue = preferenceComponent.marginWeightDistributionValue * OrderConfig.MARGIN_WEIGHT_DISTRIBUTION_RANGE;
                 //     websocketComponent.generalRequests.Add(new General.WebsocketSaveTradingBotRequest(
-                //         platformComponentOld.activePlatform,
-                //         "",// platformComponentOld.apiKey,
+                //         platformComponent.activePlatform,
+                //         "",// platformComponent.apiKey,
                 //         preferenceComponent.symbol,
                 //         preferenceComponent.lossPercentage,
                 //         preferenceComponent.lossAmount,
@@ -69,7 +69,7 @@ public class TradingBotSystem : MonoBehaviour
         General.WebsocketRetrieveTradingBotsResponse response = JsonConvert.DeserializeObject<General.WebsocketRetrieveTradingBotsResponse>(retrieveTradingBotsString, JsonSerializerConfig.settings);
         websocketComponent.RemovesGeneralResponses(WebsocketEventTypeEnum.RETRIEVE_TRADING_BOTS);
         General.WebsocketRetrieveTradingBotsResponseData data;
-        if (response.tradingBots.TryGetValue(""/*platformComponentOld.apiKey*/, out data))
+        if (response.tradingBots.TryGetValue(""/*platformComponent.apiKey*/, out data))
         {
             tradingBotComponent.tradingBotDropdown.value = (int)data.botType;
         }
