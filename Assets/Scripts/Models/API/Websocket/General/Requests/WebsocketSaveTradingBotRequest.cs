@@ -10,14 +10,14 @@ namespace General
         public BotTypeEnum botType;
         public QuickOrderSetting quickOrderSetting;
 
-        public WebsocketSaveTradingBotRequest(PlatformEnum platform, string botId) : base(WebsocketEventTypeEnum.SAVE_TRADING_BOT)
+        public WebsocketSaveTradingBotRequest(string botId) : base(WebsocketEventTypeEnum.SAVE_TRADING_BOT)
         {
             actionToTake = WebsocketDataActionEnum.DELETE;
             this.botId = botId;
             botType = BotTypeEnum.PREMIUM_INDEX;
             quickOrderSetting = null;
         }
-        public WebsocketSaveTradingBotRequest(PlatformEnum platform, string botId,
+        public WebsocketSaveTradingBotRequest(string botId,
         string symbol,
         double maxLossPercentage,
         double maxLossAmount,

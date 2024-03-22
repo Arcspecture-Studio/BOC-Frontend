@@ -6,19 +6,17 @@ public class TradingBotSystem : MonoBehaviour
 {
     TradingBotComponent tradingBotComponent;
     WebsocketComponent websocketComponent;
-    PlatformComponent platformComponent;
-    // PreferenceComponent preferenceComponent;
     QuickTabComponent quickTabComponent;
     MiniPromptComponent miniPromptComponent;
+    ProfileComponent profileComponent;
 
     void Start()
     {
         tradingBotComponent = GlobalComponent.instance.tradingBotComponent;
         websocketComponent = GlobalComponent.instance.websocketComponent;
-        platformComponent = GlobalComponent.instance.platformComponent;
-        // preferenceComponent = GlobalComponent.instance.preferenceComponent;
         quickTabComponent = GlobalComponent.instance.quickTabComponent;
         miniPromptComponent = GlobalComponent.instance.miniPromptComponent;
+        profileComponent = GlobalComponent.instance.profileComponent;
 
         tradingBotComponent.onChange_sendSignalToServer.AddListener(() => SendSignalToServer((BotTypeEnum)tradingBotComponent.tradingBotDropdown.value));
         tradingBotComponent.onChange_getTradingBots.AddListener(() => SendRetrieveTradingBotsSignal());
@@ -31,30 +29,28 @@ public class TradingBotSystem : MonoBehaviour
 
     void SendSignalToServer(BotTypeEnum value)
     {
+        ProfilePerference perference = profileComponent.activeProfile.preference;
         switch (value)
         {
             case BotTypeEnum.NONE:
-                // websocketComponent.generalRequests.Add(new General.WebsocketSaveTradingBotRequest(platformComponent.activePlatform, platformComponent.apiKey));
+                websocketComponent.generalRequests.Add(new General.WebsocketSaveTradingBotRequest(""));
                 break;
-                // case BotTypeEnum.PREMIUM_INDEX:
-                //     double normalizedMarginWeightDistributionValue = preferenceComponent.marginWeightDistributionValue * OrderConfig.MARGIN_WEIGHT_DISTRIBUTION_RANGE;
-                //     websocketComponent.generalRequests.Add(new General.WebsocketSaveTradingBotRequest(
-                //         platformComponent.activePlatform,
-                //         "",// platformComponent.apiKey,
-                //         preferenceComponent.symbol,
-                //         preferenceComponent.lossPercentage,
-                //         preferenceComponent.lossAmount,
-                //         preferenceComponent.marginDistributionMode == MarginDistributionModeEnum.WEIGHTED,
-                //         normalizedMarginWeightDistributionValue,
-                //         preferenceComponent.takeProfitType,
-                //         preferenceComponent.riskRewardRatio,
-                //         preferenceComponent.takeProfitTrailingCallbackPercentage,
-                //         int.Parse(quickTabComponent.entryTimesInput.text),
-                //         WebsocketIntervalEnum.array[quickTabComponent.atrTimeframeDropdown.value],
-                //         int.Parse(quickTabComponent.atrLengthInput.text),
-                //         double.Parse(quickTabComponent.atrMultiplierInput.text)
-                //     ));
-                //     break;
+            case BotTypeEnum.PREMIUM_INDEX:
+                websocketComponent.generalRequests.Add(new General.WebsocketSaveTradingBotRequest("",
+                    perference.symbol,
+                    perference.lossPercentage,
+                    perference.lossAmount,
+                    perference.marginDistributionMode == MarginDistributionModeEnum.WEIGHTED,
+                    perference.marginWeightDistributionValue,
+                    perference.takeProfitType,
+                    perference.riskRewardRatio,
+                    perference.takeProfitTrailingCallbackPercentage,
+                    int.Parse(quickTabComponent.entryTimesInput.text),
+                    WebsocketIntervalEnum.array[quickTabComponent.atrTimeframeDropdown.value],
+                    int.Parse(quickTabComponent.atrLengthInput.text),
+                    double.Parse(quickTabComponent.atrMultiplierInput.text)
+                ));
+                break;
         }
     }
     void SendRetrieveTradingBotsSignal()

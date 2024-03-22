@@ -7,6 +7,7 @@ public class SettingPagePreferenceSystem : MonoBehaviour
     ProfileComponent profileComponent;
     LoginComponent loginComponent;
     WebsocketComponent websocketComponent;
+    QuickTabComponent quickTabComponent;
 
     bool updatingUIFromProfile = false;
     void Start()
@@ -15,6 +16,7 @@ public class SettingPagePreferenceSystem : MonoBehaviour
         profileComponent = GlobalComponent.instance.profileComponent;
         loginComponent = GlobalComponent.instance.loginComponent;
         websocketComponent = GlobalComponent.instance.websocketComponent;
+        quickTabComponent = GlobalComponent.instance.quickTabComponent;
 
         settingPageComponent.onChange_updatePreferenceUI.AddListener(UpdateUIFromProfile);
         settingPageComponent.onChange_updatePreferenceToServer.AddListener(UpdatePreferenceToServer);
@@ -70,7 +72,7 @@ public class SettingPagePreferenceSystem : MonoBehaviour
     }
     void UpdatePreferenceToServer()
     {
-        if (updatingUIFromProfile) return;
+        if (updatingUIFromProfile || quickTabComponent.updatingUIFromProfile) return;
 
         General.WebsocketUpdateProfileRequest request = new(loginComponent.token, profileComponent.activeProfile._id, profileComponent.activeProfile.preference);
         websocketComponent.generalRequests.Add(request);

@@ -13,6 +13,7 @@ public class OrderPageSystem : MonoBehaviour
     PromptComponent promptComponent;
     LoginComponent loginComponent;
     PlatformComponent platformComponent;
+    ProfileComponent profileComponent;
 
     bool? lockForEdit = null;
     OrderStatusEnum? orderStatus = null;
@@ -25,6 +26,7 @@ public class OrderPageSystem : MonoBehaviour
         promptComponent = GlobalComponent.instance.promptComponent;
         loginComponent = GlobalComponent.instance.loginComponent;
         platformComponent = GlobalComponent.instance.platformComponent;
+        profileComponent = GlobalComponent.instance.profileComponent;
 
         if (orderPageComponent.orderId.IsNullOrEmpty())
             orderPageComponent.orderId = ObjectId.GenerateNewId().ToString();
@@ -138,10 +140,10 @@ public class OrderPageSystem : MonoBehaviour
             UpdateTakeProfitPrice();
         });
 
-        orderPageComponent.onChange_addToServer.AddListener(addToServer);
-        orderPageComponent.onChange_updateToServer.AddListener(updateToServer);
-        orderPageComponent.onChange_deleteFromServer.AddListener(deleteFromServer);
-        orderPageComponent.onChange_submitToServer.AddListener(submitToServer);
+        orderPageComponent.onChange_addToServer.AddListener(AddToServer);
+        orderPageComponent.onChange_updateToServer.AddListener(UpdateToServer);
+        orderPageComponent.onChange_deleteFromServer.AddListener(DeleteFromServer);
+        orderPageComponent.onChange_submitToServer.AddListener(SubmitToServer);
 
         orderPageComponent.orderIdText.text = "Order Id: " + orderPageComponent.orderId.ToString();
     }
@@ -182,8 +184,8 @@ public class OrderPageSystem : MonoBehaviour
                 double.Parse(orderPageComponent.stopLossInput.text);
             double takeProfitPrice = orderPageComponent.takeProfitInput.text.IsNullOrEmpty() ? double.NaN :
                 double.Parse(orderPageComponent.takeProfitInput.text);
-            double riskRewardRatio = orderPageComponent.riskRewardRatioInput.text.IsNullOrEmpty() ? /*preferenceComponent.riskRewardRatio*/1.2 : double.Parse(orderPageComponent.riskRewardRatioInput.text);
-            double takeProfitTrailingCallbackPercentage = orderPageComponent.takeProfitTrailingCallbackPercentageInput.text.IsNullOrEmpty() ? /*preferenceComponent.takeProfitTrailingCallbackPercentage*/0.3 : double.Parse(orderPageComponent.takeProfitTrailingCallbackPercentageInput.text);
+            double riskRewardRatio = orderPageComponent.riskRewardRatioInput.text.IsNullOrEmpty() ? profileComponent.activeProfile.preference.riskRewardRatio : double.Parse(orderPageComponent.riskRewardRatioInput.text);
+            double takeProfitTrailingCallbackPercentage = orderPageComponent.takeProfitTrailingCallbackPercentageInput.text.IsNullOrEmpty() ? profileComponent.activeProfile.preference.takeProfitTrailingCallbackPercentage : double.Parse(orderPageComponent.takeProfitTrailingCallbackPercentageInput.text);
 
             // validate input
             if (walletUnit.IsNullOrEmpty())
@@ -419,7 +421,7 @@ public class OrderPageSystem : MonoBehaviour
         orderPageComponent.throttleObject.SetActive(isFilled);
         if (orderStatus != OrderStatusEnum.FILLED) orderPageComponent.positionInfoPaidFundingAmount.text = "0";
     }
-    void addToServer()
+    void AddToServer()
     {
         websocketComponent.generalRequests.Add(
             new General.WebsocketAddOrderRequest(
@@ -432,7 +434,7 @@ public class OrderPageSystem : MonoBehaviour
             (OrderTypeEnum)orderPageComponent.orderTypeDropdown.value
         ));
     }
-    void updateToServer()
+    public void UpdateToServer()
     {
         websocketComponent.generalRequests.Add(
             new General.WebsocketUpdateOrderRequest(
@@ -443,7 +445,7 @@ public class OrderPageSystem : MonoBehaviour
             (OrderTypeEnum)orderPageComponent.orderTypeDropdown.value
         ));
     }
-    void deleteFromServer()
+    void DeleteFromServer()
     {
         websocketComponent.generalRequests.Add(
             new General.WebsocketDeleteOrderRequest(
@@ -451,7 +453,7 @@ public class OrderPageSystem : MonoBehaviour
             orderPageComponent.orderId
         ));
     }
-    void submitToServer()
+    void SubmitToServer()
     {
         websocketComponent.generalRequests.Add(
             new General.WebsocketSubmitOrderRequest(
@@ -485,10 +487,6 @@ public class OrderPageSystem : MonoBehaviour
                 orderPageComponent.positionInfoPaidFundingAmount.text = response.paidFundingAmount.Value.ToString();
             }
         }
-    }
-    public void UpdateToServer()
-    {
-        orderPageComponent.updateToServer = true;
     }
     public void UpdateTakeProfitPrice()
     {

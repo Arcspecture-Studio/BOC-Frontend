@@ -12,6 +12,7 @@ public class GetInitialDataSystem : MonoBehaviour
     PromptComponent promptComponent;
     ProfileComponent profileComponent;
     SettingPageComponent settingPageComponent;
+    QuickTabComponent quickTabComponent;
 
     void Start()
     {
@@ -22,6 +23,7 @@ public class GetInitialDataSystem : MonoBehaviour
         promptComponent = GlobalComponent.instance.promptComponent;
         profileComponent = GlobalComponent.instance.profileComponent;
         settingPageComponent = GlobalComponent.instance.settingPageComponent;
+        quickTabComponent = GlobalComponent.instance.quickTabComponent;
 
         getInitialDataComponent.onChange_getInitialData.AddListener(GetInitialData);
     }
@@ -66,6 +68,7 @@ public class GetInitialDataSystem : MonoBehaviour
         profileComponent.activeProfileId = response.defaultProfileId;
         settingPageComponent.updateProfile = true;
         settingPageComponent.updatePreferenceUI = true;
+        quickTabComponent.updatePreferenceUI = true;
 
         foreach (PlatformEnum platform in response.accountData.platformList)
         {

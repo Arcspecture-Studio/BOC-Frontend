@@ -31,8 +31,13 @@ public class QuickTabComponent : MonoBehaviour
 
     [Header("Runtime")]
     public bool active = false;
-    public bool syncDataFromPreference = false;
-    public bool saveToServer = false;
+    public bool updatePreferenceUI
+    {
+        set { onChange_updatePreferenceUI.Invoke(); }
+    }
+    [HideInInspector] public UnityEvent onChange_updatePreferenceUI = new();
+    public bool updatingUIFromProfile;
+    public bool addToServer = false;
     public bool isLong;
     public Dictionary<string, General.WebsocketRetrieveQuickOrdersData> _quickOrdersFromServer;
     public Dictionary<string, General.WebsocketRetrieveQuickOrdersData> quickOrdersFromServer

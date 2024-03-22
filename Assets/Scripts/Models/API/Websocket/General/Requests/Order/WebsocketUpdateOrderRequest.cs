@@ -10,7 +10,7 @@ namespace General
             string orderId,
             CalculateMargin marginCalculator,
             TakeProfitTypeEnum takeProfitType,
-            OrderTypeEnum orderType) : base(WebsocketEventTypeEnum.ADD_ORDER, token)
+            OrderTypeEnum orderType) : base(WebsocketEventTypeEnum.UPDATE_ORDER, token)
         {
             orderRequest = new(orderId, null, null, marginCalculator, takeProfitType, orderType);
         }
