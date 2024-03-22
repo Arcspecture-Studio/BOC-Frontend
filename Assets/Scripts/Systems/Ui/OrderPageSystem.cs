@@ -151,7 +151,6 @@ public class OrderPageSystem : MonoBehaviour
     {
         StartCoroutine(CalculateMargin());
         UpdateUiInteractableStatus();
-        UpdateOrderStatus();
         UpdatePositionInfo();
     }
 
@@ -421,36 +420,6 @@ public class OrderPageSystem : MonoBehaviour
         orderPageComponent.positionInfoObject.SetActive(isFilled);
         orderPageComponent.throttleObject.SetActive(isFilled);
         if (orderStatus != OrderStatusEnum.FILLED) orderPageComponent.positionInfoPaidFundingAmount.text = "0";
-    }
-    void UpdateOrderStatus()
-    {
-        string saveOrderString = websocketComponent.RetrieveGeneralResponses(WebsocketEventTypeEnum.SAVE_ORDER);
-        if (saveOrderString.IsNullOrEmpty()) return;
-        General.WebsocketSaveOrderResponse response = JsonConvert.DeserializeObject<General.WebsocketSaveOrderResponse>(saveOrderString, JsonSerializerConfig.settings);
-        if (response.orderId.Equals(orderPageComponent.orderId))
-        {
-            websocketComponent.RemovesGeneralResponses(WebsocketEventTypeEnum.SAVE_ORDER);
-            orderPageComponent.orderStatus = response.status;
-            orderPageComponent.orderStatusError = response.statusError;
-            // BUG: since server can now spawn order,  meaning frontend here haven't get balance (CalculateMargin function will wait for get balance to call), ady received SAVE_ORDER from server (because order just spawned at this timing)
-            if (orderPageComponent.resultComponent.orderInfoDataObject != null)
-                orderPageComponent.resultComponent.orderInfoDataObject.transform.GetChild(3).GetComponent<TMP_Text>().text = orderPageComponent.orderStatus.ToString();
-            if (!response.errorJsonString.IsNullOrEmpty())
-            {
-                switch (platformComponentOld.activePlatform)
-                {
-                    case PlatformEnum.BINANCE:
-                    case PlatformEnum.BINANCE_TESTNET:
-                        Binance.WebrequestGeneralResponse binanceResponse = JsonConvert.DeserializeObject<Binance.WebrequestGeneralResponse>(response.errorJsonString, JsonSerializerConfig.settings);
-                        if (binanceResponse.code.HasValue)
-                        {
-                            string message = binanceResponse.msg + " (Binance Error Code: " + binanceResponse.code.Value + ")";
-                            ShowPrompt(message, false);
-                        }
-                        break;
-                }
-            }
-        }
     }
     void addToServer()
     {

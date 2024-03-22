@@ -15,7 +15,6 @@ public class WebsocketGeneralResponsesCleanUpSystem : MonoBehaviour
     void Update()
     {
         RetrievePositionInfo();
-        SaveOrder();
         SaveThrottleOrder();
     }
 
@@ -36,25 +35,6 @@ public class WebsocketGeneralResponsesCleanUpSystem : MonoBehaviour
         if (!orderExist)
         {
             websocketComponent.RemovesGeneralResponses(WebsocketEventTypeEnum.RETRIEVE_POSITION_INFO);
-        }
-    }
-    void SaveOrder()
-    {
-        string saveOrderString = websocketComponent.RetrieveGeneralResponses(WebsocketEventTypeEnum.SAVE_ORDER);
-        if (saveOrderString.IsNullOrEmpty()) return;
-        General.WebsocketSaveOrderResponse response = JsonConvert.DeserializeObject<General.WebsocketSaveOrderResponse>(saveOrderString, JsonSerializerConfig.settings);
-
-        bool orderExist = false;
-        orderPagesComponent.childOrderPageComponents.ForEach(orderPageComponent =>
-        {
-            if (response.orderId.Equals(orderPageComponent.orderId))
-            {
-                orderExist = true;
-            }
-        });
-        if (!orderExist)
-        {
-            websocketComponent.RemovesGeneralResponses(WebsocketEventTypeEnum.SAVE_ORDER);
         }
     }
     void SaveThrottleOrder()

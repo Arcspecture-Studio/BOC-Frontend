@@ -1,11 +1,11 @@
-﻿#pragma warning disable CS8632
+#pragma warning disable CS8632
 
 using System;
 
 namespace General
 {
     [Serializable]
-    public class WebsocketSaveOrderResponse : WebsocketGeneralResponse
+    public class WebsocketSubmitOrderResponse : WebsocketGeneralResponse
     {
         public string orderId;
         public OrderStatusEnum status;
