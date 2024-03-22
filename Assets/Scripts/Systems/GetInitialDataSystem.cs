@@ -64,12 +64,15 @@ public class GetInitialDataSystem : MonoBehaviour
             return;
         }
 
+        #region Profile data
         profileComponent.profiles = response.accountData.profiles;
         profileComponent.activeProfileId = response.defaultProfileId;
         settingPageComponent.updateProfile = true;
         settingPageComponent.updatePreferenceUI = true;
         quickTabComponent.updatePreferenceUI = true;
+        #endregion
 
+        #region Platform data
         foreach (PlatformEnum platform in response.accountData.platformList)
         {
             switch (platform)
@@ -82,10 +85,11 @@ public class GetInitialDataSystem : MonoBehaviour
                     break;
             }
         }
-
         platformComponent.activePlatform = profileComponent.activeProfile.activePlatform.Value;
         platformComponent.processInitialData = response;
-
         settingPageComponent.updateInfo = true;
+        #endregion
+
+        // TODO: runtime data (orders, quickOrders, tradingBots), create GetRuntimeDataSystem
     }
 }
