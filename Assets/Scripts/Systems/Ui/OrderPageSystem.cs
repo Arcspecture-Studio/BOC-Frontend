@@ -12,6 +12,8 @@ public class OrderPageSystem : MonoBehaviour
     PlatformComponentOld platformComponentOld;
     WebsocketComponent websocketComponent;
     PromptComponent promptComponent;
+    LoginComponent loginComponent;
+    PlatformComponent platformComponent;
 
     bool? lockForEdit = null;
     OrderStatusEnum? orderStatus = null;
@@ -23,6 +25,8 @@ public class OrderPageSystem : MonoBehaviour
         platformComponentOld = GlobalComponent.instance.platformComponentOld;
         websocketComponent = GlobalComponent.instance.websocketComponent;
         promptComponent = GlobalComponent.instance.promptComponent;
+        loginComponent = GlobalComponent.instance.loginComponent;
+        platformComponent = GlobalComponent.instance.platformComponent;
 
         if (orderPageComponent.orderId.IsNullOrEmpty())
             orderPageComponent.orderId = ObjectId.GenerateNewId().ToString();
@@ -136,6 +140,11 @@ public class OrderPageSystem : MonoBehaviour
             UpdateTakeProfitPrice();
         });
 
+        orderPageComponent.onChange_addToServer.AddListener(addToServer);
+        orderPageComponent.onChange_updateToServer.AddListener(updateToServer);
+        orderPageComponent.onChange_deleteFromServer.AddListener(deleteFromServer);
+        orderPageComponent.onChange_submitToServer.AddListener(submitToServer);
+
         orderPageComponent.orderIdText.text = "Order Id: " + orderPageComponent.orderId.ToString();
     }
     void Update()
@@ -144,7 +153,6 @@ public class OrderPageSystem : MonoBehaviour
         UpdateUiInteractableStatus();
         UpdateOrderStatus();
         UpdatePositionInfo();
-        UpdateOrderToServer();
     }
 
     IEnumerator CalculateMargin()
@@ -354,7 +362,7 @@ public class OrderPageSystem : MonoBehaviour
         if (calculateButtonPressed)
         {
             calculateButtonPressed = false;
-            orderPageComponent.saveToServer = true;
+            orderPageComponent.addToServer = true;
         }
         #endregion
     }
@@ -444,48 +452,45 @@ public class OrderPageSystem : MonoBehaviour
             }
         }
     }
-    void UpdateOrderToServer()
+    void addToServer()
     {
-        if (orderPageComponent.saveToServer)
-        {
-            orderPageComponent.saveToServer = false;
-            websocketComponent.generalRequests.Add(new General.WebsocketSaveOrderRequest(
-                orderPageComponent.orderId,
-                platformComponentOld.activePlatform,
-                orderPageComponent.marginCalculator,
-                orderPageComponent.symbolDropdownComponent.selectedSymbol,
-                (TakeProfitTypeEnum)orderPageComponent.takeProfitTypeDropdown.value,
-                (OrderTypeEnum)orderPageComponent.orderTypeDropdown.value
-            ));
-        }
-        if (orderPageComponent.updateToServer)
-        {
-            orderPageComponent.updateToServer = false;
-            websocketComponent.generalRequests.Add(new General.WebsocketSaveOrderRequest(
-                orderPageComponent.orderId,
-                platformComponentOld.activePlatform,
-                orderPageComponent.marginCalculator,
-                (TakeProfitTypeEnum)orderPageComponent.takeProfitTypeDropdown.value,
-                (OrderTypeEnum)orderPageComponent.orderTypeDropdown.value
-            ));
-        }
-        if (orderPageComponent.submitToServer)
-        {
-            orderPageComponent.submitToServer = false;
-            websocketComponent.generalRequests.Add(new General.WebsocketSaveOrderRequest(
-               orderPageComponent.orderId,
-               platformComponentOld.activePlatform,
-               true
-            ));
-        }
-        if (orderPageComponent.deleteFromServer)
-        {
-            orderPageComponent.deleteFromServer = false;
-            websocketComponent.generalRequests.Add(new General.WebsocketSaveOrderRequest(
-                orderPageComponent.orderId,
-                platformComponentOld.activePlatform
-            ));
-        }
+        websocketComponent.generalRequests.Add(
+            new General.WebsocketAddOrderRequest(
+            loginComponent.token,
+            orderPageComponent.orderId,
+            platformComponent.activePlatform,
+            orderPageComponent.symbolDropdownComponent.selectedSymbol,
+            orderPageComponent.marginCalculator,
+            (TakeProfitTypeEnum)orderPageComponent.takeProfitTypeDropdown.value,
+            (OrderTypeEnum)orderPageComponent.orderTypeDropdown.value
+        ));
+    }
+    void updateToServer()
+    {
+        websocketComponent.generalRequests.Add(
+            new General.WebsocketUpdateOrderRequest(
+            loginComponent.token,
+            orderPageComponent.orderId,
+            orderPageComponent.marginCalculator,
+            (TakeProfitTypeEnum)orderPageComponent.takeProfitTypeDropdown.value,
+            (OrderTypeEnum)orderPageComponent.orderTypeDropdown.value
+        ));
+    }
+    void deleteFromServer()
+    {
+        websocketComponent.generalRequests.Add(
+            new General.WebsocketDeleteOrderRequest(
+            loginComponent.token,
+            orderPageComponent.orderId
+        ));
+    }
+    void submitToServer()
+    {
+        websocketComponent.generalRequests.Add(
+            new General.WebsocketSubmitOrderRequest(
+            loginComponent.token,
+            orderPageComponent.orderId
+        ));
     }
     void UpdatePositionInfo()
     {

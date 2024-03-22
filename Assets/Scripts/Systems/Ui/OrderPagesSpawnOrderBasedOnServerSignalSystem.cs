@@ -2,7 +2,7 @@ using Newtonsoft.Json;
 using UnityEngine;
 using WebSocketSharp;
 
-public class OrderPageSpawnOrderBasedOnServerSignalSystem : MonoBehaviour
+public class OrderPagesSpawnOrderBasedOnServerSignalSystem : MonoBehaviour
 {
     WebsocketComponent websocketComponent;
     OrderPagesComponent orderPagesComponent;
