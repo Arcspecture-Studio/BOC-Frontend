@@ -10,7 +10,6 @@ public class OrderPageSystem : MonoBehaviour
 {
     OrderPageComponent orderPageComponent;
     PlatformComponentOld platformComponentOld;
-    // PreferenceComponent preferenceComponent;
     WebsocketComponent websocketComponent;
     PromptComponent promptComponent;
 
@@ -22,7 +21,6 @@ public class OrderPageSystem : MonoBehaviour
     {
         orderPageComponent = GetComponent<OrderPageComponent>();
         platformComponentOld = GlobalComponent.instance.platformComponentOld;
-        // preferenceComponent = GlobalComponent.instance.preferenceComponent;
         websocketComponent = GlobalComponent.instance.websocketComponent;
         promptComponent = GlobalComponent.instance.promptComponent;
 
