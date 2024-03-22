@@ -7,7 +7,7 @@ namespace General
     {
         public Request request;
 
-        public WebsocketCallApiRequest(Request request) : base(WebsocketEventTypeEnum.CALL_API)
+        public WebsocketCallApiRequest(string token, Request request) : base(WebsocketEventTypeEnum.CALL_API, token)
         {
             this.request = request;
         }

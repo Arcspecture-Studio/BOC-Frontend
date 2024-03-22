@@ -14,6 +14,7 @@ public class WebrequestSystem : MonoBehaviour
     WebsocketComponent websocketComponent;
     PlatformComponent platformComponent;
     PromptComponent promptComponent;
+    LoginComponent loginComponent;
     string logPrefix = "[WebrequestSystem] ";
 
     void Start()
@@ -22,6 +23,7 @@ public class WebrequestSystem : MonoBehaviour
         websocketComponent = GlobalComponent.instance.websocketComponent;
         platformComponent = GlobalComponent.instance.platformComponent;
         promptComponent = GlobalComponent.instance.promptComponent;
+        loginComponent = GlobalComponent.instance.loginComponent;
     }
     void Update()
     {
@@ -34,7 +36,7 @@ public class WebrequestSystem : MonoBehaviour
         if (webrequestComponent.requests.Count == 0) return;
         webrequestComponent.requests.ForEach(request =>
         {
-            General.WebsocketCallApiRequest callApiRequest = new General.WebsocketCallApiRequest(request);
+            General.WebsocketCallApiRequest callApiRequest = new General.WebsocketCallApiRequest(loginComponent.token, request);
             websocketComponent.generalRequests.Add(callApiRequest);
 
             #region Process Request Locally, for reference only, currently unused
