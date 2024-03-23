@@ -12,6 +12,7 @@ public class GetInitialDataSystem : MonoBehaviour
     ProfileComponent profileComponent;
     SettingPageComponent settingPageComponent;
     QuickTabComponent quickTabComponent;
+    GetRuntimeDataComponent getRuntimeDataComponent;
 
     void Start()
     {
@@ -23,6 +24,7 @@ public class GetInitialDataSystem : MonoBehaviour
         profileComponent = GlobalComponent.instance.profileComponent;
         settingPageComponent = GlobalComponent.instance.settingPageComponent;
         quickTabComponent = GlobalComponent.instance.quickTabComponent;
+        getRuntimeDataComponent = GlobalComponent.instance.getRuntimeDataComponent;
 
         getInitialDataComponent.onChange_getInitialData.AddListener(GetInitialData);
     }
@@ -89,6 +91,8 @@ public class GetInitialDataSystem : MonoBehaviour
         settingPageComponent.updateInfo = true;
         #endregion
 
-        // TODO: runtime data (orders, quickOrders, tradingBots), create GetRuntimeDataSystem
+        #region Runtime data
+        getRuntimeDataComponent.processRuntimeData = response;
+        #endregion
     }
 }
