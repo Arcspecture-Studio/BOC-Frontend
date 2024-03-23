@@ -19,10 +19,10 @@ public class OrderPagesWebsocketResponseSystem : MonoBehaviour
     }
     void Update()
     {
-        submitOrderToServerResponse();
+        SubmitOrderToServerResponse();
     }
 
-    void submitOrderToServerResponse()
+    void SubmitOrderToServerResponse()
     {
         string jsonString = websocketComponent.RetrieveGeneralResponses(WebsocketEventTypeEnum.SUBMIT_ORDER);
         if (jsonString.IsNullOrEmpty()) return;
