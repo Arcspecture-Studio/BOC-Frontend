@@ -55,6 +55,7 @@ public class OrderPagesMovementSystem : MonoBehaviour
             }
         }
         orderPagesComponent.currentXPos -= xVelocity;
+        // TODO: investiage how does currentXPos got negative value at startup
     }
     void AutoAlign()
     {
@@ -81,6 +82,7 @@ public class OrderPagesMovementSystem : MonoBehaviour
         if ((xVelocity == 0 || orderPagesComponent.status == OrderPagesStatusEnum.IMMERSIVE) && !isSwiping)
         {
             orderPagesComponent.currentXPos = orderPagesComponent.currentPageIndex * orderPagesComponent.orderPagesGap;
+            // TODO: investiage how does currentXPos got negative value at startup
         }
     }
     void MovePages()

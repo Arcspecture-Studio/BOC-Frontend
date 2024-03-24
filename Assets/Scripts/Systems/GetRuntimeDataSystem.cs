@@ -77,8 +77,6 @@ public class GetRuntimeDataSystem : MonoBehaviour
     }
     void DestroyExistingOrdersObject()
     {
-        orderPagesComponent.status = OrderPagesStatusEnum.DETACH;
-
         if (orderPagesComponent.transform.childCount == 0) return;
         for (int i = 0; i < orderPagesComponent.transform.childCount; i++)
         {

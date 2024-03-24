@@ -55,7 +55,6 @@ public class OrderPageComponent : MonoBehaviour
     public GameObject throttleObject;
 
     [Header("Runtime")]
-    public bool restoreData;
     public bool destroySelf;
     public bool calculate;
     public bool addToServer

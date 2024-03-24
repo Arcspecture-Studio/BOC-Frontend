@@ -22,6 +22,8 @@ public class SpawnOrderSystem : MonoBehaviour
         GameObject orderPageObject = Instantiate(orderPagesComponent.orderPagePrefab);
         orderPageObject.transform.SetParent(orderPagesComponent.transform, false);
         OrderPageComponent orderPageComponent = orderPageObject.GetComponent<OrderPageComponent>();
+        orderPagesComponent.status = OrderPagesStatusEnum.DETACH;
+        orderPagesComponent.currentPageIndex = orderPagesComponent.transform.childCount;
 
         #region Apply data into game object
         orderPageComponent.orderId = response.id;

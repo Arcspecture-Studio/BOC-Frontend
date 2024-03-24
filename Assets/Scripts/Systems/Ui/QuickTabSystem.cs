@@ -22,7 +22,6 @@ public class QuickTabSystem : MonoBehaviour
         platformComponent = GlobalComponent.instance.platformComponent;
         profileComponent = GlobalComponent.instance.profileComponent;
 
-        quickTabComponent.onChange_quickOrdersFromServer.AddListener(OnChange_QuickOrdersFromServer);
         InitializeButtonListener();
     }
     void Update()
@@ -96,27 +95,6 @@ public class QuickTabSystem : MonoBehaviour
             initialValue);
         tween = quickTabComponent.rectTransform.DOBlendableLocalMoveBy(new Vector3(0, moveValue, 0), quickTabComponent.pageMoveDuration).SetEase(quickTabComponent.pageMoveEase);
     }
-    void OnChange_QuickOrdersFromServer(Dictionary<string, General.WebsocketRetrieveQuickOrdersData> quickOrdersFromServer)
-    {
-        if (quickOrdersFromServer == null) return;
-
-        #region Instantiate orders
-        foreach (KeyValuePair<string, General.WebsocketRetrieveQuickOrdersData> order in quickOrdersFromServer)
-        {
-            InstantiateQuickOrder(order.Key, order.Value);
-        }
-        #endregion
-    }
-    void InstantiateQuickOrder(string orderId, General.WebsocketRetrieveQuickOrdersData orderData)
-    {
-        if (quickTabComponent.spawnedQuickOrderObjects.ContainsKey(orderId)) return;
-        GameObject quickOrderDataRowObject = Instantiate(quickTabComponent.quickOrderDataRowPrefab);
-        quickOrderDataRowObject.transform.SetParent(quickTabComponent.orderInfoTransform, false);
-        QuickOrderDataRowComponent quickOrderDataRowComponent = quickOrderDataRowObject.GetComponent<QuickOrderDataRowComponent>();
-        quickOrderDataRowComponent.orderId = orderId;
-        quickOrderDataRowComponent.data = orderData;
-        quickTabComponent.spawnedQuickOrderObjects.TryAdd(orderId, quickOrderDataRowObject);
-    }
     void SpawnOrDestroyQuickOrderObject()
     {
         string spawnQuickOrderString = websocketComponent.RetrieveGeneralResponses(WebsocketEventTypeEnum.SPAWN_QUICK_ORDER);
@@ -134,7 +112,7 @@ public class QuickTabSystem : MonoBehaviour
         }
         else // spawn
         {
-            InstantiateQuickOrder(response.orderId, response.quickOrder);
+            // TODO: Spawn quick order
             quickTabComponent.longButton.interactable = true;
             quickTabComponent.shortButton.interactable = true;
         }

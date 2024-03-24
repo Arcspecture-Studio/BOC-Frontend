@@ -39,16 +39,5 @@ public class QuickTabComponent : MonoBehaviour
     public bool updatingUIFromProfile;
     public bool addToServer = false;
     public bool isLong;
-    public Dictionary<string, General.WebsocketRetrieveQuickOrdersData> _quickOrdersFromServer;
-    public Dictionary<string, General.WebsocketRetrieveQuickOrdersData> quickOrdersFromServer
-    {
-        get { return _quickOrdersFromServer; }
-        set
-        {
-            _quickOrdersFromServer = value;
-            onChange_quickOrdersFromServer.Invoke(value);
-        }
-    }
-    [HideInInspector] public UnityEvent<Dictionary<string, General.WebsocketRetrieveQuickOrdersData>> onChange_quickOrdersFromServer = new();
     public Dictionary<string, GameObject> spawnedQuickOrderObjects = new();
 }

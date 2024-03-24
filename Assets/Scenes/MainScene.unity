@@ -12790,8 +12790,8 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 2033694428}
   m_HandleRect: {fileID: 2033694427}
   m_Direction: 2
-  m_Value: -0.0000009832181
-  m_Size: 0.5335082
+  m_Value: 0
+  m_Size: 0.533526
   m_NumberOfSteps: 0
   m_OnValueChanged:
     m_PersistentCalls:
@@ -22981,9 +22981,6 @@ MonoBehaviour:
   updatingUIFromProfile: 0
   addToServer: 0
   isLong: 0
-  onChange_quickOrdersFromServer:
-    m_PersistentCalls:
-      m_Calls: []
 --- !u!114 &909877267
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -30786,7 +30783,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0, y: 807.00073}
+  m_AnchoredPosition: {x: 0, y: 806.99994}
   m_SizeDelta: {x: 0, y: 1730}
   m_Pivot: {x: 0, y: 1}
 --- !u!114 &1185559201
@@ -36679,7 +36676,6 @@ GameObject:
   - component: {fileID: 1439778814}
   - component: {fileID: 1439778818}
   - component: {fileID: 1439778825}
-  - component: {fileID: 1439778827}
   - component: {fileID: 1439778833}
   - component: {fileID: 1439778837}
   - component: {fileID: 1439778842}
@@ -36693,7 +36689,6 @@ GameObject:
   - component: {fileID: 1439778824}
   - component: {fileID: 1439778835}
   - component: {fileID: 1439778838}
-  - component: {fileID: 1439778828}
   - component: {fileID: 1439778829}
   - component: {fileID: 1439778831}
   - component: {fileID: 1439778832}
@@ -36758,7 +36753,7 @@ MonoBehaviour:
   promptComponent: {fileID: 421828852292414557}
   loginComponent: {fileID: 1659738464}
   ioComponent: {fileID: 1439778825}
-  retrieveOrdersComponent: {fileID: 1439778827}
+  retrieveOrdersComponent: {fileID: 0}
   settingPageComponent: {fileID: 680527080}
   quickTabComponent: {fileID: 909877266}
   hideAllPanelComponent: {fileID: 1439778833}
@@ -37009,33 +37004,6 @@ MonoBehaviour:
   onChange_deleteToken:
     m_PersistentCalls:
       m_Calls: []
---- !u!114 &1439778827
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1439778804}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: bdf173cefca58874b9a3e5d0e9722659, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  destroyOrders: 0
-  instantiateOrders: 0
-  updateOrderStatus: 0
---- !u!114 &1439778828
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1439778804}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6ef121b5e2337b949a293512d9cf99ce, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!114 &1439778829
 MonoBehaviour:
   m_ObjectHideFlags: 0

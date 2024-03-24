@@ -13,5 +13,4 @@ public class QuickOrderDataRowComponent : MonoBehaviour
 
     [Header("Config")]
     public string orderId;
-    public General.WebsocketRetrieveQuickOrdersData data;
 }

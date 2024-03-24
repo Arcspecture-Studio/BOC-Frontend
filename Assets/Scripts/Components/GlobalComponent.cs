@@ -19,7 +19,6 @@ public class GlobalComponent : MonoBehaviour
     public PromptComponent promptComponent;
     public LoginComponent loginComponent;
     public IoComponent ioComponent;
-    public RetrieveOrdersComponent retrieveOrdersComponent;
     public SettingPageComponent settingPageComponent;
     public QuickTabComponent quickTabComponent;
     public HideAllPanelComponent hideAllPanelComponent;

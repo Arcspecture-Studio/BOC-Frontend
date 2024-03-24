@@ -4,7 +4,6 @@ using UnityEngine.UI;
 public class OnClick_GetBalanceAndReinstantiateOrdersSystem : MonoBehaviour
 {
     PlatformComponent platformComponent;
-    RetrieveOrdersComponent retrieveOrdersComponent;
     HideAllPanelComponent hideAllPanelComponent;
     TradingBotComponent tradingBotComponent;
     MiniPromptComponent miniPromptComponent;
@@ -13,7 +12,6 @@ public class OnClick_GetBalanceAndReinstantiateOrdersSystem : MonoBehaviour
     void Start()
     {
         platformComponent = GlobalComponent.instance.platformComponent;
-        retrieveOrdersComponent = GlobalComponent.instance.retrieveOrdersComponent;
         hideAllPanelComponent = GlobalComponent.instance.hideAllPanelComponent;
         tradingBotComponent = GlobalComponent.instance.tradingBotComponent;
         miniPromptComponent = GlobalComponent.instance.miniPromptComponent;
@@ -24,8 +22,7 @@ public class OnClick_GetBalanceAndReinstantiateOrdersSystem : MonoBehaviour
             hideAllPanelComponent.hideNow = "true";
 
             platformComponent.getBalance = true;
-            retrieveOrdersComponent.destroyOrders = true;
-            retrieveOrdersComponent.instantiateOrders = true;
+            // TODO: get runtime data
             tradingBotComponent.getTradingBots = true;
             // miniPromptComponent.message = "Refreshed";
         });
