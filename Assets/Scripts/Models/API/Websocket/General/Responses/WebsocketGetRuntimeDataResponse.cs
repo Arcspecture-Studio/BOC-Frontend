@@ -6,13 +6,14 @@ namespace General
     [Serializable]
     public class WebsocketGetRuntimeDataResponse : WebsocketGeneralResponse
     {
-        public Dictionary<string, WebsocketGetOrderResponse> orders;
-        public Dictionary<string, WebsocketGetQuickOrderResponse> quickOrders;
-        public Dictionary<string, WebsocketGetTradingBotResponse> tradingBots;
+        public List<WebsocketGetOrderResponse> orders;
+        public List<WebsocketGetQuickOrderResponse> quickOrders;
+        public List<WebsocketGetTradingBotResponse> tradingBots;
     }
     [Serializable]
     public class WebsocketGetOrderResponse
     {
+        public string id;
         public OrderStatusEnum status;
         public bool statusError;
         public string symbol;
@@ -23,11 +24,12 @@ namespace General
         public double averagePriceFilled;
         public double actualTakeProfitPrice;
         public double paidFundingAmount;
-        public Dictionary<string, WebsocketGetThrottleOrderResponse> throttleOrders;
+        public List<WebsocketGetThrottleOrderResponse> throttleOrders;
     }
     [Serializable]
     public class WebsocketGetThrottleOrderResponse
     {
+        public string id;
         public CalculateThrottle throttleCalculator;
         public OrderTypeEnum orderType;
         public OrderStatusEnum status;
@@ -36,6 +38,7 @@ namespace General
     [Serializable]
     public class WebsocketGetQuickOrderResponse
     {
+        public string id;
         public string symbol;
         public bool isLong;
         public double entryPrice;
@@ -44,6 +47,7 @@ namespace General
     [Serializable]
     public class WebsocketGetTradingBotResponse
     {
+        public string id;
         public BotTypeEnum botType;
         public string symbol;
     }

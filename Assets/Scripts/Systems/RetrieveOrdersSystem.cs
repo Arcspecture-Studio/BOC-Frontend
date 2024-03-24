@@ -112,17 +112,17 @@ public class RetrieveOrdersSystem : MonoBehaviour
         #endregion
 
         #region Update existing order status 
-        orderPagesComponent.childOrderPageComponents.ForEach(orderPageComponent =>
-        {
-            if (ordersFromServer != null)
-            {
-                if (ordersFromServer.ContainsKey(orderPageComponent.orderId))
-                {
-                    orderPageComponent.orderStatus = ordersFromServer[orderPageComponent.orderId].status;
-                    orderPageComponent.orderStatusError = ordersFromServer[orderPageComponent.orderId].statusError;
-                }
-            }
-        });
+        // orderPagesComponent.childOrderPageComponents.ForEach(orderPageComponent =>
+        // {
+        //     if (ordersFromServer != null)
+        //     {
+        //         if (ordersFromServer.ContainsKey(orderPageComponent.orderId))
+        //         {
+        //             orderPageComponent.orderStatus = ordersFromServer[orderPageComponent.orderId].status;
+        //             orderPageComponent.orderStatusError = ordersFromServer[orderPageComponent.orderId].statusError;
+        //         }
+        //     }
+        // });
         #endregion
     }
 }

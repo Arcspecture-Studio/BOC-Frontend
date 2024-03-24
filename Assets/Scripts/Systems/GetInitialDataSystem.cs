@@ -34,11 +34,8 @@ public class GetInitialDataSystem : MonoBehaviour
     }
     void GetInitialData()
     {
-        UnityMainThread.AddJob(() =>
-        {
-            General.WebsocketGeneralRequest request = new(WebsocketEventTypeEnum.GET_INITIAL_DATA, loginComponent.token);
-            websocketComponent.generalRequests.Add(request);
-        });
+        General.WebsocketGeneralRequest request = new(WebsocketEventTypeEnum.GET_INITIAL_DATA, loginComponent.token);
+        websocketComponent.generalRequests.Add(request);
     }
     void GetInitialDataResponse()
     {

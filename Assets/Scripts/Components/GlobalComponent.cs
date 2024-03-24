@@ -29,4 +29,7 @@ public class GlobalComponent : MonoBehaviour
     public GetRuntimeDataComponent getRuntimeDataComponent;
     public PlatformComponent platformComponent;
     public ProfileComponent profileComponent;
+    public SpawnOrderComponent spawnOrderComponent;
+    public SpawnQuickOrderComponent spawnQuickOrderComponent;
+    public SpawnTradingBotComponent spawnTradingBotComponent;
 }
