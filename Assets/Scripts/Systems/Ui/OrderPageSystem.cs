@@ -482,12 +482,13 @@ public class OrderPageSystem : MonoBehaviour
     }
     void UpdatePositionInfo()
     {
-        string retrievePositionInfoString = websocketComponent.RetrieveGeneralResponses(WebsocketEventTypeEnum.RETRIEVE_POSITION_INFO);
+        // TODO: move to OrderPagesWebsocketResponseSystem
+        string retrievePositionInfoString = websocketComponent.RetrieveGeneralResponses(WebsocketEventTypeEnum.POSITION_INFO_UPDATE);
         if (retrievePositionInfoString.IsNullOrEmpty()) return;
-        General.WebsocketRetrievePositionInfoResponse response = JsonConvert.DeserializeObject<General.WebsocketRetrievePositionInfoResponse>(retrievePositionInfoString, JsonSerializerConfig.settings);
+        General.WebsocketPositionInfoUpdateResponse response = JsonConvert.DeserializeObject<General.WebsocketPositionInfoUpdateResponse>(retrievePositionInfoString, JsonSerializerConfig.settings);
         if (response.orderId.Equals(orderPageComponent.orderId))
         {
-            websocketComponent.RemovesGeneralResponses(WebsocketEventTypeEnum.RETRIEVE_POSITION_INFO);
+            websocketComponent.RemovesGeneralResponses(WebsocketEventTypeEnum.POSITION_INFO_UPDATE);
             // BUG: since now server can spawn order, meaning frontend here haven't get exchangeInfo, server ady send RETRIEVE_POSITION_INFO (because order just spawned at this timing)
             if (response.averagePriceFilled.HasValue && platformComponent.pricePrecisions.ContainsKey(orderPageComponent.symbolDropdownComponent.selectedSymbol))
             {

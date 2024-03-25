@@ -11,6 +11,8 @@ public class WebsocketGeneralResponsesCleanUpSystem : MonoBehaviour
     {
         websocketComponent = GlobalComponent.instance.websocketComponent;
         orderPagesComponent = GlobalComponent.instance.orderPagesComponent;
+
+        // TODO: after moved delete this system
     }
     void Update()
     {
@@ -20,9 +22,9 @@ public class WebsocketGeneralResponsesCleanUpSystem : MonoBehaviour
 
     void RetrievePositionInfo()
     {
-        string retrievePositionInfoString = websocketComponent.RetrieveGeneralResponses(WebsocketEventTypeEnum.RETRIEVE_POSITION_INFO);
+        string retrievePositionInfoString = websocketComponent.RetrieveGeneralResponses(WebsocketEventTypeEnum.POSITION_INFO_UPDATE);
         if (retrievePositionInfoString.IsNullOrEmpty()) return;
-        General.WebsocketRetrievePositionInfoResponse response = JsonConvert.DeserializeObject<General.WebsocketRetrievePositionInfoResponse>(retrievePositionInfoString, JsonSerializerConfig.settings);
+        General.WebsocketPositionInfoUpdateResponse response = JsonConvert.DeserializeObject<General.WebsocketPositionInfoUpdateResponse>(retrievePositionInfoString, JsonSerializerConfig.settings);
 
         bool orderExist = false;
         orderPagesComponent.childOrderPageComponents.ForEach(orderPageComponent =>
@@ -34,7 +36,7 @@ public class WebsocketGeneralResponsesCleanUpSystem : MonoBehaviour
         });
         if (!orderExist)
         {
-            websocketComponent.RemovesGeneralResponses(WebsocketEventTypeEnum.RETRIEVE_POSITION_INFO);
+            websocketComponent.RemovesGeneralResponses(WebsocketEventTypeEnum.POSITION_INFO_UPDATE);
         }
     }
     void SaveThrottleOrder()

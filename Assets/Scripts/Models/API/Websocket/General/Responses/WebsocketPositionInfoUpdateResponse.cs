@@ -5,7 +5,7 @@ using System;
 namespace General
 {
     [Serializable]
-    public class WebsocketRetrievePositionInfoResponse : WebsocketGeneralResponse
+    public class WebsocketPositionInfoUpdateResponse : WebsocketGeneralResponse
     {
         public string orderId;
         public double? quantityFilled;
