@@ -146,6 +146,8 @@ public class OrderPageSystem : MonoBehaviour
         orderPageComponent.onChange_submitToServer.AddListener(SubmitToServer);
 
         orderPageComponent.orderIdText.text = "Order Id: " + orderPageComponent.orderId.ToString();
+
+        RestoreFromProfilePreference();
     }
     void Update()
     {
@@ -154,6 +156,23 @@ public class OrderPageSystem : MonoBehaviour
         UpdatePositionInfo();
     }
 
+    void RestoreFromProfilePreference()
+    {
+        ProfilePerference preference = profileComponent.activeProfile.preference;
+        if (!preference.symbol.IsNullOrEmpty())
+        {
+            orderPageComponent.symbolDropdownComponent.selectedSymbol = preference.symbol.ToUpper();
+        }
+        orderPageComponent.maxLossPercentageInput.text = preference.lossPercentage == 0 ? "" : preference.lossPercentage.ToString();
+        orderPageComponent.maxLossAmountInput.text = preference.lossAmount == 0 ? "" : preference.lossAmount.ToString();
+        orderPageComponent.marginDistributionModeDropdown.value = (int)preference.marginDistributionMode;
+        orderPageComponent.marginWeightDistributionValueSlider.value = (float)preference.marginWeightDistributionValue;
+        orderPageComponent.takeProfitTypeDropdown.value = (int)preference.takeProfitType;
+        orderPageComponent.riskRewardRatioInput.text = preference.riskRewardRatio.ToString();
+        orderPageComponent.takeProfitTrailingCallbackPercentageSlider.value = (float)preference.takeProfitTrailingCallbackPercentage;
+        orderPageComponent.takeProfitTrailingCallbackPercentageInput.text = preference.takeProfitTrailingCallbackPercentage.ToString();
+        orderPageComponent.orderTypeDropdown.value = (int)preference.orderType;
+    }
     IEnumerator CalculateMargin()
     {
         if (!orderPageComponent.calculate) yield break;
