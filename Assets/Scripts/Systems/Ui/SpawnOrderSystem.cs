@@ -26,6 +26,7 @@ public class SpawnOrderSystem : MonoBehaviour
         orderPagesComponent.currentPageIndex = orderPagesComponent.transform.childCount;
 
         #region Apply data into game object
+        orderPageComponent.instantiateWithData = true;
         orderPageComponent.orderId = response.id;
         orderPageComponent.calculate = true;
         orderPageComponent.orderStatus = response.status;

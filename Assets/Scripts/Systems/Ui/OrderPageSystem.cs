@@ -158,6 +158,8 @@ public class OrderPageSystem : MonoBehaviour
 
     void RestoreFromProfilePreference()
     {
+        if (orderPageComponent.instantiateWithData) return;
+
         ProfilePerference preference = profileComponent.activeProfile.preference;
         if (!preference.symbol.IsNullOrEmpty())
         {

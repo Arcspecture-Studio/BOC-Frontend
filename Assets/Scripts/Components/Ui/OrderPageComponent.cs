@@ -83,4 +83,5 @@ public class OrderPageComponent : MonoBehaviour
     public OrderStatusEnum orderStatus = OrderStatusEnum.UNSUBMITTED;
     public bool orderStatusError = false;
     public Tween spawnTween;
+    public bool instantiateWithData = false;
 }
