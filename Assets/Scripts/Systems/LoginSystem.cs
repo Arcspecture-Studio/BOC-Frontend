@@ -37,16 +37,16 @@ public class LoginSystem : MonoBehaviour
     void CreateAccountResponse()
     {
         string jsonString = websocketComponent.RetrieveGeneralResponses(WebsocketEventTypeEnum.CREATE_ACCOUNT);
-        if (jsonString.IsNullOrEmpty()) return;
         websocketComponent.RemovesGeneralResponses(WebsocketEventTypeEnum.CREATE_ACCOUNT);
+        if (jsonString.IsNullOrEmpty()) return;
 
         HandleResponse(jsonString);
     }
     void GetLoginResponse()
     {
         string jsonString = websocketComponent.RetrieveGeneralResponses(WebsocketEventTypeEnum.GET_JWT);
-        if (jsonString.IsNullOrEmpty()) return;
         websocketComponent.RemovesGeneralResponses(WebsocketEventTypeEnum.GET_JWT);
+        if (jsonString.IsNullOrEmpty()) return;
 
         HandleResponse(jsonString);
     }
@@ -70,8 +70,8 @@ public class LoginSystem : MonoBehaviour
     void RevokeJwtResponse()
     {
         string jsonString = websocketComponent.RetrieveGeneralResponses(WebsocketEventTypeEnum.REVOKE_JWT);
-        if (jsonString.IsNullOrEmpty()) return;
         websocketComponent.RemovesGeneralResponses(WebsocketEventTypeEnum.REVOKE_JWT);
+        if (jsonString.IsNullOrEmpty()) return;
 
         General.WebsocketGeneralResponse response = JsonConvert.DeserializeObject
             <General.WebsocketGeneralResponse>(jsonString, JsonSerializerConfig.settings);

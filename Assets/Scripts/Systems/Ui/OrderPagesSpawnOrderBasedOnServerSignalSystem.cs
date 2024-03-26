@@ -17,9 +17,10 @@ public class OrderPagesSpawnOrderBasedOnServerSignalSystem : MonoBehaviour
     void Update()
     {
         string spawnOrderString = websocketComponent.RetrieveGeneralResponses(WebsocketEventTypeEnum.SPAWN_ORDER);
-        if (spawnOrderString.IsNullOrEmpty()) return;
-        General.WebsocketSpawnOrderResponse response = JsonConvert.DeserializeObject<General.WebsocketSpawnOrderResponse>(spawnOrderString, JsonSerializerConfig.settings);
         websocketComponent.RemovesGeneralResponses(WebsocketEventTypeEnum.SPAWN_ORDER);
+        if (spawnOrderString.IsNullOrEmpty()) return;
+
+        General.WebsocketSpawnOrderResponse response = JsonConvert.DeserializeObject<General.WebsocketSpawnOrderResponse>(spawnOrderString, JsonSerializerConfig.settings);
 
         if (response.order == null) // destroy
         {

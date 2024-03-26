@@ -114,8 +114,8 @@ public class SettingPageProfileSystem : MonoBehaviour
     void OnAddProfileResponse()
     {
         string jsonString = websocketComponent.RetrieveGeneralResponses(WebsocketEventTypeEnum.ADD_PROFILE);
-        if (jsonString.IsNullOrEmpty()) return;
         websocketComponent.RemovesGeneralResponses(WebsocketEventTypeEnum.ADD_PROFILE);
+        if (jsonString.IsNullOrEmpty()) return;
 
         General.WebsocketAddProfileResponse response = JsonConvert.DeserializeObject
         <General.WebsocketAddProfileResponse>(jsonString, JsonSerializerConfig.settings);
@@ -153,8 +153,8 @@ public class SettingPageProfileSystem : MonoBehaviour
     void OnRemoveProfileResponse()
     {
         string jsonString = websocketComponent.RetrieveGeneralResponses(WebsocketEventTypeEnum.REMOVE_PROFILE);
-        if (jsonString.IsNullOrEmpty()) return;
         websocketComponent.RemovesGeneralResponses(WebsocketEventTypeEnum.REMOVE_PROFILE);
+        if (jsonString.IsNullOrEmpty()) return;
 
         General.WebsocketRemoveProfileResponse response = JsonConvert.DeserializeObject
         <General.WebsocketRemoveProfileResponse>(jsonString, JsonSerializerConfig.settings);
@@ -188,8 +188,8 @@ public class SettingPageProfileSystem : MonoBehaviour
     void OnUpdateProfileResponse()
     {
         string jsonString = websocketComponent.RetrieveGeneralResponses(WebsocketEventTypeEnum.UPDATE_PROFILE);
-        if (jsonString.IsNullOrEmpty()) return;
         websocketComponent.RemovesGeneralResponses(WebsocketEventTypeEnum.UPDATE_PROFILE);
+        if (jsonString.IsNullOrEmpty()) return;
 
         General.WebsocketUpdateProfileResponse response = JsonConvert.DeserializeObject
         <General.WebsocketUpdateProfileResponse>(jsonString, JsonSerializerConfig.settings);

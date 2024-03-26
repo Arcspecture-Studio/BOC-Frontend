@@ -42,8 +42,8 @@ public class GetRuntimeDataSystem : MonoBehaviour
     void GetRuntimeDataResponse()
     {
         string jsonString = websocketComponent.RetrieveGeneralResponses(WebsocketEventTypeEnum.GET_RUNTIME_DATA);
-        if (jsonString.IsNullOrEmpty()) return;
         websocketComponent.RemovesGeneralResponses(WebsocketEventTypeEnum.GET_RUNTIME_DATA);
+        if (jsonString.IsNullOrEmpty()) return;
 
         General.WebsocketGetRuntimeDataResponse response = JsonConvert.DeserializeObject
         <General.WebsocketGetRuntimeDataResponse>(jsonString, JsonSerializerConfig.settings);

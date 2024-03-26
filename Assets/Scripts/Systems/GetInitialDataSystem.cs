@@ -40,8 +40,8 @@ public class GetInitialDataSystem : MonoBehaviour
     void GetInitialDataResponse()
     {
         string jsonString = websocketComponent.RetrieveGeneralResponses(WebsocketEventTypeEnum.GET_INITIAL_DATA);
-        if (jsonString.IsNullOrEmpty()) return;
         websocketComponent.RemovesGeneralResponses(WebsocketEventTypeEnum.GET_INITIAL_DATA);
+        if (jsonString.IsNullOrEmpty()) return;
 
         General.WebsocketGetInitialDataResponse response = JsonConvert.DeserializeObject
         <General.WebsocketGetInitialDataResponse>(jsonString, JsonSerializerConfig.settings);

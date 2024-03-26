@@ -98,9 +98,10 @@ public class QuickTabSystem : MonoBehaviour
     void SpawnOrDestroyQuickOrderObject()
     {
         string spawnQuickOrderString = websocketComponent.RetrieveGeneralResponses(WebsocketEventTypeEnum.SPAWN_QUICK_ORDER);
-        if (spawnQuickOrderString.IsNullOrEmpty()) return;
-        General.WebsocketSpawnQuickOrderResponse response = JsonConvert.DeserializeObject<General.WebsocketSpawnQuickOrderResponse>(spawnQuickOrderString, JsonSerializerConfig.settings);
         websocketComponent.RemovesGeneralResponses(WebsocketEventTypeEnum.SPAWN_QUICK_ORDER);
+        if (spawnQuickOrderString.IsNullOrEmpty()) return;
+
+        General.WebsocketSpawnQuickOrderResponse response = JsonConvert.DeserializeObject<General.WebsocketSpawnQuickOrderResponse>(spawnQuickOrderString, JsonSerializerConfig.settings);
         if (response.quickOrder == null) // destroy
         {
             GameObject quickOrderObject;

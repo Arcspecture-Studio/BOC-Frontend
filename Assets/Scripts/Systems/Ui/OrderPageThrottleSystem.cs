@@ -250,6 +250,7 @@ public class OrderPageThrottleSystem : MonoBehaviour
         // TODO: move to OrderPagesWebsocketResponseSystem
         string saveThrottleOrderString = websocketComponent.RetrieveGeneralResponses(WebsocketEventTypeEnum.SAVE_THROTTLE_ORDER);
         if (saveThrottleOrderString.IsNullOrEmpty()) return;
+
         General.WebsocketSaveThrottleOrderResponse response = JsonConvert.DeserializeObject<General.WebsocketSaveThrottleOrderResponse>(saveThrottleOrderString, JsonSerializerConfig.settings);
         if (response.orderId.Equals(orderPageThrottleComponent.orderId) && response.parentOrderId.Equals(orderPageComponent.orderId))
         {

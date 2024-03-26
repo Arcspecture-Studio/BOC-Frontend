@@ -61,9 +61,10 @@ public class TradingBotSystem : MonoBehaviour
     void RetrieveTradingBotsFromServer()
     {
         string retrieveTradingBotsString = websocketComponent.RetrieveGeneralResponses(WebsocketEventTypeEnum.RETRIEVE_TRADING_BOTS);
-        if (retrieveTradingBotsString.IsNullOrEmpty()) return;
-        General.WebsocketRetrieveTradingBotsResponse response = JsonConvert.DeserializeObject<General.WebsocketRetrieveTradingBotsResponse>(retrieveTradingBotsString, JsonSerializerConfig.settings);
         websocketComponent.RemovesGeneralResponses(WebsocketEventTypeEnum.RETRIEVE_TRADING_BOTS);
+        if (retrieveTradingBotsString.IsNullOrEmpty()) return;
+
+        General.WebsocketRetrieveTradingBotsResponse response = JsonConvert.DeserializeObject<General.WebsocketRetrieveTradingBotsResponse>(retrieveTradingBotsString, JsonSerializerConfig.settings);
         General.WebsocketRetrieveTradingBotsResponseData data;
         if (response.tradingBots.TryGetValue(""/*platformComponent.apiKey*/, out data))
         {
@@ -77,9 +78,10 @@ public class TradingBotSystem : MonoBehaviour
     void RetrieveSaveTradinBotNotificationFromServer() // PENDING: when there is multiple bots, all use RETRIEVE_TRADING_BOTS since we will retrieve all bots info in one go, RETRIEVE_TRADING_BOTS no longer only sent to frontend when frontend ask for it
     {
         string retrieveNotificationString = websocketComponent.RetrieveGeneralResponses(WebsocketEventTypeEnum.SAVE_TRADING_BOT);
-        if (retrieveNotificationString.IsNullOrEmpty()) return;
-        General.WebsocketSaveTradingBotsResponse response = JsonConvert.DeserializeObject<General.WebsocketSaveTradingBotsResponse>(retrieveNotificationString, JsonSerializerConfig.settings);
         websocketComponent.RemovesGeneralResponses(WebsocketEventTypeEnum.SAVE_TRADING_BOT);
+        if (retrieveNotificationString.IsNullOrEmpty()) return;
+
+        General.WebsocketSaveTradingBotsResponse response = JsonConvert.DeserializeObject<General.WebsocketSaveTradingBotsResponse>(retrieveNotificationString, JsonSerializerConfig.settings);
         if (response.tradingBotSpawned) miniPromptComponent.message = "Bot Spawned";
         else miniPromptComponent.message = "Bot Removed";
     }

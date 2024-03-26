@@ -155,16 +155,16 @@ public class PlatformSystem : MonoBehaviour
     void AddPlatformResponse()
     {
         string jsonString = websocketComponent.RetrieveGeneralResponses(WebsocketEventTypeEnum.ADD_PLATFORM);
-        if (jsonString.IsNullOrEmpty()) return;
         websocketComponent.RemovesGeneralResponses(WebsocketEventTypeEnum.ADD_PLATFORM);
+        if (jsonString.IsNullOrEmpty()) return;
 
         HandleResponse(jsonString, true);
     }
     void RemovePlatformResponse()
     {
         string jsonString = websocketComponent.RetrieveGeneralResponses(WebsocketEventTypeEnum.REMOVE_PLATFORM);
-        if (jsonString.IsNullOrEmpty()) return;
         websocketComponent.RemovesGeneralResponses(WebsocketEventTypeEnum.REMOVE_PLATFORM);
+        if (jsonString.IsNullOrEmpty()) return;
 
         HandleResponse(jsonString, false);
     }

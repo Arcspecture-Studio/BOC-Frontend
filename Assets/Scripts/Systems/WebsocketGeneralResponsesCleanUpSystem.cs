@@ -24,6 +24,7 @@ public class WebsocketGeneralResponsesCleanUpSystem : MonoBehaviour
     {
         string retrievePositionInfoString = websocketComponent.RetrieveGeneralResponses(WebsocketEventTypeEnum.POSITION_INFO_UPDATE);
         if (retrievePositionInfoString.IsNullOrEmpty()) return;
+
         General.WebsocketPositionInfoUpdateResponse response = JsonConvert.DeserializeObject<General.WebsocketPositionInfoUpdateResponse>(retrievePositionInfoString, JsonSerializerConfig.settings);
 
         bool orderExist = false;
@@ -43,6 +44,7 @@ public class WebsocketGeneralResponsesCleanUpSystem : MonoBehaviour
     {
         string saveThrottleOrderString = websocketComponent.RetrieveGeneralResponses(WebsocketEventTypeEnum.SAVE_THROTTLE_ORDER);
         if (saveThrottleOrderString.IsNullOrEmpty()) return;
+
         General.WebsocketSaveThrottleOrderResponse response = JsonConvert.DeserializeObject<General.WebsocketSaveThrottleOrderResponse>(saveThrottleOrderString, JsonSerializerConfig.settings);
 
         bool orderExist = false;

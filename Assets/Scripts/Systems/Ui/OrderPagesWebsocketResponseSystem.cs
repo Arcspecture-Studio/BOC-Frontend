@@ -22,11 +22,17 @@ public class OrderPagesWebsocketResponseSystem : MonoBehaviour
         SubmitOrderToServerResponse();
     }
 
+    void PositionInfoUpdateResponse()
+    {
+        string jsonString = websocketComponent.RetrieveGeneralResponses(WebsocketEventTypeEnum.POSITION_INFO_UPDATE);
+        websocketComponent.RemovesGeneralResponses(WebsocketEventTypeEnum.POSITION_INFO_UPDATE);
+        if (jsonString.IsNullOrEmpty()) return;
+    }
     void SubmitOrderToServerResponse()
     {
         string jsonString = websocketComponent.RetrieveGeneralResponses(WebsocketEventTypeEnum.SUBMIT_ORDER);
-        if (jsonString.IsNullOrEmpty()) return;
         websocketComponent.RemovesGeneralResponses(WebsocketEventTypeEnum.SUBMIT_ORDER);
+        if (jsonString.IsNullOrEmpty()) return;
 
         General.WebsocketSubmitOrderResponse response = JsonConvert.DeserializeObject
         <General.WebsocketSubmitOrderResponse>(jsonString, JsonSerializerConfig.settings);
