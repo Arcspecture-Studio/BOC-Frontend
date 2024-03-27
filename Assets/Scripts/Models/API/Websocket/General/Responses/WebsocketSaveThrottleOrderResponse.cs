@@ -3,7 +3,7 @@
 namespace General
 {
     [Serializable]
-    public class WebsocketSaveThrottleOrderResponse : WebsocketSubmitOrderResponse
+    public class WebsocketSubmitThrottleOrderResponse : WebsocketSubmitOrderResponse
     {
         public string parentOrderId;
     }

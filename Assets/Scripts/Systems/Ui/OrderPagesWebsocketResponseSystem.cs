@@ -20,6 +20,8 @@ public class OrderPagesWebsocketResponseSystem : MonoBehaviour
     void Update()
     {
         SubmitOrderToServerResponse();
+        PositionInfoUpdateResponse();
+        SubmitThrottleToServerResponse();
     }
 
     void PositionInfoUpdateResponse()
@@ -27,6 +29,37 @@ public class OrderPagesWebsocketResponseSystem : MonoBehaviour
         string jsonString = websocketComponent.RetrieveGeneralResponses(WebsocketEventTypeEnum.POSITION_INFO_UPDATE);
         websocketComponent.RemovesGeneralResponses(WebsocketEventTypeEnum.POSITION_INFO_UPDATE);
         if (jsonString.IsNullOrEmpty()) return;
+
+        General.WebsocketPositionInfoUpdateResponse response = JsonConvert.DeserializeObject
+        <General.WebsocketPositionInfoUpdateResponse>(jsonString, JsonSerializerConfig.settings);
+
+        OrderPageComponent orderPageComponent = null;
+        foreach (OrderPageComponent component in orderPagesComponent.childOrderPageComponents)
+        {
+            if (component.orderId.Equals(response.orderId))
+            {
+                orderPageComponent = component;
+            }
+        }
+        if (orderPageComponent == null) return;
+
+        // BUG: since now server can spawn order, meaning frontend here haven't get exchangeInfo, server ady send RETRIEVE_POSITION_INFO (because order just spawned at this timing)
+        if (response.averagePriceFilled.HasValue && platformComponent.pricePrecisions.ContainsKey(orderPageComponent.symbolDropdownComponent.selectedSymbol))
+        {
+            orderPageComponent.positionInfoAvgEntryPriceFilledText.text = Utils.RoundNDecimal(response.averagePriceFilled.Value, platformComponent.pricePrecisions[orderPageComponent.symbolDropdownComponent.selectedSymbol]).ToString();
+        }
+        if (response.quantityFilled.HasValue && platformComponent.quantityPrecisions.ContainsKey(orderPageComponent.symbolDropdownComponent.selectedSymbol))
+        {
+            orderPageComponent.positionInfoQuantityFilledText.text = Utils.RoundNDecimal(response.quantityFilled.Value, platformComponent.quantityPrecisions[orderPageComponent.symbolDropdownComponent.selectedSymbol]).ToString();
+        }
+        if (response.actualTakeProfitPrice.HasValue && platformComponent.pricePrecisions.ContainsKey(orderPageComponent.symbolDropdownComponent.selectedSymbol))
+        {
+            orderPageComponent.positionInfoActualTakeProfitPriceText.text = Utils.RoundNDecimal(response.actualTakeProfitPrice.Value, platformComponent.pricePrecisions[orderPageComponent.symbolDropdownComponent.selectedSymbol]).ToString();
+        }
+        if (response.paidFundingAmount.HasValue)
+        {
+            orderPageComponent.positionInfoPaidFundingAmount.text = response.paidFundingAmount.Value.ToString();
+        }
     }
     void SubmitOrderToServerResponse()
     {
@@ -40,7 +73,7 @@ public class OrderPagesWebsocketResponseSystem : MonoBehaviour
         OrderPageComponent orderPageComponent = null;
         foreach (OrderPageComponent component in orderPagesComponent.childOrderPageComponents)
         {
-            if (component.orderId == response.orderId)
+            if (component.orderId.Equals(response.orderId))
             {
                 orderPageComponent = component;
             }
@@ -53,8 +86,53 @@ public class OrderPagesWebsocketResponseSystem : MonoBehaviour
         {
             orderPageComponent.resultComponent.orderInfoDataObject.transform.GetChild(3).GetComponent<TMP_Text>().text = orderPageComponent.orderStatus.ToString();
         }
-        if (orderPageComponent.orderStatusError &&
-        !response.errorJsonString.IsNullOrEmpty())
+        if (orderPageComponent.orderStatusError && !response.errorJsonString.IsNullOrEmpty())
+        {
+            switch (platformComponent.activePlatform)
+            {
+                case PlatformEnum.BINANCE:
+                case PlatformEnum.BINANCE_TESTNET:
+                    Binance.WebrequestGeneralResponse errorResponse = JsonConvert.DeserializeObject<Binance.WebrequestGeneralResponse>(response.errorJsonString, JsonSerializerConfig.settings);
+                    if (errorResponse.code.HasValue)
+                    {
+                        string message = errorResponse.msg + " (Binance Error Code: " + errorResponse.code.Value + ")";
+                        promptComponent.ShowPrompt(PromptConstant.ERROR, message, () =>
+                        {
+                            promptComponent.active = false;
+                        });
+                    }
+                    break;
+            }
+        }
+    }
+    void SubmitThrottleToServerResponse()
+    {
+        string jsonString = websocketComponent.RetrieveGeneralResponses(WebsocketEventTypeEnum.SUBMIT_THROTTLE_ORDER);
+        websocketComponent.RemovesGeneralResponses(WebsocketEventTypeEnum.SUBMIT_THROTTLE_ORDER);
+        if (jsonString.IsNullOrEmpty()) return;
+
+        General.WebsocketSubmitThrottleOrderResponse response = JsonConvert.DeserializeObject
+        <General.WebsocketSubmitThrottleOrderResponse>(jsonString, JsonSerializerConfig.settings);
+
+        OrderPageThrottleComponent orderPageThrottleComponent = null;
+        foreach (OrderPageComponent component in orderPagesComponent.childOrderPageComponents)
+        {
+            if (component.orderId.Equals(response.parentOrderId))
+            {
+                foreach (OrderPageThrottleComponent throttleComponent in component.throttleParentComponent.orderPageThrottleComponents)
+                {
+                    if (throttleComponent.orderId.Equals(response.orderId))
+                    {
+                        orderPageThrottleComponent = throttleComponent;
+                    }
+                }
+            }
+        }
+        if (orderPageThrottleComponent == null) return;
+
+        orderPageThrottleComponent.orderStatus = response.status;
+        orderPageThrottleComponent.orderStatusError = response.statusError;
+        if (orderPageThrottleComponent.orderStatusError && !response.errorJsonString.IsNullOrEmpty())
         {
             switch (platformComponent.activePlatform)
             {

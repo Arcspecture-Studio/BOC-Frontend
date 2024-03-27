@@ -153,7 +153,6 @@ public class OrderPageSystem : MonoBehaviour
     {
         StartCoroutine(CalculateMargin());
         UpdateUiInteractableStatus();
-        UpdatePositionInfo();
     }
 
     void RestoreFromProfilePreference()
@@ -481,34 +480,6 @@ public class OrderPageSystem : MonoBehaviour
             loginComponent.token,
             orderPageComponent.orderId
         ));
-    }
-    void UpdatePositionInfo()
-    {
-        // TODO: move to OrderPagesWebsocketResponseSystem
-        string retrievePositionInfoString = websocketComponent.RetrieveGeneralResponses(WebsocketEventTypeEnum.POSITION_INFO_UPDATE);
-        if (retrievePositionInfoString.IsNullOrEmpty()) return;
-        General.WebsocketPositionInfoUpdateResponse response = JsonConvert.DeserializeObject<General.WebsocketPositionInfoUpdateResponse>(retrievePositionInfoString, JsonSerializerConfig.settings);
-        if (response.orderId.Equals(orderPageComponent.orderId))
-        {
-            websocketComponent.RemovesGeneralResponses(WebsocketEventTypeEnum.POSITION_INFO_UPDATE);
-            // BUG: since now server can spawn order, meaning frontend here haven't get exchangeInfo, server ady send RETRIEVE_POSITION_INFO (because order just spawned at this timing)
-            if (response.averagePriceFilled.HasValue && platformComponent.pricePrecisions.ContainsKey(orderPageComponent.symbolDropdownComponent.selectedSymbol))
-            {
-                orderPageComponent.positionInfoAvgEntryPriceFilledText.text = Utils.RoundNDecimal(response.averagePriceFilled.Value, platformComponent.pricePrecisions[orderPageComponent.symbolDropdownComponent.selectedSymbol]).ToString();
-            }
-            if (response.quantityFilled.HasValue && platformComponent.quantityPrecisions.ContainsKey(orderPageComponent.symbolDropdownComponent.selectedSymbol))
-            {
-                orderPageComponent.positionInfoQuantityFilledText.text = Utils.RoundNDecimal(response.quantityFilled.Value, platformComponent.quantityPrecisions[orderPageComponent.symbolDropdownComponent.selectedSymbol]).ToString();
-            }
-            if (response.actualTakeProfitPrice.HasValue && platformComponent.pricePrecisions.ContainsKey(orderPageComponent.symbolDropdownComponent.selectedSymbol))
-            {
-                orderPageComponent.positionInfoActualTakeProfitPriceText.text = Utils.RoundNDecimal(response.actualTakeProfitPrice.Value, platformComponent.pricePrecisions[orderPageComponent.symbolDropdownComponent.selectedSymbol]).ToString();
-            }
-            if (response.paidFundingAmount.HasValue)
-            {
-                orderPageComponent.positionInfoPaidFundingAmount.text = response.paidFundingAmount.Value.ToString();
-            }
-        }
     }
     public void UpdateTakeProfitPrice()
     {

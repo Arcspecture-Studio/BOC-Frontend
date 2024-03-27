@@ -130,7 +130,6 @@ public class OrderPageThrottleSystem : MonoBehaviour
     void Update()
     {
         UpdateUiInteractableStatus();
-        UpdateOrderStatus();
         UpdateOrderToServer();
         CalculateThrottle();
     }
@@ -244,35 +243,6 @@ public class OrderPageThrottleSystem : MonoBehaviour
                 orderPageThrottleComponent.lockForEdit = false;
             }
         });
-    }
-    void UpdateOrderStatus()
-    {
-        // TODO: move to OrderPagesWebsocketResponseSystem
-        string saveThrottleOrderString = websocketComponent.RetrieveGeneralResponses(WebsocketEventTypeEnum.SAVE_THROTTLE_ORDER);
-        if (saveThrottleOrderString.IsNullOrEmpty()) return;
-
-        General.WebsocketSaveThrottleOrderResponse response = JsonConvert.DeserializeObject<General.WebsocketSaveThrottleOrderResponse>(saveThrottleOrderString, JsonSerializerConfig.settings);
-        if (response.orderId.Equals(orderPageThrottleComponent.orderId) && response.parentOrderId.Equals(orderPageComponent.orderId))
-        {
-            websocketComponent.RemovesGeneralResponses(WebsocketEventTypeEnum.SAVE_THROTTLE_ORDER);
-            orderPageThrottleComponent.orderStatus = response.status;
-            orderPageThrottleComponent.orderStatusError = response.statusError;
-            if (!response.errorJsonString.IsNullOrEmpty())
-            {
-                switch (platformComponent.activePlatform)
-                {
-                    case PlatformEnum.BINANCE:
-                    case PlatformEnum.BINANCE_TESTNET:
-                        Binance.WebrequestGeneralResponse binanceResponse = JsonConvert.DeserializeObject<Binance.WebrequestGeneralResponse>(response.errorJsonString, JsonSerializerConfig.settings);
-                        if (binanceResponse.code.HasValue)
-                        {
-                            string message = binanceResponse.msg + " (Binance Error Code: " + binanceResponse.code.Value + ")";
-                            ShowPrompt(message, false);
-                        }
-                        break;
-                }
-            }
-        }
     }
     void UpdateOrderToServer()
     {
