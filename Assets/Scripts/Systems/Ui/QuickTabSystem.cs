@@ -10,6 +10,7 @@ public class QuickTabSystem : MonoBehaviour
     PlatformComponent platformComponent;
     ProfileComponent profileComponent;
     SpawnQuickOrderComponent spawnQuickOrderComponent;
+    LoginComponent loginComponent;
 
     bool? active = null;
     Tween tween = null;
@@ -22,13 +23,16 @@ public class QuickTabSystem : MonoBehaviour
         platformComponent = GlobalComponent.instance.platformComponent;
         profileComponent = GlobalComponent.instance.profileComponent;
         spawnQuickOrderComponent = GlobalComponent.instance.spawnQuickOrderComponent;
+        loginComponent = GlobalComponent.instance.loginComponent;
+
+        quickTabComponent.onChange_addToServer.AddListener(AddToServer);
+        quickTabComponent.onChange_deleteFromServer.AddListener(DeleteFromServer);
 
         InitializeButtonListener();
     }
     void Update()
     {
         MovePage();
-        UpdateOrderToServer();
         SpawnQuickOrderObject();
         DestroyQuickOrderObject();
         ShowAndHideQuickOrdersObject();
@@ -57,31 +61,32 @@ public class QuickTabSystem : MonoBehaviour
         quickTabComponent.longButton.interactable = false;
         quickTabComponent.shortButton.interactable = false;
     }
-    void UpdateOrderToServer()
+    void AddToServer()
     {
-        if (quickTabComponent.addToServer)
-        {
-            quickTabComponent.addToServer = false;
-            ProfilePerference preference = profileComponent.activeProfile.preference;
-            double entryPrice = quickTabComponent.entryPriceInput.text.IsNullOrEmpty() ? -1 : double.Parse(quickTabComponent.entryPriceInput.text);
-            websocketComponent.generalRequests.Add(new General.WebsocketSaveQuickOrderRequest(
-               platformComponent.activePlatform,
-               preference.symbol,
-               preference.lossPercentage,
-               preference.lossAmount,
-               preference.marginDistributionMode == MarginDistributionModeEnum.WEIGHTED,
-               preference.marginWeightDistributionValue,
-               preference.takeProfitType,
-               preference.riskRewardRatio,
-               preference.takeProfitTrailingCallbackPercentage,
-               entryPrice,
-               int.Parse(quickTabComponent.entryTimesInput.text),
-               WebsocketIntervalEnum.array[quickTabComponent.atrTimeframeDropdown.value],
-               int.Parse(quickTabComponent.atrLengthInput.text),
-               double.Parse(quickTabComponent.atrMultiplierInput.text),
-               quickTabComponent.isLong
-            ));
-        }
+        ProfilePerference preference = profileComponent.activeProfile.preference;
+        double entryPrice = quickTabComponent.entryPriceInput.text.IsNullOrEmpty() ? -1 : double.Parse(quickTabComponent.entryPriceInput.text);
+        websocketComponent.generalRequests.Add(new General.WebsocketAddQuickOrderRequest(
+            loginComponent.token,
+            platformComponent.activePlatform,
+            preference.symbol,
+            preference.lossPercentage,
+            preference.lossAmount,
+            preference.marginDistributionMode == MarginDistributionModeEnum.WEIGHTED,
+            preference.marginWeightDistributionValue,
+            preference.takeProfitType,
+            preference.riskRewardRatio,
+            preference.takeProfitTrailingCallbackPercentage,
+            entryPrice,
+            int.Parse(quickTabComponent.entryTimesInput.text),
+            WebsocketIntervalEnum.array[quickTabComponent.atrTimeframeDropdown.value],
+            int.Parse(quickTabComponent.atrLengthInput.text),
+            double.Parse(quickTabComponent.atrMultiplierInput.text),
+            quickTabComponent.isLong
+        ));
+    }
+    void DeleteFromServer(string orderId)
+    {
+        websocketComponent.generalRequests.Add(new General.WebsocketDeleteQuickOrderRequest(loginComponent.token, orderId));
     }
     void MovePage()
     {

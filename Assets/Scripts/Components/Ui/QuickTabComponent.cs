@@ -37,7 +37,16 @@ public class QuickTabComponent : MonoBehaviour
     }
     [HideInInspector] public UnityEvent onChange_updatePreferenceUI = new();
     public bool updatingUIFromProfile;
-    public bool addToServer = false;
+    public bool addToServer
+    {
+        set { onChange_addToServer.Invoke(); }
+    }
+    [HideInInspector] public UnityEvent onChange_addToServer = new();
+    public string deleteFromServer
+    {
+        set { onChange_deleteFromServer.Invoke(value); }
+    }
+    [HideInInspector] public UnityEvent<string> onChange_deleteFromServer = new();
     public bool isLong;
     public Dictionary<string, GameObject> spawnedQuickOrderObjects = new();
 }
