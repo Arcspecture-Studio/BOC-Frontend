@@ -26,6 +26,7 @@ public class OnClick_RestoreOrderPageSystem : MonoBehaviour
                  });
                 orderPagesComponent.currentPageIndex = orderPagesComponent.transform.childCount;
                 OrderPageComponent deletedOrderComponent = deletedOrder.GetComponent<OrderPageComponent>();
+                deletedOrderComponent.orderStatus = OrderStatusEnum.UNSUBMITTED;
                 deletedOrderComponent.addToServer = true;
             }
         });
