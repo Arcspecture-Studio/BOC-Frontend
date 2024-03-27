@@ -42,19 +42,6 @@
     SAVE_THROTTLE_ORDER,
     SAVE_QUICK_ORDER,
     SAVE_TRADING_BOT,
-    RETRIEVE_ORDERS,
     RETRIEVE_TRADING_BOTS,
-
-    // To Server
-    SIGNUP,
-    LOGIN,
-    SYNC_API_KEY,
-    LOGOUT,
-
-    // From Server
-    CONNECTION_ID,
-    ACCOUNT_OVERWRITE,
-    INVALID_LOGIN_PHRASE,
-    SPAWN_QUICK_ORDER,
     #endregion
 }

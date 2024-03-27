@@ -1,4 +1,3 @@
-using System.Collections.Generic;
 using DG.Tweening;
 using Newtonsoft.Json;
 using UnityEngine;
@@ -10,6 +9,7 @@ public class QuickTabSystem : MonoBehaviour
     WebsocketComponent websocketComponent;
     PlatformComponent platformComponent;
     ProfileComponent profileComponent;
+    SpawnQuickOrderComponent spawnQuickOrderComponent;
 
     bool? active = null;
     Tween tween = null;
@@ -21,6 +21,7 @@ public class QuickTabSystem : MonoBehaviour
         websocketComponent = GlobalComponent.instance.websocketComponent;
         platformComponent = GlobalComponent.instance.platformComponent;
         profileComponent = GlobalComponent.instance.profileComponent;
+        spawnQuickOrderComponent = GlobalComponent.instance.spawnQuickOrderComponent;
 
         InitializeButtonListener();
     }
@@ -28,7 +29,8 @@ public class QuickTabSystem : MonoBehaviour
     {
         MovePage();
         UpdateOrderToServer();
-        SpawnOrDestroyQuickOrderObject();
+        SpawnQuickOrderObject();
+        DestroyQuickOrderObject();
         ShowAndHideQuickOrdersObject();
     }
 
@@ -95,27 +97,30 @@ public class QuickTabSystem : MonoBehaviour
             initialValue);
         tween = quickTabComponent.rectTransform.DOBlendableLocalMoveBy(new Vector3(0, moveValue, 0), quickTabComponent.pageMoveDuration).SetEase(quickTabComponent.pageMoveEase);
     }
-    void SpawnOrDestroyQuickOrderObject()
+    void SpawnQuickOrderObject()
     {
-        string spawnQuickOrderString = websocketComponent.RetrieveGeneralResponses(WebsocketEventTypeEnum.SPAWN_QUICK_ORDER);
-        websocketComponent.RemovesGeneralResponses(WebsocketEventTypeEnum.SPAWN_QUICK_ORDER);
-        if (spawnQuickOrderString.IsNullOrEmpty()) return;
+        string jsonString = websocketComponent.RetrieveGeneralResponses(WebsocketEventTypeEnum.ADD_QUICK_ORDER);
+        websocketComponent.RemovesGeneralResponses(WebsocketEventTypeEnum.ADD_QUICK_ORDER);
+        if (jsonString.IsNullOrEmpty()) return;
 
-        General.WebsocketSpawnQuickOrderResponse response = JsonConvert.DeserializeObject<General.WebsocketSpawnQuickOrderResponse>(spawnQuickOrderString, JsonSerializerConfig.settings);
-        if (response.quickOrder == null) // destroy
+        General.WebsocketAddQuickOrderResponse response = JsonConvert.DeserializeObject<General.WebsocketAddQuickOrderResponse>(jsonString, JsonSerializerConfig.settings);
+
+        quickTabComponent.longButton.interactable = true;
+        quickTabComponent.shortButton.interactable = true;
+        spawnQuickOrderComponent.quickOrderToSpawn = response.quickOrder;
+    }
+    void DestroyQuickOrderObject()
+    {
+        string jsonString = websocketComponent.RetrieveGeneralResponses(WebsocketEventTypeEnum.DELETE_QUICK_ORDER);
+        websocketComponent.RemovesGeneralResponses(WebsocketEventTypeEnum.DELETE_QUICK_ORDER);
+        if (jsonString.IsNullOrEmpty()) return;
+
+        General.WebsocketDeleteQuickOrderResponse response = JsonConvert.DeserializeObject<General.WebsocketDeleteQuickOrderResponse>(jsonString, JsonSerializerConfig.settings);
+
+        if (quickTabComponent.spawnedQuickOrderObjects.TryGetValue(response.orderId, out GameObject quickOrderObject))
         {
-            GameObject quickOrderObject;
-            if (quickTabComponent.spawnedQuickOrderObjects.TryGetValue(response.orderId, out quickOrderObject))
-            {
-                Destroy(quickOrderObject);
-                quickTabComponent.spawnedQuickOrderObjects.Remove(response.orderId);
-            }
-        }
-        else // spawn
-        {
-            // TODO: Spawn quick order
-            quickTabComponent.longButton.interactable = true;
-            quickTabComponent.shortButton.interactable = true;
+            Destroy(quickOrderObject);
+            quickTabComponent.spawnedQuickOrderObjects.Remove(response.orderId);
         }
     }
     void ShowAndHideQuickOrdersObject()
