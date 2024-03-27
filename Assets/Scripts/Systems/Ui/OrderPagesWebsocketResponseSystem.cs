@@ -111,20 +111,17 @@ public class OrderPagesWebsocketResponseSystem : MonoBehaviour
         websocketComponent.RemovesGeneralResponses(WebsocketEventTypeEnum.SUBMIT_THROTTLE_ORDER);
         if (jsonString.IsNullOrEmpty()) return;
 
-        General.WebsocketSubmitThrottleOrderResponse response = JsonConvert.DeserializeObject
-        <General.WebsocketSubmitThrottleOrderResponse>(jsonString, JsonSerializerConfig.settings);
+        General.WebsocketSubmitOrderResponse response = JsonConvert.DeserializeObject
+        <General.WebsocketSubmitOrderResponse>(jsonString, JsonSerializerConfig.settings);
 
         OrderPageThrottleComponent orderPageThrottleComponent = null;
         foreach (OrderPageComponent component in orderPagesComponent.childOrderPageComponents)
         {
-            if (component.orderId.Equals(response.parentOrderId))
+            foreach (OrderPageThrottleComponent throttleComponent in component.throttleParentComponent.orderPageThrottleComponents)
             {
-                foreach (OrderPageThrottleComponent throttleComponent in component.throttleParentComponent.orderPageThrottleComponents)
+                if (throttleComponent.orderId.Equals(response.orderId))
                 {
-                    if (throttleComponent.orderId.Equals(response.orderId))
-                    {
-                        orderPageThrottleComponent = throttleComponent;
-                    }
+                    orderPageThrottleComponent = throttleComponent;
                 }
             }
         }
