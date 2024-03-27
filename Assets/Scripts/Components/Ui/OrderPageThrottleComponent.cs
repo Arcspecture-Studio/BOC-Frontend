@@ -1,5 +1,6 @@
 using TMPro;
 using UnityEngine;
+using UnityEngine.Events;
 using UnityEngine.UI;
 
 public class OrderPageThrottleComponent : MonoBehaviour
@@ -25,10 +26,26 @@ public class OrderPageThrottleComponent : MonoBehaviour
 
     [Header("Runtime")]
     public bool calculate;
-    public bool saveToServer;
-    public bool updateToServer;
-    public bool deleteFromServer;
-    public bool submitToServer;
+    public bool addToServer
+    {
+        set { onChange_addToServer.Invoke(); }
+    }
+    [HideInInspector] public UnityEvent onChange_addToServer = new();
+    public bool updateToServer
+    {
+        set { onChange_updateToServer.Invoke(); }
+    }
+    [HideInInspector] public UnityEvent onChange_updateToServer = new();
+    public bool deleteFromServer
+    {
+        set { onChange_deleteFromServer.Invoke(); }
+    }
+    [HideInInspector] public UnityEvent onChange_deleteFromServer = new();
+    public bool submitToServer
+    {
+        set { onChange_submitToServer.Invoke(); }
+    }
+    [HideInInspector] public UnityEvent onChange_submitToServer = new();
     public CalculateThrottle throttleCalculator;
     public bool lockForEdit;
     public string orderId;

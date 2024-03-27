@@ -38,8 +38,6 @@
 
     #region Old Events
     // Both Way
-    SAVE_ORDER,
-    SAVE_THROTTLE_ORDER,
     SAVE_QUICK_ORDER,
     SAVE_TRADING_BOT,
     RETRIEVE_TRADING_BOTS,
