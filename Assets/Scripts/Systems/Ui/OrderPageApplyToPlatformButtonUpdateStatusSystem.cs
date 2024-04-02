@@ -44,7 +44,7 @@ public class OrderPageApplyToPlatformButtonUpdateStatusSystem : MonoBehaviour
                 orderPageComponent.closePositionButton.gameObject.SetActive(false);
                 orderPageComponent.cancelErrorOrderButton.gameObject.SetActive(false);
                 orderPageComponent.closeErrorPositionButton.gameObject.SetActive(false);
-                orderPageComponent.orderStatusError = false;
+                // orderPageComponent.orderStatusError = false;
                 break;
             case OrderStatusEnum.SUBMITTED:
                 if (orderPageComponent.orderStatusError)
@@ -108,7 +108,7 @@ public class OrderPageApplyToPlatformButtonUpdateStatusSystem : MonoBehaviour
                 orderPageThrottleComponent.cancelOrderButton.gameObject.SetActive(false);
                 orderPageThrottleComponent.cancelBreakEvenOrderButton.gameObject.SetActive(false);
                 orderPageThrottleComponent.cancelErrorOrderButton.gameObject.SetActive(false);
-                orderPageThrottleComponent.orderStatusError = false;
+                // orderPageThrottleComponent.orderStatusError = false;
                 break;
             case OrderStatusEnum.SUBMITTED:
                 orderPageThrottleComponent.placeOrderButton.gameObject.SetActive(false);

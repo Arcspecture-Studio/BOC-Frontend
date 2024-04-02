@@ -50,5 +50,5 @@ public class OrderPageThrottleComponent : MonoBehaviour
     public bool lockForEdit;
     public string orderId;
     public OrderStatusEnum orderStatus = OrderStatusEnum.UNSUBMITTED;
-    public bool orderStatusError = false;
+    public bool orderStatusError;
 }

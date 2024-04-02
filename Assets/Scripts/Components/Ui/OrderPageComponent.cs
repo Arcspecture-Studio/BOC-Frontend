@@ -81,7 +81,7 @@ public class OrderPageComponent : MonoBehaviour
     public bool lockForEdit;
     public string orderId;
     public OrderStatusEnum orderStatus = OrderStatusEnum.UNSUBMITTED;
-    public bool orderStatusError = false;
+    public bool orderStatusError;
     public Tween spawnTween;
-    public bool instantiateWithData = false;
+    public bool instantiateWithData;
 }
