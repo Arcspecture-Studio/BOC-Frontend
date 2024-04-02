@@ -23,6 +23,7 @@ public class OrderPageApplyToPlatformButtonUpdateStatusSystem : MonoBehaviour
         if (orderPageComponent == null) return;
         if (isUpdate)
         {
+            // TODO: when status/statusError get changes
             if (status == orderPageComponent.orderStatus && statusError == orderPageComponent.orderStatusError) return;
             status = orderPageComponent.orderStatus;
             statusError = orderPageComponent.orderStatusError;
@@ -89,6 +90,7 @@ public class OrderPageApplyToPlatformButtonUpdateStatusSystem : MonoBehaviour
         if (orderPageThrottleComponent == null) return;
         if (isUpdate)
         {
+            // TODO: when status/statusError get changes
             if (status == orderPageThrottleComponent.orderStatus && statusError == orderPageThrottleComponent.orderStatusError) return;
             status = orderPageThrottleComponent.orderStatus;
             statusError = orderPageThrottleComponent.orderStatusError;
