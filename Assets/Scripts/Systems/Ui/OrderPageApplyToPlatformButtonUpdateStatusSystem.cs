@@ -10,24 +10,23 @@ public class OrderPageApplyToPlatformButtonUpdateStatusSystem : MonoBehaviour
 
     void Start()
     {
-        OrderPageComponent_UpdateButtonStatus(false);
-        OrderPageThrottleComponent_UpdateButtonStatus(false);
+        OrderPageComponent_UpdateButtonStatus();
+        OrderPageThrottleComponent_UpdateButtonStatus();
+
+        if (orderPageComponent != null)
+        {
+            orderPageComponent.onChange_orderStatus.AddListener(OrderPageComponent_UpdateButtonStatus);
+            orderPageComponent.onChange_orderStatusError.AddListener(OrderPageComponent_UpdateButtonStatus);
+        }
+        if (orderPageThrottleComponent != null)
+        {
+            orderPageComponent.onChange_orderStatus.AddListener(OrderPageThrottleComponent_UpdateButtonStatus);
+            orderPageComponent.onChange_orderStatusError.AddListener(OrderPageThrottleComponent_UpdateButtonStatus);
+        }
     }
-    void Update()
-    {
-        OrderPageComponent_UpdateButtonStatus(true);
-        OrderPageThrottleComponent_UpdateButtonStatus(true);
-    }
-    void OrderPageComponent_UpdateButtonStatus(bool isUpdate)
+    void OrderPageComponent_UpdateButtonStatus()
     {
         if (orderPageComponent == null) return;
-        if (isUpdate)
-        {
-            // TODO: when status/statusError get changes
-            if (status == orderPageComponent.orderStatus && statusError == orderPageComponent.orderStatusError) return;
-            status = orderPageComponent.orderStatus;
-            statusError = orderPageComponent.orderStatusError;
-        }
         orderPageComponent.placeOrderButton.interactable = true;
         orderPageComponent.cancelOrderButton.interactable = true;
         orderPageComponent.closePositionButton.interactable = true;
@@ -45,7 +44,6 @@ public class OrderPageApplyToPlatformButtonUpdateStatusSystem : MonoBehaviour
                 orderPageComponent.closePositionButton.gameObject.SetActive(false);
                 orderPageComponent.cancelErrorOrderButton.gameObject.SetActive(false);
                 orderPageComponent.closeErrorPositionButton.gameObject.SetActive(false);
-                // orderPageComponent.orderStatusError = false;
                 break;
             case OrderStatusEnum.SUBMITTED:
                 if (orderPageComponent.orderStatusError)
@@ -85,16 +83,9 @@ public class OrderPageApplyToPlatformButtonUpdateStatusSystem : MonoBehaviour
                 break;
         }
     }
-    void OrderPageThrottleComponent_UpdateButtonStatus(bool isUpdate)
+    void OrderPageThrottleComponent_UpdateButtonStatus()
     {
         if (orderPageThrottleComponent == null) return;
-        if (isUpdate)
-        {
-            // TODO: when status/statusError get changes
-            if (status == orderPageThrottleComponent.orderStatus && statusError == orderPageThrottleComponent.orderStatusError) return;
-            status = orderPageThrottleComponent.orderStatus;
-            statusError = orderPageThrottleComponent.orderStatusError;
-        }
         orderPageThrottleComponent.placeOrderButton.interactable = true;
         orderPageThrottleComponent.cancelOrderButton.interactable = true;
         orderPageThrottleComponent.cancelBreakEvenOrderButton.interactable = true;
@@ -110,7 +101,6 @@ public class OrderPageApplyToPlatformButtonUpdateStatusSystem : MonoBehaviour
                 orderPageThrottleComponent.cancelOrderButton.gameObject.SetActive(false);
                 orderPageThrottleComponent.cancelBreakEvenOrderButton.gameObject.SetActive(false);
                 orderPageThrottleComponent.cancelErrorOrderButton.gameObject.SetActive(false);
-                // orderPageThrottleComponent.orderStatusError = false;
                 break;
             case OrderStatusEnum.SUBMITTED:
                 orderPageThrottleComponent.placeOrderButton.gameObject.SetActive(false);
@@ -136,5 +126,4 @@ public class OrderPageApplyToPlatformButtonUpdateStatusSystem : MonoBehaviour
                 break;
         }
     }
-
 }

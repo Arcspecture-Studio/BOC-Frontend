@@ -80,8 +80,34 @@ public class OrderPageComponent : MonoBehaviour
     public CalculateMargin marginCalculator;
     public bool lockForEdit;
     public string orderId;
-    public OrderStatusEnum orderStatus = OrderStatusEnum.UNSUBMITTED;
-    public bool orderStatusError;
+    public OrderStatusEnum _orderStatus = OrderStatusEnum.UNSUBMITTED;
+    public OrderStatusEnum orderStatus
+    {
+        set
+        {
+            _orderStatus = value;
+            onChange_orderStatus.Invoke();
+        }
+        get
+        {
+            return _orderStatus;
+        }
+    }
+    public UnityEvent onChange_orderStatus = new();
+    public bool _orderStatusError;
+    public bool orderStatusError
+    {
+        set
+        {
+            _orderStatusError = value;
+            onChange_orderStatus.Invoke();
+        }
+        get
+        {
+            return _orderStatusError;
+        }
+    }
+    public UnityEvent onChange_orderStatusError = new();
     public Tween spawnTween;
     public bool instantiateWithData;
 }
