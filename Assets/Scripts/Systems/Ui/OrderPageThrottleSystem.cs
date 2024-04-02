@@ -7,7 +7,6 @@ public class OrderPageThrottleSystem : MonoBehaviour
     OrderPageThrottleComponent orderPageThrottleComponent;
     OrderPageComponent orderPageComponent;
     PromptComponent promptComponent;
-    PlatformComponent platformComponent;
     WebsocketComponent websocketComponent;
     LoginComponent loginComponent;
 
@@ -16,7 +15,6 @@ public class OrderPageThrottleSystem : MonoBehaviour
     void Start()
     {
         websocketComponent = GlobalComponent.instance.websocketComponent;
-        platformComponent = GlobalComponent.instance.platformComponent;
         promptComponent = GlobalComponent.instance.promptComponent;
         loginComponent = GlobalComponent.instance.loginComponent;
         orderPageThrottleComponent = GetComponent<OrderPageThrottleComponent>();

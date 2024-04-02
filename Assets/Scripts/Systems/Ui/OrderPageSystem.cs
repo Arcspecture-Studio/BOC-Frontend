@@ -1,4 +1,3 @@
-using Newtonsoft.Json;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
@@ -467,6 +466,11 @@ public class OrderPageSystem : MonoBehaviour
     }
     void DeleteFromServer()
     {
+        foreach (OrderPageThrottleComponent orderPageThrottleComponent in orderPageComponent.throttleParentComponent.orderPageThrottleComponents)
+        {
+            Destroy(orderPageThrottleComponent.gameObject);
+        }
+
         websocketComponent.generalRequests.Add(
             new General.WebsocketDeleteOrderRequest(
             loginComponent.token,
