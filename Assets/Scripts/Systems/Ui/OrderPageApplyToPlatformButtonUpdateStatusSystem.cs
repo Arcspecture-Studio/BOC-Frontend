@@ -5,9 +5,6 @@ public class OrderPageApplyToPlatformButtonUpdateStatusSystem : MonoBehaviour
     [SerializeField] OrderPageComponent orderPageComponent;
     [SerializeField] OrderPageThrottleComponent orderPageThrottleComponent;
 
-    OrderStatusEnum status = OrderStatusEnum.UNSUBMITTED;
-    bool statusError = false;
-
     void Start()
     {
         OrderPageComponent_UpdateButtonStatus();
@@ -20,8 +17,8 @@ public class OrderPageApplyToPlatformButtonUpdateStatusSystem : MonoBehaviour
         }
         if (orderPageThrottleComponent != null)
         {
-            orderPageComponent.onChange_orderStatus.AddListener(OrderPageThrottleComponent_UpdateButtonStatus);
-            orderPageComponent.onChange_orderStatusError.AddListener(OrderPageThrottleComponent_UpdateButtonStatus);
+            orderPageThrottleComponent.onChange_orderStatus.AddListener(OrderPageThrottleComponent_UpdateButtonStatus);
+            orderPageThrottleComponent.onChange_orderStatusError.AddListener(OrderPageThrottleComponent_UpdateButtonStatus);
         }
     }
     void OrderPageComponent_UpdateButtonStatus()
@@ -33,10 +30,10 @@ public class OrderPageApplyToPlatformButtonUpdateStatusSystem : MonoBehaviour
         orderPageComponent.cancelErrorOrderButton.interactable = true;
         orderPageComponent.closeErrorPositionButton.interactable = true;
 
-        bool orderUnsumitted = status == OrderStatusEnum.UNSUBMITTED;
+        bool orderUnsumitted = orderPageComponent.orderStatus == OrderStatusEnum.UNSUBMITTED;
         orderPageComponent.calculateButton.interactable = orderUnsumitted;
         orderPageComponent.orderTypeDropdown.interactable = orderUnsumitted;
-        switch (status)
+        switch (orderPageComponent.orderStatus)
         {
             case OrderStatusEnum.UNSUBMITTED:
                 orderPageComponent.placeOrderButton.gameObject.SetActive(true);
@@ -91,10 +88,10 @@ public class OrderPageApplyToPlatformButtonUpdateStatusSystem : MonoBehaviour
         orderPageThrottleComponent.cancelBreakEvenOrderButton.interactable = true;
         orderPageThrottleComponent.cancelErrorOrderButton.interactable = true;
 
-        bool orderUnsumitted = status == OrderStatusEnum.UNSUBMITTED;
+        bool orderUnsumitted = orderPageThrottleComponent.orderStatus == OrderStatusEnum.UNSUBMITTED;
         orderPageThrottleComponent.calculateButton.interactable = orderUnsumitted;
         orderPageThrottleComponent.orderTypeDropdown.interactable = orderUnsumitted;
-        switch (status)
+        switch (orderPageThrottleComponent.orderStatus)
         {
             case OrderStatusEnum.UNSUBMITTED:
                 orderPageThrottleComponent.placeOrderButton.gameObject.SetActive(true);

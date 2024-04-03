@@ -80,7 +80,7 @@ public class OrderPageComponent : MonoBehaviour
     public CalculateMargin marginCalculator;
     public bool lockForEdit;
     public string orderId;
-    public OrderStatusEnum _orderStatus = OrderStatusEnum.UNSUBMITTED;
+    private OrderStatusEnum _orderStatus = OrderStatusEnum.UNSUBMITTED;
     public OrderStatusEnum orderStatus
     {
         set
@@ -94,7 +94,7 @@ public class OrderPageComponent : MonoBehaviour
         }
     }
     public UnityEvent onChange_orderStatus = new();
-    public bool _orderStatusError;
+    private bool _orderStatusError;
     public bool orderStatusError
     {
         set

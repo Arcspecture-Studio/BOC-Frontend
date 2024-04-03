@@ -63,7 +63,7 @@ public class OrderPageThrottleComponent : MonoBehaviour
         }
     }
     public UnityEvent onChange_orderStatus = new();
-    public bool _orderStatusError;
+    private bool _orderStatusError;
     public bool orderStatusError
     {
         set
