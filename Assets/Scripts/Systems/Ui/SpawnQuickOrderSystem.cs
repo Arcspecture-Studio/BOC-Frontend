@@ -29,6 +29,6 @@ public class SpawnQuickOrderSystem : MonoBehaviour
         quickOrderDataRowComponent.positionSideText.text = positionSide;
         quickOrderDataRowComponent.positionSideText.color = positionSideColor;
         quickOrderDataRowComponent.entryPriceText.text = Utils.RoundTwoDecimal(response.entryPrice).ToString();
-        quickOrderDataRowComponent.atrTimeframeText.text = response.atrInterval;
+        quickOrderDataRowComponent.atrTimeframeText.text = OrderConfig.TIMEFRAME_ARRAY[(int)response.atrTimeframe];
     }
 }

@@ -42,7 +42,7 @@ namespace General
         public string symbol;
         public bool isLong;
         public double entryPrice;
-        public string atrInterval;
+        public TimeframeEnum atrTimeframe;
     }
     [Serializable]
     public class WebsocketGetTradingBotResponse
