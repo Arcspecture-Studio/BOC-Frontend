@@ -9,10 +9,11 @@ public class QuickOrderSetting
     public bool weightedQuantity;
     public double quantityWeight;
     public TakeProfitTypeEnum takeProfitType;
+    public OrderTypeEnum orderType;
     public double riskRewardRatio;
     public double takeProfitTrailingCallbackPercentage;
     public int entryTimes;
-    public string atrInterval;
+    public TimeframeEnum atrTimeframe;
     public int atrLength;
     public double atrMultiplier;
 
@@ -22,10 +23,11 @@ public class QuickOrderSetting
     bool weightedQuantity,
     double quantityWeight,
     TakeProfitTypeEnum takeProfitType,
+    OrderTypeEnum orderType,
     double riskRewardRatio,
     double takeProfitTrailingCallbackPercentage,
     int entryTimes,
-    string atrInterval,
+    TimeframeEnum atrTimeframe,
     int atrLength,
     double atrMultiplier)
     {
@@ -35,10 +37,11 @@ public class QuickOrderSetting
         this.weightedQuantity = weightedQuantity;
         this.quantityWeight = quantityWeight;
         this.takeProfitType = takeProfitType;
+        this.orderType = orderType;
         this.riskRewardRatio = riskRewardRatio;
         this.takeProfitTrailingCallbackPercentage = takeProfitTrailingCallbackPercentage;
         this.entryTimes = entryTimes;
-        this.atrInterval = atrInterval;
+        this.atrTimeframe = atrTimeframe;
         this.atrLength = atrLength;
         this.atrMultiplier = atrMultiplier;
     }

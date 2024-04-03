@@ -24,17 +24,19 @@ namespace General
         bool weightedQuantity,
         double quantityWeight,
         TakeProfitTypeEnum takeProfitType,
+        OrderTypeEnum orderType,
         double riskRewardRatio,
         double takeProfitTrailingCallbackPercentage,
         int entryTimes,
-        string atrInterval,
+        TimeframeEnum atrTimeframe,
         int atrLength,
         double atrMultiplier) : base(WebsocketEventTypeEnum.SAVE_TRADING_BOT)
         {
             actionToTake = WebsocketDataActionEnum.SAVE;
             this.botId = botId;
             botType = BotTypeEnum.PREMIUM_INDEX;
-            quickOrderSetting = new QuickOrderSetting(symbol, maxLossPercentage, maxLossAmount, weightedQuantity, quantityWeight, takeProfitType, riskRewardRatio, takeProfitTrailingCallbackPercentage, entryTimes, atrInterval, atrLength, atrMultiplier);
+            quickOrderSetting = new QuickOrderSetting(symbol, maxLossPercentage, maxLossAmount, weightedQuantity, quantityWeight, takeProfitType,
+            orderType, riskRewardRatio, takeProfitTrailingCallbackPercentage, entryTimes, atrTimeframe, atrLength, atrMultiplier);
         }
     }
 }

@@ -43,10 +43,11 @@ public class TradingBotSystem : MonoBehaviour
                     perference.marginDistributionMode == MarginDistributionModeEnum.WEIGHTED,
                     perference.marginWeightDistributionValue,
                     perference.takeProfitType,
+                    perference.orderType,
                     perference.riskRewardRatio,
                     perference.takeProfitTrailingCallbackPercentage,
                     int.Parse(quickTabComponent.entryTimesInput.text),
-                    WebsocketIntervalEnum.array[quickTabComponent.atrTimeframeDropdown.value],
+                    (TimeframeEnum)quickTabComponent.atrTimeframeDropdown.value,
                     int.Parse(quickTabComponent.atrLengthInput.text),
                     double.Parse(quickTabComponent.atrMultiplierInput.text)
                 ));

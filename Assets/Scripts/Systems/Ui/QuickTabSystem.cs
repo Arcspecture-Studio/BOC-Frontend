@@ -74,11 +74,12 @@ public class QuickTabSystem : MonoBehaviour
             preference.marginDistributionMode == MarginDistributionModeEnum.WEIGHTED,
             preference.marginWeightDistributionValue,
             preference.takeProfitType,
+            preference.orderType,
             preference.riskRewardRatio,
             preference.takeProfitTrailingCallbackPercentage,
             entryPrice,
             int.Parse(quickTabComponent.entryTimesInput.text),
-            WebsocketIntervalEnum.array[quickTabComponent.atrTimeframeDropdown.value],
+            (TimeframeEnum)quickTabComponent.atrTimeframeDropdown.value,
             int.Parse(quickTabComponent.atrLengthInput.text),
             double.Parse(quickTabComponent.atrMultiplierInput.text),
             quickTabComponent.isLong

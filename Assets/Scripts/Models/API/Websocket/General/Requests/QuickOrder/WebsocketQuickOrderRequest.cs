@@ -17,17 +17,19 @@ namespace General
             bool weightedQuantity,
             double quantityWeight,
             TakeProfitTypeEnum takeProfitType,
+            OrderTypeEnum orderType,
             double riskRewardRatio,
             double takeProfitTrailingCallbackPercentage,
             double entryPrice,
             int entryTimes,
-            string atrInterval,
+            TimeframeEnum atrTimeframe,
             int atrLength,
             double atrMultiplier,
             bool isLong)
         {
             this.platform = platform;
-            this.setting = new(symbol, maxLossPercentage, maxLossAmount, weightedQuantity, quantityWeight, takeProfitType, riskRewardRatio, takeProfitTrailingCallbackPercentage, entryTimes, atrInterval, atrLength, atrMultiplier);
+            this.setting = new(symbol, maxLossPercentage, maxLossAmount, weightedQuantity, quantityWeight, takeProfitType, orderType,
+            riskRewardRatio, takeProfitTrailingCallbackPercentage, entryTimes, atrTimeframe, atrLength, atrMultiplier);
             this.entryPrice = entryPrice;
             this.isLong = isLong;
         }
