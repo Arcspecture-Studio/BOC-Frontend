@@ -33,21 +33,25 @@ public class QuickTabUpdatePreferenceDataSystem : MonoBehaviour
     {
         quickTabComponent.entryTimesInput.onEndEdit.AddListener(value =>
         {
+            if (profileComponent.activeProfile.preference.quickEntryTimes == int.Parse(value)) return;
             profileComponent.activeProfile.preference.quickEntryTimes = int.Parse(value);
             settingPageComponent.updatePreferenceToServer = true;
         });
         quickTabComponent.atrTimeframeDropdown.onValueChanged.AddListener(value =>
         {
+            if (profileComponent.activeProfile.preference.atrTimeframe == (TimeframeEnum)value) return;
             profileComponent.activeProfile.preference.atrTimeframe = (TimeframeEnum)value;
             settingPageComponent.updatePreferenceToServer = true;
         });
         quickTabComponent.atrLengthInput.onEndEdit.AddListener(value =>
         {
+            if (profileComponent.activeProfile.preference.atrLength == int.Parse(value)) return;
             profileComponent.activeProfile.preference.atrLength = int.Parse(value);
             settingPageComponent.updatePreferenceToServer = true;
         });
         quickTabComponent.atrMultiplierInput.onEndEdit.AddListener(value =>
         {
+            if (profileComponent.activeProfile.preference.atrMultiplier == double.Parse(value)) return;
             profileComponent.activeProfile.preference.atrMultiplier = double.Parse(value);
             settingPageComponent.updatePreferenceToServer = true;
         });
