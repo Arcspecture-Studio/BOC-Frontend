@@ -77,6 +77,8 @@ public class LoginSystem : MonoBehaviour
             <General.WebsocketGeneralResponse>(jsonString, JsonSerializerConfig.settings);
 
         GlobalComponent.instance.settingPageComponent.logoutButton.interactable = true;
+        GlobalComponent.instance.platformComponent.logoutButton.interactable = true;
+
         if (response.success)
         {
             loginComponent.loginStatus = LoginPageStatusEnum.LOGIN;

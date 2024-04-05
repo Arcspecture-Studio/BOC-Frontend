@@ -16,6 +16,7 @@ public class PlatformComponent : PlatformTemplateComponent
     public TMP_Text proceedButtonText;
     public Button backButton;
     public GameObject backButtonObj;
+    public Button logoutButton;
 
     [Header("Runtime")]
     [HideInInspector] public UnityEvent onEnable = new();

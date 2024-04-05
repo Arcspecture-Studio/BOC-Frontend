@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using Newtonsoft.Json;
 using TMPro;
@@ -31,6 +30,7 @@ public class PlatformSystem : MonoBehaviour
             platformComponent.gameObject.SetActive(false);
             UpdateProfileActivePlatformOnServer();
         });
+        platformComponent.logoutButton.onClick.AddListener(Logout);
         InitializePlatformDropdownOptions();
     }
     void Update()
@@ -143,14 +143,24 @@ public class PlatformSystem : MonoBehaviour
                 platformComponent.apiSecretInput.text,
                 platformComponent.activePlatform
             );
+            websocketComponent.generalRequests.Add(request);
+            AllowForInteraction(false);
         }
         else
         {
-            request = new General.WebsocketRemovePlatformRequest(loginComponent.token, platformComponent.activePlatform);
-        }
-        websocketComponent.generalRequests.Add(request);
+            promptComponent.ShowSelection(PromptConstant.DISCONNECT_PLATFORM, PromptConstant.DISCONNECT_PLATFORM_CONFIRM, PromptConstant.YES_PROCEED, PromptConstant.NO, () =>
+            {
+                request = new General.WebsocketRemovePlatformRequest(loginComponent.token, platformComponent.activePlatform);
+                websocketComponent.generalRequests.Add(request);
+                AllowForInteraction(false);
 
-        AllowForInteraction(false);
+                promptComponent.active = false;
+            }, () =>
+            {
+                promptComponent.active = false;
+            });
+        }
+
     }
     void AddPlatformResponse()
     {
@@ -205,5 +215,19 @@ public class PlatformSystem : MonoBehaviour
 
         General.WebsocketUpdateProfileRequest request = new(loginComponent.token, profileComponent.activeProfile._id, profileComponent.activeProfile.activePlatform.Value);
         websocketComponent.generalRequests.Add(request);
+    }
+    void Logout()
+    {
+        promptComponent.ShowSelection(PromptConstant.LOGOUT, PromptConstant.LOGOUT_CONFIRM, PromptConstant.YES_PROCEED, PromptConstant.NO, () =>
+        {
+            loginComponent.logoutNow = true;
+            platformComponent.logoutButton.interactable = false;
+            platformComponent.gameObject.SetActive(false);
+
+            promptComponent.active = false;
+        }, () =>
+        {
+            promptComponent.active = false;
+        });
     }
 }
