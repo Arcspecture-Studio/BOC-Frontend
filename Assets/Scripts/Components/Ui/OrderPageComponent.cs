@@ -80,7 +80,7 @@ public class OrderPageComponent : MonoBehaviour
     public CalculateMargin marginCalculator;
     public bool lockForEdit;
     public string orderId;
-    private OrderStatusEnum _orderStatus = OrderStatusEnum.UNSUBMITTED;
+    [SerializeField] private OrderStatusEnum _orderStatus = OrderStatusEnum.UNSUBMITTED;
     public OrderStatusEnum orderStatus
     {
         set
@@ -93,8 +93,8 @@ public class OrderPageComponent : MonoBehaviour
             return _orderStatus;
         }
     }
-    public UnityEvent onChange_orderStatus = new();
-    private bool _orderStatusError;
+    [HideInInspector] public UnityEvent onChange_orderStatus = new();
+    [SerializeField] private bool _orderStatusError;
     public bool orderStatusError
     {
         set
@@ -107,7 +107,7 @@ public class OrderPageComponent : MonoBehaviour
             return _orderStatusError;
         }
     }
-    public UnityEvent onChange_orderStatusError = new();
+    [HideInInspector] public UnityEvent onChange_orderStatusError = new();
     public Tween spawnTween;
     public bool instantiateWithData;
 }

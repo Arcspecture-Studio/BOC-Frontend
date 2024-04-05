@@ -38,6 +38,7 @@ public class OrderPagesScaleSystem : MonoBehaviour
     }
     bool isChildRectTransformsNotReady()
     {
+        if (orderPagesComponent.childRectTransforms.Count == 0) childCount = 0;
         return orderPagesComponent.childRectTransforms == null
             || orderPagesComponent.childRectTransforms.Count == 0
             || orderPagesComponent.transform.childCount != orderPagesComponent.childRectTransforms.Count;
