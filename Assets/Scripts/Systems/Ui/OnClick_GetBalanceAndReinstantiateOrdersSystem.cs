@@ -5,12 +5,16 @@ public class OnClick_GetBalanceAndReinstantiateOrdersSystem : MonoBehaviour
 {
     PlatformComponent platformComponent;
     HideAllPanelComponent hideAllPanelComponent;
+    GetRuntimeDataComponent getRuntimeDataComponent;
+
     Button button;
 
     void Start()
     {
         platformComponent = GlobalComponent.instance.platformComponent;
         hideAllPanelComponent = GlobalComponent.instance.hideAllPanelComponent;
+        getRuntimeDataComponent = GlobalComponent.instance.getRuntimeDataComponent;
+
         button = GetComponent<Button>();
 
         button.onClick.AddListener(() =>
@@ -18,7 +22,7 @@ public class OnClick_GetBalanceAndReinstantiateOrdersSystem : MonoBehaviour
             hideAllPanelComponent.hideNow = "true";
 
             platformComponent.getBalance = true;
-            // TODO: get runtime data (orders, quickOrders, tradingBots)
+            getRuntimeDataComponent.getRuntimeData = true;
         });
     }
 }
