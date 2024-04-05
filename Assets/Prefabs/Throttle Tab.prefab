@@ -239,7 +239,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Market
+  m_text: Conditional
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -1022,8 +1022,12 @@ MonoBehaviour:
       m_Calls: []
   lockForEdit: 0
   orderId: 
-  orderStatus: 0
-  orderStatusError: 0
+  onChange_orderStatus:
+    m_PersistentCalls:
+      m_Calls: []
+  onChange_orderStatusError:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!114 &451143843
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5700,7 +5704,7 @@ MonoBehaviour:
   m_Placeholder: {fileID: 0}
   m_ItemText: {fileID: 7677618695885759745}
   m_ItemImage: {fileID: 0}
-  m_Value: 0
+  m_Value: 2
   m_Options:
     m_Options:
     - m_Text: Market

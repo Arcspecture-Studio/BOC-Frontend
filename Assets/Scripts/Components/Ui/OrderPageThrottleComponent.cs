@@ -49,7 +49,7 @@ public class OrderPageThrottleComponent : MonoBehaviour
     public CalculateThrottle throttleCalculator;
     public bool lockForEdit;
     public string orderId;
-    private OrderStatusEnum _orderStatus = OrderStatusEnum.UNSUBMITTED;
+    [SerializeField] private OrderStatusEnum _orderStatus = OrderStatusEnum.UNSUBMITTED;
     public OrderStatusEnum orderStatus
     {
         set
@@ -62,8 +62,8 @@ public class OrderPageThrottleComponent : MonoBehaviour
             return _orderStatus;
         }
     }
-    public UnityEvent onChange_orderStatus = new();
-    private bool _orderStatusError;
+    [HideInInspector] public UnityEvent onChange_orderStatus = new();
+    [SerializeField] private bool _orderStatusError;
     public bool orderStatusError
     {
         set
@@ -76,5 +76,5 @@ public class OrderPageThrottleComponent : MonoBehaviour
             return _orderStatusError;
         }
     }
-    public UnityEvent onChange_orderStatusError = new();
+    [HideInInspector] public UnityEvent onChange_orderStatusError = new();
 }
