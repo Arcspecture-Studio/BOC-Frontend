@@ -13,6 +13,7 @@ public class GetInitialDataSystem : MonoBehaviour
     SettingPageComponent settingPageComponent;
     QuickTabComponent quickTabComponent;
     GetRuntimeDataComponent getRuntimeDataComponent;
+    IoComponent ioComponent;
 
     void Start()
     {
@@ -25,6 +26,7 @@ public class GetInitialDataSystem : MonoBehaviour
         settingPageComponent = GlobalComponent.instance.settingPageComponent;
         quickTabComponent = GlobalComponent.instance.quickTabComponent;
         getRuntimeDataComponent = GlobalComponent.instance.getRuntimeDataComponent;
+        ioComponent = GlobalComponent.instance.ioComponent;
 
         getInitialDataComponent.onChange_getInitialData.AddListener(GetInitialData);
     }
@@ -51,6 +53,17 @@ public class GetInitialDataSystem : MonoBehaviour
             promptComponent.ShowPrompt(PromptConstant.ERROR, response.message, () =>
             {
                 promptComponent.active = false;
+
+                if (response.message.Equals(PromptConstant.NOT_AUTHORIZED))
+                {
+                    ioComponent.deleteToken = true;
+
+#if UNITY_EDITOR
+                    UnityEditor.EditorApplication.isPlaying = false;
+#else
+                    Application.Quit();
+#endif
+                }
             });
             return;
         }
