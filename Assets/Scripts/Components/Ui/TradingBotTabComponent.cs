@@ -1,12 +1,23 @@
 using System.Collections.Generic;
 using DG.Tweening;
+using TMPro;
 using UnityEngine;
 using UnityEngine.Events;
+using UnityEngine.UI;
 
 public class TradingBotTabComponent : MonoBehaviour
 {
     [Header("Reference")]
     public RectTransform rectTransform;
+    public TMP_InputField longOrderLimitInput;
+    public TMP_InputField shortOrderLimitInput;
+    public Toggle autoDestroyOrderToggle;
+    public TMP_Dropdown botTypeDropdown;
+    public GameObject premiumIndexSettingObj;
+    public TMP_InputField premiumIndexSetting_longThresholdPercentage;
+    public TMP_InputField premiumIndexSetting_shortThresholdPercentage;
+    public TMP_InputField premiumIndexSetting_candleLength;
+    public Button addBotButton;
     public GameObject tradingBotListObject;
 
     [Header("Config")]

@@ -3667,6 +3667,15 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   rectTransform: {fileID: 161427373}
+  longOrderLimitInput: {fileID: 2113052792}
+  shortOrderLimitInput: {fileID: 1555097361}
+  autoDestroyOrderToggle: {fileID: 886834612}
+  botTypeDropdown: {fileID: 1477664873}
+  premiumIndexSettingObj: {fileID: 235893177}
+  premiumIndexSetting_longThresholdPercentage: {fileID: 1099480019}
+  premiumIndexSetting_shortThresholdPercentage: {fileID: 576361481}
+  premiumIndexSetting_candleLength: {fileID: 1780051496}
+  addBotButton: {fileID: 146784775}
   tradingBotListObject: {fileID: 11401249}
   pageMoveDuration: 0.4
   pageMoveEase: 19
@@ -4750,8 +4759,8 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1291532023}
   m_HandleRect: {fileID: 1291532022}
   m_Direction: 2
-  m_Value: -0.0000066826815
-  m_Size: 0.7365357
+  m_Value: -0.0000037868529
+  m_Size: 0.73653847
   m_NumberOfSteps: 0
   m_OnValueChanged:
     m_PersistentCalls:
@@ -10449,8 +10458,8 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 2033694428}
   m_HandleRect: {fileID: 2033694427}
   m_Direction: 2
-  m_Value: -0.0000011263696
-  m_Size: 0.4988427
+  m_Value: -0.000000703981
+  m_Size: 0.49884394
   m_NumberOfSteps: 0
   m_OnValueChanged:
     m_PersistentCalls:
@@ -26049,7 +26058,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0, y: 867.001}
+  m_AnchoredPosition: {x: 0, y: 867.0005}
   m_SizeDelta: {x: 0, y: 1730}
   m_Pivot: {x: 0, y: 1}
 --- !u!114 &1185559201
@@ -31258,7 +31267,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1444744614}
   m_Layer: 5
-  m_Name: Multiplier
+  m_Name: Candle Length
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -37408,7 +37417,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0, y: 137.00089}
+  m_AnchoredPosition: {x: 0, y: 137.00049}
   m_SizeDelta: {x: 0, y: 520}
   m_Pivot: {x: 0, y: 1}
 --- !u!114 &1746657102
