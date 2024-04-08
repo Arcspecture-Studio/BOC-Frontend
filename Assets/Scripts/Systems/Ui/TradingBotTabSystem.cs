@@ -1,7 +1,5 @@
 using DG.Tweening;
-using Newtonsoft.Json;
 using UnityEngine;
-using WebSocketSharp;
 
 public class TradingBotTabSystem : MonoBehaviour
 {
@@ -14,6 +12,10 @@ public class TradingBotTabSystem : MonoBehaviour
     void Start()
     {
         tradingBotTabComponent = GlobalComponent.instance.tradingBotTabComponent;
+
+        tradingBotTabComponent.botTypeDropdown.onValueChanged.AddListener(ShowStretegySettingBasedOnBotType);
+
+        ShowStretegySettingBasedOnBotType(tradingBotTabComponent.botTypeDropdown.value);
     }
     void Update()
     {
@@ -38,5 +40,18 @@ public class TradingBotTabSystem : MonoBehaviour
         if (spawnedTradingBotObjectCount == tradingBotTabComponent.spawnedTradingBotObjects.Count) return;
         spawnedTradingBotObjectCount = tradingBotTabComponent.spawnedTradingBotObjects.Count;
         tradingBotTabComponent.tradingBotListObject.SetActive(spawnedTradingBotObjectCount > 0);
+    }
+    void ShowStretegySettingBasedOnBotType(int value)
+    {
+        BotTypeEnum botType = (BotTypeEnum)value;
+
+        tradingBotTabComponent.premiumIndexSettingObj.SetActive(false);
+
+        switch (botType)
+        {
+            case BotTypeEnum.PREMIUM_INDEX:
+                tradingBotTabComponent.premiumIndexSettingObj.SetActive(true);
+                break;
+        }
     }
 }

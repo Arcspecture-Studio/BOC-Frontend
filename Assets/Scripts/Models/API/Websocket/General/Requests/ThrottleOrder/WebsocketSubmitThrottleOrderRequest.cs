@@ -5,7 +5,7 @@ namespace General
     [Serializable]
     public class WebsocketSubmitThrottleOrderRequest : WebsocketGeneralRequest
     {
-        public WebsocketOrderIdRequest orderRequest;
+        public WebsocketIdRequest orderRequest;
         public WebsocketSubmitThrottleOrderRequest(string token,
             string orderId) : base(WebsocketEventTypeEnum.SUBMIT_THROTTLE_ORDER, token)
         {

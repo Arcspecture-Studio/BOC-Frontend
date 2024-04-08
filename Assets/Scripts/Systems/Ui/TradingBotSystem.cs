@@ -33,24 +33,24 @@ public class TradingBotSystem : MonoBehaviour
         switch (value)
         {
             case BotTypeEnum.NONE:
-                websocketComponent.generalRequests.Add(new General.WebsocketSaveTradingBotRequest(""));
+                // websocketComponent.generalRequests.Add(new General.WebsocketAddTradingBotRequest(""));
                 break;
             case BotTypeEnum.PREMIUM_INDEX:
-                websocketComponent.generalRequests.Add(new General.WebsocketSaveTradingBotRequest("",
-                    perference.symbol,
-                    perference.lossPercentage,
-                    perference.lossAmount,
-                    perference.marginDistributionMode == MarginDistributionModeEnum.WEIGHTED,
-                    perference.marginWeightDistributionValue,
-                    perference.takeProfitType,
-                    perference.orderType,
-                    perference.riskRewardRatio,
-                    perference.takeProfitTrailingCallbackPercentage,
-                    int.Parse(quickTabComponent.entryTimesInput.text),
-                    (TimeframeEnum)quickTabComponent.atrTimeframeDropdown.value,
-                    int.Parse(quickTabComponent.atrLengthInput.text),
-                    double.Parse(quickTabComponent.atrMultiplierInput.text)
-                ));
+                // websocketComponent.generalRequests.Add(new General.WebsocketAddTradingBotRequest("",
+                // perference.symbol,
+                //     perference.lossPercentage,
+                //     perference.lossAmount,
+                //     perference.marginDistributionMode == MarginDistributionModeEnum.WEIGHTED,
+                //     perference.marginWeightDistributionValue,
+                //     perference.takeProfitType,
+                //     perference.orderType,
+                //     perference.riskRewardRatio,
+                //     perference.takeProfitTrailingCallbackPercentage,
+                //     int.Parse(quickTabComponent.entryTimesInput.text),
+                //     (TimeframeEnum)quickTabComponent.atrTimeframeDropdown.value,
+                //     int.Parse(quickTabComponent.atrLengthInput.text),
+                //     double.Parse(quickTabComponent.atrMultiplierInput.text)
+                // ));
                 break;
         }
     }

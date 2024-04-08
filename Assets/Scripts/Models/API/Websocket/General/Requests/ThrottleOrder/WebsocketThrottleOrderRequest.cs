@@ -5,7 +5,7 @@ using System;
 namespace General
 {
     [Serializable]
-    public class WebsocketThrottleOrderRequest : WebsocketOrderIdRequest
+    public class WebsocketThrottleOrderRequest : WebsocketIdRequest
     {
         public string? parentOrderId;
         public CalculateThrottle? throttleCalculator;

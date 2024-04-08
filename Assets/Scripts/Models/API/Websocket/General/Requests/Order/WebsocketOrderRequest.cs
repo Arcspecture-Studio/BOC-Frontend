@@ -5,7 +5,7 @@ using System;
 namespace General
 {
     [Serializable]
-    public class WebsocketOrderRequest : WebsocketOrderIdRequest
+    public class WebsocketOrderRequest : WebsocketIdRequest
     {
         public PlatformEnum? platform;
         public string? symbol;
@@ -25,15 +25,6 @@ namespace General
             this.marginCalculator = marginCalculator;
             this.takeProfitType = takeProfitType;
             this.orderType = orderType;
-        }
-    }
-    [Serializable]
-    public class WebsocketOrderIdRequest
-    {
-        public string _id;
-        public WebsocketOrderIdRequest(string orderId)
-        {
-            this._id = orderId;
         }
     }
 }
