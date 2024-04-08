@@ -17,7 +17,7 @@ public class QuickTabComponent : MonoBehaviour
     public TMP_InputField atrMultiplierInput;
     public Button longButton;
     public Button shortButton;
-    public GameObject quickOrdersObject;
+    public GameObject quickOrderListObject;
     public Transform orderInfoTransform;
     public GameObject quickOrderDataRowPrefab;
 

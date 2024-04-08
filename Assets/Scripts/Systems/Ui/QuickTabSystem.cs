@@ -92,10 +92,8 @@ public class QuickTabSystem : MonoBehaviour
     void MovePage()
     {
         if (active == quickTabComponent.active) return;
-        if (tween != null)
-        {
-            if (tween.IsPlaying()) return;
-        }
+        if (tween != null && tween.IsPlaying()) return;
+
         active = quickTabComponent.active;
         float initialValue = active.Value ? quickTabComponent.inactiveYPosition : quickTabComponent.activeYPosition;
         float moveValue = active.Value ? quickTabComponent.inactiveToActiveYMovement : quickTabComponent.activeToInactiveYMovement;
@@ -133,6 +131,6 @@ public class QuickTabSystem : MonoBehaviour
     {
         if (spawnedQuickOrderObjectCount == quickTabComponent.spawnedQuickOrderObjects.Count) return;
         spawnedQuickOrderObjectCount = quickTabComponent.spawnedQuickOrderObjects.Count;
-        quickTabComponent.quickOrdersObject.SetActive(spawnedQuickOrderObjectCount > 0);
+        quickTabComponent.quickOrderListObject.SetActive(spawnedQuickOrderObjectCount > 0);
     }
 }

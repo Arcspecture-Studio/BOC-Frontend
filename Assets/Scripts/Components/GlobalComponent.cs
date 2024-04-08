@@ -31,4 +31,5 @@ public class GlobalComponent : MonoBehaviour
     public SpawnOrderComponent spawnOrderComponent;
     public SpawnQuickOrderComponent spawnQuickOrderComponent;
     public SpawnTradingBotComponent spawnTradingBotComponent;
+    public TradingBotTabComponent tradingBotTabComponent;
 }
