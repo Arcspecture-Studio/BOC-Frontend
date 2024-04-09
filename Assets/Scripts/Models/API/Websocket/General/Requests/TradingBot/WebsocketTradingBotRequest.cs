@@ -3,13 +3,13 @@ using System;
 namespace General
 {
     [Serializable]
-    public class WebsocketTradingBotRequest<T>
+    public class WebsocketTradingBotRequest
     {
         public PlatformEnum platform;
-        public TradingBotSetting<T> botSetting;
+        public TradingBotSetting botSetting;
         public QuickOrderSetting quickOrderSetting;
 
-        public WebsocketTradingBotRequest(PlatformEnum platform, TradingBotSetting<T> botSetting, QuickOrderSetting quickOrderSetting)
+        public WebsocketTradingBotRequest(PlatformEnum platform, TradingBotSetting botSetting, QuickOrderSetting quickOrderSetting)
         {
             this.platform = platform;
             this.botSetting = botSetting;

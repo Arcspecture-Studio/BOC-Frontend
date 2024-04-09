@@ -3,22 +3,22 @@ using UnityEngine.UI;
 
 public class OnClick_OpenTradingBotTabSystem : MonoBehaviour
 {
-    TradingBotTabComponent tradingBotTabComponent;
+    BotTabComponent botTabComponent;
     HideAllPanelComponent hideAllPanelComponent;
     Button button;
 
     void Start()
     {
-        tradingBotTabComponent = GlobalComponent.instance.tradingBotTabComponent;
+        botTabComponent = GlobalComponent.instance.botTabComponent;
         hideAllPanelComponent = GlobalComponent.instance.hideAllPanelComponent;
 
         button = GetComponent<Button>();
 
         button.onClick.AddListener(() =>
         {
-            hideAllPanelComponent.hideNow = "tradingBotTabComponent";
+            hideAllPanelComponent.hideNow = "botTabComponent";
 
-            tradingBotTabComponent.active = !tradingBotTabComponent.active;
+            botTabComponent.active = !botTabComponent.active;
         });
     }
 }

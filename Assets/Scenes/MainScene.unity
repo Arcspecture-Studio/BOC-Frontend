@@ -222,7 +222,7 @@ GameObject:
   - component: {fileID: 11401250}
   - component: {fileID: 11401251}
   m_Layer: 5
-  m_Name: Trading Bot List
+  m_Name: Trading Bot Data List
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -3676,7 +3676,9 @@ MonoBehaviour:
   premiumIndexSetting_shortThresholdPercentage: {fileID: 576361481}
   premiumIndexSetting_candleLength: {fileID: 1780051496}
   addBotButton: {fileID: 146784775}
-  tradingBotListObject: {fileID: 11401249}
+  botDataObjectList: {fileID: 11401249}
+  botDataRowParent: {fileID: 1623810005}
+  botDataRowPrefab: {fileID: 576008403832550382, guid: ab1ef58f7cb3a6d4f91dc04e06d17cce, type: 3}
   pageMoveDuration: 0.4
   pageMoveEase: 19
   activeYPosition: 200
@@ -4759,8 +4761,8 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1291532023}
   m_HandleRect: {fileID: 1291532022}
   m_Direction: 2
-  m_Value: -0.0000037868529
-  m_Size: 0.73653847
+  m_Value: -0.13626678
+  m_Size: 0.6596143
   m_NumberOfSteps: 0
   m_OnValueChanged:
     m_PersistentCalls:
@@ -10458,7 +10460,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 2033694428}
   m_HandleRect: {fileID: 2033694427}
   m_Direction: 2
-  m_Value: -0.000000703981
+  m_Value: -0.0000000703981
   m_Size: 0.49884394
   m_NumberOfSteps: 0
   m_OnValueChanged:
@@ -11179,10 +11181,10 @@ RectTransform:
   m_Father: {fileID: 2116195717}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.5, y: 0.5}
-  m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -140, y: 0}
-  m_SizeDelta: {x: 140, y: 40}
+  m_AnchorMin: {x: 0.09622348, y: 0.5}
+  m_AnchorMax: {x: 0.36600003, y: 0.5}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 0, y: 40}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &516558706
 MonoBehaviour:
@@ -18712,10 +18714,10 @@ RectTransform:
   m_Father: {fileID: 2116195717}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.5, y: 0.5}
-  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchorMin: {x: 0.36600003, y: 0.5}
+  m_AnchorMax: {x: 0.634, y: 0.5}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 140, y: 40}
+  m_SizeDelta: {x: 0, y: 40}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &877538930
 MonoBehaviour:
@@ -19524,8 +19526,8 @@ MonoBehaviour:
   atrMultiplierInput: {fileID: 1476488131}
   longButton: {fileID: 2065492063}
   shortButton: {fileID: 813237806}
-  quickOrderListObject: {fileID: 1782487928}
-  orderInfoTransform: {fileID: 1069288762}
+  quickOrderDataObjectList: {fileID: 1782487928}
+  quickOrderDataRowParent: {fileID: 1069288762}
   quickOrderDataRowPrefab: {fileID: 576008403832550382, guid: e72c2436d7c3de04d835d19d7d6cba70, type: 3}
   pageMoveDuration: 0.4
   pageMoveEase: 19
@@ -21342,10 +21344,10 @@ RectTransform:
   m_Father: {fileID: 2116195717}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.5, y: 0.5}
-  m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 140, y: 0}
-  m_SizeDelta: {x: 140, y: 40}
+  m_AnchorMin: {x: 0.634, y: 0.5}
+  m_AnchorMax: {x: 0.90171695, y: 0.5}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 0, y: 40}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &989106214
 MonoBehaviour:
@@ -23353,7 +23355,7 @@ GameObject:
   - component: {fileID: 1069288764}
   - component: {fileID: 1069288763}
   m_Layer: 5
-  m_Name: Order Information
+  m_Name: Row Parent
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -26058,7 +26060,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0, y: 867.0005}
+  m_AnchoredPosition: {x: 0, y: 866.99994}
   m_SizeDelta: {x: 0, y: 1730}
   m_Pivot: {x: 0, y: 1}
 --- !u!114 &1185559201
@@ -30783,7 +30785,6 @@ MonoBehaviour:
   settingPageComponent: {fileID: 680527080}
   quickTabComponent: {fileID: 909877266}
   hideAllPanelComponent: {fileID: 1439778833}
-  tradingBotComponent: {fileID: 0}
   miniPromptComponent: {fileID: 792923717748285592}
   getInitialDataComponent: {fileID: 1439778837}
   getRuntimeDataComponent: {fileID: 1439778842}
@@ -30792,7 +30793,7 @@ MonoBehaviour:
   spawnOrderComponent: {fileID: 1439778845}
   spawnQuickOrderComponent: {fileID: 1439778844}
   spawnTradingBotComponent: {fileID: 1439778843}
-  tradingBotTabComponent: {fileID: 163809865}
+  botTabComponent: {fileID: 0}
 --- !u!114 &1439778811
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -35012,7 +35013,7 @@ GameObject:
   - component: {fileID: 1623810007}
   - component: {fileID: 1623810006}
   m_Layer: 5
-  m_Name: Order Information
+  m_Name: Row Parent
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -37417,7 +37418,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0, y: 137.00049}
+  m_AnchoredPosition: {x: 0, y: 155.66853}
   m_SizeDelta: {x: 0, y: 520}
   m_Pivot: {x: 0, y: 1}
 --- !u!114 &1746657102
@@ -38522,7 +38523,7 @@ GameObject:
   - component: {fileID: 1782487929}
   - component: {fileID: 1782487930}
   m_Layer: 5
-  m_Name: Quick Order List
+  m_Name: Quick Order Data List
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

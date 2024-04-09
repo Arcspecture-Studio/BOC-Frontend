@@ -48,7 +48,7 @@ namespace General
     public class WebsocketGetTradingBotResponse
     {
         public string id;
-        public BotTypeEnum botType;
-        public string symbol;
+        public TradingBotSetting botSetting;
+        public QuickOrderSetting quickOrderSetting;
     }
 }

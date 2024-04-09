@@ -5,7 +5,7 @@ using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.UI;
 
-public class TradingBotTabComponent : MonoBehaviour
+public class BotTabComponent : MonoBehaviour
 {
     [Header("Reference")]
     public RectTransform rectTransform;
@@ -18,7 +18,9 @@ public class TradingBotTabComponent : MonoBehaviour
     public TMP_InputField premiumIndexSetting_shortThresholdPercentage;
     public TMP_InputField premiumIndexSetting_candleLength;
     public Button addBotButton;
-    public GameObject tradingBotListObject;
+    public GameObject botDataObjectList;
+    public Transform botDataRowParent;
+    public GameObject botDataRowPrefab;
 
     [Header("Config")]
     public float pageMoveDuration;
@@ -30,6 +32,10 @@ public class TradingBotTabComponent : MonoBehaviour
 
     [Header("Runtime")]
     public bool active = false;
+    public BotTypeEnum botType
+    {
+        get { return (BotTypeEnum)botTypeDropdown.value; }
+    }
     public bool addToServer
     {
         set { onChange_addToServer.Invoke(); }
@@ -40,5 +46,5 @@ public class TradingBotTabComponent : MonoBehaviour
         set { onChange_deleteFromServer.Invoke(value); }
     }
     [HideInInspector] public UnityEvent<string> onChange_deleteFromServer = new();
-    public Dictionary<string, GameObject> spawnedTradingBotObjects = new();
+    public Dictionary<string, GameObject> spawnedBotDataObjects = new();
 }

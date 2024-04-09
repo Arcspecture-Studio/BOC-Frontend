@@ -7,7 +7,7 @@ public class GetRuntimeDataSystem : MonoBehaviour
     GetRuntimeDataComponent getRuntimeDataComponent;
     SpawnOrderComponent spawnOrderComponent;
     SpawnQuickOrderComponent spawnQuickOrderComponent;
-    SpawnTradingBotComponent spawnTradingBotComponent;
+    SpawnBotComponent spawnTradingBotComponent;
     WebsocketComponent websocketComponent;
     LoginComponent loginComponent;
     PlatformComponent platformComponent;

@@ -22,7 +22,6 @@ public class GlobalComponent : MonoBehaviour
     public SettingPageComponent settingPageComponent;
     public QuickTabComponent quickTabComponent;
     public HideAllPanelComponent hideAllPanelComponent;
-    public TradingBotComponent tradingBotComponent;
     public MiniPromptComponent miniPromptComponent;
     public GetInitialDataComponent getInitialDataComponent;
     public GetRuntimeDataComponent getRuntimeDataComponent;
@@ -30,6 +29,6 @@ public class GlobalComponent : MonoBehaviour
     public ProfileComponent profileComponent;
     public SpawnOrderComponent spawnOrderComponent;
     public SpawnQuickOrderComponent spawnQuickOrderComponent;
-    public SpawnTradingBotComponent spawnTradingBotComponent;
-    public TradingBotTabComponent tradingBotTabComponent;
+    public SpawnBotComponent spawnTradingBotComponent;
+    public BotTabComponent botTabComponent;
 }

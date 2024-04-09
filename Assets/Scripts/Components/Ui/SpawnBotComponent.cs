@@ -1,7 +1,7 @@
 using UnityEngine;
 using UnityEngine.Events;
 
-public class SpawnTradingBotComponent : MonoBehaviour
+public class SpawnBotComponent : MonoBehaviour
 {
     public General.WebsocketGetTradingBotResponse botToSpawn
     {

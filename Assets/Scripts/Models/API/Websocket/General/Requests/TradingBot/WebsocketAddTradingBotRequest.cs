@@ -3,13 +3,13 @@ using System;
 namespace General
 {
     [Serializable]
-    public class WebsocketAddTradingBotRequest<T> : WebsocketGeneralRequest
+    public class WebsocketAddTradingBotRequest : WebsocketGeneralRequest
     {
-        public WebsocketTradingBotRequest<T> botRequest;
+        public WebsocketTradingBotRequest botRequest;
 
         public WebsocketAddTradingBotRequest(string token,
             PlatformEnum platform,
-            TradingBotSetting<T> botSetting,
+            TradingBotSetting botSetting,
             QuickOrderSetting quickOrderSetting) :
         base(WebsocketEventTypeEnum.ADD_TRADING_BOT, token)
         {

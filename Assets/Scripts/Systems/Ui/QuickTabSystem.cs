@@ -25,10 +25,7 @@ public class QuickTabSystem : MonoBehaviour
         spawnQuickOrderComponent = GlobalComponent.instance.spawnQuickOrderComponent;
         loginComponent = GlobalComponent.instance.loginComponent;
 
-        quickTabComponent.onChange_addToServer.AddListener(AddToServer);
-        quickTabComponent.onChange_deleteFromServer.AddListener(DeleteFromServer);
-
-        InitializeButtonListener();
+        InitializeListener();
     }
     void Update()
     {
@@ -38,8 +35,10 @@ public class QuickTabSystem : MonoBehaviour
         ShowAndHideQuickOrdersObject();
     }
 
-    void InitializeButtonListener()
+    void InitializeListener()
     {
+        quickTabComponent.onChange_addToServer.AddListener(AddToServer);
+        quickTabComponent.onChange_deleteFromServer.AddListener(DeleteFromServer);
         quickTabComponent.longButton.onClick.AddListener(() =>
         {
             quickTabComponent.isLong = true;
@@ -89,18 +88,6 @@ public class QuickTabSystem : MonoBehaviour
     {
         websocketComponent.generalRequests.Add(new General.WebsocketDeleteQuickOrderRequest(loginComponent.token, orderId));
     }
-    void MovePage()
-    {
-        if (active == quickTabComponent.active) return;
-        if (tween != null && tween.IsPlaying()) return;
-
-        active = quickTabComponent.active;
-        float initialValue = active.Value ? quickTabComponent.inactiveYPosition : quickTabComponent.activeYPosition;
-        float moveValue = active.Value ? quickTabComponent.inactiveToActiveYMovement : quickTabComponent.activeToInactiveYMovement;
-        quickTabComponent.rectTransform.anchoredPosition = new Vector2(quickTabComponent.rectTransform.anchoredPosition.x,
-            initialValue);
-        tween = quickTabComponent.rectTransform.DOBlendableLocalMoveBy(new Vector3(0, moveValue, 0), quickTabComponent.pageMoveDuration).SetEase(quickTabComponent.pageMoveEase);
-    }
     void SpawnQuickOrderObject()
     {
         string jsonString = websocketComponent.RetrieveGeneralResponses(WebsocketEventTypeEnum.ADD_QUICK_ORDER);
@@ -121,16 +108,28 @@ public class QuickTabSystem : MonoBehaviour
 
         General.WebsocketDeleteQuickOrderResponse response = JsonConvert.DeserializeObject<General.WebsocketDeleteQuickOrderResponse>(jsonString, JsonSerializerConfig.settings);
 
-        if (quickTabComponent.spawnedQuickOrderObjects.TryGetValue(response.orderId, out GameObject quickOrderObject))
+        if (quickTabComponent.spawnedQuickOrderDataObjects.TryGetValue(response.orderId, out GameObject quickOrderObject))
         {
             Destroy(quickOrderObject);
-            quickTabComponent.spawnedQuickOrderObjects.Remove(response.orderId);
+            quickTabComponent.spawnedQuickOrderDataObjects.Remove(response.orderId);
         }
+    }
+    void MovePage()
+    {
+        if (active == quickTabComponent.active) return;
+        if (tween != null && tween.IsPlaying()) return;
+
+        active = quickTabComponent.active;
+        float initialValue = active.Value ? quickTabComponent.inactiveYPosition : quickTabComponent.activeYPosition;
+        float moveValue = active.Value ? quickTabComponent.inactiveToActiveYMovement : quickTabComponent.activeToInactiveYMovement;
+        quickTabComponent.rectTransform.anchoredPosition = new Vector2(quickTabComponent.rectTransform.anchoredPosition.x,
+            initialValue);
+        tween = quickTabComponent.rectTransform.DOBlendableLocalMoveBy(new Vector3(0, moveValue, 0), quickTabComponent.pageMoveDuration).SetEase(quickTabComponent.pageMoveEase);
     }
     void ShowAndHideQuickOrdersObject()
     {
-        if (spawnedQuickOrderObjectCount == quickTabComponent.spawnedQuickOrderObjects.Count) return;
-        spawnedQuickOrderObjectCount = quickTabComponent.spawnedQuickOrderObjects.Count;
-        quickTabComponent.quickOrderListObject.SetActive(spawnedQuickOrderObjectCount > 0);
+        if (spawnedQuickOrderObjectCount == quickTabComponent.spawnedQuickOrderDataObjects.Count) return;
+        spawnedQuickOrderObjectCount = quickTabComponent.spawnedQuickOrderDataObjects.Count;
+        quickTabComponent.quickOrderDataObjectList.SetActive(spawnedQuickOrderObjectCount > 0);
     }
 }

@@ -17,8 +17,8 @@ public class QuickTabComponent : MonoBehaviour
     public TMP_InputField atrMultiplierInput;
     public Button longButton;
     public Button shortButton;
-    public GameObject quickOrderListObject;
-    public Transform orderInfoTransform;
+    public GameObject quickOrderDataObjectList;
+    public Transform quickOrderDataRowParent;
     public GameObject quickOrderDataRowPrefab;
 
     [Header("Config")]
@@ -48,5 +48,5 @@ public class QuickTabComponent : MonoBehaviour
     }
     [HideInInspector] public UnityEvent<string> onChange_deleteFromServer = new();
     public bool isLong;
-    public Dictionary<string, GameObject> spawnedQuickOrderObjects = new();
+    public Dictionary<string, GameObject> spawnedQuickOrderDataObjects = new();
 }
