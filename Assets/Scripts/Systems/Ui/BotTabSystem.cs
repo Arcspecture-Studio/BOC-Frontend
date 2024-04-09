@@ -60,7 +60,38 @@ public class BotTabSystem : MonoBehaviour
                 botTabComponent.longOrderLimitInput.text = value;
             }
         });
-        // TODO
+        botTabComponent.shortOrderLimitInput.onEndEdit.AddListener(value =>
+        {
+            if (value.IsNullOrEmpty())
+            {
+                value = "1";
+                botTabComponent.shortOrderLimitInput.text = value;
+            }
+        });
+        botTabComponent.premiumIndexSetting_longThresholdPercentage.onEndEdit.AddListener(value =>
+        {
+            if (value.IsNullOrEmpty())
+            {
+                value = "0.1";
+                botTabComponent.premiumIndexSetting_longThresholdPercentage.text = value;
+            }
+        });
+        botTabComponent.premiumIndexSetting_shortThresholdPercentage.onEndEdit.AddListener(value =>
+        {
+            if (value.IsNullOrEmpty())
+            {
+                value = "0.1";
+                botTabComponent.premiumIndexSetting_shortThresholdPercentage.text = value;
+            }
+        });
+        botTabComponent.premiumIndexSetting_candleLength.onEndEdit.AddListener(value =>
+        {
+            if (value.IsNullOrEmpty())
+            {
+                value = "13";
+                botTabComponent.premiumIndexSetting_candleLength.text = value;
+            }
+        });
     }
     void AddToServer()
     {
