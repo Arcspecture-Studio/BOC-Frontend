@@ -1,4 +1,5 @@
 using UnityEngine;
+using WebSocketSharp;
 
 public class QuickTabUpdatePreferenceDataSystem : MonoBehaviour
 {
@@ -33,6 +34,11 @@ public class QuickTabUpdatePreferenceDataSystem : MonoBehaviour
     {
         quickTabComponent.entryTimesInput.onEndEdit.AddListener(value =>
         {
+            if (value.IsNullOrEmpty())
+            {
+                value = "2";
+                quickTabComponent.entryTimesInput.text = value;
+            }
             if (profileComponent.activeProfile.preference.quickEntryTimes == int.Parse(value)) return;
             profileComponent.activeProfile.preference.quickEntryTimes = int.Parse(value);
             settingPageComponent.updatePreferenceToServer = true;
@@ -45,12 +51,22 @@ public class QuickTabUpdatePreferenceDataSystem : MonoBehaviour
         });
         quickTabComponent.atrLengthInput.onEndEdit.AddListener(value =>
         {
+            if (value.IsNullOrEmpty())
+            {
+                value = "13";
+                quickTabComponent.atrLengthInput.text = value;
+            }
             if (profileComponent.activeProfile.preference.atrLength == int.Parse(value)) return;
             profileComponent.activeProfile.preference.atrLength = int.Parse(value);
             settingPageComponent.updatePreferenceToServer = true;
         });
         quickTabComponent.atrMultiplierInput.onEndEdit.AddListener(value =>
         {
+            if (value.IsNullOrEmpty())
+            {
+                value = "3";
+                quickTabComponent.atrMultiplierInput.text = value;
+            }
             if (profileComponent.activeProfile.preference.atrMultiplier == double.Parse(value)) return;
             profileComponent.activeProfile.preference.atrMultiplier = double.Parse(value);
             settingPageComponent.updatePreferenceToServer = true;

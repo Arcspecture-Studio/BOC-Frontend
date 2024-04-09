@@ -1,5 +1,6 @@
 
 using UnityEngine;
+using WebSocketSharp;
 
 public class SettingPagePreferenceSystem : MonoBehaviour
 {
@@ -29,20 +30,25 @@ public class SettingPagePreferenceSystem : MonoBehaviour
         settingPageComponent.symbolInput.onValueChanged.AddListener(value => settingPageComponent.symbolInput.text = value.ToUpper());
         settingPageComponent.symbolInput.onEndEdit.AddListener(value =>
         {
+            if (value.IsNullOrEmpty())
+            {
+                value = "BTCUSDT";
+                settingPageComponent.symbolInput.text = value;
+            }
             if (profileComponent.activeProfile.preference.symbol == value) return;
             profileComponent.activeProfile.preference.symbol = value;
             settingPageComponent.updatePreferenceToServer = true;
         });
         settingPageComponent.lossPercentageInput.onEndEdit.AddListener(value =>
         {
-            if (value == "") value = "0";
+            if (value.IsNullOrEmpty()) value = "0";
             if (profileComponent.activeProfile.preference.lossPercentage == double.Parse(value)) return;
             profileComponent.activeProfile.preference.lossPercentage = double.Parse(value);
             settingPageComponent.updatePreferenceToServer = true;
         });
         settingPageComponent.lossAmountInput.onEndEdit.AddListener(value =>
         {
-            if (value == "") value = "0";
+            if (value.IsNullOrEmpty()) value = "0";
             if (profileComponent.activeProfile.preference.lossAmount == double.Parse(value)) return;
             profileComponent.activeProfile.preference.lossAmount = double.Parse(value);
             settingPageComponent.updatePreferenceToServer = true;
@@ -59,7 +65,7 @@ public class SettingPagePreferenceSystem : MonoBehaviour
         });
         settingPageComponent.riskRewardRatioInput.onEndEdit.AddListener(value =>
         {
-            if (value == "")
+            if (value.IsNullOrEmpty())
             {
                 value = "1";
                 settingPageComponent.riskRewardRatioInput.text = value;

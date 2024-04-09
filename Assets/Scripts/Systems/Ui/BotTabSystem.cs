@@ -48,6 +48,19 @@ public class BotTabSystem : MonoBehaviour
             botTabComponent.addToServer = true;
             botTabComponent.addBotButton.interactable = false;
         });
+        ValidateInput();
+    }
+    void ValidateInput()
+    {
+        botTabComponent.longOrderLimitInput.onEndEdit.AddListener(value =>
+        {
+            if (value.IsNullOrEmpty())
+            {
+                value = "1";
+                botTabComponent.longOrderLimitInput.text = value;
+            }
+        });
+        // TODO
     }
     void AddToServer()
     {
