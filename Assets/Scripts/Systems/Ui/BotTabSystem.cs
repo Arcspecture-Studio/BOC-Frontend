@@ -113,7 +113,17 @@ public class BotTabSystem : MonoBehaviour
     }
     void DestroyTradingBotObject()
     {
-        // TODO: refer quick tab system
+        string jsonString = websocketComponent.RetrieveGeneralResponses(WebsocketEventTypeEnum.DELETE_TRADING_BOT);
+        websocketComponent.RemovesGeneralResponses(WebsocketEventTypeEnum.DELETE_TRADING_BOT);
+        if (jsonString.IsNullOrEmpty()) return;
+
+        General.WebsocketDeleteTradingBotResponse response = JsonConvert.DeserializeObject<General.WebsocketDeleteTradingBotResponse>(jsonString, JsonSerializerConfig.settings);
+
+        if (botTabComponent.spawnedBotDataObjects.TryGetValue(response.botId, out GameObject botDataObject))
+        {
+            Destroy(botDataObject);
+            botTabComponent.spawnedBotDataObjects.Remove(response.botId);
+        }
     }
     void MovePage()
     {

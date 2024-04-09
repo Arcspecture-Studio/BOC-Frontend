@@ -108,9 +108,9 @@ public class QuickTabSystem : MonoBehaviour
 
         General.WebsocketDeleteQuickOrderResponse response = JsonConvert.DeserializeObject<General.WebsocketDeleteQuickOrderResponse>(jsonString, JsonSerializerConfig.settings);
 
-        if (quickTabComponent.spawnedQuickOrderDataObjects.TryGetValue(response.orderId, out GameObject quickOrderObject))
+        if (quickTabComponent.spawnedQuickOrderDataObjects.TryGetValue(response.orderId, out GameObject quickOrderDataObject))
         {
-            Destroy(quickOrderObject);
+            Destroy(quickOrderDataObject);
             quickTabComponent.spawnedQuickOrderDataObjects.Remove(response.orderId);
         }
     }
