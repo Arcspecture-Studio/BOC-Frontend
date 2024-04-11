@@ -49,6 +49,7 @@ public class BotTabSystem : MonoBehaviour
             botTabComponent.addBotButton.interactable = false;
         });
         ValidateInput();
+        // TODO: add these value into preference
         botTabComponent.longOrderLimitInput.onEndEdit.Invoke("");
         botTabComponent.shortOrderLimitInput.onEndEdit.Invoke("");
         botTabComponent.premiumIndexSetting_longThresholdPercentage.onEndEdit.Invoke("");
