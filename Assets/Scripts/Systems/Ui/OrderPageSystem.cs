@@ -1,4 +1,3 @@
-using Newtonsoft.Json;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
@@ -9,10 +8,11 @@ using MongoDB.Bson;
 public class OrderPageSystem : MonoBehaviour
 {
     OrderPageComponent orderPageComponent;
-    PlatformComponent platformComponent;
-    PreferenceComponent preferenceComponent;
     WebsocketComponent websocketComponent;
     PromptComponent promptComponent;
+    LoginComponent loginComponent;
+    PlatformComponent platformComponent;
+    ProfileComponent profileComponent;
 
     bool? lockForEdit = null;
     OrderStatusEnum? orderStatus = null;
@@ -21,10 +21,11 @@ public class OrderPageSystem : MonoBehaviour
     void Start()
     {
         orderPageComponent = GetComponent<OrderPageComponent>();
-        platformComponent = GlobalComponent.instance.platformComponent;
-        preferenceComponent = GlobalComponent.instance.preferenceComponent;
         websocketComponent = GlobalComponent.instance.websocketComponent;
         promptComponent = GlobalComponent.instance.promptComponent;
+        loginComponent = GlobalComponent.instance.loginComponent;
+        platformComponent = GlobalComponent.instance.platformComponent;
+        profileComponent = GlobalComponent.instance.profileComponent;
 
         if (orderPageComponent.orderId.IsNullOrEmpty())
             orderPageComponent.orderId = ObjectId.GenerateNewId().ToString();
@@ -138,17 +139,40 @@ public class OrderPageSystem : MonoBehaviour
             UpdateTakeProfitPrice();
         });
 
+        orderPageComponent.onChange_addToServer.AddListener(AddToServer);
+        orderPageComponent.onChange_updateToServer.AddListener(UpdateToServer);
+        orderPageComponent.onChange_deleteFromServer.AddListener(DeleteFromServer);
+        orderPageComponent.onChange_submitToServer.AddListener(SubmitToServer);
+
         orderPageComponent.orderIdText.text = "Order Id: " + orderPageComponent.orderId.ToString();
+
+        RestoreFromProfilePreference();
     }
     void Update()
     {
         StartCoroutine(CalculateMargin());
         UpdateUiInteractableStatus();
-        UpdateOrderStatus();
-        UpdatePositionInfo();
-        UpdateOrderToServer();
     }
 
+    void RestoreFromProfilePreference()
+    {
+        if (orderPageComponent.instantiateWithData) return;
+
+        ProfilePerference preference = profileComponent.activeProfile.preference;
+        if (!preference.symbol.IsNullOrEmpty())
+        {
+            orderPageComponent.symbolDropdownComponent.selectedSymbol = preference.symbol.ToUpper();
+        }
+        orderPageComponent.maxLossPercentageInput.text = preference.lossPercentage == 0 ? "" : preference.lossPercentage.ToString();
+        orderPageComponent.maxLossAmountInput.text = preference.lossAmount == 0 ? "" : preference.lossAmount.ToString();
+        orderPageComponent.marginDistributionModeDropdown.value = (int)preference.marginDistributionMode;
+        orderPageComponent.marginWeightDistributionValueSlider.value = (float)preference.marginWeightDistributionValue;
+        orderPageComponent.takeProfitTypeDropdown.value = (int)preference.takeProfitType;
+        orderPageComponent.riskRewardRatioInput.text = preference.riskRewardRatio.ToString();
+        orderPageComponent.takeProfitTrailingCallbackPercentageSlider.value = (float)preference.takeProfitTrailingCallbackPercentage;
+        orderPageComponent.takeProfitTrailingCallbackPercentageInput.text = preference.takeProfitTrailingCallbackPercentage.ToString();
+        orderPageComponent.orderTypeDropdown.value = (int)preference.orderType;
+    }
     IEnumerator CalculateMargin()
     {
         if (!orderPageComponent.calculate) yield break;
@@ -179,9 +203,8 @@ public class OrderPageSystem : MonoBehaviour
                 double.Parse(orderPageComponent.stopLossInput.text);
             double takeProfitPrice = orderPageComponent.takeProfitInput.text.IsNullOrEmpty() ? double.NaN :
                 double.Parse(orderPageComponent.takeProfitInput.text);
-            double riskRewardRatio = orderPageComponent.riskRewardRatioInput.text.IsNullOrEmpty() ? preferenceComponent.riskRewardRatio : double.Parse(orderPageComponent.riskRewardRatioInput.text);
-            double takeProfitTrailingCallbackPercentage = orderPageComponent.takeProfitTrailingCallbackPercentageInput.text.IsNullOrEmpty() ? preferenceComponent.takeProfitTrailingCallbackPercentage : double.Parse(orderPageComponent.takeProfitTrailingCallbackPercentageInput.text);
-            double normalizedMarginWeightDistributionValue = orderPageComponent.marginWeightDistributionValueSlider.value * OrderConfig.MARGIN_WEIGHT_DISTRIBUTION_RANGE;
+            double riskRewardRatio = orderPageComponent.riskRewardRatioInput.text.IsNullOrEmpty() ? profileComponent.activeProfile.preference.riskRewardRatio : double.Parse(orderPageComponent.riskRewardRatioInput.text);
+            double takeProfitTrailingCallbackPercentage = orderPageComponent.takeProfitTrailingCallbackPercentageInput.text.IsNullOrEmpty() ? profileComponent.activeProfile.preference.takeProfitTrailingCallbackPercentage : double.Parse(orderPageComponent.takeProfitTrailingCallbackPercentageInput.text);
 
             // validate input
             if (walletUnit.IsNullOrEmpty())
@@ -243,7 +266,7 @@ public class OrderPageSystem : MonoBehaviour
                     platformComponent.quantityPrecisions[orderPageComponent.symbolDropdownComponent.selectedSymbol],
                     platformComponent.pricePrecisions[orderPageComponent.symbolDropdownComponent.selectedSymbol],
                     orderPageComponent.marginDistributionModeDropdown.value == 1,
-                    normalizedMarginWeightDistributionValue);
+                    orderPageComponent.marginWeightDistributionValueSlider.value);
             #endregion
         }
 
@@ -284,7 +307,7 @@ public class OrderPageSystem : MonoBehaviour
         orderPageComponent.resultComponent.orderInfoDataObject.transform.GetChild(4).gameObject.SetActive(false);
         #endregion
         #region Prices & Quantities
-        List<double> tpPrices = (TakeProfitTypeEnum)orderPageComponent.takeProfitTypeDropdown.value == TakeProfitTypeEnum.TAKE_ON_RETURN_TRAILING ? orderPageComponent.marginCalculator.takeProfitTrailingPrices : orderPageComponent.marginCalculator.takeProfitPrices;
+        List<double> tpPrices = (TakeProfitTypeEnum)orderPageComponent.takeProfitTypeDropdown.value == TakeProfitTypeEnum.TRAILING ? orderPageComponent.marginCalculator.takeProfitTrailingPrices : orderPageComponent.marginCalculator.takeProfitPrices;
         for (int i = 0; i < orderPageComponent.marginCalculator.entryPrices.Count; i++)
         {
             #region Prices
@@ -357,13 +380,13 @@ public class OrderPageSystem : MonoBehaviour
         if (calculateButtonPressed)
         {
             calculateButtonPressed = false;
-            orderPageComponent.saveToServer = true;
+            orderPageComponent.addToServer = true;
         }
         #endregion
     }
     void ShowPrompt(string message, bool goToEditMode = true)
     {
-        promptComponent.ShowPrompt("ERROR", message, () =>
+        promptComponent.ShowPrompt(PromptConstant.ERROR, message, () =>
         {
             promptComponent.active = false;
             if (goToEditMode)
@@ -404,7 +427,7 @@ public class OrderPageSystem : MonoBehaviour
         orderPageComponent.resultComponent.gameObject.SetActive(lockForEdit.Value);
         orderPageComponent.takeProfitTypeObject.SetActive(lockForEdit.Value);
         orderPageComponent.riskRewardRatioObject.SetActive(orderPageComponent.lockForEdit && orderPageComponent.takeProfitTypeDropdown.value > (int)TakeProfitTypeEnum.NONE);
-        orderPageComponent.takeProfitTrailingCallbackPercentageObject.SetActive(orderPageComponent.lockForEdit && orderPageComponent.takeProfitTypeDropdown.value == (int)TakeProfitTypeEnum.TAKE_ON_RETURN_TRAILING);
+        orderPageComponent.takeProfitTrailingCallbackPercentageObject.SetActive(orderPageComponent.lockForEdit && orderPageComponent.takeProfitTypeDropdown.value == (int)TakeProfitTypeEnum.TRAILING);
         orderPageComponent.orderTypeObject.SetActive(lockForEdit.Value);
         orderPageComponent.applyButtonObject.SetActive(lockForEdit.Value);
     }
@@ -417,109 +440,51 @@ public class OrderPageSystem : MonoBehaviour
         orderPageComponent.throttleObject.SetActive(isFilled);
         if (orderStatus != OrderStatusEnum.FILLED) orderPageComponent.positionInfoPaidFundingAmount.text = "0";
     }
-    void UpdateOrderStatus()
+    void AddToServer()
     {
-        string saveOrderString = websocketComponent.RetrieveGeneralResponses(WebsocketEventTypeEnum.SAVE_ORDER.ToString());
-        if (saveOrderString.IsNullOrEmpty()) return;
-        General.WebsocketSaveOrderResponse response = JsonConvert.DeserializeObject<General.WebsocketSaveOrderResponse>(saveOrderString, JsonSerializerConfig.settings);
-        if (response.orderId.Equals(orderPageComponent.orderId))
-        {
-            websocketComponent.RemovesGeneralResponses(WebsocketEventTypeEnum.SAVE_ORDER.ToString());
-            orderPageComponent.orderStatus = response.status;
-            orderPageComponent.orderStatusError = response.statusError;
-            // BUG: since server can now spawn order,  meaning frontend here haven't get balance (CalculateMargin function will wait for get balance to call), ady received SAVE_ORDER from server (because order just spawned at this timing)
-            if (orderPageComponent.resultComponent.orderInfoDataObject != null)
-                orderPageComponent.resultComponent.orderInfoDataObject.transform.GetChild(3).GetComponent<TMP_Text>().text = orderPageComponent.orderStatus.ToString();
-            if (!response.errorJsonString.IsNullOrEmpty())
-            {
-                switch (platformComponent.tradingPlatform)
-                {
-                    case PlatformEnum.BINANCE:
-                    case PlatformEnum.BINANCE_TESTNET:
-                        Binance.WebrequestGeneralResponse binanceResponse = JsonConvert.DeserializeObject<Binance.WebrequestGeneralResponse>(response.errorJsonString, JsonSerializerConfig.settings);
-                        if (binanceResponse.code.HasValue)
-                        {
-                            string message = binanceResponse.msg + " (Binance Error Code: " + binanceResponse.code.Value + ")";
-                            ShowPrompt(message, false);
-                        }
-                        break;
-                }
-            }
-        }
-    }
-    void UpdateOrderToServer()
-    {
-        if (orderPageComponent.saveToServer)
-        {
-            orderPageComponent.saveToServer = false;
-            websocketComponent.generalRequests.Add(new General.WebsocketSaveOrderRequest(
-                orderPageComponent.orderId,
-                platformComponent.tradingPlatform,
-                orderPageComponent.marginCalculator,
-                orderPageComponent.symbolDropdownComponent.selectedSymbol,
-                (TakeProfitTypeEnum)orderPageComponent.takeProfitTypeDropdown.value,
-                (OrderTypeEnum)orderPageComponent.orderTypeDropdown.value
-            ));
-        }
-        if (orderPageComponent.updateToServer)
-        {
-            orderPageComponent.updateToServer = false;
-            websocketComponent.generalRequests.Add(new General.WebsocketSaveOrderRequest(
-                orderPageComponent.orderId,
-                platformComponent.tradingPlatform,
-                orderPageComponent.marginCalculator,
-                (TakeProfitTypeEnum)orderPageComponent.takeProfitTypeDropdown.value,
-                (OrderTypeEnum)orderPageComponent.orderTypeDropdown.value
-            ));
-        }
-        if (orderPageComponent.submitToServer)
-        {
-            orderPageComponent.submitToServer = false;
-            websocketComponent.generalRequests.Add(new General.WebsocketSaveOrderRequest(
-               orderPageComponent.orderId,
-               platformComponent.tradingPlatform,
-               true
-            ));
-        }
-        if (orderPageComponent.deleteFromServer)
-        {
-            orderPageComponent.deleteFromServer = false;
-            websocketComponent.generalRequests.Add(new General.WebsocketSaveOrderRequest(
-                orderPageComponent.orderId,
-                platformComponent.tradingPlatform
-            ));
-        }
-    }
-    void UpdatePositionInfo()
-    {
-        string retrievePositionInfoString = websocketComponent.RetrieveGeneralResponses(WebsocketEventTypeEnum.RETRIEVE_POSITION_INFO.ToString());
-        if (retrievePositionInfoString.IsNullOrEmpty()) return;
-        General.WebsocketRetrievePositionInfoResponse response = JsonConvert.DeserializeObject<General.WebsocketRetrievePositionInfoResponse>(retrievePositionInfoString, JsonSerializerConfig.settings);
-        if (response.orderId.Equals(orderPageComponent.orderId))
-        {
-            websocketComponent.RemovesGeneralResponses(WebsocketEventTypeEnum.RETRIEVE_POSITION_INFO.ToString());
-            // BUG: since now server can spawn order, meaning frontend here haven't get exchangeInfo, server ady send RETRIEVE_POSITION_INFO (because order just spawned at this timing)
-            if (response.averagePriceFilled.HasValue && platformComponent.pricePrecisions.ContainsKey(orderPageComponent.symbolDropdownComponent.selectedSymbol))
-            {
-                orderPageComponent.positionInfoAvgEntryPriceFilledText.text = Utils.RoundNDecimal(response.averagePriceFilled.Value, platformComponent.pricePrecisions[orderPageComponent.symbolDropdownComponent.selectedSymbol]).ToString();
-            }
-            if (response.quantityFilled.HasValue && platformComponent.quantityPrecisions.ContainsKey(orderPageComponent.symbolDropdownComponent.selectedSymbol))
-            {
-                orderPageComponent.positionInfoQuantityFilledText.text = Utils.RoundNDecimal(response.quantityFilled.Value, platformComponent.quantityPrecisions[orderPageComponent.symbolDropdownComponent.selectedSymbol]).ToString();
-            }
-            if (response.actualTakeProfitPrice.HasValue && platformComponent.pricePrecisions.ContainsKey(orderPageComponent.symbolDropdownComponent.selectedSymbol))
-            {
-                orderPageComponent.positionInfoActualTakeProfitPriceText.text = Utils.RoundNDecimal(response.actualTakeProfitPrice.Value, platformComponent.pricePrecisions[orderPageComponent.symbolDropdownComponent.selectedSymbol]).ToString();
-            }
-            if (response.paidFundingAmount.HasValue)
-            {
-                orderPageComponent.positionInfoPaidFundingAmount.text = response.paidFundingAmount.Value.ToString();
-            }
-        }
+        websocketComponent.generalRequests.Add(
+            new General.WebsocketAddOrderRequest(
+            loginComponent.token,
+            orderPageComponent.orderId,
+            platformComponent.activePlatform,
+            orderPageComponent.symbolDropdownComponent.selectedSymbol,
+            orderPageComponent.marginCalculator,
+            (TakeProfitTypeEnum)orderPageComponent.takeProfitTypeDropdown.value,
+            (OrderTypeEnum)orderPageComponent.orderTypeDropdown.value
+        ));
     }
     public void UpdateToServer()
     {
-        orderPageComponent.updateToServer = true;
+        websocketComponent.generalRequests.Add(
+            new General.WebsocketUpdateOrderRequest(
+            loginComponent.token,
+            orderPageComponent.orderId,
+            orderPageComponent.marginCalculator,
+            (TakeProfitTypeEnum)orderPageComponent.takeProfitTypeDropdown.value,
+            (OrderTypeEnum)orderPageComponent.orderTypeDropdown.value,
+            orderPageComponent.tradingBotId
+        ));
+    }
+    void DeleteFromServer()
+    {
+        foreach (OrderPageThrottleComponent orderPageThrottleComponent in orderPageComponent.throttleParentComponent.orderPageThrottleComponents)
+        {
+            Destroy(orderPageThrottleComponent.gameObject);
+        }
+
+        websocketComponent.generalRequests.Add(
+            new General.WebsocketDeleteOrderRequest(
+            loginComponent.token,
+            orderPageComponent.orderId
+        ));
+    }
+    void SubmitToServer()
+    {
+        websocketComponent.generalRequests.Add(
+            new General.WebsocketSubmitOrderRequest(
+            loginComponent.token,
+            orderPageComponent.orderId
+        ));
     }
     public void UpdateTakeProfitPrice()
     {
@@ -531,7 +496,7 @@ public class OrderPageSystem : MonoBehaviour
                 double.Parse(orderPageComponent.takeProfitTrailingCallbackPercentageInput.text));
         }
         List<double> tpPrices = orderPageComponent.marginCalculator.takeProfitPrices;
-        if (orderPageComponent.takeProfitTypeDropdown.value == (int)TakeProfitTypeEnum.TAKE_ON_RETURN_TRAILING)
+        if (orderPageComponent.takeProfitTypeDropdown.value == (int)TakeProfitTypeEnum.TRAILING)
         {
             tpPrices = orderPageComponent.marginCalculator.takeProfitTrailingPrices;
         }

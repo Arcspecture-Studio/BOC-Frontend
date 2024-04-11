@@ -5,7 +5,7 @@ using UnityEngine.EventSystems;
 public class OrderPageSymbolDropdownSystem : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
 {
     [SerializeField] OrderPageSymbolDropdownComponent orderPageSymbolDropdownComponent;
-    
+
     PlatformComponent platformComponent;
     InputComponent inputComponent;
     TMP_Dropdown dropdown;

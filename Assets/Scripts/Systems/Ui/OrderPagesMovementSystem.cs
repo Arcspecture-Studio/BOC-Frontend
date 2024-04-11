@@ -77,6 +77,7 @@ public class OrderPagesMovementSystem : MonoBehaviour
                 xVelocity = 0;
             }
         }
+        if (orderPagesComponent.currentPageIndex < 0) orderPagesComponent.currentPageIndex = 0;
 
         if ((xVelocity == 0 || orderPagesComponent.status == OrderPagesStatusEnum.IMMERSIVE) && !isSwiping)
         {

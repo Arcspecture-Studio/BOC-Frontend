@@ -21,12 +21,13 @@ public class OnClick_RestoreOrderPageSystem : MonoBehaviour
                 deletedOrder.SetParent(orderPagesComponent.transform);
                 deletedOrder.gameObject.SetActive(true);
                 deletedOrder.DOScale(0, 0).OnComplete(() =>
-                 {
-                     deletedOrder.DOScale(orderPagesComponent.pageScaleTarget, orderPagesComponent.pageAnimDuration).SetEase(orderPagesComponent.pageScaleEase);
-                 });
+                {
+                    deletedOrder.DOScale(orderPagesComponent.pageScaleTarget, orderPagesComponent.pageAnimDuration).SetEase(orderPagesComponent.pageScaleEase);
+                });
                 orderPagesComponent.currentPageIndex = orderPagesComponent.transform.childCount;
                 OrderPageComponent deletedOrderComponent = deletedOrder.GetComponent<OrderPageComponent>();
-                deletedOrderComponent.saveToServer = true;
+                deletedOrderComponent.orderStatus = OrderStatusEnum.UNSUBMITTED;
+                deletedOrderComponent.addToServer = true;
             }
         });
     }

@@ -20,56 +20,31 @@ public class BinanceSystem : MonoBehaviour
         }
     }
     WebrequestComponent webrequestComponent;
-    WebsocketComponent websocketComponent;
-    LoginComponent loginComponent;
-    IoComponent ioComponent;
-    RetrieveOrdersComponent retrieveOrdersComponent;
-    PlatformComponent platformComponent;
-    TradingBotComponent tradingBotComponent;
     MiniPromptComponent miniPromptComponent;
 
-    Binance.WebrequestRequest createListenKeyRequest = null;
     Binance.WebrequestRequest getExchangeInfoRequest = null;
-    Binance.WebrequestRequest getAccInfoRequest = null;
     Binance.WebrequestRequest getBalanceRequest = null;
 
-    float updateListenKeyTimer;
     string logPrefix = "[BinanceSystem] ";
 
     void Start()
     {
         webrequestComponent = GlobalComponent.instance.webrequestComponent;
-        websocketComponent = GlobalComponent.instance.websocketComponent;
-        loginComponent = GlobalComponent.instance.loginComponent;
-        ioComponent = GlobalComponent.instance.ioComponent;
-        retrieveOrdersComponent = GlobalComponent.instance.retrieveOrdersComponent;
-        platformComponent = GlobalComponent.instance.platformComponent;
-        tradingBotComponent = GlobalComponent.instance.tradingBotComponent;
         miniPromptComponent = GlobalComponent.instance.miniPromptComponent;
 
-        //websocketComponent.connectMarketSocket = true;
+        binanceComponent.onChange_getBalance.AddListener(GetBalance);
+        binanceComponent.onChange_getExchangeInfo.AddListener(GetExchangeInfo);
+        binanceComponent.onChange_processInitialData.AddListener(ProcessInitialData);
     }
     void Update()
     {
-        GetExchangeInfo();
-        ReceiveExchangeInfo();
-        GetBalance();
         ReceiveBalance();
+        ReceiveExchangeInfo();
     }
 
     void GetBalance()
     {
-        if (!binanceComponent.getBalance) return;
-        binanceComponent.getBalance = false;
-        if (binanceComponent.walletBalances == null)
-        {
-            binanceComponent.walletBalances = new Dictionary<string, double>();
-        }
-        else
-        {
-            binanceComponent.walletBalances.Clear();
-        }
-        getBalanceRequest = new Binance.WebrequestGetBalanceRequest(testnet, binanceComponent.apiSecret);
+        getBalanceRequest = new Binance.WebrequestGetBalanceRequest(testnet);
         webrequestComponent.requests.Add(getBalanceRequest);
     }
     void ReceiveBalance()
@@ -88,28 +63,18 @@ public class BinanceSystem : MonoBehaviour
             }
             webrequestComponent.responses.Remove(getBalanceRequest.id);
             if (response == null || response.Count == 0) return;
+
             miniPromptComponent.message = "Balance Updated";
+
+            binanceComponent.walletBalances.Clear();
             response.ForEach(asset =>
             {
-                if (!binanceComponent.walletBalances.TryAdd(asset.asset, double.Parse(asset.balance)))
-                {
-                    binanceComponent.walletBalances[asset.asset] = double.Parse(asset.balance);
-                }
+                binanceComponent.walletBalances.Add(asset.asset, double.Parse(asset.balance));
             });
-            if (!binanceComponent.loggedIn)
-            {
-                binanceComponent.getExchangeInfo = true;
-            }
         }
     }
     void GetExchangeInfo()
     {
-        if (!binanceComponent.getExchangeInfo) return;
-        binanceComponent.getExchangeInfo = false;
-        binanceComponent.allSymbols.Clear();
-        binanceComponent.marginAssets.Clear();
-        binanceComponent.quantityPrecisions.Clear();
-        binanceComponent.pricePrecisions.Clear();
         getExchangeInfoRequest = new Binance.WebrequestGetExchangeInfoRequest(testnet);
         webrequestComponent.requests.Add(getExchangeInfoRequest);
     }
@@ -125,12 +90,14 @@ public class BinanceSystem : MonoBehaviour
                 binanceComponent.getExchangeInfo = true;
                 return;
             }
+
+            binanceComponent.allSymbols.Clear();
+            binanceComponent.marginAssets.Clear();
+            binanceComponent.quantityPrecisions.Clear();
+            binanceComponent.pricePrecisions.Clear();
             response.symbols.ForEach(symbol =>
             {
-                if (!binanceComponent.allSymbols.Contains(symbol.symbol))
-                {
-                    binanceComponent.allSymbols.Add(symbol.symbol);
-                }
+                binanceComponent.allSymbols.Add(symbol.symbol);
                 binanceComponent.marginAssets.TryAdd(symbol.symbol, symbol.marginAsset);
                 binanceComponent.quantityPrecisions.TryAdd(symbol.symbol, symbol.quantityPrecision);
                 long pricePrecision = symbol.pricePrecision;
@@ -143,88 +110,41 @@ public class BinanceSystem : MonoBehaviour
                 });
                 binanceComponent.pricePrecisions.TryAdd(symbol.symbol, pricePrecision);
             });
-            binanceComponent.loggedIn = true;
-            ioComponent.writeApiKey = true;
-            if (platformComponent.testnet == testnet)
-            {
-                loginComponent.gameObj.SetActive(false);
-                retrieveOrdersComponent.destroyOrders = true;
-                retrieveOrdersComponent.instantiateOrders = true;
-                tradingBotComponent.getTradingBots = true;
-            }
         }
     }
+    void ProcessInitialData(General.WebsocketGetInitialDataResponse response)
+    {
+        Binance.WebsocketPlatformDataResponse platformData = JsonConvert.DeserializeObject
+        <Binance.WebsocketPlatformDataResponse>(response.platformData.ToString(), JsonSerializerConfig.settings);
 
-    #region Unused
-    void GetAccInfo()
-    {
-        if (!binanceComponent.getAccInfo) return;
-        binanceComponent.getAccInfo = false;
-        if (binanceComponent.walletBalances == null)
+        #region Balances
+        binanceComponent.walletBalances.Clear();
+        foreach (KeyValuePair<string, Binance.WebrequestGetBalanceResponseData> balance in platformData.balances)
         {
-            binanceComponent.walletBalances = new Dictionary<string, double>();
+            binanceComponent.walletBalances.Add(balance.Key, double.Parse(balance.Value.balance));
         }
-        else
+        #endregion
+
+        #region Exchange info
+        binanceComponent.allSymbols.Clear();
+        binanceComponent.marginAssets.Clear();
+        binanceComponent.quantityPrecisions.Clear();
+        binanceComponent.pricePrecisions.Clear();
+        foreach (KeyValuePair<string, Binance.WebrequestGetExchangeInfoResponseSymbol> exchangeInfo in platformData.exchangeInfos)
         {
-            binanceComponent.walletBalances.Clear();
+            binanceComponent.allSymbols.Add(exchangeInfo.Value.symbol);
+            binanceComponent.marginAssets.Add(exchangeInfo.Value.symbol, exchangeInfo.Value.marginAsset);
+            binanceComponent.quantityPrecisions.Add(exchangeInfo.Value.symbol, exchangeInfo.Value.quantityPrecision);
+            long pricePrecision = exchangeInfo.Value.pricePrecision;
+            exchangeInfo.Value.filters.ForEach(filter =>
+           {
+               if (filter.tickSize != null)
+               {
+                   pricePrecision = Math.Min(Utils.CountDecimalPlaces(double.Parse(filter.tickSize)), pricePrecision);
+               }
+           });
+            binanceComponent.pricePrecisions.TryAdd(exchangeInfo.Value.symbol, pricePrecision);
         }
-        getAccInfoRequest = new Binance.WebrequestGetAccInfoRequest(testnet, binanceComponent.apiSecret);
-        webrequestComponent.requests.Add(getAccInfoRequest);
+        #endregion
     }
-    void ReceiveAccInfo()
-    {
-        if (getAccInfoRequest == null) return;
-        if (webrequestComponent.responses.ContainsKey(getAccInfoRequest.id))
-        {
-            Binance.WebrequestGetAccInfoResponse response = JsonConvert.DeserializeObject<Binance.WebrequestGetAccInfoResponse>(webrequestComponent.responses[getAccInfoRequest.id], JsonSerializerConfig.settings);
-            webrequestComponent.responses.Remove(getAccInfoRequest.id);
-            if (response.assets == null) return;
-            response.assets.ForEach(asset =>
-            {
-                if (!binanceComponent.walletBalances.TryAdd(asset.asset, double.Parse(asset.walletBalance)))
-                {
-                    binanceComponent.walletBalances[asset.asset] = double.Parse(asset.walletBalance);
-                }
-            });
-        }
-    }
-    #endregion
-    #region Execute at server
-    void CreateListenKey()
-    {
-        binanceComponent.listenKey = null;
-        createListenKeyRequest = new Binance.WebrequestCreateListenKeyRequest(testnet);
-        webrequestComponent.requests.Add(createListenKeyRequest);
-        updateListenKeyTimer = 0;
-    }
-    void ReceiveListenKey()
-    {
-        if (webrequestComponent.responses.ContainsKey(createListenKeyRequest.id))
-        {
-            Binance.WebrequestCreateListenKeyResponse response = JsonConvert.DeserializeObject<Binance.WebrequestCreateListenKeyResponse>(webrequestComponent.responses[createListenKeyRequest.id], JsonSerializerConfig.settings);
-            webrequestComponent.responses.Remove(createListenKeyRequest.id);
-            if (response.listenKey.IsNullOrEmpty())
-            {
-                CreateListenKey();
-                return;
-            }
-            binanceComponent.listenKey = response.listenKey;
-            websocketComponent.connectUserDataSocket = true;
-        }
-    }
-    void RenewListenKey()
-    {
-        if (binanceComponent.listenKey.IsNullOrEmpty()) return;
-        if (updateListenKeyTimer < BinanceConfig.UPDATE_LISTEN_KEY_INTERVAL)
-        {
-            updateListenKeyTimer += Time.deltaTime;
-        }
-        else
-        {
-            updateListenKeyTimer -= BinanceConfig.UPDATE_LISTEN_KEY_INTERVAL;
-            Binance.WebrequestRequest request = new Binance.WebrequestRenewListenKeyRequest(testnet);
-            webrequestComponent.requests.Add(request);
-        }
-    }
-    #endregion
 }

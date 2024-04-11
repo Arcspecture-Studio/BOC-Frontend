@@ -51,7 +51,7 @@ public class UpdateFeeSystem : MonoBehaviour
     }
     void GetFee()
     {
-        Request request = General.WebrequestFeeRequest.Get(platformComponent.tradingPlatform, platformComponent.apiSecret, selectedSymbol);
+        Request request = General.WebrequestFeeRequest.Get(platformComponent.activePlatform, selectedSymbol);
         requests.Add(request);
         webrequestComponent.requests.Add(request);
     }

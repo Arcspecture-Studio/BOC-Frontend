@@ -1,16 +1,17 @@
 using System;
+using MongoDB.Bson;
 
 [Serializable]
 public class Request
 {
     public PlatformEnum platform;
     public WebrequestRequestTypeEnum requestType;
-    public string host;
     public string path;
-    public string uri;
-    public string id
-    {
-        get { return requestType + uri; }
-    }
     public string queries;
+    public string id;
+
+    public Request()
+    {
+        id = ObjectId.GenerateNewId().ToString();
+    }
 }

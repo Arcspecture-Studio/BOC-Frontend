@@ -1,0 +1,17 @@
+{
+    "name": "BOC.Models",
+    "rootNamespace": "",
+    "references": [
+        "GUID:597d3c3569af0344d9a041a7eb28def8",
+        "GUID:fd5c2314a4dbfdf438b1f9fd2cec138d"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

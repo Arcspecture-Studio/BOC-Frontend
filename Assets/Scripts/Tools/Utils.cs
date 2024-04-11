@@ -1,9 +1,22 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Newtonsoft.Json;
 
 public static class Utils
 {
+    public static bool IsJsonString(string str)
+    {
+        try
+        {
+            JsonConvert.DeserializeObject(str);
+            return true;
+        }
+        catch (JsonException)
+        {
+            return false;
+        }
+    }
     public static double PriceRatio(double initialPrice, double finalPrice)
     {
         return finalPrice / initialPrice;
