@@ -49,6 +49,11 @@ public class BotTabSystem : MonoBehaviour
             botTabComponent.addBotButton.interactable = false;
         });
         ValidateInput();
+        botTabComponent.longOrderLimitInput.onEndEdit.Invoke("");
+        botTabComponent.shortOrderLimitInput.onEndEdit.Invoke("");
+        botTabComponent.premiumIndexSetting_longThresholdPercentage.onEndEdit.Invoke("");
+        botTabComponent.premiumIndexSetting_shortThresholdPercentage.onEndEdit.Invoke("");
+        botTabComponent.premiumIndexSetting_candleLength.onEndEdit.Invoke("");
     }
     void ValidateInput()
     {
