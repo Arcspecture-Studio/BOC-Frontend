@@ -31,6 +31,7 @@ public class SpawnOrderSystem : MonoBehaviour
         orderPageComponent.calculate = true;
         orderPageComponent.orderStatus = response.status;
         orderPageComponent.orderStatusError = response.statusError;
+        orderPageComponent.tradingBotId = response.tradingBotId;
         orderPageComponent.symbolDropdownComponent.dropdown.value = orderPageComponent.symbolDropdownComponent.symbols.IndexOf(response.symbol);
         orderPageComponent.symbolDropdownComponent.selectedSymbol = response.symbol;
         orderPageComponent.maxLossPercentageInput.text = Utils.RoundTwoDecimal(Utils.RateToPercentage(response.marginCalculator.balanceDecrementRate)).ToString();

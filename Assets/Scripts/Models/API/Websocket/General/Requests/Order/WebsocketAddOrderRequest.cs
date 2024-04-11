@@ -14,7 +14,7 @@ namespace General
             TakeProfitTypeEnum takeProfitType,
             OrderTypeEnum orderType) : base(WebsocketEventTypeEnum.ADD_ORDER, token)
         {
-            orderRequest = new(orderId, platform, symbol, marginCalculator, takeProfitType, orderType);
+            orderRequest = new(orderId, platform, symbol, marginCalculator, takeProfitType, orderType, null);
         }
     }
 }

@@ -51,6 +51,8 @@ public class OrderPageComponent : MonoBehaviour
     public TMP_Text positionInfoActualTakeProfitPriceText;
     public TMP_Text positionInfoQuantityFilledText;
     public TMP_Text positionInfoPaidFundingAmount;
+    public GameObject positionInfoBotInChargeObject;
+    public TMP_Dropdown positionInfoBotInChargeDropdown;
     public OrderPageThrottleParentComponent throttleParentComponent;
     public GameObject throttleObject;
 
@@ -108,6 +110,7 @@ public class OrderPageComponent : MonoBehaviour
         }
     }
     [HideInInspector] public UnityEvent onChange_orderStatusError = new();
+    public string tradingBotId = "";
     public Tween spawnTween;
     public bool instantiateWithData;
 }

@@ -16,7 +16,7 @@ public class BotDataRowSystem : MonoBehaviour
 
     void OnClick_InfoButton()
     {
-        // TODO
+        // TODO: show trading bot info
     }
     void OnClick_CloseButton()
     {

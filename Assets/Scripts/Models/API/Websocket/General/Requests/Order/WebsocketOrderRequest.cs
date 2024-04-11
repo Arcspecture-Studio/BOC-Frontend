@@ -12,19 +12,22 @@ namespace General
         public CalculateMargin? marginCalculator;
         public TakeProfitTypeEnum? takeProfitType;
         public OrderTypeEnum? orderType;
+        public string? tradingBotId;
 
         public WebsocketOrderRequest(string orderId,
             PlatformEnum? platform,
             string? symbol,
             CalculateMargin? marginCalculator,
             TakeProfitTypeEnum? takeProfitType,
-            OrderTypeEnum? orderType) : base(orderId)
+            OrderTypeEnum? orderType,
+            string? tradingBotId) : base(orderId)
         {
             this.platform = platform;
             this.symbol = symbol;
             this.marginCalculator = marginCalculator;
             this.takeProfitType = takeProfitType;
             this.orderType = orderType;
+            this.tradingBotId = tradingBotId;
         }
     }
 }

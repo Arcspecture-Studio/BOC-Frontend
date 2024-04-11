@@ -461,7 +461,8 @@ public class OrderPageSystem : MonoBehaviour
             orderPageComponent.orderId,
             orderPageComponent.marginCalculator,
             (TakeProfitTypeEnum)orderPageComponent.takeProfitTypeDropdown.value,
-            (OrderTypeEnum)orderPageComponent.orderTypeDropdown.value
+            (OrderTypeEnum)orderPageComponent.orderTypeDropdown.value,
+            orderPageComponent.tradingBotId
         ));
     }
     void DeleteFromServer()

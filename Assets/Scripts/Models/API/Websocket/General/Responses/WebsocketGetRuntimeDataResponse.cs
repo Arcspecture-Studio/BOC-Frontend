@@ -16,6 +16,7 @@ namespace General
         public string id;
         public OrderStatusEnum status;
         public bool statusError;
+        public string tradingBotId;
         public string symbol;
         public CalculateMargin marginCalculator;
         public OrderTypeEnum orderType;
