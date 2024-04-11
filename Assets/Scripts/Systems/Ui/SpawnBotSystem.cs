@@ -23,8 +23,8 @@ public class SpawnBotSystem : MonoBehaviour
 
         BotDataRowComponent botDataRowComponent = botDataRowObject.GetComponent<BotDataRowComponent>();
         botDataRowComponent.botId = response.id;
-        botDataRowComponent.symbolText.text = response.quickOrderSetting.symbol.ToUpper();
+        botDataRowComponent.botIdText.text = response.id;
         botDataRowComponent.botTypeText.text = response.botSetting.botType.ToString();
-        botDataRowComponent.autoDestroyOrderText.text = response.botSetting.autoDestroyOrder ? "True" : "False";
+        botDataRowComponent.symbolText.text = response.quickOrderSetting.symbol.ToUpper();
     }
 }

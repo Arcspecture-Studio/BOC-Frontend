@@ -88,7 +88,7 @@ GameObject:
   - component: {fileID: 576008402765810359}
   - component: {fileID: 576008402765810358}
   m_Layer: 5
-  m_Name: Auto Destroy Order Value
+  m_Name: Symbol Value
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -142,7 +142,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: True
+  m_text: XRPUSDT
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -236,7 +236,7 @@ RectTransform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 576008403022835739}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -299,7 +299,7 @@ GameObject:
   - component: {fileID: 576008403546782266}
   - component: {fileID: 576008403546782261}
   m_Layer: 5
-  m_Name: Symbol Value
+  m_Name: Bot Id Value
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -353,7 +353,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: BTCUSDT
+  m_text: abc123
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -517,9 +517,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 567037ebbcf1dda4b872a08a80db3339, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  symbolText: {fileID: 576008403546782261}
+  botIdText: {fileID: 576008403546782261}
   botTypeText: {fileID: 576008403859954491}
-  autoDestroyOrderText: {fileID: 576008402765810358}
+  symbolText: {fileID: 576008402765810358}
   infoButton: {fileID: 4271121307382029602}
   closeButton: {fileID: 576008404127128508}
   botId: 

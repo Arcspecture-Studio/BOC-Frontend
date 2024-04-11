@@ -5,9 +5,9 @@ using UnityEngine.UI;
 public class BotDataRowComponent : MonoBehaviour
 {
     [Header("Reference")]
-    public TMP_Text symbolText;
+    public TMP_Text botIdText;
     public TMP_Text botTypeText;
-    public TMP_Text autoDestroyOrderText;
+    public TMP_Text symbolText;
     public Button infoButton;
     public Button closeButton;
 
