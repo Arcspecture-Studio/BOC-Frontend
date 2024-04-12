@@ -41,6 +41,7 @@ public class PlatformSystem : MonoBehaviour
     void OnComponentEnable()
     {
         if (platformComponent == null) return;
+        platformComponent.activePlatform = profileComponent.activeProfile.activePlatform.Value;
         UpdateObjectState();
     }
     void InitializePlatformDropdownOptions()
@@ -203,7 +204,10 @@ public class PlatformSystem : MonoBehaviour
         }
         platformTemplateComponent.loggedIn = loggedIn;
         UpdateObjectState();
-        GlobalComponent.instance.getInitialDataComponent.getInitialData = true;
+        if (loggedIn)
+        {
+            GlobalComponent.instance.getInitialDataComponent.getInitialData = true;
+        }
     }
     void UpdateProfileActivePlatformOnServer()
     {
