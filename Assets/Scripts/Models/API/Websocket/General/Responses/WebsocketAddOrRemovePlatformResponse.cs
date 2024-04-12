@@ -6,5 +6,6 @@ namespace General
     public class WebsocketAddOrRemovePlatformResponse : WebsocketGeneralResponse
     {
         public PlatformEnum platform;
+        public PlatformEnum newActivePlatform;
     }
 }

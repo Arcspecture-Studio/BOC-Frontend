@@ -96,7 +96,6 @@ public class GetInitialDataSystem : MonoBehaviour
                     break;
             }
         }
-        platformComponent.activePlatform = profileComponent.activeProfile.activePlatform.Value;
         platformComponent.processInitialData = response;
         settingPageComponent.updateInfo = true;
         #endregion
