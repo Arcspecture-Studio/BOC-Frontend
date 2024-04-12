@@ -11,6 +11,8 @@ public class PlatformSystem : MonoBehaviour
     LoginComponent loginComponent;
     PromptComponent promptComponent;
     ProfileComponent profileComponent;
+    SettingPageComponent settingPageComponent;
+    GetInitialDataComponent getInitialDataComponent;
 
     void Start()
     {
@@ -19,6 +21,8 @@ public class PlatformSystem : MonoBehaviour
         loginComponent = GlobalComponent.instance.loginComponent;
         promptComponent = GlobalComponent.instance.promptComponent;
         profileComponent = GlobalComponent.instance.profileComponent;
+        settingPageComponent = GlobalComponent.instance.settingPageComponent;
+        getInitialDataComponent = GlobalComponent.instance.getInitialDataComponent;
 
         // Set initial state
         platformComponent.gameObject.SetActive(false);
@@ -41,7 +45,7 @@ public class PlatformSystem : MonoBehaviour
     void OnComponentEnable()
     {
         if (platformComponent == null) return;
-        platformComponent.activePlatform = profileComponent.activeProfile.activePlatform.Value;
+        platformComponent.activePlatformOnUi = platformComponent.activePlatform;
         UpdateObjectState();
     }
     void InitializePlatformDropdownOptions()
@@ -124,11 +128,11 @@ public class PlatformSystem : MonoBehaviour
     void AddOrRemovePlatform()
     {
         bool add = true;
-        switch (platformComponent.activePlatform)
+        switch (platformComponent.activePlatformOnUi)
         {
             case PlatformEnum.BINANCE:
             case PlatformEnum.BINANCE_TESTNET:
-                BinanceComponent binanceComponent = platformComponent.activePlatform == PlatformEnum.BINANCE ?
+                BinanceComponent binanceComponent = platformComponent.activePlatformOnUi == PlatformEnum.BINANCE ?
                 GlobalComponent.instance.binanceComponent : GlobalComponent.instance.binanceTestnetComponent;
                 add = !binanceComponent.loggedIn;
                 break;
@@ -142,7 +146,7 @@ public class PlatformSystem : MonoBehaviour
                 loginComponent.token,
                 platformComponent.apiKeyInput.text,
                 platformComponent.apiSecretInput.text,
-                platformComponent.activePlatform
+                platformComponent.activePlatformOnUi
             );
             websocketComponent.generalRequests.Add(request);
             AllowForInteraction(false);
@@ -151,7 +155,7 @@ public class PlatformSystem : MonoBehaviour
         {
             promptComponent.ShowSelection(PromptConstant.DISCONNECT_PLATFORM, PromptConstant.DISCONNECT_PLATFORM_CONFIRM, PromptConstant.YES_PROCEED, PromptConstant.NO, () =>
             {
-                request = new General.WebsocketRemovePlatformRequest(loginComponent.token, platformComponent.activePlatform);
+                request = new General.WebsocketRemovePlatformRequest(loginComponent.token, platformComponent.activePlatformOnUi);
                 websocketComponent.generalRequests.Add(request);
                 AllowForInteraction(false);
 
@@ -204,20 +208,18 @@ public class PlatformSystem : MonoBehaviour
         }
         platformTemplateComponent.loggedIn = loggedIn;
         UpdateObjectState();
-        if (loggedIn)
-        {
-            GlobalComponent.instance.getInitialDataComponent.getInitialData = true;
-        }
+        platformComponent.activePlatform = response.newActivePlatform;
+        getInitialDataComponent.getInitialData = true;
     }
     void UpdateProfileActivePlatformOnServer()
     {
         if (!platformComponent.loggedIn) return;
         if (profileComponent.activeProfile == null) return;
-        if (profileComponent.activeProfile.activePlatform == platformComponent.activePlatform) return;
+        if (platformComponent.activePlatformOnUi == platformComponent.activePlatform) return;
 
-        profileComponent.activeProfile.activePlatform = platformComponent.activePlatform;
+        platformComponent.activePlatform = platformComponent.activePlatformOnUi;
 
-        General.WebsocketUpdateProfileRequest request = new(loginComponent.token, profileComponent.activeProfile._id, profileComponent.activeProfile.activePlatform.Value);
+        General.WebsocketUpdateProfileRequest request = new(loginComponent.token, profileComponent.activeProfile._id, platformComponent.activePlatform);
         websocketComponent.generalRequests.Add(request);
     }
     void Logout()

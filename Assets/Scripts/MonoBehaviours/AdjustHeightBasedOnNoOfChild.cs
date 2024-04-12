@@ -6,7 +6,19 @@ public class AdjustHeightBasedOnNoOfChild : MonoBehaviour
     public Transform parent;
     public float childHeight;
     public long childOffset;
-    long childCount;
+    int childCount;
+    int actualChildCount
+    {
+        get
+        {
+            int count = 0;
+            for (int i = 0; i < parent.childCount; i++)
+            {
+                if (parent.GetChild(i).gameObject.activeSelf) count++;
+            }
+            return count;
+        }
+    }
 
     RectTransform rectTransform;
 
@@ -19,8 +31,8 @@ public class AdjustHeightBasedOnNoOfChild : MonoBehaviour
     void Update()
     {
         if (parent == null) return;
-        if (childCount == parent.childCount) return;
-        childCount = parent.childCount;
+        if (childCount == actualChildCount) return;
+        childCount = actualChildCount;
         float y = (childCount + childOffset) * childHeight;
         rectTransform.sizeDelta = new Vector2(rectTransform.sizeDelta.x, y);
     }

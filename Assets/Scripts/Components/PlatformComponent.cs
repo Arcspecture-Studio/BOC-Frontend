@@ -24,6 +24,19 @@ public class PlatformComponent : PlatformTemplateComponent
     {
         get
         {
+            if (GlobalComponent.instance.profileComponent.activeProfile == null) return activePlatformOnUi;
+            return GlobalComponent.instance.profileComponent.activeProfile.activePlatform ?? activePlatformOnUi;
+        }
+        set
+        {
+            if (GlobalComponent.instance.profileComponent.activeProfile == null) return;
+            GlobalComponent.instance.profileComponent.activeProfile.activePlatform = value;
+        }
+    }
+    public PlatformEnum activePlatformOnUi
+    {
+        get
+        {
             return (PlatformEnum)platformsDropdown.value;
         }
         set

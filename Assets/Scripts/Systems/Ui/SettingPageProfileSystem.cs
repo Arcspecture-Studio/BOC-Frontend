@@ -12,6 +12,7 @@ public class SettingPageProfileSystem : MonoBehaviour
     PlatformComponent platformComponent;
     WebsocketComponent websocketComponent;
     PromptComponent promptComponent;
+    GetInitialDataComponent getInitialDataComponent;
 
     List<string> profileIndexToIds;
     void Start()
@@ -22,6 +23,7 @@ public class SettingPageProfileSystem : MonoBehaviour
         platformComponent = GlobalComponent.instance.platformComponent;
         websocketComponent = GlobalComponent.instance.websocketComponent;
         promptComponent = GlobalComponent.instance.promptComponent;
+        getInitialDataComponent = GlobalComponent.instance.getInitialDataComponent;
 
         DefineListeners();
         OnShowAddNewProfileButton();
@@ -206,6 +208,9 @@ public class SettingPageProfileSystem : MonoBehaviour
             case UpdateProfilePropertyEnum.name:
                 OnRenameProfileResponse(response);
                 break;
+            case UpdateProfilePropertyEnum.activePlatform:
+                OnChangeActivePlatformResponse(response);
+                break;
         }
     }
     void OnRenameProfileResponse(General.WebsocketUpdateProfileResponse response)
@@ -215,5 +220,9 @@ public class SettingPageProfileSystem : MonoBehaviour
         profileComponent.profiles[response.profileId].name = settingPageComponent.renameProfileNameInput.text;
         settingPageComponent.showRenameProfileButton = false;
         settingPageComponent.updateProfile = true;
+    }
+    void OnChangeActivePlatformResponse(General.WebsocketUpdateProfileResponse response)
+    {
+        getInitialDataComponent.getInitialData = true;
     }
 }
