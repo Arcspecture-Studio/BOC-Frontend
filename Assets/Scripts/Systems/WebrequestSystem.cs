@@ -93,7 +93,7 @@ public class WebrequestSystem : MonoBehaviour
                                 switch (code.Value)
                                 {
                                     case -2014: // API-key format invalid.
-                                    case -2015: // Invalid API-key, IP, or permissions for action, request ip: 130.176.146.87
+                                    case -2015: // Invalid API-key, IP, or permissions for action, request ip: xxx.xxx.xxx.xxx
                                     case -1022: // Signature for this request is not valid.
                                                 // platformComponent.apiKey = null;
                                                 // platformComponent.apiSecret = null;

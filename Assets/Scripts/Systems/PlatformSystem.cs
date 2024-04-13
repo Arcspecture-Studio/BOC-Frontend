@@ -11,7 +11,6 @@ public class PlatformSystem : MonoBehaviour
     LoginComponent loginComponent;
     PromptComponent promptComponent;
     ProfileComponent profileComponent;
-    SettingPageComponent settingPageComponent;
     GetInitialDataComponent getInitialDataComponent;
 
     void Start()
@@ -21,7 +20,6 @@ public class PlatformSystem : MonoBehaviour
         loginComponent = GlobalComponent.instance.loginComponent;
         promptComponent = GlobalComponent.instance.promptComponent;
         profileComponent = GlobalComponent.instance.profileComponent;
-        settingPageComponent = GlobalComponent.instance.settingPageComponent;
         getInitialDataComponent = GlobalComponent.instance.getInitialDataComponent;
 
         // Set initial state
