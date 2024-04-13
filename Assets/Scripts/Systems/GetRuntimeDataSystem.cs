@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using Newtonsoft.Json;
 using UnityEngine;
 using WebSocketSharp;
@@ -13,6 +14,8 @@ public class GetRuntimeDataSystem : MonoBehaviour
     PlatformComponent platformComponent;
     PromptComponent promptComponent;
     OrderPagesComponent orderPagesComponent;
+    QuickTabComponent quickTabComponent;
+    BotTabComponent botTabComponent;
 
     void Start()
     {
@@ -25,6 +28,8 @@ public class GetRuntimeDataSystem : MonoBehaviour
         platformComponent = GlobalComponent.instance.platformComponent;
         promptComponent = GlobalComponent.instance.promptComponent;
         orderPagesComponent = GlobalComponent.instance.orderPagesComponent;
+        quickTabComponent = GlobalComponent.instance.quickTabComponent;
+        botTabComponent = GlobalComponent.instance.botTabComponent;
 
         getRuntimeDataComponent.onChange_getRuntimeData.AddListener(GetRuntimeData);
         getRuntimeDataComponent.onChange_processRuntimeData.AddListener(ProcessRuntimeData);
@@ -57,11 +62,13 @@ public class GetRuntimeDataSystem : MonoBehaviour
             return;
         }
 
-        DestroyExistingOrdersObject();
         ProcessRuntimeData(response);
     }
     void ProcessRuntimeData(General.WebsocketGetRuntimeDataResponse runtimeData)
     {
+        DestroyOrders();
+        DestroyQuickOrders();
+        DestroyTradingBots();
         foreach (General.WebsocketGetOrderResponse order in runtimeData.orders)
         {
             spawnOrderComponent.orderToSpawn = order;
@@ -75,7 +82,7 @@ public class GetRuntimeDataSystem : MonoBehaviour
             spawnTradingBotComponent.botToSpawn = tradingBot;
         }
     }
-    void DestroyExistingOrdersObject()
+    void DestroyOrders()
     {
         if (orderPagesComponent.transform.childCount == 0) return;
         for (int i = 0; i < orderPagesComponent.transform.childCount; i++)
@@ -86,5 +93,24 @@ public class GetRuntimeDataSystem : MonoBehaviour
         orderPagesComponent.childOrderPageComponents.Clear();
         orderPagesComponent.currentPageIndex = 0;
         orderPagesComponent.scaleOrders = true;
+    }
+    void DestroyQuickOrders()
+    {
+        if (quickTabComponent.spawnedQuickOrderDataObjects.Count == 0) return;
+        foreach (KeyValuePair<string, GameObject> obj in quickTabComponent.spawnedQuickOrderDataObjects)
+        {
+            Destroy(obj.Value);
+        }
+        quickTabComponent.spawnedQuickOrderDataObjects.Clear();
+    }
+
+    void DestroyTradingBots()
+    {
+        if (botTabComponent.spawnedBotDataObjects.Count == 0) return;
+        foreach (KeyValuePair<string, GameObject> obj in botTabComponent.spawnedBotDataObjects)
+        {
+            Destroy(obj.Value);
+        }
+        botTabComponent.spawnedBotDataObjects.Clear();
     }
 }
