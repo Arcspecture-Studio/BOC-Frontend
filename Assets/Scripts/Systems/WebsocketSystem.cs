@@ -1,6 +1,6 @@
 using UnityEngine;
 using WebSocketSharp;
-using Newtonsoft.Json;
+using Unity.Plastic.Newtonsoft.Json;
 using System.Collections;
 
 public class WebsocketSystem : MonoBehaviour
