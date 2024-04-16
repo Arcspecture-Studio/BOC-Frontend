@@ -1,6 +1,6 @@
 ﻿#pragma warning disable CS0168
 
-using Unity.Plastic.Newtonsoft.Json;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using UnityEngine;

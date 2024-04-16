@@ -1,4 +1,4 @@
-using Unity.Plastic.Newtonsoft.Json;
+using Newtonsoft.Json;
 using TMPro;
 using UnityEngine;
 using WebSocketSharp;
