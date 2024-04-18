@@ -100,11 +100,8 @@ public class GetInitialDataSystem : MonoBehaviour
             }
         }
         getExchangeInfoComponent.processExchangeInfo = response.exchangeInfos;
-        settingPageComponent.updateInfo = true;
-        #endregion
-
-        #region Runtime data
         getRuntimeDataComponent.processRuntimeData = response;
+        settingPageComponent.updateInfo = true;
         #endregion
     }
 }
