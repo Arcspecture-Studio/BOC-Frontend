@@ -16,10 +16,4 @@ public class PlatformTemplateComponent : MonoBehaviour
         set { onChange_getBalance.Invoke(); }
     }
     [HideInInspector] public UnityEvent onChange_getBalance = new();
-    public General.WebsocketGetInitialDataResponse processInitialData
-    {
-        set { onChange_processInitialData.Invoke(value); }
-    }
-    [HideInInspector]
-    public UnityEvent<General.WebsocketGetInitialDataResponse> onChange_processInitialData = new();
 }

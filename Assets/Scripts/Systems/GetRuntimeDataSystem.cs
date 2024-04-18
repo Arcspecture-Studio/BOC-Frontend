@@ -16,6 +16,7 @@ public class GetRuntimeDataSystem : MonoBehaviour
     OrderPagesComponent orderPagesComponent;
     QuickTabComponent quickTabComponent;
     BotTabComponent botTabComponent;
+    GetBalanceComponent getBalanceComponent;
 
     void Start()
     {
@@ -30,6 +31,7 @@ public class GetRuntimeDataSystem : MonoBehaviour
         orderPagesComponent = GlobalComponent.instance.orderPagesComponent;
         quickTabComponent = GlobalComponent.instance.quickTabComponent;
         botTabComponent = GlobalComponent.instance.botTabComponent;
+        getBalanceComponent = GlobalComponent.instance.getBalanceComponent;
 
         getRuntimeDataComponent.onChange_getRuntimeData.AddListener(GetRuntimeData);
         getRuntimeDataComponent.onChange_processRuntimeData.AddListener(ProcessRuntimeData);
@@ -66,6 +68,7 @@ public class GetRuntimeDataSystem : MonoBehaviour
     }
     void ProcessRuntimeData(General.WebsocketGetRuntimeDataResponse runtimeData)
     {
+        getBalanceComponent.processBalance = runtimeData.balances;
         DestroyOrders();
         DestroyQuickOrders();
         DestroyTradingBots();

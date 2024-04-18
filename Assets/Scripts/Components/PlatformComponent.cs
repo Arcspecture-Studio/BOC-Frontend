@@ -269,21 +269,6 @@ public class PlatformComponent : PlatformTemplateComponent
             }
         }
     }
-    public new General.WebsocketGetInitialDataResponse processInitialData
-    {
-        set
-        {
-            switch (activePlatform)
-            {
-                case PlatformEnum.BINANCE:
-                    GlobalComponent.instance.binanceComponent.processInitialData = value;
-                    break;
-                case PlatformEnum.BINANCE_TESTNET:
-                    GlobalComponent.instance.binanceTestnetComponent.processInitialData = value;
-                    break;
-            }
-        }
-    }
 
     public void OnEnable()
     {
