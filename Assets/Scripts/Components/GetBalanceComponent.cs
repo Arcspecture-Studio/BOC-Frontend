@@ -4,6 +4,7 @@ using UnityEngine.Events;
 
 public class GetBalanceComponent : MonoBehaviour
 {
+    // TODO: get balance
     public Dictionary<string, double> processBalance
     {
         set { onChange_processBalance.Invoke(value); }
