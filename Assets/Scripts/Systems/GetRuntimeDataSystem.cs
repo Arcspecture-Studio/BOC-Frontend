@@ -103,7 +103,6 @@ public class GetRuntimeDataSystem : MonoBehaviour
         }
         quickTabComponent.spawnedQuickOrderDataObjects.Clear();
     }
-
     void DestroyTradingBots()
     {
         if (botTabComponent.spawnedBotDataObjects.Count == 0) return;

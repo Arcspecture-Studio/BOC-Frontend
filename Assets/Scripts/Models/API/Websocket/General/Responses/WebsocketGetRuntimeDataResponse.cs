@@ -9,6 +9,7 @@ namespace General
         public List<WebsocketGetOrderResponse> orders;
         public List<WebsocketGetQuickOrderResponse> quickOrders;
         public List<WebsocketGetTradingBotResponse> tradingBots;
+        public Dictionary<string, double> balances;
     }
     [Serializable]
     public class WebsocketGetOrderResponse
