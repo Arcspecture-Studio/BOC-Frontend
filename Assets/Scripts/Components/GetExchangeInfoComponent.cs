@@ -4,7 +4,11 @@ using UnityEngine.Events;
 
 public class GetExchangeInfoComponent : MonoBehaviour
 {
-    // TODO: get exchange info
+    public bool getExchangeInfo
+    {
+        set { onChange_getExchangeInfo.Invoke(); }
+    }
+    [HideInInspector] public UnityEvent onChange_getExchangeInfo = new();
     public Dictionary<string, General.WebsocketGetExchangeInfo> processExchangeInfo
     {
         set { onChange_processExchangeInfo.Invoke(value); }

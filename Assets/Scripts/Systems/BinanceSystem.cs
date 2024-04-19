@@ -2,7 +2,6 @@
 
 using Newtonsoft.Json;
 using System;
-using System.Collections.Generic;
 using UnityEngine;
 using WebSocketSharp;
 
@@ -31,16 +30,9 @@ public class BinanceSystem : MonoBehaviour
     {
         webrequestComponent = GlobalComponent.instance.webrequestComponent;
         miniPromptComponent = GlobalComponent.instance.miniPromptComponent;
-
-        binanceComponent.onChange_getBalance.AddListener(GetBalance);
-        binanceComponent.onChange_getExchangeInfo.AddListener(GetExchangeInfo);
-    }
-    void Update()
-    {
-        ReceiveBalance();
-        ReceiveExchangeInfo();
     }
 
+    #region Deprecated, for reference only
     void GetBalance()
     {
         getBalanceRequest = new Binance.WebrequestGetBalanceRequest(testnet);
@@ -86,7 +78,7 @@ public class BinanceSystem : MonoBehaviour
             webrequestComponent.responses.Remove(getExchangeInfoRequest.id);
             if (response.timezone.IsNullOrEmpty())
             {
-                binanceComponent.getExchangeInfo = true;
+                // binanceComponent.getExchangeInfo = true;
                 return;
             }
 
@@ -111,4 +103,5 @@ public class BinanceSystem : MonoBehaviour
             });
         }
     }
+    #endregion
 }

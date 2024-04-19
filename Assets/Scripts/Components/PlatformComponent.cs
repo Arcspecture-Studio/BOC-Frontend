@@ -254,21 +254,6 @@ public class PlatformComponent : PlatformTemplateComponent
             }
         }
     }
-    public new bool getBalance
-    {
-        set
-        {
-            switch (activePlatform)
-            {
-                case PlatformEnum.BINANCE:
-                    GlobalComponent.instance.binanceComponent.getBalance = value;
-                    break;
-                case PlatformEnum.BINANCE_TESTNET:
-                    GlobalComponent.instance.binanceTestnetComponent.getBalance = value;
-                    break;
-            }
-        }
-    }
 
     public void OnEnable()
     {
