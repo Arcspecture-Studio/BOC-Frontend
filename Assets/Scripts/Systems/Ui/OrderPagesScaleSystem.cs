@@ -19,7 +19,7 @@ public class OrderPagesScaleSystem : MonoBehaviour
     void Update()
     {
         UpdateScaleWhenStatusAndChildCountChanged();
-        UpdateScale();
+        // UpdateScale();
     }
     void UpdateScaleWhenStatusAndChildCountChanged()
     {
@@ -38,16 +38,16 @@ public class OrderPagesScaleSystem : MonoBehaviour
     }
     bool isChildRectTransformsNotReady()
     {
-        if (orderPagesComponent.childRectTransforms.Count == 0) childCount = 0;
-        return orderPagesComponent.childRectTransforms == null
-            || orderPagesComponent.childRectTransforms.Count == 0
-            || orderPagesComponent.transform.childCount != orderPagesComponent.childRectTransforms.Count;
+        if (orderPagesComponent.childOrderPageComponents.Count == 0) childCount = 0;
+        return orderPagesComponent.childOrderPageComponents == null
+            || orderPagesComponent.childOrderPageComponents.Count == 0
+            || orderPagesComponent.transform.childCount != orderPagesComponent.childOrderPageComponents.Count;
     }
     void Scale()
     {
-        for (int i = 0; i < orderPagesComponent.childRectTransforms.Count; i++)
+        for (int i = 0; i < orderPagesComponent.childOrderPageComponents.Count; i++)
         {
-            if (orderPagesComponent.childRectTransforms[i] == null) continue;
+            if (orderPagesComponent.childOrderPageComponents[i] == null) continue;
             if (orderPagesComponent.childOrderPageComponents[i].spawnTween.IsActive())
             {
                 orderPagesComponent.childOrderPageComponents[i].spawnTween.Complete();
@@ -57,15 +57,15 @@ public class OrderPagesScaleSystem : MonoBehaviour
                 case OrderPagesStatusEnum.IMMERSIVE:
                     if (orderPagesComponent.currentPageIndex == i)
                     {
-                        orderPagesComponent.childRectTransforms[i].DOScale(1f, orderPagesComponent.pageAnimDuration).SetEase(orderPagesComponent.pageScaleEase);
+                        orderPagesComponent.childOrderPageComponents[i].rectTransform.DOScale(1f, orderPagesComponent.pageAnimDuration).SetEase(orderPagesComponent.pageScaleEase);
                     }
                     else
                     {
-                        orderPagesComponent.childRectTransforms[i].DOScale(0f, orderPagesComponent.pageAnimDuration).SetEase(orderPagesComponent.pageScaleEase);
+                        orderPagesComponent.childOrderPageComponents[i].rectTransform.DOScale(0f, orderPagesComponent.pageAnimDuration).SetEase(orderPagesComponent.pageScaleEase);
                     }
                     break;
                 case OrderPagesStatusEnum.DETACH:
-                    orderPagesComponent.childRectTransforms[i].DOScale(orderPagesComponent.pageScaleTarget, orderPagesComponent.pageAnimDuration).SetEase(orderPagesComponent.pageScaleEase);
+                    orderPagesComponent.childOrderPageComponents[i].rectTransform.DOScale(orderPagesComponent.pageScaleTarget, orderPagesComponent.pageAnimDuration).SetEase(orderPagesComponent.pageScaleEase);
                     break;
             }
         }

@@ -29,7 +29,7 @@ public class PlatformSystem : MonoBehaviour
         platformComponent.proceedButton.onClick.AddListener(() => AddOrRemovePlatform());
         platformComponent.backButton.onClick.AddListener(() =>
         {
-            platformComponent.gameObject.SetActive(false);
+            platformComponent.backButton.interactable = false;
             UpdateProfileActivePlatformOnServer();
         });
         platformComponent.logoutButton.onClick.AddListener(Logout);

@@ -45,10 +45,8 @@ public class SettingPageSystem : MonoBehaviour
     void MovePage()
     {
         if (active == settingPageComponent.active) return;
-        if (tween != null)
-        {
-            if (tween.IsPlaying()) return;
-        }
+        if (tween != null && tween.IsActive()) return;
+
         active = settingPageComponent.active;
         float initialValue = active.Value ? settingPageComponent.inactiveXPosition : settingPageComponent.activeXPosition;
         float moveValue = active.Value ? settingPageComponent.inactiveToActiveXMovement : settingPageComponent.activeToInactiveXMovement;

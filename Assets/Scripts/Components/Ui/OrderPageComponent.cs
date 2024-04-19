@@ -8,6 +8,7 @@ using UnityEngine.UI;
 public class OrderPageComponent : MonoBehaviour
 {
     [Header("Reference")]
+    public RectTransform rectTransform;
     public TMP_Text orderTitleText;
     public Button orderIdButton;
     public TMP_Text orderIdText;

@@ -178,7 +178,7 @@ public class BotTabSystem : MonoBehaviour
     void MovePage()
     {
         if (active == botTabComponent.active) return;
-        if (tween != null && tween.IsPlaying()) return;
+        if (tween != null && tween.IsActive()) return;
 
         active = botTabComponent.active;
         float initialValue = active.Value ? botTabComponent.inactiveYPosition : botTabComponent.activeYPosition;

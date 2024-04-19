@@ -84,6 +84,12 @@ public class GetRuntimeDataSystem : MonoBehaviour
         {
             spawnTradingBotComponent.botToSpawn = tradingBot;
         }
+
+        if (platformComponent.gameObject.activeSelf)
+        {
+            platformComponent.backButton.interactable = true;
+            platformComponent.gameObject.SetActive(false);
+        }
     }
     void DestroyOrders()
     {
@@ -92,10 +98,9 @@ public class GetRuntimeDataSystem : MonoBehaviour
         {
             Destroy(orderPagesComponent.transform.GetChild(i).gameObject);
         }
-        orderPagesComponent.childRectTransforms.Clear();
-        orderPagesComponent.childOrderPageComponents.Clear();
+        orderPagesComponent.childOrderPageComponents = new();
         orderPagesComponent.currentPageIndex = 0;
-        orderPagesComponent.scaleOrders = true;
+        // orderPagesComponent.scaleOrders = true;
     }
     void DestroyQuickOrders()
     {

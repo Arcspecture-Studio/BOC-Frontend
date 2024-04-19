@@ -4,6 +4,7 @@ using TMPro;
 using UnityEngine;
 using WebSocketSharp;
 using MongoDB.Bson;
+using DG.Tweening;
 
 public class OrderPageSystem : MonoBehaviour
 {
@@ -154,6 +155,10 @@ public class OrderPageSystem : MonoBehaviour
     {
         StartCoroutine(CalculateMargin());
         UpdateUiInteractableStatus();
+    }
+    void OnDestroy()
+    {
+        orderPageComponent.rectTransform.DOKill();
     }
 
     void RestoreFromProfilePreference()
