@@ -25,7 +25,7 @@ public class OrderPageAnimationSystem : MonoBehaviour
 
     void Spawn()
     {
-        orderPageComponent.spawnTween = rectTransform.DOScale(0, 0).OnComplete(() =>
+        orderPageComponent.spawnTween = rectTransform.DOScale(0, 0).OnComplete(() => // Already set to 0 during spawn order, this line of code is kept just in case
         {
             rectTransform.DOScale(1, orderPagesComponent.pageAnimDuration).SetEase(orderPagesComponent.pageScaleEase);
         });

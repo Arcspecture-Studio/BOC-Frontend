@@ -16,6 +16,7 @@ public class GetRuntimeDataSystem : MonoBehaviour
     OrderPagesComponent orderPagesComponent;
     QuickTabComponent quickTabComponent;
     BotTabComponent botTabComponent;
+    GetBalanceComponent getBalanceComponent;
 
     void Start()
     {
@@ -30,6 +31,7 @@ public class GetRuntimeDataSystem : MonoBehaviour
         orderPagesComponent = GlobalComponent.instance.orderPagesComponent;
         quickTabComponent = GlobalComponent.instance.quickTabComponent;
         botTabComponent = GlobalComponent.instance.botTabComponent;
+        getBalanceComponent = GlobalComponent.instance.getBalanceComponent;
 
         getRuntimeDataComponent.onChange_getRuntimeData.AddListener(GetRuntimeData);
         getRuntimeDataComponent.onChange_processRuntimeData.AddListener(ProcessRuntimeData);
@@ -66,6 +68,7 @@ public class GetRuntimeDataSystem : MonoBehaviour
     }
     void ProcessRuntimeData(General.WebsocketGetRuntimeDataResponse runtimeData)
     {
+        getBalanceComponent.processBalance = runtimeData.balances;
         DestroyOrders();
         DestroyQuickOrders();
         DestroyTradingBots();
@@ -81,6 +84,12 @@ public class GetRuntimeDataSystem : MonoBehaviour
         {
             spawnTradingBotComponent.botToSpawn = tradingBot;
         }
+
+        if (platformComponent.gameObject.activeSelf)
+        {
+            platformComponent.backButton.interactable = true;
+            platformComponent.gameObject.SetActive(false);
+        }
     }
     void DestroyOrders()
     {
@@ -89,10 +98,9 @@ public class GetRuntimeDataSystem : MonoBehaviour
         {
             Destroy(orderPagesComponent.transform.GetChild(i).gameObject);
         }
-        orderPagesComponent.childRectTransforms.Clear();
-        orderPagesComponent.childOrderPageComponents.Clear();
+        orderPagesComponent.childOrderPageComponents = new();
         orderPagesComponent.currentPageIndex = 0;
-        orderPagesComponent.scaleOrders = true;
+        // orderPagesComponent.scaleOrders = true;
     }
     void DestroyQuickOrders()
     {
@@ -103,7 +111,6 @@ public class GetRuntimeDataSystem : MonoBehaviour
         }
         quickTabComponent.spawnedQuickOrderDataObjects.Clear();
     }
-
     void DestroyTradingBots()
     {
         if (botTabComponent.spawnedBotDataObjects.Count == 0) return;

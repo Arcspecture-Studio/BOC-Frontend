@@ -25,6 +25,5 @@ public class OrderPagesComponent : MonoBehaviour
     public float currentXPos;
     public long currentPageIndex;
     public float orderPagesGap;
-    public List<RectTransform> childRectTransforms;
     public List<OrderPageComponent> childOrderPageComponents;
 }

@@ -4,7 +4,7 @@ using System.Collections.Generic;
 namespace General
 {
     [Serializable]
-    public class WebsocketGetRuntimeDataResponse : WebsocketGeneralResponse
+    public class WebsocketGetRuntimeDataResponse : WebsocketGetBalanceResponse
     {
         public List<WebsocketGetOrderResponse> orders;
         public List<WebsocketGetQuickOrderResponse> quickOrders;

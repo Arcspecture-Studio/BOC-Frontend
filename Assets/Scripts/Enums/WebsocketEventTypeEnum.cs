@@ -29,16 +29,12 @@
     DELETE_QUICK_ORDER,
     ADD_TRADING_BOT,
     DELETE_TRADING_BOT,
+    GET_BALANCE,
+    GET_EXCHANGE_INFO,
     #endregion
 
     #region From Server
     POSITION_INFO_UPDATE,
     SPAWN_ORDER,
-    #endregion
-
-    #region Old Events
-    // Both Way
-    SAVE_TRADING_BOT,
-    RETRIEVE_TRADING_BOTS,
     #endregion
 }

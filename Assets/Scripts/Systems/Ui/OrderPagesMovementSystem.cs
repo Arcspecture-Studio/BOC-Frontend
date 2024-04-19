@@ -86,19 +86,19 @@ public class OrderPagesMovementSystem : MonoBehaviour
     }
     void MovePages()
     {
-        if (orderPagesComponent.childRectTransforms == null || orderPagesComponent.childRectTransforms.Count == 0) return;
-        for (int i = 0; i < orderPagesComponent.childRectTransforms.Count; i++)
+        if (orderPagesComponent.childOrderPageComponents == null) return;
+        for (int i = 0; i < orderPagesComponent.childOrderPageComponents.Count; i++)
         {
-            if (orderPagesComponent.childRectTransforms[i] == null) continue;
+            if (orderPagesComponent.childOrderPageComponents[i] == null) continue;
             if (isSwiping)
             {
                 if (DOTween.IsTweening(movePagesFunctionName)) DOTween.Kill(movePagesFunctionName);
-                orderPagesComponent.childRectTransforms[i].DOLocalMoveX(orderPagesComponent.childRectTransforms[i].localPosition.x + xVelocity, 0f);
+                orderPagesComponent.childOrderPageComponents[i].rectTransform.DOLocalMoveX(orderPagesComponent.childOrderPageComponents[i].rectTransform.localPosition.x + xVelocity, 0f);
             }
             else
             {
                 float x = (i * orderPagesComponent.orderPagesGap) - orderPagesComponent.currentXPos;
-                orderPagesComponent.childRectTransforms[i].DOLocalMoveX(x, orderPagesComponent.pageScrollDelayDuration).SetId(movePagesFunctionName);
+                orderPagesComponent.childOrderPageComponents[i].rectTransform.DOLocalMoveX(x, orderPagesComponent.pageScrollDelayDuration).SetId(movePagesFunctionName);
             }
         }
     }

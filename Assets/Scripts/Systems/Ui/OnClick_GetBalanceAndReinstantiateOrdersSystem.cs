@@ -21,7 +21,6 @@ public class OnClick_GetBalanceAndReinstantiateOrdersSystem : MonoBehaviour
         {
             hideAllPanelComponent.hideNow = "true";
 
-            platformComponent.getBalance = true;
             getRuntimeDataComponent.getRuntimeData = true;
         });
     }

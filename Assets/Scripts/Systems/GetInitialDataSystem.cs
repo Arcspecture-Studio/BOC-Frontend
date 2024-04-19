@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using Newtonsoft.Json;
 using UnityEngine;
 using WebSocketSharp;
@@ -14,6 +15,7 @@ public class GetInitialDataSystem : MonoBehaviour
     QuickTabComponent quickTabComponent;
     GetRuntimeDataComponent getRuntimeDataComponent;
     IoComponent ioComponent;
+    GetExchangeInfoComponent getExchangeInfoComponent;
 
     void Start()
     {
@@ -27,6 +29,7 @@ public class GetInitialDataSystem : MonoBehaviour
         quickTabComponent = GlobalComponent.instance.quickTabComponent;
         getRuntimeDataComponent = GlobalComponent.instance.getRuntimeDataComponent;
         ioComponent = GlobalComponent.instance.ioComponent;
+        getExchangeInfoComponent = GlobalComponent.instance.getExchangeInfoComponent;
 
         getInitialDataComponent.onChange_getInitialData.AddListener(GetInitialData);
     }
@@ -96,12 +99,9 @@ public class GetInitialDataSystem : MonoBehaviour
                     break;
             }
         }
-        platformComponent.processInitialData = response;
-        settingPageComponent.updateInfo = true;
-        #endregion
-
-        #region Runtime data
+        getExchangeInfoComponent.processExchangeInfo = response.exchangeInfos;
         getRuntimeDataComponent.processRuntimeData = response;
+        settingPageComponent.updateInfo = true;
         #endregion
     }
 }

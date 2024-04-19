@@ -4,6 +4,7 @@ using TMPro;
 using UnityEngine;
 using WebSocketSharp;
 using MongoDB.Bson;
+using DG.Tweening;
 
 public class OrderPageSystem : MonoBehaviour
 {
@@ -13,6 +14,7 @@ public class OrderPageSystem : MonoBehaviour
     LoginComponent loginComponent;
     PlatformComponent platformComponent;
     ProfileComponent profileComponent;
+    GetBalanceComponent getBalanceComponent;
 
     bool? lockForEdit = null;
     OrderStatusEnum? orderStatus = null;
@@ -26,6 +28,7 @@ public class OrderPageSystem : MonoBehaviour
         loginComponent = GlobalComponent.instance.loginComponent;
         platformComponent = GlobalComponent.instance.platformComponent;
         profileComponent = GlobalComponent.instance.profileComponent;
+        getBalanceComponent = GlobalComponent.instance.getBalanceComponent;
 
         if (orderPageComponent.orderId.IsNullOrEmpty())
             orderPageComponent.orderId = ObjectId.GenerateNewId().ToString();
@@ -153,6 +156,10 @@ public class OrderPageSystem : MonoBehaviour
         StartCoroutine(CalculateMargin());
         UpdateUiInteractableStatus();
     }
+    void OnDestroy()
+    {
+        orderPageComponent.rectTransform.DOKill();
+    }
 
     void RestoreFromProfilePreference()
     {
@@ -242,8 +249,8 @@ public class OrderPageSystem : MonoBehaviour
                 }
             }
 
-            platformComponent.walletBalances = new Dictionary<string, double>();
-            platformComponent.getBalance = true;
+            platformComponent.walletBalances = new();
+            getBalanceComponent.getBalance = true;
             yield return new WaitUntil(() => platformComponent.walletBalances.ContainsKey(walletUnit));
             double currentWalletBalance = platformComponent.walletBalances[walletUnit];
 
