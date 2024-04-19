@@ -1,6 +1,7 @@
 using TMPro;
 using UnityEngine;
 using UnityEngine.EventSystems;
+using UnityEngine.InputSystem;
 
 public class OrderPageSymbolDropdownSystem : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
 {
@@ -18,14 +19,7 @@ public class OrderPageSymbolDropdownSystem : MonoBehaviour, IPointerEnterHandler
         inputComponent = GlobalComponent.instance.inputComponent;
         dropdown = GetComponent<TMP_Dropdown>();
 
-        inputComponent.click.performed += _ =>
-        {
-            if (hover)
-            {
-                orderPageSymbolDropdownComponent.symbols = platformComponent.allSymbols;
-                UpdateOptions();
-            }
-        };
+        inputComponent.click.performed += OnClick;
         dropdown.onValueChanged.AddListener((value) =>
         {
             orderPageSymbolDropdownComponent.selectedSymbol = orderPageSymbolDropdownComponent.symbols[value];
@@ -42,6 +36,10 @@ public class OrderPageSymbolDropdownSystem : MonoBehaviour, IPointerEnterHandler
     public void OnPointerExit(PointerEventData eventData)
     {
         hover = false;
+    }
+    void OnDestroy()
+    {
+        inputComponent.click.performed -= OnClick;
     }
 
     public void OnSearchChanged(string value)
@@ -62,5 +60,13 @@ public class OrderPageSymbolDropdownSystem : MonoBehaviour, IPointerEnterHandler
 
         orderPageSymbolDropdownComponent.symbols = platformComponent.allSymbols;
         UpdateOptions();
+    }
+    void OnClick(InputAction.CallbackContext context)
+    {
+        if (hover)
+        {
+            orderPageSymbolDropdownComponent.symbols = platformComponent.allSymbols;
+            UpdateOptions();
+        }
     }
 }
