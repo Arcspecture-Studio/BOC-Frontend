@@ -13,6 +13,7 @@ public class SettingPageProfileSystem : MonoBehaviour
     WebsocketComponent websocketComponent;
     PromptComponent promptComponent;
     GetInitialDataComponent getInitialDataComponent;
+    LoadingComponent loadingComponent;
 
     List<string> profileIndexToIds;
     void Start()
@@ -24,6 +25,7 @@ public class SettingPageProfileSystem : MonoBehaviour
         websocketComponent = GlobalComponent.instance.websocketComponent;
         promptComponent = GlobalComponent.instance.promptComponent;
         getInitialDataComponent = GlobalComponent.instance.getInitialDataComponent;
+        loadingComponent = GlobalComponent.instance.loadingComponent;
 
         DefineListeners();
         OnShowAddNewProfileButton();
@@ -68,6 +70,7 @@ public class SettingPageProfileSystem : MonoBehaviour
             optionDataList.Add(new TMP_Dropdown.OptionData(profile.Value.name));
         }
         settingPageComponent.profileDropdown.options = optionDataList;
+        settingPageComponent.profileDropdown.value = profileIndexToIds.IndexOf(profileComponent.activeProfileId);
 
         settingPageComponent.removeProfileButtonObj.SetActive(profileComponent.profiles.Count > 1);
     }
@@ -99,6 +102,8 @@ public class SettingPageProfileSystem : MonoBehaviour
 
         General.WebsocketUpdateProfileRequest request = new(loginComponent.token, profileComponent.activeProfileId, true);
         websocketComponent.generalRequests.Add(request);
+
+        loadingComponent.active = true;
     }
     void OnAddProfile()
     {
@@ -209,10 +214,8 @@ public class SettingPageProfileSystem : MonoBehaviour
                 OnRenameProfileResponse(response);
                 break;
             case UpdateProfilePropertyEnum.activePlatform:
-                OnChangeActivePlatformResponse(response);
-                break;
             case UpdateProfilePropertyEnum.makeItDefault:
-                // TODO
+                getInitialDataComponent.getInitialData = true;
                 break;
         }
     }
@@ -223,9 +226,5 @@ public class SettingPageProfileSystem : MonoBehaviour
         profileComponent.profiles[response.profileId].name = settingPageComponent.renameProfileNameInput.text;
         settingPageComponent.showRenameProfileButton = false;
         settingPageComponent.updateProfile = true;
-    }
-    void OnChangeActivePlatformResponse(General.WebsocketUpdateProfileResponse response)
-    {
-        getInitialDataComponent.getInitialData = true;
     }
 }
