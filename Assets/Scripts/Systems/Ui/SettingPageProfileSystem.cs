@@ -211,6 +211,9 @@ public class SettingPageProfileSystem : MonoBehaviour
             case UpdateProfilePropertyEnum.activePlatform:
                 OnChangeActivePlatformResponse(response);
                 break;
+            case UpdateProfilePropertyEnum.makeItDefault:
+                // TODO
+                break;
         }
     }
     void OnRenameProfileResponse(General.WebsocketUpdateProfileResponse response)
