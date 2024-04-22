@@ -17,6 +17,7 @@ public class GetRuntimeDataSystem : MonoBehaviour
     QuickTabComponent quickTabComponent;
     BotTabComponent botTabComponent;
     GetBalanceComponent getBalanceComponent;
+    LoadingComponent loadingComponent;
 
     void Start()
     {
@@ -32,6 +33,7 @@ public class GetRuntimeDataSystem : MonoBehaviour
         quickTabComponent = GlobalComponent.instance.quickTabComponent;
         botTabComponent = GlobalComponent.instance.botTabComponent;
         getBalanceComponent = GlobalComponent.instance.getBalanceComponent;
+        loadingComponent = GlobalComponent.instance.loadingComponent;
 
         getRuntimeDataComponent.onChange_getRuntimeData.AddListener(GetRuntimeData);
         getRuntimeDataComponent.onChange_processRuntimeData.AddListener(ProcessRuntimeData);
@@ -87,8 +89,11 @@ public class GetRuntimeDataSystem : MonoBehaviour
 
         if (platformComponent.gameObject.activeSelf)
         {
-            platformComponent.backButton.interactable = true;
             platformComponent.gameObject.SetActive(false);
+        }
+        if (loadingComponent.active)
+        {
+            loadingComponent.active = false;
         }
     }
     void DestroyOrders()

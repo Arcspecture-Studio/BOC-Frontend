@@ -12,6 +12,7 @@ public class PlatformSystem : MonoBehaviour
     PromptComponent promptComponent;
     ProfileComponent profileComponent;
     GetInitialDataComponent getInitialDataComponent;
+    LoadingComponent loadingComponent;
 
     void Start()
     {
@@ -21,6 +22,7 @@ public class PlatformSystem : MonoBehaviour
         promptComponent = GlobalComponent.instance.promptComponent;
         profileComponent = GlobalComponent.instance.profileComponent;
         getInitialDataComponent = GlobalComponent.instance.getInitialDataComponent;
+        loadingComponent = GlobalComponent.instance.loadingComponent;
 
         // Set initial state
         platformComponent.gameObject.SetActive(false);
@@ -220,7 +222,7 @@ public class PlatformSystem : MonoBehaviour
         General.WebsocketUpdateProfileRequest request = new(loginComponent.token, profileComponent.activeProfile._id, platformComponent.activePlatform);
         websocketComponent.generalRequests.Add(request);
 
-        platformComponent.backButton.interactable = false;
+        loadingComponent.active = true;
     }
     void Logout()
     {
