@@ -33,4 +33,5 @@ public class GlobalComponent : MonoBehaviour
     public BotTabComponent botTabComponent;
     public GetExchangeInfoComponent getExchangeInfoComponent;
     public GetBalanceComponent getBalanceComponent;
+    public LoadingComponent loadingComponent;
 }
