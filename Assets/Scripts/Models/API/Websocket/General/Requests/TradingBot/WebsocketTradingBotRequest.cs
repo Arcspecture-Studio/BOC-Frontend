@@ -5,15 +5,11 @@ namespace General
     [Serializable]
     public class WebsocketTradingBotRequest
     {
-        public PlatformEnum platform;
         public TradingBotSetting botSetting;
-        public QuickOrderSetting quickOrderSetting;
 
-        public WebsocketTradingBotRequest(PlatformEnum platform, TradingBotSetting botSetting, QuickOrderSetting quickOrderSetting)
+        public WebsocketTradingBotRequest(TradingBotSetting botSetting)
         {
-            this.platform = platform;
             this.botSetting = botSetting;
-            this.quickOrderSetting = quickOrderSetting;
         }
     }
 }

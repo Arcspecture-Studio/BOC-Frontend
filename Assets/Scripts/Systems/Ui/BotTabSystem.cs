@@ -141,9 +141,7 @@ public class BotTabSystem : MonoBehaviour
 
         websocketComponent.generalRequests.Add(new General.WebsocketAddTradingBotRequest(
             loginComponent.token,
-            platformComponent.activePlatform,
-            botSetting,
-            quickOrderSetting
+            botSetting
         ));
     }
     void DeleteFromServer(string botId)

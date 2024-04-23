@@ -8,12 +8,10 @@ namespace General
         public WebsocketTradingBotRequest botRequest;
 
         public WebsocketAddTradingBotRequest(string token,
-            PlatformEnum platform,
-            TradingBotSetting botSetting,
-            QuickOrderSetting quickOrderSetting) :
+            TradingBotSetting botSetting) :
         base(WebsocketEventTypeEnum.ADD_TRADING_BOT, token)
         {
-            botRequest = new(platform, botSetting, quickOrderSetting);
+            botRequest = new(botSetting);
         }
     }
 }

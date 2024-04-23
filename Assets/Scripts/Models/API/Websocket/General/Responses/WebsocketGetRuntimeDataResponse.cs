@@ -40,16 +40,13 @@ namespace General
     public class WebsocketGetQuickOrderResponse
     {
         public string id;
-        public string symbol;
-        public bool isLong;
         public double entryPrice;
-        public TimeframeEnum atrTimeframe;
+        public bool isLong;
     }
     [Serializable]
     public class WebsocketGetTradingBotResponse
     {
         public string id;
         public TradingBotSetting botSetting;
-        public QuickOrderSetting quickOrderSetting;
     }
 }
