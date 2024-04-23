@@ -18,6 +18,7 @@ public class GetRuntimeDataSystem : MonoBehaviour
     BotTabComponent botTabComponent;
     GetBalanceComponent getBalanceComponent;
     LoadingComponent loadingComponent;
+    MiniPromptComponent miniPromptComponent;
 
     void Start()
     {
@@ -34,6 +35,7 @@ public class GetRuntimeDataSystem : MonoBehaviour
         botTabComponent = GlobalComponent.instance.botTabComponent;
         getBalanceComponent = GlobalComponent.instance.getBalanceComponent;
         loadingComponent = GlobalComponent.instance.loadingComponent;
+        miniPromptComponent = GlobalComponent.instance.miniPromptComponent;
 
         getRuntimeDataComponent.onChange_getRuntimeData.AddListener(GetRuntimeData);
         getRuntimeDataComponent.onChange_processRuntimeData.AddListener(ProcessRuntimeData);
@@ -95,6 +97,7 @@ public class GetRuntimeDataSystem : MonoBehaviour
         {
             loadingComponent.active = false;
         }
+        miniPromptComponent.message = "Data fetched";
     }
     void DestroyOrders()
     {

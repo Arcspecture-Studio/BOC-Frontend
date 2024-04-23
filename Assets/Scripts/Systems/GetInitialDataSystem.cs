@@ -81,8 +81,7 @@ public class GetInitialDataSystem : MonoBehaviour
         #region Profile data
         profileComponent.profiles = response.accountData.profiles;
         profileComponent.activeProfileId = response.defaultProfileId;
-        settingPageComponent.updateProfile = true;
-        settingPageComponent.updatePreferenceUI = true;
+        settingPageComponent.updateProfileUI = true;
         quickTabComponent.updatePreferenceUI = true;
         #endregion
 
