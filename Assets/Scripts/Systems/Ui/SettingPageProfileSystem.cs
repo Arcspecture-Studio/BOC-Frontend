@@ -14,6 +14,7 @@ public class SettingPageProfileSystem : MonoBehaviour
     PromptComponent promptComponent;
     GetInitialDataComponent getInitialDataComponent;
     LoadingComponent loadingComponent;
+    QuickTabComponent quickTabComponent;
 
     List<string> profileIndexToIds;
     void Start()
@@ -26,6 +27,7 @@ public class SettingPageProfileSystem : MonoBehaviour
         promptComponent = GlobalComponent.instance.promptComponent;
         getInitialDataComponent = GlobalComponent.instance.getInitialDataComponent;
         loadingComponent = GlobalComponent.instance.loadingComponent;
+        quickTabComponent = GlobalComponent.instance.quickTabComponent;
 
         DefineListeners();
         OnShowAddNewProfileButton();
@@ -61,6 +63,7 @@ public class SettingPageProfileSystem : MonoBehaviour
         UpdateProfileDropdownUI();
         settingPageComponent.updateInfoUI = true;
         settingPageComponent.updatePreferenceUI = true;
+        quickTabComponent.updatePreferenceUI = true;
     }
     void UpdateProfileDropdownUI()
     {
