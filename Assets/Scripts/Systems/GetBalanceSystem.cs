@@ -46,6 +46,6 @@ public class GetBalanceSystem : MonoBehaviour
     void ProcessBalance(Dictionary<string, double> balances)
     {
         platformComponent.walletBalances = balances;
-        settingPageComponent.updateInfo = true;
+        settingPageComponent.updateInfoUI = true;
     }
 }

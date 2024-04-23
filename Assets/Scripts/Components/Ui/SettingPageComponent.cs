@@ -70,16 +70,16 @@ public class SettingPageComponent : MonoBehaviour
     [Header("Runtime")]
     public bool active = false;
     public bool syncSetting = false;
-    public bool updateInfo
+    public bool updateInfoUI
     {
-        set { onChange_updateInfo.Invoke(); }
+        set { onChange_updateInfoUI.Invoke(); }
     }
-    [HideInInspector] public UnityEvent onChange_updateInfo = new();
-    public bool updateProfile
+    [HideInInspector] public UnityEvent onChange_updateInfoUI = new();
+    public bool updateProfileUI
     {
-        set { onChange_updateProfile.Invoke(); }
+        set { onChange_updateProfileUI.Invoke(); }
     }
-    [HideInInspector] public UnityEvent onChange_updateProfile = new();
+    [HideInInspector] public UnityEvent onChange_updateProfileUI = new();
     public bool _showAddNewProfileButton;
     public bool showAddNewProfileButton
     {

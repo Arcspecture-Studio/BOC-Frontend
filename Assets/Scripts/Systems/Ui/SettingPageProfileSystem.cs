@@ -42,7 +42,7 @@ public class SettingPageProfileSystem : MonoBehaviour
 
     void DefineListeners()
     {
-        settingPageComponent.onChange_updateProfile.AddListener(UpdateProfileUI);
+        settingPageComponent.onChange_updateProfileUI.AddListener(UpdateProfileUI);
         settingPageComponent.onChange_showAddNewProfileButton.AddListener(OnShowAddNewProfileButton);
         settingPageComponent.onChange_showRenameProfileButton.AddListener(OnShowRenameProfileButton);
 
@@ -59,6 +59,8 @@ public class SettingPageProfileSystem : MonoBehaviour
     void UpdateProfileUI()
     {
         UpdateProfileDropdownUI();
+        settingPageComponent.updateInfoUI = true;
+        settingPageComponent.updatePreferenceUI = true;
     }
     void UpdateProfileDropdownUI()
     {
@@ -139,8 +141,7 @@ public class SettingPageProfileSystem : MonoBehaviour
 
         profileComponent.profiles.Add(response.profile._id, response.profile);
         profileComponent.activeProfileId = response.profile._id;
-        settingPageComponent.updateProfile = true;
-        settingPageComponent.profileDropdown.value = profileIndexToIds.IndexOf(profileComponent.activeProfileId);
+        settingPageComponent.updateProfileUI = true;
     }
     void OnRemoveProfile()
     {
@@ -176,8 +177,7 @@ public class SettingPageProfileSystem : MonoBehaviour
 
         profileComponent.profiles.Remove(response.profileId);
         profileComponent.activeProfileId = response.newDefaultProfileId;
-        settingPageComponent.updateProfile = true;
-        settingPageComponent.profileDropdown.value = profileIndexToIds.IndexOf(profileComponent.activeProfileId);
+        settingPageComponent.updateProfileUI = true;
     }
     void OnRenameProfile()
     {
@@ -225,6 +225,6 @@ public class SettingPageProfileSystem : MonoBehaviour
 
         profileComponent.profiles[response.profileId].name = settingPageComponent.renameProfileNameInput.text;
         settingPageComponent.showRenameProfileButton = false;
-        settingPageComponent.updateProfile = true;
+        settingPageComponent.updateProfileUI = true;
     }
 }

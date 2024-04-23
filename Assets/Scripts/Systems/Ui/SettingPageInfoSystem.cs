@@ -17,7 +17,7 @@ public class SettingPageInfoSystem : MonoBehaviour
         platformComponent = GlobalComponent.instance.platformComponent;
         orderPagesComponent = GlobalComponent.instance.orderPagesComponent;
 
-        settingPageComponent.onChange_updateInfo.AddListener(UpdateInfoUI);
+        settingPageComponent.onChange_updateInfoUI.AddListener(UpdateInfoUI);
     }
     void Update()
     {
