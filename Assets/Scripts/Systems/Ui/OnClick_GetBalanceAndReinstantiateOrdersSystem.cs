@@ -3,17 +3,17 @@ using UnityEngine.UI;
 
 public class OnClick_GetBalanceAndReinstantiateOrdersSystem : MonoBehaviour
 {
-    PlatformComponent platformComponent;
     HideAllPanelComponent hideAllPanelComponent;
     GetRuntimeDataComponent getRuntimeDataComponent;
+    LoadingComponent loadingComponent;
 
     Button button;
 
     void Start()
     {
-        platformComponent = GlobalComponent.instance.platformComponent;
         hideAllPanelComponent = GlobalComponent.instance.hideAllPanelComponent;
         getRuntimeDataComponent = GlobalComponent.instance.getRuntimeDataComponent;
+        loadingComponent = GlobalComponent.instance.loadingComponent;
 
         button = GetComponent<Button>();
 
@@ -22,6 +22,7 @@ public class OnClick_GetBalanceAndReinstantiateOrdersSystem : MonoBehaviour
             hideAllPanelComponent.hideNow = "true";
 
             getRuntimeDataComponent.getRuntimeData = true;
+            loadingComponent.active = true;
         });
     }
 }
