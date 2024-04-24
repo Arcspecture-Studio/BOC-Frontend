@@ -7,7 +7,7 @@ public class TradingBotSetting
     public int longOrderLimit;
     public int shortOrderLimit;
     public bool autoDestroyOrder;
-    public StrategySetting strategySetting;
+    public StrategySetting premiumIndex;
 
     public TradingBotSetting(BotTypeEnum botType, int longOrderLimit, int shortOrderLimit, bool autoDestroyOrder, StrategySetting strategySetting)
     {
@@ -15,7 +15,13 @@ public class TradingBotSetting
         this.longOrderLimit = longOrderLimit;
         this.shortOrderLimit = shortOrderLimit;
         this.autoDestroyOrder = autoDestroyOrder;
-        this.strategySetting = strategySetting;
+        this.premiumIndex = null;
+        switch (botType)
+        {
+            case BotTypeEnum.PREMIUM_INDEX:
+                this.premiumIndex = strategySetting;
+                break;
+        }
     }
 }
 [Serializable]
