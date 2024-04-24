@@ -122,21 +122,22 @@ public class BotTabSystem : MonoBehaviour
         #endregion
 
         #region Prepare quick order setting
+        // TODO: sent whole preference when adding bot to server
         ProfilePerference preference = profileComponent.activeProfile.preference;
-        QuickOrderSetting quickOrderSetting = new(preference.symbol,
-            preference.lossPercentage,
-            preference.lossAmount,
-            preference.marginDistributionMode == MarginDistributionModeEnum.WEIGHTED,
-            preference.marginWeightDistributionValue,
-            preference.takeProfitType,
-            preference.orderType,
-            preference.riskRewardRatio,
-            preference.takeProfitTrailingCallbackPercentage,
-            int.Parse(quickTabComponent.entryTimesInput.text),
-            (TimeframeEnum)quickTabComponent.atrTimeframeDropdown.value,
-            int.Parse(quickTabComponent.atrLengthInput.text),
-            double.Parse(quickTabComponent.atrMultiplierInput.text)
-        );
+        // QuickOrderSetting quickOrderSetting = new(preference.symbol,
+        //     preference.lossPercentage,
+        //     preference.lossAmount,
+        //     preference.marginDistributionMode == MarginDistributionModeEnum.WEIGHTED,
+        //     preference.marginWeightDistributionValue,
+        //     preference.takeProfitType,
+        //     preference.orderType,
+        //     preference.riskRewardRatio,
+        //     preference.takeProfitTrailingCallbackPercentage,
+        //     int.Parse(quickTabComponent.entryTimesInput.text),
+        //     (TimeframeEnum)quickTabComponent.atrTimeframeDropdown.value,
+        //     int.Parse(quickTabComponent.atrLengthInput.text),
+        //     double.Parse(quickTabComponent.atrMultiplierInput.text)
+        // );
         #endregion
 
         websocketComponent.generalRequests.Add(new General.WebsocketAddTradingBotRequest(

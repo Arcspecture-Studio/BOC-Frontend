@@ -223,7 +223,7 @@ GameObject:
   - component: {fileID: 576008403546782266}
   - component: {fileID: 576008403546782261}
   m_Layer: 5
-  m_Name: Symbol Value
+  m_Name: Order Id Value
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -576,17 +576,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3b24e6b13f011564bab8cfab89f0efa4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  symbolText: {fileID: 576008403546782261}
+  orderIdText: {fileID: 576008403546782261}
   positionSideText: {fileID: 576008403859954491}
   entryPriceText: {fileID: 576008402765810358}
-  atrTimeframeText: {fileID: 576008403611789680}
   closeButton: {fileID: 576008404127128508}
   orderId: 
-  data:
-    symbol: 
-    isLong: 0
-    entryPrice: 0
-    atrInterval: 
 --- !u!114 &3507886455097487814
 MonoBehaviour:
   m_ObjectHideFlags: 0

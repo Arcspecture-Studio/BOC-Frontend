@@ -63,6 +63,7 @@ public class QuickTabSystem : MonoBehaviour
     void AddToServer()
     {
         ProfilePerference preference = profileComponent.activeProfile.preference;
+        // TODO: sent whole preference when adding quick order to server
         double entryPrice = quickTabComponent.entryPriceInput.text.IsNullOrEmpty() ? -1 : double.Parse(quickTabComponent.entryPriceInput.text);
         websocketComponent.generalRequests.Add(new General.WebsocketAddQuickOrderRequest(
             loginComponent.token,

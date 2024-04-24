@@ -23,6 +23,7 @@ public class SpawnQuickOrderSystem : MonoBehaviour
 
         QuickOrderDataRowComponent quickOrderDataRowComponent = quickOrderDataRowObject.GetComponent<QuickOrderDataRowComponent>();
         quickOrderDataRowComponent.orderId = response.id;
+        quickOrderDataRowComponent.orderIdText.text = response.id;
         string positionSide = response.isLong ? "LONG" : "SHORT";
         Color positionSideColor = response.isLong ? OrderConfig.DISPLAY_COLOR_GREEN : Color.red;
         quickOrderDataRowComponent.positionSideText.text = positionSide;
