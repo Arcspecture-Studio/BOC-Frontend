@@ -165,20 +165,20 @@ public class OrderPageSystem : MonoBehaviour
     {
         if (orderPageComponent.instantiateWithData) return;
 
-        ProfilePerference preference = profileComponent.activeProfile.preference;
-        if (!preference.symbol.IsNullOrEmpty())
+        Perference preference = profileComponent.activeProfile.preference;
+        if (!preference.order.symbol.IsNullOrEmpty())
         {
-            orderPageComponent.symbolDropdownComponent.selectedSymbol = preference.symbol.ToUpper();
+            orderPageComponent.symbolDropdownComponent.selectedSymbol = preference.order.symbol.ToUpper();
         }
-        orderPageComponent.maxLossPercentageInput.text = preference.lossPercentage == 0 ? "" : preference.lossPercentage.ToString();
-        orderPageComponent.maxLossAmountInput.text = preference.lossAmount == 0 ? "" : preference.lossAmount.ToString();
-        orderPageComponent.marginDistributionModeDropdown.value = (int)preference.marginDistributionMode;
-        orderPageComponent.marginWeightDistributionValueSlider.value = (float)preference.marginWeightDistributionValue;
-        orderPageComponent.takeProfitTypeDropdown.value = (int)preference.takeProfitType;
-        orderPageComponent.riskRewardRatioInput.text = preference.riskRewardRatio.ToString();
-        orderPageComponent.takeProfitTrailingCallbackPercentageSlider.value = (float)preference.takeProfitTrailingCallbackPercentage;
-        orderPageComponent.takeProfitTrailingCallbackPercentageInput.text = preference.takeProfitTrailingCallbackPercentage.ToString();
-        orderPageComponent.orderTypeDropdown.value = (int)preference.orderType;
+        orderPageComponent.maxLossPercentageInput.text = preference.order.lossPercentage == 0 ? "" : preference.order.lossPercentage.ToString();
+        orderPageComponent.maxLossAmountInput.text = preference.order.lossAmount == 0 ? "" : preference.order.lossAmount.ToString();
+        orderPageComponent.marginDistributionModeDropdown.value = (int)preference.order.marginDistributionMode;
+        orderPageComponent.marginWeightDistributionValueSlider.value = (float)preference.order.marginWeightDistributionValue;
+        orderPageComponent.takeProfitTypeDropdown.value = (int)preference.order.takeProfitType;
+        orderPageComponent.riskRewardRatioInput.text = preference.order.riskRewardRatio.ToString();
+        orderPageComponent.takeProfitTrailingCallbackPercentageSlider.value = (float)preference.order.takeProfitTrailingCallbackPercentage;
+        orderPageComponent.takeProfitTrailingCallbackPercentageInput.text = preference.order.takeProfitTrailingCallbackPercentage.ToString();
+        orderPageComponent.orderTypeDropdown.value = (int)preference.order.orderType;
     }
     IEnumerator CalculateMargin()
     {
@@ -210,8 +210,8 @@ public class OrderPageSystem : MonoBehaviour
                 double.Parse(orderPageComponent.stopLossInput.text);
             double takeProfitPrice = orderPageComponent.takeProfitInput.text.IsNullOrEmpty() ? double.NaN :
                 double.Parse(orderPageComponent.takeProfitInput.text);
-            double riskRewardRatio = orderPageComponent.riskRewardRatioInput.text.IsNullOrEmpty() ? profileComponent.activeProfile.preference.riskRewardRatio : double.Parse(orderPageComponent.riskRewardRatioInput.text);
-            double takeProfitTrailingCallbackPercentage = orderPageComponent.takeProfitTrailingCallbackPercentageInput.text.IsNullOrEmpty() ? profileComponent.activeProfile.preference.takeProfitTrailingCallbackPercentage : double.Parse(orderPageComponent.takeProfitTrailingCallbackPercentageInput.text);
+            double riskRewardRatio = orderPageComponent.riskRewardRatioInput.text.IsNullOrEmpty() ? profileComponent.activeProfile.preference.order.riskRewardRatio : double.Parse(orderPageComponent.riskRewardRatioInput.text);
+            double takeProfitTrailingCallbackPercentage = orderPageComponent.takeProfitTrailingCallbackPercentageInput.text.IsNullOrEmpty() ? profileComponent.activeProfile.preference.order.takeProfitTrailingCallbackPercentage : double.Parse(orderPageComponent.takeProfitTrailingCallbackPercentageInput.text);
 
             // validate input
             if (walletUnit.IsNullOrEmpty())

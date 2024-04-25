@@ -123,7 +123,7 @@ public class BotTabSystem : MonoBehaviour
 
         #region Prepare quick order setting
         // TODO: sent whole preference when adding bot to server
-        ProfilePerference preference = profileComponent.activeProfile.preference;
+        // ProfilePerference preference = profileComponent.activeProfile.preference;
         // QuickOrderSetting quickOrderSetting = new(preference.symbol,
         //     preference.lossPercentage,
         //     preference.lossAmount,

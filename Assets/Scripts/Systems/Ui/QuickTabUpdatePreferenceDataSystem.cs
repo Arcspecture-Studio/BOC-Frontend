@@ -20,13 +20,13 @@ public class QuickTabUpdatePreferenceDataSystem : MonoBehaviour
 
     void UpdateUIFromProfile()
     {
-        ProfilePerference preference = profileComponent.activeProfile.preference;
+        Perference preference = profileComponent.activeProfile.preference;
         quickTabComponent.updatingUIFromProfile = true;
 
-        quickTabComponent.entryTimesInput.text = preference.quickEntryTimes.ToString();
-        quickTabComponent.atrTimeframeDropdown.value = (int)preference.atrTimeframe;
-        quickTabComponent.atrLengthInput.text = preference.atrLength.ToString();
-        quickTabComponent.atrMultiplierInput.text = preference.atrMultiplier.ToString();
+        quickTabComponent.entryTimesInput.text = preference.quickOrder.quickEntryTimes.ToString();
+        quickTabComponent.atrTimeframeDropdown.value = (int)preference.quickOrder.atrTimeframe;
+        quickTabComponent.atrLengthInput.text = preference.quickOrder.atrLength.ToString();
+        quickTabComponent.atrMultiplierInput.text = preference.quickOrder.atrMultiplier.ToString();
 
         quickTabComponent.updatingUIFromProfile = false;
     }
@@ -39,14 +39,14 @@ public class QuickTabUpdatePreferenceDataSystem : MonoBehaviour
                 value = "2";
                 quickTabComponent.entryTimesInput.text = value;
             }
-            if (profileComponent.activeProfile.preference.quickEntryTimes == int.Parse(value)) return;
-            profileComponent.activeProfile.preference.quickEntryTimes = int.Parse(value);
+            if (profileComponent.activeProfile.preference.quickOrder.quickEntryTimes == int.Parse(value)) return;
+            profileComponent.activeProfile.preference.quickOrder.quickEntryTimes = int.Parse(value);
             settingPageComponent.updatePreferenceToServer = true;
         });
         quickTabComponent.atrTimeframeDropdown.onValueChanged.AddListener(value =>
         {
-            if (profileComponent.activeProfile.preference.atrTimeframe == (TimeframeEnum)value) return;
-            profileComponent.activeProfile.preference.atrTimeframe = (TimeframeEnum)value;
+            if (profileComponent.activeProfile.preference.quickOrder.atrTimeframe == (TimeframeEnum)value) return;
+            profileComponent.activeProfile.preference.quickOrder.atrTimeframe = (TimeframeEnum)value;
             settingPageComponent.updatePreferenceToServer = true;
         });
         quickTabComponent.atrLengthInput.onEndEdit.AddListener(value =>
@@ -56,8 +56,8 @@ public class QuickTabUpdatePreferenceDataSystem : MonoBehaviour
                 value = "13";
                 quickTabComponent.atrLengthInput.text = value;
             }
-            if (profileComponent.activeProfile.preference.atrLength == int.Parse(value)) return;
-            profileComponent.activeProfile.preference.atrLength = int.Parse(value);
+            if (profileComponent.activeProfile.preference.quickOrder.atrLength == int.Parse(value)) return;
+            profileComponent.activeProfile.preference.quickOrder.atrLength = int.Parse(value);
             settingPageComponent.updatePreferenceToServer = true;
         });
         quickTabComponent.atrMultiplierInput.onEndEdit.AddListener(value =>
@@ -67,8 +67,8 @@ public class QuickTabUpdatePreferenceDataSystem : MonoBehaviour
                 value = "3";
                 quickTabComponent.atrMultiplierInput.text = value;
             }
-            if (profileComponent.activeProfile.preference.atrMultiplier == double.Parse(value)) return;
-            profileComponent.activeProfile.preference.atrMultiplier = double.Parse(value);
+            if (profileComponent.activeProfile.preference.quickOrder.atrMultiplier == double.Parse(value)) return;
+            profileComponent.activeProfile.preference.quickOrder.atrMultiplier = double.Parse(value);
             settingPageComponent.updatePreferenceToServer = true;
         });
     }

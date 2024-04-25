@@ -83,7 +83,7 @@ public class OrderPageTakeProfitTrailingCallbackPercentageSystem : MonoBehaviour
             settingPageComponent.takeProfitTrailingCallbackPercentageSlider.value = (float)roundedValue;
             settingPageComponent.takeProfitTrailingCallbackPercentageInput.text = roundedValue.ToString();
 
-            profileComponent.activeProfile.preference.takeProfitTrailingCallbackPercentage = roundedValue;
+            profileComponent.activeProfile.preference.order.takeProfitTrailingCallbackPercentage = roundedValue;
             settingPageComponent.updatePreferenceToServer = true;
         });
         settingPageComponent.takeProfitTrailingCallbackPercentageSliderTrigger.triggers.Add(pointerUpEvent);
@@ -96,7 +96,7 @@ public class OrderPageTakeProfitTrailingCallbackPercentageSystem : MonoBehaviour
             settingPageComponent.takeProfitTrailingCallbackPercentageInput.text = roundedValue.ToString();
             settingPageComponent.takeProfitTrailingCallbackPercentageSlider.value = (float)roundedValue;
 
-            profileComponent.activeProfile.preference.takeProfitTrailingCallbackPercentage = roundedValue;
+            profileComponent.activeProfile.preference.order.takeProfitTrailingCallbackPercentage = roundedValue;
             settingPageComponent.updatePreferenceToServer = true;
         });
     }
