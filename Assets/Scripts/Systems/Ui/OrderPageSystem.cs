@@ -165,7 +165,7 @@ public class OrderPageSystem : MonoBehaviour
     {
         if (orderPageComponent.instantiateWithData) return;
 
-        Perference preference = profileComponent.activeProfile.preference;
+        Preference preference = profileComponent.activeProfile.preference;
         if (!preference.order.symbol.IsNullOrEmpty())
         {
             orderPageComponent.symbolDropdownComponent.selectedSymbol = preference.order.symbol.ToUpper();

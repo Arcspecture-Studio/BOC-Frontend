@@ -9,6 +9,7 @@ public class SettingPagePreferenceSystem : MonoBehaviour
     LoginComponent loginComponent;
     WebsocketComponent websocketComponent;
     QuickTabComponent quickTabComponent;
+    BotTabComponent botTabComponent;
 
     bool updatingUIFromProfile = false;
     void Start()
@@ -18,6 +19,7 @@ public class SettingPagePreferenceSystem : MonoBehaviour
         loginComponent = GlobalComponent.instance.loginComponent;
         websocketComponent = GlobalComponent.instance.websocketComponent;
         quickTabComponent = GlobalComponent.instance.quickTabComponent;
+        botTabComponent = GlobalComponent.instance.botTabComponent;
 
         settingPageComponent.onChange_updatePreferenceUI.AddListener(UpdateUIFromProfile);
         settingPageComponent.onChange_updatePreferenceToServer.AddListener(UpdatePreferenceToServer);
@@ -32,7 +34,7 @@ public class SettingPagePreferenceSystem : MonoBehaviour
         {
             if (value.IsNullOrEmpty())
             {
-                value = "BTCUSDT";
+                value = profileComponent.activeProfile.preference.order.symbol;
                 settingPageComponent.symbolInput.text = value;
             }
             if (profileComponent.activeProfile.preference.order.symbol == value) return;
@@ -41,14 +43,14 @@ public class SettingPagePreferenceSystem : MonoBehaviour
         });
         settingPageComponent.lossPercentageInput.onEndEdit.AddListener(value =>
         {
-            if (value.IsNullOrEmpty()) value = "0";
+            if (value.IsNullOrEmpty()) value = profileComponent.activeProfile.preference.order.lossPercentage.ToString();
             if (profileComponent.activeProfile.preference.order.lossPercentage == double.Parse(value)) return;
             profileComponent.activeProfile.preference.order.lossPercentage = double.Parse(value);
             settingPageComponent.updatePreferenceToServer = true;
         });
         settingPageComponent.lossAmountInput.onEndEdit.AddListener(value =>
         {
-            if (value.IsNullOrEmpty()) value = "0";
+            if (value.IsNullOrEmpty()) value = profileComponent.activeProfile.preference.order.lossAmount.ToString();
             if (profileComponent.activeProfile.preference.order.lossAmount == double.Parse(value)) return;
             profileComponent.activeProfile.preference.order.lossAmount = double.Parse(value);
             settingPageComponent.updatePreferenceToServer = true;
@@ -67,7 +69,7 @@ public class SettingPagePreferenceSystem : MonoBehaviour
         {
             if (value.IsNullOrEmpty())
             {
-                value = "1";
+                value = profileComponent.activeProfile.preference.order.riskRewardRatio.ToString();
                 settingPageComponent.riskRewardRatioInput.text = value;
             }
             if (profileComponent.activeProfile.preference.order.riskRewardRatio == double.Parse(value)) return;
@@ -82,29 +84,30 @@ public class SettingPagePreferenceSystem : MonoBehaviour
     }
     void UpdatePreferenceToServer()
     {
-        if (updatingUIFromProfile || quickTabComponent.updatingUIFromProfile) return;
+        if (updatingUIFromProfile || quickTabComponent.updatingUIFromProfile ||
+        botTabComponent.updatingUIFromProfile) return;
 
         General.WebsocketUpdateProfileRequest request = new(loginComponent.token, profileComponent.activeProfile._id, profileComponent.activeProfile.preference);
         websocketComponent.generalRequests.Add(request);
     }
     void UpdateUIFromProfile()
     {
-        Perference preference = profileComponent.activeProfile.preference;
+        PreferenceOrder preferenceOrder = profileComponent.activeProfile.preference.order;
         updatingUIFromProfile = true;
 
-        settingPageComponent.symbolInput.text = preference.order.symbol;
-        settingPageComponent.lossPercentageInput.text = preference.order.lossPercentage == 0 ?
-        "" : preference.order.lossPercentage.ToString();
-        settingPageComponent.lossAmountInput.text = preference.order.lossAmount == 0 ?
-        "" : preference.order.lossAmount.ToString();
-        settingPageComponent.marginDistributionModeDropdown.value = (int)preference.order.marginDistributionMode;
-        settingPageComponent.marginWeightDistributionValueSlider.value = (float)preference.order.marginWeightDistributionValue;
-        settingPageComponent.marginWeightDistributionValueInput.text = preference.order.marginWeightDistributionValue.ToString();
-        settingPageComponent.takeProfitTypeDropdown.value = (int)preference.order.takeProfitType;
-        settingPageComponent.riskRewardRatioInput.text = preference.order.riskRewardRatio.ToString();
-        settingPageComponent.takeProfitTrailingCallbackPercentageSlider.value = (float)preference.order.takeProfitTrailingCallbackPercentage;
-        settingPageComponent.takeProfitTrailingCallbackPercentageInput.text = preference.order.takeProfitTrailingCallbackPercentage.ToString();
-        settingPageComponent.orderTypeDropdown.value = (int)preference.order.orderType;
+        settingPageComponent.symbolInput.text = preferenceOrder.symbol;
+        settingPageComponent.lossPercentageInput.text = preferenceOrder.lossPercentage == 0 ?
+        "" : preferenceOrder.lossPercentage.ToString();
+        settingPageComponent.lossAmountInput.text = preferenceOrder.lossAmount == 0 ?
+        "" : preferenceOrder.lossAmount.ToString();
+        settingPageComponent.marginDistributionModeDropdown.value = (int)preferenceOrder.marginDistributionMode;
+        settingPageComponent.marginWeightDistributionValueSlider.value = (float)preferenceOrder.marginWeightDistributionValue;
+        settingPageComponent.marginWeightDistributionValueInput.text = preferenceOrder.marginWeightDistributionValue.ToString();
+        settingPageComponent.takeProfitTypeDropdown.value = (int)preferenceOrder.takeProfitType;
+        settingPageComponent.riskRewardRatioInput.text = preferenceOrder.riskRewardRatio.ToString();
+        settingPageComponent.takeProfitTrailingCallbackPercentageSlider.value = (float)preferenceOrder.takeProfitTrailingCallbackPercentage;
+        settingPageComponent.takeProfitTrailingCallbackPercentageInput.text = preferenceOrder.takeProfitTrailingCallbackPercentage.ToString();
+        settingPageComponent.orderTypeDropdown.value = (int)preferenceOrder.orderType;
 
         updatingUIFromProfile = false;
     }

@@ -1,7 +1,7 @@
 using System;
 
 [Serializable]
-public class Perference
+public class Preference
 {
     public PreferenceOrder order;
     public PreferenceQuickOrder quickOrder;
@@ -33,7 +33,7 @@ public class PreferenceBot
     public int longOrderLimit;
     public int shortOrderLimit;
     public bool autoDestroyOrder;
-    public PreferenceBotStrategy premiumIndex;
+    public PreferenceBotPremiumIndex premiumIndex;
 
     public PreferenceBot(BotTypeEnum botType, int longOrderLimit, int shortOrderLimit, bool autoDestroyOrder, PreferenceBotStrategy strategySetting)
     {
@@ -45,7 +45,7 @@ public class PreferenceBot
         switch (botType)
         {
             case BotTypeEnum.PREMIUM_INDEX:
-                this.premiumIndex = strategySetting;
+                this.premiumIndex = (PreferenceBotPremiumIndex)strategySetting;
                 break;
         }
     }

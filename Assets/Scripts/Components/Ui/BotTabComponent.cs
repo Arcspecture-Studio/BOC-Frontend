@@ -32,6 +32,12 @@ public class BotTabComponent : MonoBehaviour
 
     [Header("Runtime")]
     public bool active = false;
+    public bool updatePreferenceUI
+    {
+        set { onChange_updatePreferenceUI.Invoke(); }
+    }
+    [HideInInspector] public UnityEvent onChange_updatePreferenceUI = new();
+    public bool updatingUIFromProfile;
     public BotTypeEnum botType
     {
         get { return (BotTypeEnum)botTypeDropdown.value; }

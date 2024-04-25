@@ -1,7 +1,7 @@
 using UnityEngine;
 using WebSocketSharp;
 
-public class QuickTabUpdatePreferenceDataSystem : MonoBehaviour
+public class QuickTabPreferenceSystem : MonoBehaviour
 {
     QuickTabComponent quickTabComponent;
     ProfileComponent profileComponent;
@@ -20,13 +20,13 @@ public class QuickTabUpdatePreferenceDataSystem : MonoBehaviour
 
     void UpdateUIFromProfile()
     {
-        Perference preference = profileComponent.activeProfile.preference;
+        PreferenceQuickOrder preferenceQuickOrder = profileComponent.activeProfile.preference.quickOrder;
         quickTabComponent.updatingUIFromProfile = true;
 
-        quickTabComponent.entryTimesInput.text = preference.quickOrder.quickEntryTimes.ToString();
-        quickTabComponent.atrTimeframeDropdown.value = (int)preference.quickOrder.atrTimeframe;
-        quickTabComponent.atrLengthInput.text = preference.quickOrder.atrLength.ToString();
-        quickTabComponent.atrMultiplierInput.text = preference.quickOrder.atrMultiplier.ToString();
+        quickTabComponent.entryTimesInput.text = preferenceQuickOrder.quickEntryTimes.ToString();
+        quickTabComponent.atrTimeframeDropdown.value = (int)preferenceQuickOrder.atrTimeframe;
+        quickTabComponent.atrLengthInput.text = preferenceQuickOrder.atrLength.ToString();
+        quickTabComponent.atrMultiplierInput.text = preferenceQuickOrder.atrMultiplier.ToString();
 
         quickTabComponent.updatingUIFromProfile = false;
     }
@@ -36,7 +36,7 @@ public class QuickTabUpdatePreferenceDataSystem : MonoBehaviour
         {
             if (value.IsNullOrEmpty())
             {
-                value = "2";
+                value = profileComponent.activeProfile.preference.quickOrder.quickEntryTimes.ToString();
                 quickTabComponent.entryTimesInput.text = value;
             }
             if (profileComponent.activeProfile.preference.quickOrder.quickEntryTimes == int.Parse(value)) return;
@@ -53,7 +53,7 @@ public class QuickTabUpdatePreferenceDataSystem : MonoBehaviour
         {
             if (value.IsNullOrEmpty())
             {
-                value = "13";
+                value = profileComponent.activeProfile.preference.quickOrder.atrLength.ToString();
                 quickTabComponent.atrLengthInput.text = value;
             }
             if (profileComponent.activeProfile.preference.quickOrder.atrLength == int.Parse(value)) return;
@@ -64,7 +64,7 @@ public class QuickTabUpdatePreferenceDataSystem : MonoBehaviour
         {
             if (value.IsNullOrEmpty())
             {
-                value = "3";
+                value = profileComponent.activeProfile.preference.quickOrder.atrMultiplier.ToString();
                 quickTabComponent.atrMultiplierInput.text = value;
             }
             if (profileComponent.activeProfile.preference.quickOrder.atrMultiplier == double.Parse(value)) return;
