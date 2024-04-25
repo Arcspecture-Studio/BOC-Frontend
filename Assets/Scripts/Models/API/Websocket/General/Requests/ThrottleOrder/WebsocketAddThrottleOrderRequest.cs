@@ -3,17 +3,14 @@ using System;
 namespace General
 {
     [Serializable]
-    public class WebsocketAddThrottleOrderRequest : WebsocketGeneralRequest
+    public class WebsocketAddThrottleOrderRequest : WebsocketThrottleOrderRequest
     {
-        public WebsocketThrottleOrderRequest orderRequest;
         public WebsocketAddThrottleOrderRequest(string token,
             string orderId,
             string parentOrderId,
             CalculateThrottle throttleCalculator,
-            OrderTypeEnum orderType) : base(WebsocketEventTypeEnum.ADD_THROTTLE_ORDER, token)
+            OrderTypeEnum orderType) : base(WebsocketEventTypeEnum.ADD_THROTTLE_ORDER, token, orderId, parentOrderId, throttleCalculator, orderType)
         {
-            orderRequest = new(orderId, parentOrderId,
-            throttleCalculator, orderType);
         }
     }
 }

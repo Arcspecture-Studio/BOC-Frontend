@@ -1,7 +1,7 @@
 using System;
 
 [Serializable]
-public class TradingBotSetting
+public class TradingBotSetting // TODO: remove this
 {
     public BotTypeEnum botType;
     public int longOrderLimit;

@@ -3,15 +3,12 @@ using System;
 namespace General
 {
     [Serializable]
-    public class WebsocketAddQuickOrderRequest : WebsocketGeneralRequest
+    public class WebsocketAddQuickOrderRequest : WebsocketQuickOrderRequest
     {
-        public WebsocketQuickOrderRequest orderRequest;
-
         public WebsocketAddQuickOrderRequest(string token,
             double entryPrice,
-            bool isLong) : base(WebsocketEventTypeEnum.ADD_QUICK_ORDER, token)
+            bool isLong) : base(WebsocketEventTypeEnum.ADD_QUICK_ORDER, token, entryPrice, isLong)
         {
-            orderRequest = new(entryPrice, isLong);
         }
     }
 }

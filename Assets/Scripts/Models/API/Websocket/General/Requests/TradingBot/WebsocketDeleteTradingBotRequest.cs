@@ -3,14 +3,11 @@ using System;
 namespace General
 {
     [Serializable]
-    public class WebsocketDeleteTradingBotRequest : WebsocketGeneralRequest
+    public class WebsocketDeleteTradingBotRequest : WebsocketIdRequest
     {
-        public WebsocketIdRequest botRequest;
-
-        public WebsocketDeleteTradingBotRequest(string token,
-            string botId) : base(WebsocketEventTypeEnum.DELETE_TRADING_BOT, token)
+        public WebsocketDeleteTradingBotRequest(string token, string botId) :
+        base(WebsocketEventTypeEnum.DELETE_TRADING_BOT, token, botId)
         {
-            botRequest = new(botId);
         }
     }
 }

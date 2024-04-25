@@ -141,8 +141,7 @@ public class BotTabSystem : MonoBehaviour
         #endregion
 
         websocketComponent.generalRequests.Add(new General.WebsocketAddTradingBotRequest(
-            loginComponent.token,
-            botSetting
+            loginComponent.token
         ));
     }
     void DeleteFromServer(string botId)

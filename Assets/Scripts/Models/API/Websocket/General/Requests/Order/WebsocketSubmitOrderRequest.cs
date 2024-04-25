@@ -3,13 +3,10 @@ using System;
 namespace General
 {
     [Serializable]
-    public class WebsocketSubmitOrderRequest : WebsocketGeneralRequest
+    public class WebsocketSubmitOrderRequest : WebsocketIdRequest
     {
-        public WebsocketIdRequest orderRequest;
-
-        public WebsocketSubmitOrderRequest(string token, string orderId) : base(WebsocketEventTypeEnum.SUBMIT_ORDER, token)
+        public WebsocketSubmitOrderRequest(string token, string orderId) : base(WebsocketEventTypeEnum.SUBMIT_ORDER, token, orderId)
         {
-            orderRequest = new(orderId);
         }
     }
 }

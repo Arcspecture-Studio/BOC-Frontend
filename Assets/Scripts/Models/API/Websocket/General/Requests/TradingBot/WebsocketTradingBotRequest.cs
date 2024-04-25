@@ -3,7 +3,7 @@ using System;
 namespace General
 {
     [Serializable]
-    public class WebsocketTradingBotRequest
+    public class WebsocketTradingBotRequest // TODO: remove this
     {
         public TradingBotSetting botSetting;
 
