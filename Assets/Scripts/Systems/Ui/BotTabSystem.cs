@@ -48,98 +48,9 @@ public class BotTabSystem : MonoBehaviour
             botTabComponent.addToServer = true;
             botTabComponent.addBotButton.interactable = false;
         });
-        ValidateInput();
-        // TODO: add these value into preference
-        botTabComponent.longOrderLimitInput.onEndEdit.Invoke("");
-        botTabComponent.shortOrderLimitInput.onEndEdit.Invoke("");
-        botTabComponent.premiumIndexSetting_longThresholdPercentage.onEndEdit.Invoke("");
-        botTabComponent.premiumIndexSetting_shortThresholdPercentage.onEndEdit.Invoke("");
-        botTabComponent.premiumIndexSetting_candleLength.onEndEdit.Invoke("");
-    }
-    void ValidateInput()
-    {
-        botTabComponent.longOrderLimitInput.onEndEdit.AddListener(value =>
-        {
-            if (value.IsNullOrEmpty())
-            {
-                value = "1";
-                botTabComponent.longOrderLimitInput.text = value;
-            }
-        });
-        botTabComponent.shortOrderLimitInput.onEndEdit.AddListener(value =>
-        {
-            if (value.IsNullOrEmpty())
-            {
-                value = "1";
-                botTabComponent.shortOrderLimitInput.text = value;
-            }
-        });
-        botTabComponent.premiumIndexSetting_longThresholdPercentage.onEndEdit.AddListener(value =>
-        {
-            if (value.IsNullOrEmpty())
-            {
-                value = "0.1";
-                botTabComponent.premiumIndexSetting_longThresholdPercentage.text = value;
-            }
-        });
-        botTabComponent.premiumIndexSetting_shortThresholdPercentage.onEndEdit.AddListener(value =>
-        {
-            if (value.IsNullOrEmpty())
-            {
-                value = "0.1";
-                botTabComponent.premiumIndexSetting_shortThresholdPercentage.text = value;
-            }
-        });
-        botTabComponent.premiumIndexSetting_candleLength.onEndEdit.AddListener(value =>
-        {
-            if (value.IsNullOrEmpty())
-            {
-                value = "13";
-                botTabComponent.premiumIndexSetting_candleLength.text = value;
-            }
-        });
     }
     void AddToServer()
     {
-        #region Prepare bot setting
-        StrategySetting strategySetting = null;
-        switch (botTabComponent.botType)
-        {
-            case BotTypeEnum.PREMIUM_INDEX:
-                strategySetting = new PremiumIndexStrategySetting(
-                    double.Parse(botTabComponent.premiumIndexSetting_longThresholdPercentage.text),
-                    double.Parse(botTabComponent.premiumIndexSetting_shortThresholdPercentage.text),
-                    int.Parse(botTabComponent.premiumIndexSetting_candleLength.text)
-                );
-                break;
-        }
-        TradingBotSetting botSetting = new(botTabComponent.botType,
-            int.Parse(botTabComponent.longOrderLimitInput.text),
-            int.Parse(botTabComponent.shortOrderLimitInput.text),
-            botTabComponent.autoDestroyOrderToggle.isOn,
-            strategySetting
-        );
-        #endregion
-
-        #region Prepare quick order setting
-        // TODO: sent whole preference when adding bot to server
-        // ProfilePerference preference = profileComponent.activeProfile.preference;
-        // QuickOrderSetting quickOrderSetting = new(preference.symbol,
-        //     preference.lossPercentage,
-        //     preference.lossAmount,
-        //     preference.marginDistributionMode == MarginDistributionModeEnum.WEIGHTED,
-        //     preference.marginWeightDistributionValue,
-        //     preference.takeProfitType,
-        //     preference.orderType,
-        //     preference.riskRewardRatio,
-        //     preference.takeProfitTrailingCallbackPercentage,
-        //     int.Parse(quickTabComponent.entryTimesInput.text),
-        //     (TimeframeEnum)quickTabComponent.atrTimeframeDropdown.value,
-        //     int.Parse(quickTabComponent.atrLengthInput.text),
-        //     double.Parse(quickTabComponent.atrMultiplierInput.text)
-        // );
-        #endregion
-
         websocketComponent.generalRequests.Add(new General.WebsocketAddTradingBotRequest(
             loginComponent.token
         ));

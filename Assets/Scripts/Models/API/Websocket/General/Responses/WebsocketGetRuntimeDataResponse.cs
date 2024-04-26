@@ -42,11 +42,12 @@ namespace General
         public string id;
         public double entryPrice;
         public bool isLong;
+        public Preference setting;
     }
     [Serializable]
     public class WebsocketGetTradingBotResponse
     {
         public string id;
-        public TradingBotSetting botSetting;
+        public Preference setting;
     }
 }

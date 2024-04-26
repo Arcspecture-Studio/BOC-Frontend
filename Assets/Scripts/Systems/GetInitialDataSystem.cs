@@ -1,4 +1,3 @@
-using System.Collections.Generic;
 using Newtonsoft.Json;
 using UnityEngine;
 using WebSocketSharp;
@@ -12,7 +11,6 @@ public class GetInitialDataSystem : MonoBehaviour
     PromptComponent promptComponent;
     ProfileComponent profileComponent;
     SettingPageComponent settingPageComponent;
-    QuickTabComponent quickTabComponent;
     GetRuntimeDataComponent getRuntimeDataComponent;
     IoComponent ioComponent;
     GetExchangeInfoComponent getExchangeInfoComponent;
@@ -26,7 +24,6 @@ public class GetInitialDataSystem : MonoBehaviour
         promptComponent = GlobalComponent.instance.promptComponent;
         profileComponent = GlobalComponent.instance.profileComponent;
         settingPageComponent = GlobalComponent.instance.settingPageComponent;
-        quickTabComponent = GlobalComponent.instance.quickTabComponent;
         getRuntimeDataComponent = GlobalComponent.instance.getRuntimeDataComponent;
         ioComponent = GlobalComponent.instance.ioComponent;
         getExchangeInfoComponent = GlobalComponent.instance.getExchangeInfoComponent;

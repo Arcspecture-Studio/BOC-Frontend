@@ -47,7 +47,7 @@ public class GetRuntimeDataSystem : MonoBehaviour
 
     void GetRuntimeData()
     {
-        General.WebsocketGetRuntimeDataRequest request = new(loginComponent.token, platformComponent.activePlatform);
+        General.WebsocketGeneralRequest request = new(WebsocketEventTypeEnum.GET_RUNTIME_DATA, loginComponent.token);
         websocketComponent.generalRequests.Add(request);
     }
     void GetRuntimeDataResponse()

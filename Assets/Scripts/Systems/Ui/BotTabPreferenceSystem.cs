@@ -23,7 +23,13 @@ public class BotTabPreferenceSystem : MonoBehaviour
         PreferenceBot preferenceBot = profileComponent.activeProfile.preference.bot;
         botTabComponent.updatingUIFromProfile = true;
 
-        // TODO
+        botTabComponent.longOrderLimitInput.text = preferenceBot.longOrderLimit.ToString();
+        botTabComponent.shortOrderLimitInput.text = preferenceBot.shortOrderLimit.ToString();
+        botTabComponent.autoDestroyOrderToggle.isOn = preferenceBot.autoDestroyOrder;
+        botTabComponent.botTypeDropdown.value = (int)preferenceBot.botType;
+        botTabComponent.premiumIndexSetting_longThresholdPercentage.text = preferenceBot.premiumIndex.longThresholdPercentage.ToString();
+        botTabComponent.premiumIndexSetting_shortThresholdPercentage.text = preferenceBot.premiumIndex.shortThresholdPercentage.ToString();
+        botTabComponent.premiumIndexSetting_candleLength.text = preferenceBot.premiumIndex.candleLength.ToString();
 
         botTabComponent.updatingUIFromProfile = false;
     }
