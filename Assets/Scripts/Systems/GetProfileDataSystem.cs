@@ -84,6 +84,7 @@ public class GetProfileDataSystem : MonoBehaviour
                     break;
             }
         }
+        // TODO: exchange shoudl be done here because already get profile, but before process runtime data
         getRuntimeDataComponent.processRuntimeData = profileData;
         #endregion
     }

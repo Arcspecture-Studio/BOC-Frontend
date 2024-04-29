@@ -49,7 +49,7 @@ public class GetInitialDataSystem : MonoBehaviour
             return;
         }
 
-        getProfileDataComponent.processProfileData = response;
         getExchangeInfoComponent.processExchangeInfo = response.exchangeInfos;
+        getProfileDataComponent.processProfileData = response;
     }
 }
