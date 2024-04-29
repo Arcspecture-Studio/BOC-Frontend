@@ -7,26 +7,20 @@ public class GetInitialDataSystem : MonoBehaviour
     GetInitialDataComponent getInitialDataComponent;
     WebsocketComponent websocketComponent;
     LoginComponent loginComponent;
-    PlatformComponent platformComponent;
     PromptComponent promptComponent;
-    ProfileComponent profileComponent;
-    SettingPageComponent settingPageComponent;
-    GetRuntimeDataComponent getRuntimeDataComponent;
     IoComponent ioComponent;
     GetExchangeInfoComponent getExchangeInfoComponent;
+    GetProfileDataComponent getProfileDataComponent;
 
     void Start()
     {
         getInitialDataComponent = GlobalComponent.instance.getInitialDataComponent;
         websocketComponent = GlobalComponent.instance.websocketComponent;
         loginComponent = GlobalComponent.instance.loginComponent;
-        platformComponent = GlobalComponent.instance.platformComponent;
         promptComponent = GlobalComponent.instance.promptComponent;
-        profileComponent = GlobalComponent.instance.profileComponent;
-        settingPageComponent = GlobalComponent.instance.settingPageComponent;
-        getRuntimeDataComponent = GlobalComponent.instance.getRuntimeDataComponent;
         ioComponent = GlobalComponent.instance.ioComponent;
         getExchangeInfoComponent = GlobalComponent.instance.getExchangeInfoComponent;
+        getProfileDataComponent = GlobalComponent.instance.getProfileDataComponent;
 
         getInitialDataComponent.onChange_getInitialData.AddListener(GetInitialData);
     }
@@ -68,34 +62,7 @@ public class GetInitialDataSystem : MonoBehaviour
             return;
         }
 
-        loginComponent.loginStatus = LoginPageStatusEnum.LOGGED_IN;
-        if (response.accountData.platformList.Count == 0)
-        {
-            platformComponent.gameObject.SetActive(true);
-            return;
-        }
-
-        #region Profile data
-        profileComponent.profiles = response.accountData.profiles;
-        profileComponent.activeProfileId = response.defaultProfileId;
-        settingPageComponent.updateProfileUI = true;
-        #endregion
-
-        #region Platform data
-        foreach (PlatformEnum platform in response.accountData.platformList)
-        {
-            switch (platform)
-            {
-                case PlatformEnum.BINANCE:
-                    GlobalComponent.instance.binanceComponent.loggedIn = true;
-                    break;
-                case PlatformEnum.BINANCE_TESTNET:
-                    GlobalComponent.instance.binanceTestnetComponent.loggedIn = true;
-                    break;
-            }
-        }
+        getProfileDataComponent.processProfileData = response;
         getExchangeInfoComponent.processExchangeInfo = response.exchangeInfos;
-        getRuntimeDataComponent.processRuntimeData = response;
-        #endregion
     }
 }

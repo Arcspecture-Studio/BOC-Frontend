@@ -8,6 +8,10 @@ public class GetProfileDataSystem : MonoBehaviour
     LoginComponent loginComponent;
     WebsocketComponent websocketComponent;
     PromptComponent promptComponent;
+    PlatformComponent platformComponent;
+    ProfileComponent profileComponent;
+    SettingPageComponent settingPageComponent;
+    GetRuntimeDataComponent getRuntimeDataComponent;
 
     void Start()
     {
@@ -15,6 +19,10 @@ public class GetProfileDataSystem : MonoBehaviour
         loginComponent = GlobalComponent.instance.loginComponent;
         websocketComponent = GlobalComponent.instance.websocketComponent;
         promptComponent = GlobalComponent.instance.promptComponent;
+        platformComponent = GlobalComponent.instance.platformComponent;
+        profileComponent = GlobalComponent.instance.profileComponent;
+        settingPageComponent = GlobalComponent.instance.settingPageComponent;
+        getRuntimeDataComponent = GlobalComponent.instance.getRuntimeDataComponent;
 
         getProfileDataComponent.onChange_getProfileData.AddListener(GetProfileData);
         getProfileDataComponent.onChange_processProfileData.AddListener(ProcessProfileData);
@@ -50,6 +58,33 @@ public class GetProfileDataSystem : MonoBehaviour
     }
     void ProcessProfileData(General.WebsocketGetProfileDataResponse profileData)
     {
-        // TODO
+        loginComponent.loginStatus = LoginPageStatusEnum.LOGGED_IN;
+        if (profileData.accountData.platformList.Count == 0)
+        {
+            platformComponent.gameObject.SetActive(true);
+            return;
+        }
+
+        #region Profile data
+        profileComponent.profiles = profileData.accountData.profiles;
+        profileComponent.activeProfileId = profileData.defaultProfileId;
+        settingPageComponent.updateProfileUI = true;
+        #endregion
+
+        #region Platform data
+        foreach (PlatformEnum platform in profileData.accountData.platformList)
+        {
+            switch (platform)
+            {
+                case PlatformEnum.BINANCE:
+                    GlobalComponent.instance.binanceComponent.loggedIn = true;
+                    break;
+                case PlatformEnum.BINANCE_TESTNET:
+                    GlobalComponent.instance.binanceTestnetComponent.loggedIn = true;
+                    break;
+            }
+        }
+        getRuntimeDataComponent.processRuntimeData = profileData;
+        #endregion
     }
 }

@@ -3687,6 +3687,10 @@ MonoBehaviour:
   activeToInactiveYMovement: -520
   inactiveToActiveYMovement: 520
   active: 0
+  onChange_updatePreferenceUI:
+    m_PersistentCalls:
+      m_Calls: []
+  updatingUIFromProfile: 0
   onChange_addToServer:
     m_PersistentCalls:
       m_Calls: []
@@ -4762,8 +4766,8 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1291532023}
   m_HandleRect: {fileID: 1291532022}
   m_Direction: 2
-  m_Value: -0.0000013365362
-  m_Size: 0.73653847
+  m_Value: -0.00000022275604
+  m_Size: 0.7251386
   m_NumberOfSteps: 0
   m_OnValueChanged:
     m_PersistentCalls:
@@ -10463,8 +10467,8 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 2033694428}
   m_HandleRect: {fileID: 2033694427}
   m_Direction: 2
-  m_Value: -0.00000042238858
-  m_Size: 0.4988439
+  m_Value: 0
+  m_Size: 0.49112302
   m_NumberOfSteps: 0
   m_OnValueChanged:
     m_PersistentCalls:
@@ -15632,10 +15636,10 @@ MonoBehaviour:
   inactiveToActiveXMovement: -400
   active: 0
   syncSetting: 0
-  onChange_updateInfo:
+  onChange_updateInfoUI:
     m_PersistentCalls:
       m_Calls: []
-  onChange_updateProfile:
+  onChange_updateProfileUI:
     m_PersistentCalls:
       m_Calls: []
   _showAddNewProfileButton: 0
@@ -26217,7 +26221,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0, y: 867.0004}
+  m_AnchoredPosition: {x: 0, y: 867.00006}
   m_SizeDelta: {x: 0, y: 1730}
   m_Pivot: {x: 0, y: 1}
 --- !u!114 &1185559201
@@ -30925,6 +30929,7 @@ GameObject:
   - component: {fileID: 1439778825}
   - component: {fileID: 1439778833}
   - component: {fileID: 1439778837}
+  - component: {fileID: 1439778855}
   - component: {fileID: 1439778842}
   - component: {fileID: 1439778852}
   - component: {fileID: 1439778851}
@@ -30941,6 +30946,7 @@ GameObject:
   - component: {fileID: 1439778829}
   - component: {fileID: 1439778832}
   - component: {fileID: 1439778836}
+  - component: {fileID: 1439778854}
   - component: {fileID: 1439778841}
   - component: {fileID: 1439778848}
   - component: {fileID: 1439778847}
@@ -31019,6 +31025,7 @@ MonoBehaviour:
   getExchangeInfoComponent: {fileID: 1439778851}
   getBalanceComponent: {fileID: 1439778852}
   loadingComponent: {fileID: 1583808332}
+  getProfileDataComponent: {fileID: 1439778855}
 --- !u!114 &1439778811
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -31546,6 +31553,36 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2696f2fe27680ae488be3c15432778b9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &1439778854
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1439778804}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1255c0f77eedc764baa1a6572e4e904d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &1439778855
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1439778804}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c9885fe1b06bf8c4e97133c25351ff58, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  onChange_getProfileData:
+    m_PersistentCalls:
+      m_Calls: []
+  onChange_processProfileData:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!1 &1444744613
 GameObject:
   m_ObjectHideFlags: 0
@@ -37771,7 +37808,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0, y: 137.00017}
+  m_AnchoredPosition: {x: 0, y: 136.99998}
   m_SizeDelta: {x: 0, y: 520}
   m_Pivot: {x: 0, y: 1}
 --- !u!114 &1746657102
