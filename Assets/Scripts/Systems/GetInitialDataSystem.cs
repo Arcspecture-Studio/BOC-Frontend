@@ -8,7 +8,6 @@ public class GetInitialDataSystem : MonoBehaviour
     WebsocketComponent websocketComponent;
     LoginComponent loginComponent;
     PromptComponent promptComponent;
-    IoComponent ioComponent;
     GetExchangeInfoComponent getExchangeInfoComponent;
     GetProfileDataComponent getProfileDataComponent;
 
@@ -18,7 +17,6 @@ public class GetInitialDataSystem : MonoBehaviour
         websocketComponent = GlobalComponent.instance.websocketComponent;
         loginComponent = GlobalComponent.instance.loginComponent;
         promptComponent = GlobalComponent.instance.promptComponent;
-        ioComponent = GlobalComponent.instance.ioComponent;
         getExchangeInfoComponent = GlobalComponent.instance.getExchangeInfoComponent;
         getProfileDataComponent = GlobalComponent.instance.getProfileDataComponent;
 
@@ -47,17 +45,6 @@ public class GetInitialDataSystem : MonoBehaviour
             promptComponent.ShowPrompt(PromptConstant.ERROR, response.message, () =>
             {
                 promptComponent.active = false;
-
-                if (response.message.Equals(PromptConstant.NOT_AUTHORIZED))
-                {
-                    ioComponent.deleteToken = true;
-
-#if UNITY_EDITOR
-                    UnityEditor.EditorApplication.isPlaying = false;
-#else
-                    Application.Quit();
-#endif
-                }
             });
             return;
         }
