@@ -19,6 +19,7 @@ public class GetRuntimeDataSystem : MonoBehaviour
     GetBalanceComponent getBalanceComponent;
     LoadingComponent loadingComponent;
     MiniPromptComponent miniPromptComponent;
+    HideAllPanelComponent hideAllPanelComponent;
 
     void Start()
     {
@@ -36,6 +37,7 @@ public class GetRuntimeDataSystem : MonoBehaviour
         getBalanceComponent = GlobalComponent.instance.getBalanceComponent;
         loadingComponent = GlobalComponent.instance.loadingComponent;
         miniPromptComponent = GlobalComponent.instance.miniPromptComponent;
+        hideAllPanelComponent = GlobalComponent.instance.hideAllPanelComponent;
 
         getRuntimeDataComponent.onChange_getRuntimeData.AddListener(GetRuntimeData);
         getRuntimeDataComponent.onChange_processRuntimeData.AddListener(ProcessRuntimeData);
@@ -72,6 +74,7 @@ public class GetRuntimeDataSystem : MonoBehaviour
     }
     void ProcessRuntimeData(General.WebsocketGetRuntimeDataResponse runtimeData)
     {
+        hideAllPanelComponent.hideNow = "true";
         getBalanceComponent.processBalance = runtimeData.balances;
         DestroyOrders();
         DestroyQuickOrders();
