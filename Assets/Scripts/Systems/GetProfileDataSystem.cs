@@ -58,20 +58,16 @@ public class GetProfileDataSystem : MonoBehaviour
     }
     void ProcessProfileData(General.WebsocketGetProfileDataResponse profileData)
     {
-        loginComponent.loginStatus = LoginPageStatusEnum.LOGGED_IN;
         if (profileData.accountData.platformList.Count == 0)
         {
             platformComponent.gameObject.SetActive(true);
             return;
         }
 
-        #region Profile data
         profileComponent.profiles = profileData.accountData.profiles;
         profileComponent.activeProfileId = profileData.defaultProfileId;
         settingPageComponent.updateProfileUI = true;
-        #endregion
 
-        #region Platform data
         foreach (PlatformEnum platform in profileData.accountData.platformList)
         {
             switch (platform)
@@ -84,8 +80,6 @@ public class GetProfileDataSystem : MonoBehaviour
                     break;
             }
         }
-        // TODO: exchange shoudl be done here because already get profile, but before process runtime data
         getRuntimeDataComponent.processRuntimeData = profileData;
-        #endregion
     }
 }
