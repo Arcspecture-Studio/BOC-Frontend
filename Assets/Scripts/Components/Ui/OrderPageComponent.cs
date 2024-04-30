@@ -9,7 +9,7 @@ public class OrderPageComponent : MonoBehaviour
 {
     [Header("Reference")]
     public RectTransform rectTransform;
-    // TODO: add content rectTransform
+    public ScrollRect scrollRect;
     public TMP_Text orderTitleText;
     public Button orderIdButton;
     public TMP_Text orderIdText;
@@ -115,4 +115,5 @@ public class OrderPageComponent : MonoBehaviour
     public string tradingBotId = "";
     public Tween spawnTween;
     public bool instantiateWithData;
+    public float scrollRectYPos;
 }
