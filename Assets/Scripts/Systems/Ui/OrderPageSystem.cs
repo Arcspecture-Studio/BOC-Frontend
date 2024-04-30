@@ -449,6 +449,7 @@ public class OrderPageSystem : MonoBehaviour
     }
     void AddToServer()
     {
+        if (orderPageComponent.marginCalculator == null) return;
         websocketComponent.generalRequests.Add(
             new General.WebsocketAddOrderRequest(
             loginComponent.token,
