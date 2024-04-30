@@ -90,20 +90,19 @@ public class WebsocketSystem : MonoBehaviour
             else if (response.eventType == WebsocketEventTypeEnum.CALL_API)
             {
                 General.WebsocketCallApiResponse callApiResponse = JsonConvert.DeserializeObject<General.WebsocketCallApiResponse>(rawData, JsonSerializerConfig.settings);
-                string logStatus = "Received";
+                WebrequestStatusEnum status = WebrequestStatusEnum.RECEIVED;
                 if (callApiResponse.rejectByServer.HasValue)
                 {
                     if (callApiResponse.rejectByServer.Value)
                     {
-                        logStatus = "Server returned error";
+                        status = WebrequestStatusEnum.SERVER_RETURNED_ERROR;
                     }
                     else
                     {
-                        logStatus = "HTTP Error";
+                        status = WebrequestStatusEnum.HTTP_ERROR;
                     }
                 }
-                if (callApiResponse.id.IsNullOrEmpty()) callApiResponse.id = "";
-                webrequestComponent.rawResponses.Add(callApiResponse.id, new Response(callApiResponse.id, logStatus, callApiResponse.responseJsonString));
+                webrequestComponent.rawResponses.Add(callApiResponse.id, new Response(callApiResponse.id, status, callApiResponse.responseJsonString));
             }
             else
             {

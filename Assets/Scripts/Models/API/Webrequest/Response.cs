@@ -4,13 +4,13 @@
 public class Response
 {
     public string id;
-    public string logStatus;
+    public WebrequestStatusEnum status;
     public string responseJsonString;
 
-    public Response(string id, string logStatus, string responseJsonString)
+    public Response(string id, WebrequestStatusEnum status, string responseJsonString)
     {
         this.id = id;
-        this.logStatus = logStatus;
+        this.status = status;
         this.responseJsonString = responseJsonString;
     }
 }
