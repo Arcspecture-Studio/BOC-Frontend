@@ -1,7 +1,7 @@
 using UnityEngine;
 using WebSocketSharp;
 
-public class QuickTabUpdatePreferenceDataSystem : MonoBehaviour
+public class QuickTabPreferenceSystem : MonoBehaviour
 {
     QuickTabComponent quickTabComponent;
     ProfileComponent profileComponent;
@@ -20,13 +20,13 @@ public class QuickTabUpdatePreferenceDataSystem : MonoBehaviour
 
     void UpdateUIFromProfile()
     {
-        ProfilePerference preference = profileComponent.activeProfile.preference;
+        PreferenceQuickOrder preferenceQuickOrder = profileComponent.activeProfile.preference.quickOrder;
         quickTabComponent.updatingUIFromProfile = true;
 
-        quickTabComponent.entryTimesInput.text = preference.quickEntryTimes.ToString();
-        quickTabComponent.atrTimeframeDropdown.value = (int)preference.atrTimeframe;
-        quickTabComponent.atrLengthInput.text = preference.atrLength.ToString();
-        quickTabComponent.atrMultiplierInput.text = preference.atrMultiplier.ToString();
+        quickTabComponent.entryTimesInput.text = preferenceQuickOrder.quickEntryTimes.ToString();
+        quickTabComponent.atrTimeframeDropdown.value = (int)preferenceQuickOrder.atrTimeframe;
+        quickTabComponent.atrLengthInput.text = preferenceQuickOrder.atrLength.ToString();
+        quickTabComponent.atrMultiplierInput.text = preferenceQuickOrder.atrMultiplier.ToString();
 
         quickTabComponent.updatingUIFromProfile = false;
     }
@@ -36,39 +36,39 @@ public class QuickTabUpdatePreferenceDataSystem : MonoBehaviour
         {
             if (value.IsNullOrEmpty())
             {
-                value = "2";
+                value = profileComponent.activeProfile.preference.quickOrder.quickEntryTimes.ToString();
                 quickTabComponent.entryTimesInput.text = value;
             }
-            if (profileComponent.activeProfile.preference.quickEntryTimes == int.Parse(value)) return;
-            profileComponent.activeProfile.preference.quickEntryTimes = int.Parse(value);
+            if (profileComponent.activeProfile.preference.quickOrder.quickEntryTimes == int.Parse(value)) return;
+            profileComponent.activeProfile.preference.quickOrder.quickEntryTimes = int.Parse(value);
             settingPageComponent.updatePreferenceToServer = true;
         });
         quickTabComponent.atrTimeframeDropdown.onValueChanged.AddListener(value =>
         {
-            if (profileComponent.activeProfile.preference.atrTimeframe == (TimeframeEnum)value) return;
-            profileComponent.activeProfile.preference.atrTimeframe = (TimeframeEnum)value;
+            if (profileComponent.activeProfile.preference.quickOrder.atrTimeframe == (TimeframeEnum)value) return;
+            profileComponent.activeProfile.preference.quickOrder.atrTimeframe = (TimeframeEnum)value;
             settingPageComponent.updatePreferenceToServer = true;
         });
         quickTabComponent.atrLengthInput.onEndEdit.AddListener(value =>
         {
             if (value.IsNullOrEmpty())
             {
-                value = "13";
+                value = profileComponent.activeProfile.preference.quickOrder.atrLength.ToString();
                 quickTabComponent.atrLengthInput.text = value;
             }
-            if (profileComponent.activeProfile.preference.atrLength == int.Parse(value)) return;
-            profileComponent.activeProfile.preference.atrLength = int.Parse(value);
+            if (profileComponent.activeProfile.preference.quickOrder.atrLength == int.Parse(value)) return;
+            profileComponent.activeProfile.preference.quickOrder.atrLength = int.Parse(value);
             settingPageComponent.updatePreferenceToServer = true;
         });
         quickTabComponent.atrMultiplierInput.onEndEdit.AddListener(value =>
         {
             if (value.IsNullOrEmpty())
             {
-                value = "3";
+                value = profileComponent.activeProfile.preference.quickOrder.atrMultiplier.ToString();
                 quickTabComponent.atrMultiplierInput.text = value;
             }
-            if (profileComponent.activeProfile.preference.atrMultiplier == double.Parse(value)) return;
-            profileComponent.activeProfile.preference.atrMultiplier = double.Parse(value);
+            if (profileComponent.activeProfile.preference.quickOrder.atrMultiplier == double.Parse(value)) return;
+            profileComponent.activeProfile.preference.quickOrder.atrMultiplier = double.Parse(value);
             settingPageComponent.updatePreferenceToServer = true;
         });
     }

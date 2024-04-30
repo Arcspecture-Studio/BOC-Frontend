@@ -11,7 +11,7 @@ namespace General
         public string? name;
         public PlatformEnum? activePlatform;
         public bool? makeItDefault;
-        public ProfilePerference? preference;
+        public Preference? preference;
 
         public WebsocketUpdateProfileRequest(string token, string profileId, string name) : base(WebsocketEventTypeEnum.UPDATE_PROFILE, token)
         {
@@ -28,7 +28,7 @@ namespace General
             this.profileId = profileId;
             this.makeItDefault = makeItDefault;
         }
-        public WebsocketUpdateProfileRequest(string token, string profileId, ProfilePerference preference) : base(WebsocketEventTypeEnum.UPDATE_PROFILE, token)
+        public WebsocketUpdateProfileRequest(string token, string profileId, Preference preference) : base(WebsocketEventTypeEnum.UPDATE_PROFILE, token)
         {
             this.profileId = profileId;
             this.preference = preference;

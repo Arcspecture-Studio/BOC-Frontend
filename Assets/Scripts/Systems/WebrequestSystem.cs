@@ -66,63 +66,23 @@ public class WebrequestSystem : MonoBehaviour
         foreach (KeyValuePair<string, Response> data in rawResponses)
         {
             Response rawResponse = data.Value;
-            if (webrequestComponent.logging) Debug.Log(logPrefix + "Incoming message on Id: " + rawResponse.id + ", " + rawResponse.logStatus + ": " + rawResponse.responseJsonString);
-            if (!rawResponse.id.IsNullOrEmpty())
+            if (webrequestComponent.logging) Debug.Log(logPrefix + "Incoming message on Id: " + rawResponse.id + ", " + rawResponse.status.ToString() + ": " + rawResponse.responseJsonString);
+
+            switch (rawResponse.status)
             {
-                if (!webrequestComponent.responses.TryAdd(rawResponse.id, rawResponse.responseJsonString))
-                {
-                    webrequestComponent.responses[rawResponse.id] = rawResponse.responseJsonString;
-                }
-            }
-            try
-            {
-                JObject response = JsonConvert.DeserializeObject<JObject>(rawResponse.responseJsonString, JsonSerializerConfig.settings);
-                string message = null;
-                switch (platformComponent.activePlatform)
-                {
-                    case PlatformEnum.BINANCE:
-                    case PlatformEnum.BINANCE_TESTNET:
-                        long? code = response.ContainsKey("code") ? (long)response["code"] : null;
-                        string? msg = response.ContainsKey("msg") ? (string)response["msg"] : null;
-                        if (code.HasValue || !msg.IsNullOrEmpty())
-                        {
-                            message = msg;
-                            if (code.HasValue)
-                            {
-                                message = msg + " (Binance Error Code: " + code.Value + ")";
-                                switch (code.Value)
-                                {
-                                    case -2014: // API-key format invalid.
-                                    case -2015: // Invalid API-key, IP, or permissions for action, request ip: xxx.xxx.xxx.xxx
-                                    case -1022: // Signature for this request is not valid.
-                                                // platformComponent.apiKey = null;
-                                                // platformComponent.apiSecret = null;
-                                        if (code.Value == -2014 || code.Value == -2015)
-                                        {
-                                            message = "Login failed with invalid or expired api key, please try to login again. (Binance Error Code: " + code.Value + ")";
-                                        }
-                                        else
-                                        {
-                                            message = "Login failed with invalid secret key, please try to login again. (Binance Error Code: " + code.Value + ")";
-                                        }
-                                        break;
-                                }
-                            }
-                        }
-                        break;
-                }
-                if (!message.IsNullOrEmpty())
-                {
-                    // loginComponent.allowInput = true;
-                    promptComponent.ShowPrompt(PromptConstant.ERROR, message, () =>
+                case WebrequestStatusEnum.RECEIVED:
+                    if (!webrequestComponent.responses.TryAdd(rawResponse.id, rawResponse.responseJsonString))
+                    {
+                        webrequestComponent.responses[rawResponse.id] = rawResponse.responseJsonString;
+                    }
+                    break;
+                case WebrequestStatusEnum.SERVER_RETURNED_ERROR:
+                case WebrequestStatusEnum.HTTP_ERROR:
+                    promptComponent.ShowPrompt(PromptConstant.ERROR, rawResponse.responseJsonString, () =>
                     {
                         promptComponent.active = false;
                     });
-                }
-            }
-            catch (Exception ex)
-            {
-                // if (webrequestComponent.logging) Debug.Log(logPrefix + "Response json string deserialization error");
+                    break;
             }
             webrequestComponent.rawResponses.Remove(rawResponse.id);
         };

@@ -4,17 +4,9 @@ using System.Collections.Generic;
 namespace General
 {
     [Serializable]
-    public class WebsocketGetInitialDataResponse : WebsocketGetRuntimeDataResponse
+    public class WebsocketGetInitialDataResponse : WebsocketGetProfileDataResponse
     {
-        public string defaultProfileId;
-        public WebsocketGetInitialDataAccountData accountData;
         public Dictionary<string, WebsocketGetExchangeInfo> exchangeInfos;
-    }
-    [Serializable]
-    public class WebsocketGetInitialDataAccountData
-    {
-        public Dictionary<string, Profile> profiles;
-        public List<PlatformEnum> platformList;
     }
     [Serializable]
     public class WebsocketGetExchangeInfo

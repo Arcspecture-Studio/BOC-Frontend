@@ -14,13 +14,15 @@ namespace General
         public OrderTypeEnum? orderType;
         public string? tradingBotId;
 
-        public WebsocketOrderRequest(string orderId,
+        public WebsocketOrderRequest(WebsocketEventTypeEnum eventType,
+            string token,
+            string orderId,
             PlatformEnum? platform,
             string? symbol,
             CalculateMargin? marginCalculator,
             TakeProfitTypeEnum? takeProfitType,
             OrderTypeEnum? orderType,
-            string? tradingBotId) : base(orderId)
+            string? tradingBotId) : base(eventType, token, orderId)
         {
             this.platform = platform;
             this.symbol = symbol;

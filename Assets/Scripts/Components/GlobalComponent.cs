@@ -34,4 +34,5 @@ public class GlobalComponent : MonoBehaviour
     public GetExchangeInfoComponent getExchangeInfoComponent;
     public GetBalanceComponent getBalanceComponent;
     public LoadingComponent loadingComponent;
+    public GetProfileDataComponent getProfileDataComponent;
 }

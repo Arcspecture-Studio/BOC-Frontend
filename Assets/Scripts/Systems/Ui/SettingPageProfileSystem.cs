@@ -12,9 +12,10 @@ public class SettingPageProfileSystem : MonoBehaviour
     PlatformComponent platformComponent;
     WebsocketComponent websocketComponent;
     PromptComponent promptComponent;
-    GetInitialDataComponent getInitialDataComponent;
+    GetProfileDataComponent getProfileDataComponent;
     LoadingComponent loadingComponent;
     QuickTabComponent quickTabComponent;
+    BotTabComponent botTabComponent;
 
     List<string> profileIndexToIds;
     void Start()
@@ -25,9 +26,10 @@ public class SettingPageProfileSystem : MonoBehaviour
         platformComponent = GlobalComponent.instance.platformComponent;
         websocketComponent = GlobalComponent.instance.websocketComponent;
         promptComponent = GlobalComponent.instance.promptComponent;
-        getInitialDataComponent = GlobalComponent.instance.getInitialDataComponent;
+        getProfileDataComponent = GlobalComponent.instance.getProfileDataComponent;
         loadingComponent = GlobalComponent.instance.loadingComponent;
         quickTabComponent = GlobalComponent.instance.quickTabComponent;
+        botTabComponent = GlobalComponent.instance.botTabComponent;
 
         DefineListeners();
         OnShowAddNewProfileButton();
@@ -64,6 +66,7 @@ public class SettingPageProfileSystem : MonoBehaviour
         settingPageComponent.updateInfoUI = true;
         settingPageComponent.updatePreferenceUI = true;
         quickTabComponent.updatePreferenceUI = true;
+        botTabComponent.updatePreferenceUI = true;
     }
     void UpdateProfileDropdownUI()
     {
@@ -218,7 +221,7 @@ public class SettingPageProfileSystem : MonoBehaviour
                 break;
             case UpdateProfilePropertyEnum.activePlatform:
             case UpdateProfilePropertyEnum.makeItDefault:
-                getInitialDataComponent.getInitialData = true;
+                getProfileDataComponent.getProfileData = true;
                 break;
         }
     }

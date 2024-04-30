@@ -62,25 +62,10 @@ public class QuickTabSystem : MonoBehaviour
     }
     void AddToServer()
     {
-        ProfilePerference preference = profileComponent.activeProfile.preference;
         double entryPrice = quickTabComponent.entryPriceInput.text.IsNullOrEmpty() ? -1 : double.Parse(quickTabComponent.entryPriceInput.text);
         websocketComponent.generalRequests.Add(new General.WebsocketAddQuickOrderRequest(
             loginComponent.token,
-            platformComponent.activePlatform,
-            preference.symbol,
-            preference.lossPercentage,
-            preference.lossAmount,
-            preference.marginDistributionMode == MarginDistributionModeEnum.WEIGHTED,
-            preference.marginWeightDistributionValue,
-            preference.takeProfitType,
-            preference.orderType,
-            preference.riskRewardRatio,
-            preference.takeProfitTrailingCallbackPercentage,
             entryPrice,
-            int.Parse(quickTabComponent.entryTimesInput.text),
-            (TimeframeEnum)quickTabComponent.atrTimeframeDropdown.value,
-            int.Parse(quickTabComponent.atrLengthInput.text),
-            double.Parse(quickTabComponent.atrMultiplierInput.text),
             quickTabComponent.isLong
         ));
     }

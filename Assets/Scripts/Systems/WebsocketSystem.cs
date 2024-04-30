@@ -8,6 +8,7 @@ public class WebsocketSystem : MonoBehaviour
     WebsocketComponent websocketComponent;
     WebrequestComponent webrequestComponent;
     PromptComponent promptComponent;
+    IoComponent ioComponent;
 
     WebSocket generalSocket;
     string logPrefix = "[WebsocketSystem] ";
@@ -17,6 +18,7 @@ public class WebsocketSystem : MonoBehaviour
         websocketComponent = GlobalComponent.instance.websocketComponent;
         webrequestComponent = GlobalComponent.instance.webrequestComponent;
         promptComponent = GlobalComponent.instance.promptComponent;
+        ioComponent = GlobalComponent.instance.ioComponent;
 
         websocketComponent.connectGeneralSocket = true;
     }
@@ -43,6 +45,25 @@ public class WebsocketSystem : MonoBehaviour
             if (websocketComponent.logging) Debug.Log(logPrefix + "Incoming message from: " + ((WebSocket)sender).Url + ", Data: " + rawData);
 
             General.WebsocketGeneralResponse response = JsonConvert.DeserializeObject<General.WebsocketGeneralResponse>(rawData, JsonSerializerConfig.settings);
+
+            #region Validate authority
+            if (!response.success && response.message.Equals(PromptConstant.NOT_AUTHORIZED))
+            {
+                promptComponent.ShowPrompt(PromptConstant.ERROR, response.message, () =>
+                {
+                    promptComponent.active = false;
+                    ioComponent.deleteToken = true;
+
+#if UNITY_EDITOR
+                    UnityEditor.EditorApplication.isPlaying = false;
+#else
+                    Application.Quit();
+#endif
+                });
+                return;
+            }
+            #endregion
+
             if (response.eventType == WebsocketEventTypeEnum.CONNECTION_ESTABLISH)
             {
                 General.WebsocketConnectionEstablishedResponse connectionEstablishedResponse = JsonConvert.DeserializeObject
@@ -69,20 +90,19 @@ public class WebsocketSystem : MonoBehaviour
             else if (response.eventType == WebsocketEventTypeEnum.CALL_API)
             {
                 General.WebsocketCallApiResponse callApiResponse = JsonConvert.DeserializeObject<General.WebsocketCallApiResponse>(rawData, JsonSerializerConfig.settings);
-                string logStatus = "Received";
+                WebrequestStatusEnum status = WebrequestStatusEnum.RECEIVED;
                 if (callApiResponse.rejectByServer.HasValue)
                 {
                     if (callApiResponse.rejectByServer.Value)
                     {
-                        logStatus = "Server returned error";
+                        status = WebrequestStatusEnum.SERVER_RETURNED_ERROR;
                     }
                     else
                     {
-                        logStatus = "HTTP Error";
+                        status = WebrequestStatusEnum.HTTP_ERROR;
                     }
                 }
-                if (callApiResponse.id.IsNullOrEmpty()) callApiResponse.id = "";
-                webrequestComponent.rawResponses.Add(callApiResponse.id, new Response(callApiResponse.id, logStatus, callApiResponse.responseJsonString));
+                webrequestComponent.rawResponses.Add(callApiResponse.id, new Response(callApiResponse.id, status, callApiResponse.responseJsonString));
             }
             else
             {

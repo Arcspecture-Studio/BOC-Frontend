@@ -47,25 +47,41 @@ public class OrderPagesScaleSystem : MonoBehaviour
     {
         for (int i = 0; i < orderPagesComponent.childOrderPageComponents.Count; i++)
         {
-            if (orderPagesComponent.childOrderPageComponents[i] == null) continue;
-            if (orderPagesComponent.childOrderPageComponents[i].spawnTween.IsActive())
+            OrderPageComponent orderPageComponent = orderPagesComponent.childOrderPageComponents[i];
+            if (orderPageComponent == null) continue;
+            if (orderPageComponent.spawnTween.IsActive())
             {
-                orderPagesComponent.childOrderPageComponents[i].spawnTween.Complete();
+                orderPageComponent.spawnTween.Complete();
             }
             switch (status)
             {
                 case OrderPagesStatusEnum.IMMERSIVE:
                     if (orderPagesComponent.currentPageIndex == i)
                     {
-                        orderPagesComponent.childOrderPageComponents[i].rectTransform.DOScale(1f, orderPagesComponent.pageAnimDuration).SetEase(orderPagesComponent.pageScaleEase);
+                        orderPageComponent.rectTransform.DOScale(1f, orderPagesComponent.pageAnimDuration)
+                        .SetEase(orderPagesComponent.pageScaleEase);
                     }
                     else
                     {
-                        orderPagesComponent.childOrderPageComponents[i].rectTransform.DOScale(0f, orderPagesComponent.pageAnimDuration).SetEase(orderPagesComponent.pageScaleEase);
+                        orderPageComponent.scrollRectYPos = orderPageComponent.scrollRect.normalizedPosition.y;
+                        orderPageComponent.rectTransform.DOScale(0f, orderPagesComponent.pageAnimDuration)
+                        .SetEase(orderPagesComponent.pageScaleEase);
                     }
                     break;
                 case OrderPagesStatusEnum.DETACH:
-                    orderPagesComponent.childOrderPageComponents[i].rectTransform.DOScale(orderPagesComponent.pageScaleTarget, orderPagesComponent.pageAnimDuration).SetEase(orderPagesComponent.pageScaleEase);
+                    bool runCallback = orderPagesComponent.currentPageIndex != i;
+                    orderPageComponent.rectTransform.DOScale(orderPagesComponent.pageScaleTarget, orderPagesComponent.pageAnimDuration)
+                    .SetEase(orderPagesComponent.pageScaleEase)
+                    .OnComplete(() =>
+                    {
+                        if (runCallback)
+                        {
+                            orderPageComponent.scrollRect.normalizedPosition = new Vector2(
+                                orderPageComponent.scrollRect.normalizedPosition.x,
+                                orderPageComponent.scrollRectYPos
+                            );
+                        }
+                    });
                     break;
             }
         }

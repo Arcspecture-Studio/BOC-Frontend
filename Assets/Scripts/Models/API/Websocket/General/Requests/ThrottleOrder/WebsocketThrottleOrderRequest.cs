@@ -11,10 +11,13 @@ namespace General
         public CalculateThrottle? throttleCalculator;
         public OrderTypeEnum? orderType;
 
-        public WebsocketThrottleOrderRequest(string orderId,
+        public WebsocketThrottleOrderRequest(
+            WebsocketEventTypeEnum eventType,
+            string token,
+            string orderId,
             string? parentOrderId,
             CalculateThrottle? throttleCalculator,
-            OrderTypeEnum? orderType) : base(orderId)
+            OrderTypeEnum? orderType) : base(eventType, token, orderId)
         {
             this.parentOrderId = parentOrderId;
             this.throttleCalculator = throttleCalculator;

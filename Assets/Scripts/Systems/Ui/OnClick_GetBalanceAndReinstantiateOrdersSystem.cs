@@ -3,7 +3,6 @@ using UnityEngine.UI;
 
 public class OnClick_GetBalanceAndReinstantiateOrdersSystem : MonoBehaviour
 {
-    HideAllPanelComponent hideAllPanelComponent;
     GetRuntimeDataComponent getRuntimeDataComponent;
     LoadingComponent loadingComponent;
 
@@ -11,7 +10,6 @@ public class OnClick_GetBalanceAndReinstantiateOrdersSystem : MonoBehaviour
 
     void Start()
     {
-        hideAllPanelComponent = GlobalComponent.instance.hideAllPanelComponent;
         getRuntimeDataComponent = GlobalComponent.instance.getRuntimeDataComponent;
         loadingComponent = GlobalComponent.instance.loadingComponent;
 
@@ -19,8 +17,6 @@ public class OnClick_GetBalanceAndReinstantiateOrdersSystem : MonoBehaviour
 
         button.onClick.AddListener(() =>
         {
-            hideAllPanelComponent.hideNow = "true";
-
             getRuntimeDataComponent.getRuntimeData = true;
             loadingComponent.active = true;
         });

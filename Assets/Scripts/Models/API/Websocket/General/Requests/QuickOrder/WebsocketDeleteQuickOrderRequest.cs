@@ -3,14 +3,11 @@ using System;
 namespace General
 {
     [Serializable]
-    public class WebsocketDeleteQuickOrderRequest : WebsocketGeneralRequest
+    public class WebsocketDeleteQuickOrderRequest : WebsocketIdRequest
     {
-        public WebsocketIdRequest orderRequest;
-
-        public WebsocketDeleteQuickOrderRequest(string token,
-            string orderId) : base(WebsocketEventTypeEnum.DELETE_QUICK_ORDER, token)
+        public WebsocketDeleteQuickOrderRequest(string token, string orderId) :
+        base(WebsocketEventTypeEnum.DELETE_QUICK_ORDER, token, orderId)
         {
-            orderRequest = new(orderId);
         }
     }
 }
