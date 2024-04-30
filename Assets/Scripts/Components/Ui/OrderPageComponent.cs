@@ -9,6 +9,7 @@ public class OrderPageComponent : MonoBehaviour
 {
     [Header("Reference")]
     public RectTransform rectTransform;
+    // TODO: add content rectTransform
     public TMP_Text orderTitleText;
     public Button orderIdButton;
     public TMP_Text orderIdText;
