@@ -172,9 +172,9 @@ MonoBehaviour:
   m_fontSize: 13
   m_fontSizeBase: 13
   m_fontWeight: 400
-  m_enableAutoSizing: 0
-  m_fontSizeMin: 18
-  m_fontSizeMax: 72
+  m_enableAutoSizing: 1
+  m_fontSizeMin: 10
+  m_fontSizeMax: 13
   m_fontStyle: 0
   m_HorizontalAlignment: 2
   m_VerticalAlignment: 512
@@ -383,9 +383,9 @@ MonoBehaviour:
   m_fontSize: 13
   m_fontSizeBase: 13
   m_fontWeight: 400
-  m_enableAutoSizing: 0
-  m_fontSizeMin: 18
-  m_fontSizeMax: 72
+  m_enableAutoSizing: 1
+  m_fontSizeMin: 10
+  m_fontSizeMax: 13
   m_fontStyle: 0
   m_HorizontalAlignment: 2
   m_VerticalAlignment: 512
@@ -523,6 +523,16 @@ MonoBehaviour:
   infoButton: {fileID: 4271121307382029602}
   closeButton: {fileID: 576008404127128508}
   botId: 
+  setting:
+    bot:
+      botType: 0
+      longOrderLimit: 0
+      shortOrderLimit: 0
+      autoDestroyOrder: 0
+      premiumIndex:
+        longThresholdPercentage: 0
+        shortThresholdPercentage: 0
+        candleLength: 0
 --- !u!114 &6965799378110183420
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -631,9 +641,9 @@ MonoBehaviour:
   m_fontSize: 13
   m_fontSizeBase: 13
   m_fontWeight: 400
-  m_enableAutoSizing: 0
-  m_fontSizeMin: 18
-  m_fontSizeMax: 72
+  m_enableAutoSizing: 1
+  m_fontSizeMin: 10
+  m_fontSizeMax: 13
   m_fontStyle: 0
   m_HorizontalAlignment: 2
   m_VerticalAlignment: 512
@@ -804,6 +814,7 @@ GameObject:
   - component: {fileID: 921964330683314568}
   - component: {fileID: 5718107009150550020}
   - component: {fileID: 4271121307382029602}
+  - component: {fileID: 1581320763488569362}
   m_Layer: 5
   m_Name: Info Button
   m_TagString: Untagged
@@ -914,3 +925,17 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls: []
+--- !u!114 &1581320763488569362
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8525207849703115471}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 73aefbb8729c64249bfed94300e77684, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  scale: 1.2
+  duration: 0.2

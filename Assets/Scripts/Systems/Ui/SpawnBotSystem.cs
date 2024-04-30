@@ -23,7 +23,9 @@ public class SpawnBotSystem : MonoBehaviour
 
         BotDataRowComponent botDataRowComponent = botDataRowObject.GetComponent<BotDataRowComponent>();
         botDataRowComponent.botId = response.id;
+        botDataRowComponent.setting = response.setting;
         botDataRowComponent.botIdText.text = response.id;
         botDataRowComponent.botTypeText.text = response.setting.bot.botType.ToString();
+        botDataRowComponent.symbolText.text = response.setting.order.symbol;
     }
 }
