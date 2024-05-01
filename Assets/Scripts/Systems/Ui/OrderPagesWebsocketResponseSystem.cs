@@ -43,7 +43,6 @@ public class OrderPagesWebsocketResponseSystem : MonoBehaviour
         }
         if (orderPageComponent == null) return;
 
-        // BUG: since now server can spawn order, meaning frontend here haven't get exchangeInfo, server ady send RETRIEVE_POSITION_INFO (because order just spawned at this timing)
         if (response.averagePriceFilled.HasValue && platformComponent.pricePrecisions.ContainsKey(orderPageComponent.symbolDropdownComponent.selectedSymbol))
         {
             orderPageComponent.positionInfoAvgEntryPriceFilledText.text = Utils.RoundNDecimal(response.averagePriceFilled.Value, platformComponent.pricePrecisions[orderPageComponent.symbolDropdownComponent.selectedSymbol]).ToString();
