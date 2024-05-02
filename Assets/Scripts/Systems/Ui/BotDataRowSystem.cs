@@ -12,11 +12,24 @@ public class BotDataRowSystem : MonoBehaviour
 
         botDataRowComponent.infoButton.onClick.AddListener(OnClick_InfoButton);
         botDataRowComponent.closeButton.onClick.AddListener(OnClick_CloseButton);
+
+        botDataRowComponent.infoPanel.SetActive(false);
     }
 
     void OnClick_InfoButton()
     {
-        // TODO: show trading bot info
+        bool isActive = !botDataRowComponent.infoPanel.activeSelf;
+        botDataRowComponent.infoPanel.SetActive(isActive);
+
+        if (isActive && !botDataRowComponent.infoPanelInstantiated)
+        {
+            botDataRowComponent.infoPanelInstantiated = true;
+            InstantiateInfoPanelData();
+        }
+    }
+    void InstantiateInfoPanelData()
+    {
+
     }
     void OnClick_CloseButton()
     {
