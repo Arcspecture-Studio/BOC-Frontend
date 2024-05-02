@@ -85,13 +85,13 @@ public class OrderPagesWebsocketResponseSystem : MonoBehaviour
         {
             orderPageComponent.resultComponent.orderInfoDataObject.transform.GetChild(3).GetComponent<TMP_Text>().text = orderPageComponent.orderStatus.ToString();
         }
-        if (orderPageComponent.orderStatusError && !response.errorJsonString.IsNullOrEmpty())
+        if (orderPageComponent.orderStatusError && !response.message.IsNullOrEmpty())
         {
             switch (platformComponent.activePlatform)
             {
                 case PlatformEnum.BINANCE:
                 case PlatformEnum.BINANCE_TESTNET:
-                    Binance.WebrequestGeneralResponse errorResponse = JsonConvert.DeserializeObject<Binance.WebrequestGeneralResponse>(response.errorJsonString, JsonSerializerConfig.settings);
+                    Binance.WebrequestGeneralResponse errorResponse = JsonConvert.DeserializeObject<Binance.WebrequestGeneralResponse>(response.message, JsonSerializerConfig.settings);
                     if (errorResponse.code.HasValue)
                     {
                         string message = errorResponse.msg + " (Binance Error Code: " + errorResponse.code.Value + ")";
@@ -128,13 +128,13 @@ public class OrderPagesWebsocketResponseSystem : MonoBehaviour
 
         orderPageThrottleComponent.orderStatus = response.status;
         orderPageThrottleComponent.orderStatusError = response.statusError;
-        if (orderPageThrottleComponent.orderStatusError && !response.errorJsonString.IsNullOrEmpty())
+        if (orderPageThrottleComponent.orderStatusError && !response.message.IsNullOrEmpty())
         {
             switch (platformComponent.activePlatform)
             {
                 case PlatformEnum.BINANCE:
                 case PlatformEnum.BINANCE_TESTNET:
-                    Binance.WebrequestGeneralResponse errorResponse = JsonConvert.DeserializeObject<Binance.WebrequestGeneralResponse>(response.errorJsonString, JsonSerializerConfig.settings);
+                    Binance.WebrequestGeneralResponse errorResponse = JsonConvert.DeserializeObject<Binance.WebrequestGeneralResponse>(response.message, JsonSerializerConfig.settings);
                     if (errorResponse.code.HasValue)
                     {
                         string message = errorResponse.msg + " (Binance Error Code: " + errorResponse.code.Value + ")";
