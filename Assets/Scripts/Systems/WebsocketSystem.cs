@@ -49,16 +49,15 @@ public class WebsocketSystem : MonoBehaviour
             #region Validate authority
             if (!response.success && !response.message.IsNullOrEmpty() && response.message.Equals(PromptConstant.NOT_AUTHORIZED))
             {
-                promptComponent.ShowPrompt(PromptConstant.ERROR, response.message, () =>
+                UnityMainThread.AddJob(() =>
                 {
-                    promptComponent.active = false;
-                    ioComponent.deleteToken = true;
+                    promptComponent.ShowPrompt(PromptConstant.ERROR, response.message, () =>
+                    {
+                        promptComponent.active = false;
+                        ioComponent.deleteToken = true;
 
-#if UNITY_EDITOR
-                    UnityEditor.EditorApplication.isPlaying = false;
-#else
-                    Application.Quit();
-#endif
+                        Utils.QuitApplication();
+                    });
                 });
                 return;
             }
@@ -78,11 +77,7 @@ public class WebsocketSystem : MonoBehaviour
                     {
                         promptComponent.ShowPrompt(PromptConstant.NOTICE, response.message, () =>
                         {
-#if UNITY_EDITOR
-                            UnityEditor.EditorApplication.isPlaying = false;
-#else
-                            Application.Quit();
-#endif
+                            Utils.QuitApplication();
                         });
                     });
                 }
