@@ -5,14 +5,6 @@ using Newtonsoft.Json;
 
 public static class Utils
 {
-    public static void QuitApplication()
-    {
-#if UNITY_EDITOR
-        UnityEditor.EditorApplication.isPlaying = false;
-#else
-        Application.Quit();
-#endif
-    }
     public static bool IsJsonString(string str)
     {
         try

@@ -35,4 +35,5 @@ public class GlobalComponent : MonoBehaviour
     public GetBalanceComponent getBalanceComponent;
     public LoadingComponent loadingComponent;
     public GetProfileDataComponent getProfileDataComponent;
+    public ExitComponent exitComponent;
 }
