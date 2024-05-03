@@ -45,7 +45,15 @@ public class BotDataRowSystem : MonoBehaviour
     {
         DestroyInfoPanelData();
 
+        #region Id
+        GameObject id = Instantiate(botDataRowComponent.infoPanelData, botDataRowComponent.infoPanelContent);
+        TMP_Text idText = id.GetComponent<TMP_Text>();
+        idText.text = "Bot Id: " + botDataRowComponent.botId;
+        #endregion
+
         #region Order
+        Instantiate(botDataRowComponent.infoPanelData, botDataRowComponent.infoPanelContent);
+
         GameObject orderTitle = Instantiate(botDataRowComponent.infoPanelData, botDataRowComponent.infoPanelContent);
         TMP_Text orderTitleText = orderTitle.GetComponent<TMP_Text>();
         orderTitleText.text = "Order";

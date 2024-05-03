@@ -26,6 +26,5 @@ public class SpawnBotSystem : MonoBehaviour
         botDataRowComponent.setting = response.setting;
         botDataRowComponent.botIdText.text = response.id;
         botDataRowComponent.botTypeText.text = response.setting.bot.botType.ToString();
-        botDataRowComponent.symbolText.text = response.setting.order.symbol;
     }
 }
