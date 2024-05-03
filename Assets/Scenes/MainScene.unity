@@ -31268,6 +31268,23 @@ MonoBehaviour:
       m_Action: Drag
       m_Flags: 0
     m_Flags: 0
+  escape:
+    m_Name: Escape
+    m_Type: 1
+    m_ExpectedControlType: Button
+    m_Id: e6c900fd-2813-4123-a5b8-6a74b4e386ee
+    m_Processors: 
+    m_Interactions: 
+    m_SingletonActionBindings:
+    - m_Name: 
+      m_Id: 006c0f1d-70c7-43f0-a457-44b9f3dc482a
+      m_Path: <Keyboard>/escape
+      m_Interactions: 
+      m_Processors: 
+      m_Groups: 
+      m_Action: Escape
+      m_Flags: 0
+    m_Flags: 0
 --- !u!114 &1439778819
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -44031,7 +44048,7 @@ MonoBehaviour:
   m_HandleRect: {fileID: 467063638}
   m_Direction: 2
   m_Value: -0.0000006682681
-  m_Size: 0.7365362
+  m_Size: 0.73653847
   m_NumberOfSteps: 0
   m_OnValueChanged:
     m_PersistentCalls:
