@@ -19,7 +19,6 @@ public class BinanceSystem : MonoBehaviour
         }
     }
     WebrequestComponent webrequestComponent;
-    MiniPromptComponent miniPromptComponent;
 
     Binance.WebrequestRequest getExchangeInfoRequest = null;
     Binance.WebrequestRequest getBalanceRequest = null;
@@ -29,7 +28,6 @@ public class BinanceSystem : MonoBehaviour
     void Start()
     {
         webrequestComponent = GlobalComponent.instance.webrequestComponent;
-        miniPromptComponent = GlobalComponent.instance.miniPromptComponent;
     }
 
     #region Deprecated, for reference only
@@ -54,8 +52,6 @@ public class BinanceSystem : MonoBehaviour
             }
             webrequestComponent.responses.Remove(getBalanceRequest.id);
             if (response == null || response.Count == 0) return;
-
-            miniPromptComponent.message = "Balance Updated";
 
             binanceComponent.walletBalances.Clear();
             response.ForEach(asset =>

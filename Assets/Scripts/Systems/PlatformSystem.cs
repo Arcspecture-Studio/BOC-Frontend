@@ -13,6 +13,7 @@ public class PlatformSystem : MonoBehaviour
     ProfileComponent profileComponent;
     GetInitialDataComponent getInitialDataComponent;
     LoadingComponent loadingComponent;
+    MiniPromptComponent miniPromptComponent;
 
     void Start()
     {
@@ -23,13 +24,14 @@ public class PlatformSystem : MonoBehaviour
         profileComponent = GlobalComponent.instance.profileComponent;
         getInitialDataComponent = GlobalComponent.instance.getInitialDataComponent;
         loadingComponent = GlobalComponent.instance.loadingComponent;
+        miniPromptComponent = GlobalComponent.instance.miniPromptComponent;
 
         // Set initial state
         platformComponent.gameObject.SetActive(false);
         platformComponent.onEnable.AddListener(OnComponentEnable);
         platformComponent.platformsDropdown.onValueChanged.AddListener(value => UpdateObjectState());
         platformComponent.proceedButton.onClick.AddListener(AddOrRemovePlatform);
-        platformComponent.backButton.onClick.AddListener(UpdateProfileActivePlatformOnServer);
+        platformComponent.backButton.onClick.AddListener(PromptConfirmToUpdateProfileActivePlatformOnServer);
         platformComponent.logoutButton.onClick.AddListener(Logout);
         InitializePlatformDropdownOptions();
     }
@@ -207,7 +209,7 @@ public class PlatformSystem : MonoBehaviour
         platformComponent.activePlatform = response.newActivePlatform;
         getInitialDataComponent.getInitialData = true;
     }
-    void UpdateProfileActivePlatformOnServer()
+    void PromptConfirmToUpdateProfileActivePlatformOnServer()
     {
         if (!platformComponent.loggedIn) return;
         if (profileComponent.activeProfile == null) return;
@@ -217,6 +219,20 @@ public class PlatformSystem : MonoBehaviour
             return;
         }
 
+        promptComponent.ShowSelection(PromptConstant.SWITCH_PLATFORM, PromptConstant.SWITCH_PLATFORM_CONFIRM, PromptConstant.YES_PROCEED, PromptConstant.NO, () =>
+        {
+            UpdateProfileActivePlatformOnServer();
+            promptComponent.active = false;
+        }, () =>
+        {
+            platformComponent.activePlatformOnUi = platformComponent.activePlatform;
+            platformComponent.gameObject.SetActive(false);
+            miniPromptComponent.message = PromptConstant.SWITCH_PLATFORM_CANCELLED;
+            promptComponent.active = false;
+        });
+    }
+    void UpdateProfileActivePlatformOnServer()
+    {
         platformComponent.activePlatform = platformComponent.activePlatformOnUi;
 
         General.WebsocketUpdateProfileRequest request = new(loginComponent.token, profileComponent.activeProfile._id, platformComponent.activePlatform);
