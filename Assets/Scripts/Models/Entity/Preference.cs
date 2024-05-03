@@ -7,6 +7,7 @@ public class Preference
     public PreferenceQuickOrder quickOrder;
     public PreferenceBot bot;
 }
+[Serializable]
 public class PreferenceOrder
 {
     public string symbol;
@@ -19,6 +20,7 @@ public class PreferenceOrder
     public double takeProfitTrailingCallbackPercentage;
     public OrderTypeEnum orderType;
 }
+[Serializable]
 public class PreferenceQuickOrder
 {
     public int quickEntryTimes;

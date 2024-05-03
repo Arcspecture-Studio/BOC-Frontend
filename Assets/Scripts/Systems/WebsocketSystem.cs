@@ -47,7 +47,7 @@ public class WebsocketSystem : MonoBehaviour
             General.WebsocketGeneralResponse response = JsonConvert.DeserializeObject<General.WebsocketGeneralResponse>(rawData, JsonSerializerConfig.settings);
 
             #region Validate authority
-            if (!response.success && response.message.Equals(PromptConstant.NOT_AUTHORIZED))
+            if (!response.success && !response.message.IsNullOrEmpty() && response.message.Equals(PromptConstant.NOT_AUTHORIZED))
             {
                 promptComponent.ShowPrompt(PromptConstant.ERROR, response.message, () =>
                 {

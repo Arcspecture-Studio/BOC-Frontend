@@ -9,7 +9,14 @@ public class BotDataRowComponent : MonoBehaviour
     public TMP_Text botTypeText;
     public Button infoButton;
     public Button closeButton;
+    public GameObject infoPanel;
+    public Transform infoPanelContent;
+    public GameObject infoPanelData;
 
     [Header("Config")]
     public string botId;
+    public Preference setting;
+
+    [Header("Runtime")]
+    public bool infoPanelInstantiated = false;
 }

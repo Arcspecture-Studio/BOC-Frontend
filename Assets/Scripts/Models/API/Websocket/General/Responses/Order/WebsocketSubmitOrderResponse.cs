@@ -10,6 +10,5 @@ namespace General
         public string orderId;
         public OrderStatusEnum status;
         public bool statusError;
-        public string? errorJsonString;
     }
 }

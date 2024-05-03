@@ -7,8 +7,6 @@ public class QuickTabSystem : MonoBehaviour
 {
     QuickTabComponent quickTabComponent;
     WebsocketComponent websocketComponent;
-    PlatformComponent platformComponent;
-    ProfileComponent profileComponent;
     SpawnQuickOrderComponent spawnQuickOrderComponent;
     LoginComponent loginComponent;
 
@@ -20,8 +18,6 @@ public class QuickTabSystem : MonoBehaviour
     {
         quickTabComponent = GlobalComponent.instance.quickTabComponent;
         websocketComponent = GlobalComponent.instance.websocketComponent;
-        platformComponent = GlobalComponent.instance.platformComponent;
-        profileComponent = GlobalComponent.instance.profileComponent;
         spawnQuickOrderComponent = GlobalComponent.instance.spawnQuickOrderComponent;
         loginComponent = GlobalComponent.instance.loginComponent;
 

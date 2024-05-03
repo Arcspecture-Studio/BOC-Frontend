@@ -19,8 +19,7 @@ public class SpawnOrderSystem : MonoBehaviour
 
     void SpawnOrder(General.WebsocketGetOrderResponse response)
     {
-        GameObject orderPageObject = Instantiate(orderPagesComponent.orderPagePrefab);
-        orderPageObject.transform.SetParent(orderPagesComponent.transform, false);
+        GameObject orderPageObject = Instantiate(orderPagesComponent.orderPagePrefab, orderPagesComponent.transform, false);
         OrderPageComponent orderPageComponent = orderPageObject.GetComponent<OrderPageComponent>();
         orderPageComponent.rectTransform.localScale = new Vector2(0, 0);
         orderPagesComponent.status = OrderPagesStatusEnum.DETACH;
