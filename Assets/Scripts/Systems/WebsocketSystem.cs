@@ -9,6 +9,7 @@ public class WebsocketSystem : MonoBehaviour
     WebrequestComponent webrequestComponent;
     PromptComponent promptComponent;
     IoComponent ioComponent;
+    ExitComponent exitComponent;
 
     WebSocket generalSocket;
     string logPrefix = "[WebsocketSystem] ";
@@ -19,6 +20,7 @@ public class WebsocketSystem : MonoBehaviour
         webrequestComponent = GlobalComponent.instance.webrequestComponent;
         promptComponent = GlobalComponent.instance.promptComponent;
         ioComponent = GlobalComponent.instance.ioComponent;
+        exitComponent = GlobalComponent.instance.exitComponent;
 
         websocketComponent.connectGeneralSocket = true;
     }
@@ -55,8 +57,7 @@ public class WebsocketSystem : MonoBehaviour
                     {
                         promptComponent.active = false;
                         ioComponent.deleteToken = true;
-
-                        Utils.QuitApplication();
+                        exitComponent.exit = true;
                     });
                 });
                 return;
@@ -77,7 +78,7 @@ public class WebsocketSystem : MonoBehaviour
                     {
                         promptComponent.ShowPrompt(PromptConstant.NOTICE, response.message, () =>
                         {
-                            Utils.QuitApplication();
+                            exitComponent.exit = true;
                         });
                     });
                 }

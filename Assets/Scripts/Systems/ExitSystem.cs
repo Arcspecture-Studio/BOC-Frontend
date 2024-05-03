@@ -2,11 +2,15 @@ using UnityEngine;
 
 public class ExitSystem : MonoBehaviour
 {
+    ExitComponent exitComponent;
     PromptComponent promptComponent;
 
     void Start()
     {
+        exitComponent = GlobalComponent.instance.exitComponent;
         promptComponent = GlobalComponent.instance.promptComponent;
+
+        exitComponent.onChange_exit.AddListener(QuitApplication);
     }
     void Update()
     {
@@ -20,15 +24,23 @@ public class ExitSystem : MonoBehaviour
             {
                 promptComponent.active = true;
                 promptComponent.ShowSelection(PromptConstant.EXIT, PromptConstant.EXIT_PROMPT, PromptConstant.YES, PromptConstant.NO,
-                    () =>
-                    {
-                        Utils.QuitApplication();
-                    },
-                    () =>
-                    {
-                        promptComponent.active = false;
-                    });
+                () =>
+                {
+                    exitComponent.exit = true;
+                },
+                () =>
+                {
+                    promptComponent.active = false;
+                });
             }
         }
+    }
+    void QuitApplication()
+    {
+#if UNITY_EDITOR
+        UnityEditor.EditorApplication.isPlaying = false;
+#else
+        UnityEngine.Application.Quit();
+#endif
     }
 }
