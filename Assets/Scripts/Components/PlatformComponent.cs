@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using AYellowpaper.SerializedCollections;
 using TMPro;
 using UnityEngine;
 using UnityEngine.Events;
@@ -225,11 +226,11 @@ public class PlatformComponent : PlatformTemplateComponent
             }
         }
     }
-    public new Dictionary<string, double> walletBalances
+    public new SerializedDictionary<string, double> walletBalances
     {
         get
         {
-            Dictionary<string, double> data = new();
+            SerializedDictionary<string, double> data = new();
             switch (activePlatform)
             {
                 case PlatformEnum.BINANCE:
