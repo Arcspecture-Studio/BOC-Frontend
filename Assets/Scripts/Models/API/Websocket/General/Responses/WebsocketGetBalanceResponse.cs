@@ -1,11 +1,11 @@
 using System;
-using System.Collections.Generic;
+using AYellowpaper.SerializedCollections;
 
 namespace General
 {
     [Serializable]
     public class WebsocketGetBalanceResponse : WebsocketGeneralResponse
     {
-        public Dictionary<string, double> balances;
+        public SerializedDictionary<string, double> balances;
     }
 }

@@ -12,7 +12,7 @@ public class SettingPageProfileSystem : MonoBehaviour
     PlatformComponent platformComponent;
     WebsocketComponent websocketComponent;
     PromptComponent promptComponent;
-    GetProfileDataComponent getProfileDataComponent;
+    GetInitialDataComponent getInitialDataComponent;
     LoadingComponent loadingComponent;
     QuickTabComponent quickTabComponent;
     BotTabComponent botTabComponent;
@@ -26,7 +26,7 @@ public class SettingPageProfileSystem : MonoBehaviour
         platformComponent = GlobalComponent.instance.platformComponent;
         websocketComponent = GlobalComponent.instance.websocketComponent;
         promptComponent = GlobalComponent.instance.promptComponent;
-        getProfileDataComponent = GlobalComponent.instance.getProfileDataComponent;
+        getInitialDataComponent = GlobalComponent.instance.getInitialDataComponent;
         loadingComponent = GlobalComponent.instance.loadingComponent;
         quickTabComponent = GlobalComponent.instance.quickTabComponent;
         botTabComponent = GlobalComponent.instance.botTabComponent;
@@ -221,7 +221,7 @@ public class SettingPageProfileSystem : MonoBehaviour
                 break;
             case UpdateProfilePropertyEnum.activePlatform:
             case UpdateProfilePropertyEnum.makeItDefault:
-                getProfileDataComponent.getProfileData = true;
+                getInitialDataComponent.getInitialData = true;
                 break;
         }
     }

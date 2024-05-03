@@ -1,4 +1,4 @@
-using System.Collections.Generic;
+using AYellowpaper.SerializedCollections;
 using Newtonsoft.Json;
 using UnityEngine;
 using WebSocketSharp;
@@ -43,7 +43,7 @@ public class GetBalanceSystem : MonoBehaviour
 
         ProcessBalance(response.balances);
     }
-    void ProcessBalance(Dictionary<string, double> balances)
+    void ProcessBalance(SerializedDictionary<string, double> balances)
     {
         platformComponent.walletBalances = balances;
         settingPageComponent.updateInfoUI = true;
