@@ -22,11 +22,7 @@ public class ExitSystem : MonoBehaviour
                 promptComponent.ShowSelection(PromptConstant.EXIT, PromptConstant.EXIT_PROMPT, PromptConstant.YES, PromptConstant.NO,
                     () =>
                     {
-#if UNITY_EDITOR
-                        UnityEditor.EditorApplication.isPlaying = false;
-#else
-                        Application.Quit();
-#endif
+                        Utils.QuitApplication();
                     },
                     () =>
                     {
