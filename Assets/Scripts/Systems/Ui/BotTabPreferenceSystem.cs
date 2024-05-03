@@ -59,7 +59,8 @@ public class BotTabPreferenceSystem : MonoBehaviour
         });
         botTabComponent.autoDestroyOrderToggle.onValueChanged.AddListener(value =>
         {
-            profileComponent.activeProfile.preference.bot.autoDestroyOrder = value;
+            if (profileComponent.activeProfile == null) return;
+            profileComponent.activeProfile.preference.bot.autoDestroyOrder = value; // BUG: sometimes will null
             settingPageComponent.updatePreferenceToServer = true;
         });
         botTabComponent.botTypeDropdown.onValueChanged.AddListener(value =>

@@ -100,7 +100,7 @@ public class GetRuntimeDataSystem : MonoBehaviour
         {
             loadingComponent.active = false;
         }
-        miniPromptComponent.message = "Data fetched";
+        miniPromptComponent.message = PromptConstant.DATA_FETCHED;
     }
     void DestroyOrders()
     {
