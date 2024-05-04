@@ -87,7 +87,7 @@ public class SettingPagePreferenceSystem : MonoBehaviour
         if (updatingUIFromProfile || quickTabComponent.updatingUIFromProfile ||
         botTabComponent.updatingUIFromProfile) return;
 
-        General.WebsocketUpdateProfileRequest request = new(loginComponent.token, profileComponent.activeProfile._id, profileComponent.activeProfile.preference);
+        General.WebsocketUpdateProfileRequest request = new(loginComponent.token, profileComponent.activeProfileId, profileComponent.activeProfile.preference);
         websocketComponent.generalRequests.Add(request);
     }
     void UpdateUIFromProfile()

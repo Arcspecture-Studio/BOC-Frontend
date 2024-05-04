@@ -193,7 +193,7 @@ public class SettingPageProfileSystem : MonoBehaviour
             () => promptComponent.active = false);
             return;
         }
-        General.WebsocketUpdateProfileRequest request = new(loginComponent.token, profileComponent.activeProfile._id, settingPageComponent.renameProfileNameInput.text);
+        General.WebsocketUpdateProfileRequest request = new(loginComponent.token, profileComponent.activeProfileId, settingPageComponent.renameProfileNameInput.text);
         websocketComponent.generalRequests.Add(request);
 
         settingPageComponent.confirmRenameProfileButton.interactable = false;

@@ -235,7 +235,7 @@ public class PlatformSystem : MonoBehaviour
     {
         platformComponent.activePlatform = platformComponent.activePlatformOnUi;
 
-        General.WebsocketUpdateProfileRequest request = new(loginComponent.token, profileComponent.activeProfile._id, platformComponent.activePlatform);
+        General.WebsocketUpdateProfileRequest request = new(loginComponent.token, profileComponent.activeProfileId, platformComponent.activePlatform);
         websocketComponent.generalRequests.Add(request);
 
         loadingComponent.active = true;
