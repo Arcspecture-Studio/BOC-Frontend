@@ -31,6 +31,7 @@
     DELETE_TRADING_BOT,
     GET_BALANCE,
     GET_EXCHANGE_INFO,
+    GET_FEE,
     #endregion
 
     #region From Server

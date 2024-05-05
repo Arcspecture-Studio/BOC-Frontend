@@ -81,6 +81,11 @@ public class OrderPagesWebsocketResponseSystem : MonoBehaviour
 
         orderPageComponent.orderStatus = response.status;
         orderPageComponent.orderStatusError = response.statusError;
+        if (orderPageComponent.orderStatus == OrderStatusEnum.UNSUBMITTED)
+        {
+            orderPageComponent.tradingBotId = "";
+            orderPageComponent.positionInfoBotInChargeDropdown.value = 0;
+        }
         if (orderPageComponent.resultComponent.orderInfoDataObject != null)
         {
             orderPageComponent.resultComponent.orderInfoDataObject.transform.GetChild(3).GetComponent<TMP_Text>().text = orderPageComponent.orderStatus.ToString();

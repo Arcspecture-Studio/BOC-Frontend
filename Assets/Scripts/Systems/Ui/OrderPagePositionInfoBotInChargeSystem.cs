@@ -21,7 +21,6 @@ public class OrderPagePositionInfoBotInChargeSystem : MonoBehaviour
     void Update()
     {
         ShowAndHideBotInChargeObject();
-        ResetIfOrderStatusBecameUnsubmitted();
     }
 
     void ShowAndHideBotInChargeObject()
@@ -31,14 +30,6 @@ public class OrderPagePositionInfoBotInChargeSystem : MonoBehaviour
         bool show = spawnedTradingBotObjectCount > 0;
         orderPageComponent.positionInfoBotInChargeObject.SetActive(show);
         if (show) InitializeAndSetDropdownOption();
-    }
-    void ResetIfOrderStatusBecameUnsubmitted()
-    {
-        if (orderPageComponent.orderStatus != OrderStatusEnum.UNSUBMITTED ||
-        orderPageComponent.tradingBotId.IsNullOrEmpty()) return;
-
-        orderPageComponent.tradingBotId = null;
-        orderPageComponent.positionInfoBotInChargeDropdown.value = 0;
     }
     void InitializeAndSetDropdownOption()
     {

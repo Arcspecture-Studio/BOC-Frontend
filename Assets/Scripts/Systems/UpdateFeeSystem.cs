@@ -1,8 +1,4 @@
-#pragma warning disable CS8632
-
 using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
-using System;
 using System.Collections.Generic;
 using UnityEngine;
 using WebSocketSharp;
@@ -11,9 +7,10 @@ public class UpdateFeeSystem : MonoBehaviour
 {
     OrderPageSymbolDropdownComponent orderPageSymbolDropdownComponent;
     PlatformComponent platformComponent;
-    WebrequestComponent webrequestComponent;
+    WebsocketComponent websocketComponent;
+    LoginComponent loginComponent;
+    PromptComponent promptComponent;
 
-    List<Request> requests;
     string selectedSymbol;
     bool resend = false;
 
@@ -21,9 +18,9 @@ public class UpdateFeeSystem : MonoBehaviour
     {
         orderPageSymbolDropdownComponent = GetComponent<OrderPageSymbolDropdownComponent>();
         platformComponent = GlobalComponent.instance.platformComponent;
-        webrequestComponent = GlobalComponent.instance.webrequestComponent;
-
-        requests = new List<Request>();
+        websocketComponent = GlobalComponent.instance.websocketComponent;
+        loginComponent = GlobalComponent.instance.loginComponent;
+        promptComponent = GlobalComponent.instance.promptComponent;
     }
     void Update()
     {
@@ -40,49 +37,38 @@ public class UpdateFeeSystem : MonoBehaviour
         if (!platformComponent.fees.ContainsKey(selectedSymbol))
         {
             platformComponent.fees.Add(selectedSymbol, null);
-            GetFee();
+            GetFeeData();
         }
     }
     void ResendGetFee()
     {
         if (!resend) return;
         resend = false;
-        GetFee();
+        GetFeeData();
     }
-    void GetFee()
+    void GetFeeData()
     {
-        Request request = General.WebrequestFeeRequest.Get(platformComponent.activePlatform, selectedSymbol);
-        requests.Add(request);
-        webrequestComponent.requests.Add(request);
+        General.WebsocketGetFeeDataRequest request = new(loginComponent.token, platformComponent.activePlatform, selectedSymbol);
+        websocketComponent.generalRequests.Add(request);
     }
     void ReceiveFees()
     {
-        if (requests.Count == 0) return;
-        for (int i = requests.Count - 1; i >= 0; i--)
+        string jsonString = websocketComponent.RetrieveGeneralResponses(WebsocketEventTypeEnum.GET_FEE);
+        websocketComponent.RemovesGeneralResponses(WebsocketEventTypeEnum.GET_FEE);
+        if (jsonString.IsNullOrEmpty()) return;
+
+        General.WebsocketGetFeeResponse response = JsonConvert.DeserializeObject
+        <General.WebsocketGetFeeResponse>(jsonString, JsonSerializerConfig.settings);
+
+        if (!response.success)
         {
-            if (webrequestComponent.responses.ContainsKey(requests[i].id))
+            promptComponent.ShowPrompt(PromptConstant.ERROR, response.message, () =>
             {
-                JObject response = JsonConvert.DeserializeObject<JObject>(webrequestComponent.responses[requests[i].id], JsonSerializerConfig.settings);
-                switch (requests[i].platform)
-                {
-                    case PlatformEnum.BINANCE:
-                    case PlatformEnum.BINANCE_TESTNET:
-                        string? symbol = response.ContainsKey("symbol") ? (string)response["symbol"] : null;
-                        string? makerCommissionRate = response.ContainsKey("makerCommissionRate") ? (string)response["makerCommissionRate"] : null;
-                        string? takerCommissionRate = response.ContainsKey("takerCommissionRate") ? (string)response["takerCommissionRate"] : null;
-                        if (symbol.IsNullOrEmpty())
-                        {
-                            resend = true;
-                        }
-                        else
-                        {
-                            platformComponent.fees[symbol] = Math.Max(double.Parse(makerCommissionRate), double.Parse(takerCommissionRate));
-                        }
-                        break;
-                }
-                webrequestComponent.responses.Remove(requests[i].id);
-                requests.RemoveAt(i);
-            }
+                promptComponent.active = false;
+            });
+            return;
         }
+
+        platformComponent.fees[response.symbol] = response.fee;
     }
 }
