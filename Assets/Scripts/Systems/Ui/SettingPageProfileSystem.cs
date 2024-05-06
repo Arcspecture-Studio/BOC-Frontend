@@ -219,7 +219,7 @@ public class SettingPageProfileSystem : MonoBehaviour
             case UpdateProfilePropertyEnum.name:
                 OnRenameProfileResponse(response);
                 break;
-            case UpdateProfilePropertyEnum.activePlatform:
+            case UpdateProfilePropertyEnum.platformId:
             case UpdateProfilePropertyEnum.makeItDefault:
                 getInitialDataComponent.getInitialData = true;
                 break;

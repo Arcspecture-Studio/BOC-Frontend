@@ -5,6 +5,7 @@ using UnityEngine;
 public class PlatformTemplateComponent : MonoBehaviour
 {
     public bool loggedIn;
+    public PlatformEnum activePlatform;
     public SerializedDictionary<string, double> walletBalances = new();
     public List<string> allSymbols = new();
     public Dictionary<string, string> marginAssets = new();

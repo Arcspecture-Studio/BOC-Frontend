@@ -21,30 +21,6 @@ public class PlatformComponent : PlatformTemplateComponent
 
     [Header("Runtime")]
     [HideInInspector] public UnityEvent onEnable = new();
-    public PlatformEnum activePlatform
-    {
-        get
-        {
-            if (GlobalComponent.instance.profileComponent.activeProfile == null) return activePlatformOnUi;
-            return GlobalComponent.instance.profileComponent.activeProfile.activePlatform ?? activePlatformOnUi;
-        }
-        set
-        {
-            if (GlobalComponent.instance.profileComponent.activeProfile == null) return;
-            GlobalComponent.instance.profileComponent.activeProfile.activePlatform = value;
-        }
-    }
-    public PlatformEnum activePlatformOnUi
-    {
-        get
-        {
-            return (PlatformEnum)platformsDropdown.value;
-        }
-        set
-        {
-            platformsDropdown.value = (int)value;
-        }
-    }
     public new bool loggedIn
     {
         get
@@ -72,6 +48,30 @@ public class PlatformComponent : PlatformTemplateComponent
                     GlobalComponent.instance.binanceTestnetComponent.loggedIn = value;
                     break;
             }
+        }
+    }
+    public PlatformEnum activePlatformOnUi
+    {
+        get
+        {
+            return (PlatformEnum)platformsDropdown.value;
+        }
+        set
+        {
+            platformsDropdown.value = (int)value;
+        }
+    }
+    public new PlatformEnum activePlatform
+    {
+        get
+        {
+            if (GlobalComponent.instance.profileComponent.activeProfile == null) return activePlatformOnUi;
+            return GlobalComponent.instance.profileComponent.activeProfile.activePlatform ?? activePlatformOnUi;
+        }
+        set
+        {
+            if (GlobalComponent.instance.profileComponent.activeProfile == null) return;
+            GlobalComponent.instance.profileComponent.activeProfile.activePlatform = value;
         }
     }
     public new List<string> allSymbols
