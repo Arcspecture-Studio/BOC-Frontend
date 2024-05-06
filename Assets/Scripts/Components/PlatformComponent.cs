@@ -21,6 +21,7 @@ public class PlatformComponent : PlatformTemplateComponent
 
     [Header("Runtime")]
     [HideInInspector] public UnityEvent onEnable = new();
+    public Dictionary<string, PlatformTemplateComponent> platforms;
     public new bool loggedIn
     {
         get

@@ -58,7 +58,7 @@ public class GetProfileDataSystem : MonoBehaviour
     }
     void ProcessProfileData(General.WebsocketGetProfileDataResponse profileData)
     {
-        if (profileData.accountData.platformList.Count == 0)
+        if (profileData.accountData.platforms.Count == 0)
         {
             platformComponent.gameObject.SetActive(true);
             return;
@@ -68,7 +68,8 @@ public class GetProfileDataSystem : MonoBehaviour
         profileComponent.activeProfileId = profileData.defaultProfileId;
         settingPageComponent.updateProfileUI = true;
 
-        foreach (PlatformEnum platform in profileData.accountData.platformList)
+        // TODO
+        foreach (PlatformEnum platform in profileData.accountData.platforms)
         {
             switch (platform)
             {

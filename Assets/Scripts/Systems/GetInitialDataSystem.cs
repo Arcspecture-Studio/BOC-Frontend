@@ -11,6 +11,7 @@ public class GetInitialDataSystem : MonoBehaviour
     GetExchangeInfoComponent getExchangeInfoComponent;
     GetProfileDataComponent getProfileDataComponent;
     ProfileComponent profileComponent;
+    PlatformComponent platformComponent;
 
     void Start()
     {
@@ -21,6 +22,7 @@ public class GetInitialDataSystem : MonoBehaviour
         getExchangeInfoComponent = GlobalComponent.instance.getExchangeInfoComponent;
         getProfileDataComponent = GlobalComponent.instance.getProfileDataComponent;
         profileComponent = GlobalComponent.instance.profileComponent;
+        platformComponent = GlobalComponent.instance.platformComponent;
 
         getInitialDataComponent.onChange_getInitialData.AddListener(GetInitialData);
     }
@@ -54,6 +56,7 @@ public class GetInitialDataSystem : MonoBehaviour
         loginComponent.loginStatus = LoginPageStatusEnum.LOGGED_IN;
 
         profileComponent.profiles = response.accountData.profiles;
+        platformComponent.platforms = response.accountData.platforms; // TODO
         profileComponent.activeProfileId = response.defaultProfileId;
 
         getExchangeInfoComponent.processExchangeInfo = response.exchangeInfos;

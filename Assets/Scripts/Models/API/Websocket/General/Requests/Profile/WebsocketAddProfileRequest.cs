@@ -6,7 +6,7 @@ namespace General
     public class WebsocketAddProfileRequest : WebsocketGeneralRequest
     {
         public string name;
-        public PlatformEnum activePlatform;
+        public PlatformEnum activePlatform; // TODO
 
         public WebsocketAddProfileRequest(string token, string name, PlatformEnum activePlatform) : base(WebsocketEventTypeEnum.ADD_PROFILE, token)
         {

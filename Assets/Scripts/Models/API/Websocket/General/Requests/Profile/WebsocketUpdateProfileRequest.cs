@@ -9,7 +9,7 @@ namespace General
     {
         public string profileId;
         public string? name;
-        public PlatformEnum? activePlatform;
+        public PlatformEnum? activePlatform; // TODO
         public bool? makeItDefault;
         public Preference? preference;
 
