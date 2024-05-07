@@ -10,6 +10,7 @@ public class UpdateFeeSystem : MonoBehaviour
     WebsocketComponent websocketComponent;
     LoginComponent loginComponent;
     PromptComponent promptComponent;
+    ProfileComponent profileComponent;
 
     string selectedSymbol;
     bool resend = false;
@@ -21,6 +22,7 @@ public class UpdateFeeSystem : MonoBehaviour
         websocketComponent = GlobalComponent.instance.websocketComponent;
         loginComponent = GlobalComponent.instance.loginComponent;
         promptComponent = GlobalComponent.instance.promptComponent;
+        profileComponent = GlobalComponent.instance.profileComponent;
     }
     void Update()
     {
@@ -48,7 +50,7 @@ public class UpdateFeeSystem : MonoBehaviour
     }
     void GetFeeData()
     {
-        General.WebsocketGetFeeDataRequest request = new(loginComponent.token, platformComponent.activePlatform, selectedSymbol);
+        General.WebsocketGetFeeDataRequest request = new(loginComponent.token, profileComponent.activeProfile.platformId, selectedSymbol);
         websocketComponent.generalRequests.Add(request);
     }
     void ReceiveFees()

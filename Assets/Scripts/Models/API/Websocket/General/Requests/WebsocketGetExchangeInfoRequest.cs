@@ -5,11 +5,11 @@ namespace General
     [Serializable]
     public class WebsocketGetExchangeInfoRequest : WebsocketGeneralRequest
     {
-        public PlatformEnum platform;
+        public string platformId;
 
-        public WebsocketGetExchangeInfoRequest(string token, PlatformEnum platform) : base(WebsocketEventTypeEnum.GET_EXCHANGE_INFO, token)
+        public WebsocketGetExchangeInfoRequest(string token, string platformId) : base(WebsocketEventTypeEnum.GET_EXCHANGE_INFO, token)
         {
-            this.platform = platform;
+            this.platformId = platformId;
         }
     }
 }

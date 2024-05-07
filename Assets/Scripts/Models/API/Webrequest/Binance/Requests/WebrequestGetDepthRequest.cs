@@ -5,7 +5,7 @@ namespace Binance
     [Serializable]
     public class WebrequestGetDepthRequest : WebrequestRequest
     {
-        public WebrequestGetDepthRequest(bool testnet, string symbol, long limit) : base(testnet)
+        public WebrequestGetDepthRequest(string platformId, string symbol, long limit) : base(platformId)
         {
             path = "/fapi/v1/depth";
             requestType = WebrequestRequestTypeEnum.GET;

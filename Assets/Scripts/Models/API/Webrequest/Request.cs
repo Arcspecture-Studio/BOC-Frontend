@@ -4,14 +4,15 @@ using MongoDB.Bson;
 [Serializable]
 public class Request
 {
-    public PlatformEnum platform;
+    public string id;
+    public string platformId;
     public WebrequestRequestTypeEnum requestType;
     public string path;
     public string queries;
-    public string id;
 
-    public Request()
+    public Request(string platformId)
     {
-        id = ObjectId.GenerateNewId().ToString();
+        this.id = ObjectId.GenerateNewId().ToString();
+        this.platformId = platformId;
     }
 }
