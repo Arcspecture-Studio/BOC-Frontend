@@ -45,13 +45,6 @@ public class PlatformComponent : PlatformTemplateComponent
             platformsDropdown.value = (int)value;
         }
     }
-    public bool activePlatformTestnet
-    {
-        get
-        {
-            return activePlatform.ToString().Contains("TESTNET");
-        }
-    }
     public new bool loggedIn
     {
         get
