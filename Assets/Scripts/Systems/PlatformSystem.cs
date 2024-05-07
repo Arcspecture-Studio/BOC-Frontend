@@ -30,7 +30,7 @@ public class PlatformSystem : MonoBehaviour
         platformComponent.gameObject.SetActive(false);
         platformComponent.onEnable.AddListener(OnComponentEnable);
         platformComponent.platformsDropdown.onValueChanged.AddListener(value => UpdateObjectState());
-        platformComponent.proceedButton.onClick.AddListener(AddOrRemovePlatform);
+        // platformComponent.proceedButton.onClick.AddListener(AddOrRemovePlatform);
         platformComponent.backButton.onClick.AddListener(PromptConfirmToUpdateProfileActivePlatformOnServer);
         platformComponent.logoutButton.onClick.AddListener(Logout);
         InitializePlatformDropdownOptions();
@@ -74,10 +74,10 @@ public class PlatformSystem : MonoBehaviour
                 platformComponent.platformsDropdown.options[i].text = platformEnum.ToString() + " (" + PromptConstant.CONNECTED + ")";
                 if (platformComponent.platformsDropdown.value == i)
                 {
-                    platformComponent.backButtonObj.SetActive(true);
-                    platformComponent.apiKeyObj.SetActive(false);
-                    platformComponent.apiSecretObj.SetActive(false);
-                    platformComponent.proceedButtonText.text = PromptConstant.DISCONNECT;
+                    // platformComponent.backButtonObj.SetActive(true);
+                    // platformComponent.apiKeyObj.SetActive(false);
+                    // platformComponent.apiSecretObj.SetActive(false);
+                    // platformComponent.proceedButtonText.text = PromptConstant.DISCONNECT;
                 }
             }
             else
@@ -86,10 +86,10 @@ public class PlatformSystem : MonoBehaviour
                 if (platformComponent.platformsDropdown.value == i)
                 {
                     ClearInput();
-                    platformComponent.backButtonObj.SetActive(false);
-                    platformComponent.apiKeyObj.SetActive(true);
-                    platformComponent.apiSecretObj.SetActive(true);
-                    platformComponent.proceedButtonText.text = PromptConstant.CONNECT;
+                    // platformComponent.backButtonObj.SetActive(false);
+                    // platformComponent.apiKeyObj.SetActive(true);
+                    // platformComponent.apiSecretObj.SetActive(true);
+                    // platformComponent.proceedButtonText.text = PromptConstant.CONNECT;
                 }
             }
         }
@@ -115,7 +115,7 @@ public class PlatformSystem : MonoBehaviour
         platformComponent.platformsDropdown.interactable = yes;
         platformComponent.apiKeyInput.interactable = yes;
         platformComponent.apiSecretInput.interactable = yes;
-        platformComponent.proceedButton.interactable = yes;
+        // platformComponent.proceedButton.interactable = yes;
         platformComponent.backButton.interactable = yes;
     }
     void ClearInput()

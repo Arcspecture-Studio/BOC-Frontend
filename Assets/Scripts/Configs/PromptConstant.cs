@@ -22,8 +22,6 @@
     public static readonly string SWITCH_TO_REGISTER = "Dont' have account? Click here to register";
     public static readonly string SWITCH_TO_LOGIN = "Already have account? Click here to login";
     public static readonly string CONNECTED = "Connected";
-    public static readonly string CONNECT = "Connect";
-    public static readonly string DISCONNECT = "Disconnect";
     public static readonly string EMAIL_EMPTY = "Email can't be empty.";
     public static readonly string EMAIL_INVALID = "Email format invalid.";
     public static readonly string PASSWORD_EMPTY = "Password can't be empty.";

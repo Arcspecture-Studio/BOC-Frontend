@@ -8,20 +8,22 @@ using UnityEngine.UI;
 public class PlatformComponent : MonoBehaviour
 {
     [Header("Reference")]
+    public GameObject registerPlatformObj;
+    public GameObject switchPlatformObj;
     public TMP_Dropdown platformsDropdown;
     public TMP_InputField apiKeyInput;
-    public GameObject apiKeyObj;
     public TMP_InputField apiSecretInput;
-    public GameObject apiSecretObj;
-    public Button proceedButton;
-    public TMP_Text proceedButtonText;
+    public Button connectButton;
+    public Button cancelRegisterButton;
+    public TMP_Dropdown platformIdsDropdown;
+    public Button addPlatformButton;
+    public Button disconnectButton;
     public Button backButton;
-    public GameObject backButtonObj;
     public Button logoutButton;
 
     [Header("Runtime")]
     [HideInInspector] public UnityEvent onEnable = new();
-    public Dictionary<string, Platform> platforms;
+    public Dictionary<string, Platform> platforms = new();
     public bool loggedIn
     {
         get
@@ -70,12 +72,15 @@ public class PlatformComponent : MonoBehaviour
                 GlobalComponent.instance.profileComponent.activeProfile.platformId == null ||
                 !platforms.ContainsKey(GlobalComponent.instance.profileComponent.activeProfile.platformId))
                 return activePlatformOnUi;
-            return platforms[GlobalComponent.instance.profileComponent.activeProfile.platformId]?.platform ?? activePlatformOnUi;
+            return platforms[GlobalComponent.instance.profileComponent.activeProfile.platformId].platform;
         }
-        set
+        set // TODO: Suppose there are no setter
         {
-            if (GlobalComponent.instance.profileComponent.activeProfile == null) return;
-            GlobalComponent.instance.profileComponent.activeProfile.activePlatform = value;
+            if (GlobalComponent.instance.profileComponent.activeProfile == null ||
+                GlobalComponent.instance.profileComponent.activeProfile.platformId == null ||
+                !platforms.ContainsKey(GlobalComponent.instance.profileComponent.activeProfile.platformId))
+                return;
+            platforms[GlobalComponent.instance.profileComponent.activeProfile.platformId].platform = value;
         }
     }
     public List<string> allSymbols
