@@ -5,7 +5,7 @@ using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.UI;
 
-public class PlatformComponent : PlatformTemplateComponent
+public class PlatformComponent : MonoBehaviour
 {
     [Header("Reference")]
     public TMP_Dropdown platformsDropdown;
@@ -21,8 +21,8 @@ public class PlatformComponent : PlatformTemplateComponent
 
     [Header("Runtime")]
     [HideInInspector] public UnityEvent onEnable = new();
-    public Dictionary<string, PlatformTemplateComponent> platforms;
-    public new bool loggedIn
+    public Dictionary<string, Platform> platforms;
+    public bool loggedIn
     {
         get
         {
@@ -62,12 +62,15 @@ public class PlatformComponent : PlatformTemplateComponent
             platformsDropdown.value = (int)value;
         }
     }
-    public new PlatformEnum activePlatform
+    public PlatformEnum activePlatform
     {
         get
         {
-            if (GlobalComponent.instance.profileComponent.activeProfile == null) return activePlatformOnUi;
-            return GlobalComponent.instance.profileComponent.activeProfile.activePlatform ?? activePlatformOnUi;
+            if (GlobalComponent.instance.profileComponent.activeProfile == null ||
+                GlobalComponent.instance.profileComponent.activeProfile.platformId == null ||
+                !platforms.ContainsKey(GlobalComponent.instance.profileComponent.activeProfile.platformId))
+                return activePlatformOnUi;
+            return platforms[GlobalComponent.instance.profileComponent.activeProfile.platformId]?.platform ?? activePlatformOnUi;
         }
         set
         {
@@ -75,7 +78,7 @@ public class PlatformComponent : PlatformTemplateComponent
             GlobalComponent.instance.profileComponent.activeProfile.activePlatform = value;
         }
     }
-    public new List<string> allSymbols
+    public List<string> allSymbols
     {
         get
         {
@@ -104,7 +107,7 @@ public class PlatformComponent : PlatformTemplateComponent
             }
         }
     }
-    public new Dictionary<string, string> marginAssets
+    public Dictionary<string, string> marginAssets
     {
         get
         {
@@ -133,7 +136,7 @@ public class PlatformComponent : PlatformTemplateComponent
             }
         }
     }
-    public new Dictionary<string, long> quantityPrecisions
+    public Dictionary<string, long> quantityPrecisions
     {
         get
         {
@@ -162,7 +165,7 @@ public class PlatformComponent : PlatformTemplateComponent
             }
         }
     }
-    public new Dictionary<string, long> pricePrecisions
+    public Dictionary<string, long> pricePrecisions
     {
         get
         {
@@ -191,7 +194,7 @@ public class PlatformComponent : PlatformTemplateComponent
             }
         }
     }
-    public new Dictionary<string, double?> fees
+    public Dictionary<string, double?> fees
     {
         get
         {
@@ -220,7 +223,7 @@ public class PlatformComponent : PlatformTemplateComponent
             }
         }
     }
-    public new SerializedDictionary<string, double> walletBalances
+    public SerializedDictionary<string, double> walletBalances
     {
         get
         {

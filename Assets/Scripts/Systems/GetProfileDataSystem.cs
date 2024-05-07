@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using Newtonsoft.Json;
 using UnityEngine;
 using WebSocketSharp;
@@ -55,6 +56,7 @@ public class GetProfileDataSystem : MonoBehaviour
         }
 
         ProcessProfileData(response);
+        getRuntimeDataComponent.processRuntimeData = response;
     }
     void ProcessProfileData(General.WebsocketGetProfileDataResponse profileData)
     {
@@ -66,21 +68,15 @@ public class GetProfileDataSystem : MonoBehaviour
 
         profileComponent.profiles = profileData.accountData.profiles;
         profileComponent.activeProfileId = profileData.defaultProfileId;
+        processPlatformData(profileData.accountData.platforms);
         settingPageComponent.updateProfileUI = true;
-
-        // TODO
-        foreach (PlatformEnum platform in profileData.accountData.platforms)
+    }
+    void processPlatformData(Dictionary<string, PlatformEnum> platforms)
+    {
+        platformComponent.platforms = new();
+        foreach (KeyValuePair<string, PlatformEnum> platform in platforms)
         {
-            switch (platform)
-            {
-                case PlatformEnum.BINANCE:
-                    GlobalComponent.instance.binanceComponent.loggedIn = true;
-                    break;
-                case PlatformEnum.BINANCE_TESTNET:
-                    GlobalComponent.instance.binanceTestnetComponent.loggedIn = true;
-                    break;
-            }
+            platformComponent.platforms.Add(platform.Key, new Platform(platform.Value));
         }
-        getRuntimeDataComponent.processRuntimeData = profileData;
     }
 }
