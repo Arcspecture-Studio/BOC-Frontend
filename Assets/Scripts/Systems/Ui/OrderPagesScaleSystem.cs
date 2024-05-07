@@ -69,12 +69,16 @@ public class OrderPagesScaleSystem : MonoBehaviour
                     }
                     break;
                 case OrderPagesStatusEnum.DETACH:
-                    bool runCallback = orderPagesComponent.currentPageIndex != i;
+                    bool isMain = orderPagesComponent.currentPageIndex == i;
                     orderPageComponent.rectTransform.DOScale(orderPagesComponent.pageScaleTarget, orderPagesComponent.pageAnimDuration)
                     .SetEase(orderPagesComponent.pageScaleEase)
                     .OnComplete(() =>
                     {
-                        if (runCallback)
+                        if (isMain)
+                        {
+                            orderPageComponent.scrollRect.velocity = Vector2.zero;
+                        }
+                        else
                         {
                             orderPageComponent.scrollRect.normalizedPosition = new Vector2(
                                 orderPageComponent.scrollRect.normalizedPosition.x,
