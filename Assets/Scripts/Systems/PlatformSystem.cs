@@ -153,8 +153,8 @@ public class PlatformSystem : MonoBehaviour
         {
             promptComponent.ShowSelection(PromptConstant.DISCONNECT_PLATFORM, PromptConstant.DISCONNECT_PLATFORM_CONFIRM, PromptConstant.YES_PROCEED, PromptConstant.NO, () =>
             {
-                request = new General.WebsocketRemovePlatformRequest(loginComponent.token, platformComponent.activePlatformOnUi);
-                websocketComponent.generalRequests.Add(request);
+                // request = new General.WebsocketRemovePlatformRequest(loginComponent.token, platformComponent.activePlatformOnUi);
+                // websocketComponent.generalRequests.Add(request);
                 AllowForInteraction(false);
 
                 promptComponent.active = false;
@@ -171,7 +171,7 @@ public class PlatformSystem : MonoBehaviour
         websocketComponent.RemovesGeneralResponses(WebsocketEventTypeEnum.ADD_PLATFORM);
         if (jsonString.IsNullOrEmpty()) return;
 
-        HandleResponse(jsonString, true);
+        // HandleResponse(jsonString, true);
     }
     void RemovePlatformResponse()
     {
@@ -179,39 +179,39 @@ public class PlatformSystem : MonoBehaviour
         websocketComponent.RemovesGeneralResponses(WebsocketEventTypeEnum.REMOVE_PLATFORM);
         if (jsonString.IsNullOrEmpty()) return;
 
-        HandleResponse(jsonString, false);
+        // HandleResponse(jsonString, false);
     }
-    void HandleResponse(string jsonString, bool loggedIn)
-    {
-        General.WebsocketAddOrRemovePlatformResponse response = JsonConvert.DeserializeObject
-        <General.WebsocketAddOrRemovePlatformResponse>(jsonString, JsonSerializerConfig.settings);
+    // void HandleResponse(string jsonString, bool loggedIn)
+    // {
+    //     // General.WebsocketAddOrRemovePlatformResponse response = JsonConvert.DeserializeObject
+    //     // <General.WebsocketAddOrRemovePlatformResponse>(jsonString, JsonSerializerConfig.settings);
 
-        AllowForInteraction(true);
-        if (!response.success)
-        {
-            ClearInput();
-            promptComponent.ShowPrompt(PromptConstant.ERROR, response.message, () =>
-            {
-                promptComponent.active = false;
-            });
-            return;
-        }
+    //     AllowForInteraction(true);
+    //     if (!response.success)
+    //     {
+    //         ClearInput();
+    //         promptComponent.ShowPrompt(PromptConstant.ERROR, response.message, () =>
+    //         {
+    //             promptComponent.active = false;
+    //         });
+    //         return;
+    //     }
 
-        PlatformTemplateComponent platformTemplateComponent = GlobalComponent.instance.binanceComponent;
-        switch (response.platform)
-        {
-            case PlatformEnum.BINANCE_TESTNET:
-                platformTemplateComponent = GlobalComponent.instance.binanceTestnetComponent;
-                break;
-        }
-        platformTemplateComponent.loggedIn = loggedIn;
-        UpdateObjectState();
-        platformComponent.activePlatform = response.newActivePlatform;
-        getInitialDataComponent.getInitialData = true;
-    }
+    //     PlatformTemplateComponent platformTemplateComponent = GlobalComponent.instance.binanceComponent;
+    //     switch (response.platform)
+    //     {
+    //         case PlatformEnum.BINANCE_TESTNET:
+    //             platformTemplateComponent = GlobalComponent.instance.binanceTestnetComponent;
+    //             break;
+    //     }
+    //     platformTemplateComponent.loggedIn = loggedIn;
+    //     UpdateObjectState();
+    //     // platformComponent.activePlatform = response.newActivePlatform;
+    //     getInitialDataComponent.getInitialData = true;
+    // }
     void PromptConfirmToUpdateProfileActivePlatformOnServer()
     {
-        if (!platformComponent.loggedIn) return;
+        // if (!platformComponent.loggedIn) return;
         if (profileComponent.activeProfile == null) return;
         if (platformComponent.activePlatformOnUi == platformComponent.activePlatform)
         {
@@ -233,9 +233,9 @@ public class PlatformSystem : MonoBehaviour
     }
     void UpdateProfileActivePlatformOnServer()
     {
-        platformComponent.activePlatform = platformComponent.activePlatformOnUi;
+        // platformComponent.activePlatform = platformComponent.activePlatformOnUi;
 
-        General.WebsocketUpdateProfileRequest request = new(loginComponent.token, profileComponent.activeProfileId, platformComponent.activePlatform);
+        General.WebsocketUpdateProfileRequest request = new(loginComponent.token, profileComponent.activeProfileId, "", UpdateProfilePropertyEnum.platformId);
         websocketComponent.generalRequests.Add(request);
 
         loadingComponent.active = true;

@@ -7,12 +7,11 @@ namespace General
     {
         public WebsocketAddOrderRequest(string token,
             string orderId,
-            PlatformEnum platform,
             string symbol,
             CalculateMargin marginCalculator,
             TakeProfitTypeEnum takeProfitType,
             OrderTypeEnum orderType) :
-            base(WebsocketEventTypeEnum.ADD_ORDER, token, orderId, platform, symbol, marginCalculator, takeProfitType, orderType, null)
+            base(WebsocketEventTypeEnum.ADD_ORDER, token, orderId, symbol, marginCalculator, takeProfitType, orderType, null)
         {
         }
     }

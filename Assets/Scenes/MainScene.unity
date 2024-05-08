@@ -4887,12 +4887,12 @@ GameObject:
   m_Component:
   - component: {fileID: 187790832}
   m_Layer: 5
-  m_Name: Register Platform
+  m_Name: Add Platform
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &187790832
 RectTransform:
   m_ObjectHideFlags: 0
@@ -12665,7 +12665,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 
+  m_text: BINANCE
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -24031,12 +24031,12 @@ GameObject:
   m_Component:
   - component: {fileID: 1025543191}
   m_Layer: 5
-  m_Name: ' Switch Platform'
+  m_Name: ' Switch Or Remove Platform'
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1025543191
 RectTransform:
   m_ObjectHideFlags: 0
@@ -33392,7 +33392,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1439778804}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 661c0bf560d6de8419f2d8ebdecaf03b, type: 3}
   m_Name: 
@@ -36110,7 +36110,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1527012471
 RectTransform:
   m_ObjectHideFlags: 0
@@ -36148,8 +36148,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e60992f6f51d9934a8f892c6179b6c01, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  registerPlatformObj: {fileID: 187790831}
-  switchPlatformObj: {fileID: 1025543190}
+  addPlatformObj: {fileID: 187790831}
+  switchOrRemovePlatformObj: {fileID: 1025543190}
   platformsDropdown: {fileID: 2064388103}
   apiKeyInput: {fileID: 677908912}
   apiSecretInput: {fileID: 959072241}
@@ -36161,6 +36161,9 @@ MonoBehaviour:
   backButton: {fileID: 1282936635}
   logoutButton: {fileID: 2081762370}
   onEnable:
+    m_PersistentCalls:
+      m_Calls: []
+  onChange_platformPage:
     m_PersistentCalls:
       m_Calls: []
 --- !u!1 &1527767313
@@ -42815,7 +42818,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0, y: 137.00005}
+  m_AnchoredPosition: {x: 0, y: 137.00017}
   m_SizeDelta: {x: 0, y: 520}
   m_Pivot: {x: 0, y: 1}
 --- !u!114 &1904289440
@@ -46432,8 +46435,8 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 467063639}
   m_HandleRect: {fileID: 467063638}
   m_Direction: 2
-  m_Value: -0.0000006682681
-  m_Size: 0.73653847
+  m_Value: -0.0000013365362
+  m_Size: 0.73636883
   m_NumberOfSteps: 0
   m_OnValueChanged:
     m_PersistentCalls:
@@ -46881,7 +46884,11 @@ MonoBehaviour:
   m_ItemImage: {fileID: 0}
   m_Value: 0
   m_Options:
-    m_Options: []
+    m_Options:
+    - m_Text: BINANCE
+      m_Image: {fileID: 0}
+    - m_Text: BINANCE_TESTNET
+      m_Image: {fileID: 0}
   m_OnValueChanged:
     m_PersistentCalls:
       m_Calls: []

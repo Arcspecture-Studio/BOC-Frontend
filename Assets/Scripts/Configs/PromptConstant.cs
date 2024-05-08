@@ -33,7 +33,7 @@
     public static readonly string DISCONNECT_PLATFORM_CONFIRM = "Are you sure to disconnect/unlink this platform from your account?";
     public static readonly string NOT_AUTHORIZED = "Not authorized.";
     public static readonly string SWITCH_PLATFORM = "Switch Platform";
-    public static readonly string SWITCH_PLATFORM_CONFIRM = "This action will delete all the orders(including on going positions)/quick orders/bots under this profile, are you sure to continue?";
+    public static readonly string SWITCH_PLATFORM_CONFIRM = "Switching to different platform will delete all the orders(including on going positions)/quick orders/bots under this profile, are you sure to continue?";
     public static readonly string SWITCH_PLATFORM_CANCELLED = "Switch Platform Cancelled";
     public static readonly string DATA_FETCHED = "Data Fetched";
 }

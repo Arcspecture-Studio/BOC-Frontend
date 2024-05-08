@@ -7,7 +7,6 @@ namespace General
     [Serializable]
     public class WebsocketOrderRequest : WebsocketIdRequest
     {
-        public PlatformEnum? platform;
         public string? symbol;
         public CalculateMargin? marginCalculator;
         public TakeProfitTypeEnum? takeProfitType;
@@ -17,14 +16,12 @@ namespace General
         public WebsocketOrderRequest(WebsocketEventTypeEnum eventType,
             string token,
             string orderId,
-            PlatformEnum? platform,
             string? symbol,
             CalculateMargin? marginCalculator,
             TakeProfitTypeEnum? takeProfitType,
             OrderTypeEnum? orderType,
             string? tradingBotId) : base(eventType, token, orderId)
         {
-            this.platform = platform;
             this.symbol = symbol;
             this.marginCalculator = marginCalculator;
             this.takeProfitType = takeProfitType;

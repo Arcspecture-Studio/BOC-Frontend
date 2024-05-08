@@ -6,12 +6,12 @@ namespace General
     public class WebsocketAddProfileRequest : WebsocketGeneralRequest
     {
         public string name;
-        public PlatformEnum activePlatform; // TODO
+        public string platformId;
 
-        public WebsocketAddProfileRequest(string token, string name, PlatformEnum activePlatform) : base(WebsocketEventTypeEnum.ADD_PROFILE, token)
+        public WebsocketAddProfileRequest(string token, string name, string platformId) : base(WebsocketEventTypeEnum.ADD_PROFILE, token)
         {
             this.name = name;
-            this.activePlatform = activePlatform;
+            this.platformId = platformId;
         }
     }
 }

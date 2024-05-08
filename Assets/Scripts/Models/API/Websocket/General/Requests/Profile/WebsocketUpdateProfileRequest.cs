@@ -9,19 +9,22 @@ namespace General
     {
         public string profileId;
         public string? name;
-        public PlatformEnum? activePlatform; // TODO
+        public string? platformId;
         public bool? makeItDefault;
         public Preference? preference;
 
-        public WebsocketUpdateProfileRequest(string token, string profileId, string name) : base(WebsocketEventTypeEnum.UPDATE_PROFILE, token)
+        public WebsocketUpdateProfileRequest(string token, string profileId, string nameOrPlatformId, UpdateProfilePropertyEnum updateProfilePropertyEnum) : base(WebsocketEventTypeEnum.UPDATE_PROFILE, token)
         {
             this.profileId = profileId;
-            this.name = name;
-        }
-        public WebsocketUpdateProfileRequest(string token, string profileId, PlatformEnum activePlatform) : base(WebsocketEventTypeEnum.UPDATE_PROFILE, token)
-        {
-            this.profileId = profileId;
-            this.activePlatform = activePlatform;
+            switch (updateProfilePropertyEnum)
+            {
+                case UpdateProfilePropertyEnum.name:
+                    this.name = nameOrPlatformId;
+                    break;
+                case UpdateProfilePropertyEnum.platformId:
+                    this.platformId = nameOrPlatformId;
+                    break;
+            }
         }
         public WebsocketUpdateProfileRequest(string token, string profileId, bool makeItDefault) : base(WebsocketEventTypeEnum.UPDATE_PROFILE, token)
         {
