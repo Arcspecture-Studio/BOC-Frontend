@@ -44,6 +44,8 @@ public class PlatformComponent : MonoBehaviour
     {
         get
         {
+            if (GlobalComponent.instance.profileComponent.activeProfile.platformId == null ||
+            platforms[GlobalComponent.instance.profileComponent.activeProfile.platformId] == null) return PlatformEnum.NONE;
             return platforms[GlobalComponent.instance.profileComponent.activeProfile.platformId].platform;
         }
     }
@@ -51,10 +53,14 @@ public class PlatformComponent : MonoBehaviour
     {
         get
         {
+            if (GlobalComponent.instance.profileComponent.activeProfile.platformId == null ||
+            platforms[GlobalComponent.instance.profileComponent.activeProfile.platformId] == null) return new();
             return platforms[GlobalComponent.instance.profileComponent.activeProfile.platformId].allSymbols;
         }
         set
         {
+            if (GlobalComponent.instance.profileComponent.activeProfile.platformId == null ||
+            platforms[GlobalComponent.instance.profileComponent.activeProfile.platformId] == null) return;
             platforms[GlobalComponent.instance.profileComponent.activeProfile.platformId].allSymbols = value;
         }
     }
@@ -62,10 +68,14 @@ public class PlatformComponent : MonoBehaviour
     {
         get
         {
+            if (GlobalComponent.instance.profileComponent.activeProfile.platformId == null ||
+            platforms[GlobalComponent.instance.profileComponent.activeProfile.platformId] == null) return new();
             return platforms[GlobalComponent.instance.profileComponent.activeProfile.platformId].marginAssets;
         }
         set
         {
+            if (GlobalComponent.instance.profileComponent.activeProfile.platformId == null ||
+            platforms[GlobalComponent.instance.profileComponent.activeProfile.platformId] == null) return;
             platforms[GlobalComponent.instance.profileComponent.activeProfile.platformId].marginAssets = value;
         }
     }
@@ -73,10 +83,14 @@ public class PlatformComponent : MonoBehaviour
     {
         get
         {
+            if (GlobalComponent.instance.profileComponent.activeProfile.platformId == null ||
+            platforms[GlobalComponent.instance.profileComponent.activeProfile.platformId] == null) return new();
             return platforms[GlobalComponent.instance.profileComponent.activeProfile.platformId].quantityPrecisions;
         }
         set
         {
+            if (GlobalComponent.instance.profileComponent.activeProfile.platformId == null ||
+            platforms[GlobalComponent.instance.profileComponent.activeProfile.platformId] == null) return;
             platforms[GlobalComponent.instance.profileComponent.activeProfile.platformId].quantityPrecisions = value;
         }
     }
@@ -84,10 +98,14 @@ public class PlatformComponent : MonoBehaviour
     {
         get
         {
+            if (GlobalComponent.instance.profileComponent.activeProfile.platformId == null ||
+            platforms[GlobalComponent.instance.profileComponent.activeProfile.platformId] == null) return new();
             return platforms[GlobalComponent.instance.profileComponent.activeProfile.platformId].pricePrecisions;
         }
         set
         {
+            if (GlobalComponent.instance.profileComponent.activeProfile.platformId == null ||
+            platforms[GlobalComponent.instance.profileComponent.activeProfile.platformId] == null) return;
             platforms[GlobalComponent.instance.profileComponent.activeProfile.platformId].pricePrecisions = value;
         }
     }
@@ -95,10 +113,14 @@ public class PlatformComponent : MonoBehaviour
     {
         get
         {
+            if (GlobalComponent.instance.profileComponent.activeProfile.platformId == null ||
+            platforms[GlobalComponent.instance.profileComponent.activeProfile.platformId] == null) return new();
             return platforms[GlobalComponent.instance.profileComponent.activeProfile.platformId].fees;
         }
         set
         {
+            if (GlobalComponent.instance.profileComponent.activeProfile.platformId == null ||
+            platforms[GlobalComponent.instance.profileComponent.activeProfile.platformId] == null) return;
             platforms[GlobalComponent.instance.profileComponent.activeProfile.platformId].fees = value;
         }
     }
@@ -106,10 +128,14 @@ public class PlatformComponent : MonoBehaviour
     {
         get
         {
+            if (GlobalComponent.instance.profileComponent.activeProfile.platformId == null ||
+            platforms[GlobalComponent.instance.profileComponent.activeProfile.platformId] == null) return new();
             return platforms[GlobalComponent.instance.profileComponent.activeProfile.platformId].walletBalances;
         }
         set
         {
+            if (GlobalComponent.instance.profileComponent.activeProfile.platformId == null ||
+            platforms[GlobalComponent.instance.profileComponent.activeProfile.platformId] == null) return;
             platforms[GlobalComponent.instance.profileComponent.activeProfile.platformId].walletBalances = value;
         }
     }

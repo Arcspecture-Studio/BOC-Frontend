@@ -102,8 +102,15 @@ public class PlatformSystem2 : MonoBehaviour
             platformComponent.platformIdsDropdown.options.Add(new TMP_Dropdown.OptionData(str));
         }
 
-        platformComponent.platformIdsDropdown.value = platformIdsMapper.IndexOf(profileComponent.activeProfile.platformId);
-        platformComponent.platformIdsDropdown.captionText.text = platformComponent.platformIdsDropdown.options[platformComponent.platformIdsDropdown.value].text;
+        if (platformComponent.platforms.Count > 0)
+        {
+            platformComponent.platformIdsDropdown.value = platformIdsMapper.IndexOf(profileComponent.activeProfile.platformId);
+            platformComponent.platformIdsDropdown.captionText.text = platformComponent.platformIdsDropdown.options[platformComponent.platformIdsDropdown.value].text;
+        }
+        else
+        {
+            platformComponent.platformPage = PlatformPageEnum.ADD;
+        }
     }
     void AddPlatformRequest()
     {
