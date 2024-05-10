@@ -63,7 +63,6 @@ public class GetProfileDataSystem : MonoBehaviour
         if (profileData.accountData.platforms.Count == 0)
         {
             platformComponent.gameObject.SetActive(true);
-            return;
         }
 
         profileComponent.profiles = profileData.accountData.profiles;
