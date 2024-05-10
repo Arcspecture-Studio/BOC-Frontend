@@ -5,35 +5,30 @@ using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.UI;
 
-public class PlatformComponent : PlatformTemplateComponent
+public class PlatformComponent : MonoBehaviour
 {
     [Header("Reference")]
+    public GameObject addPlatformObj;
+    public GameObject switchOrRemovePlatformObj;
     public TMP_Dropdown platformsDropdown;
     public TMP_InputField apiKeyInput;
-    public GameObject apiKeyObj;
     public TMP_InputField apiSecretInput;
-    public GameObject apiSecretObj;
-    public Button proceedButton;
-    public TMP_Text proceedButtonText;
+    public Button connectButton;
+    public Button cancelRegisterButton;
+    public TMP_Dropdown platformIdsDropdown;
+    public Button addPlatformButton;
+    public Button disconnectButton;
     public Button backButton;
-    public GameObject backButtonObj;
     public Button logoutButton;
 
     [Header("Runtime")]
     [HideInInspector] public UnityEvent onEnable = new();
-    public PlatformEnum activePlatform
+    public PlatformPageEnum platformPage
     {
-        get
-        {
-            if (GlobalComponent.instance.profileComponent.activeProfile == null) return activePlatformOnUi;
-            return GlobalComponent.instance.profileComponent.activeProfile.activePlatform ?? activePlatformOnUi;
-        }
-        set
-        {
-            if (GlobalComponent.instance.profileComponent.activeProfile == null) return;
-            GlobalComponent.instance.profileComponent.activeProfile.activePlatform = value;
-        }
+        set { onChange_platformPage.Invoke(value); }
     }
+    [HideInInspector] public UnityEvent<PlatformPageEnum> onChange_platformPage = new();
+    public Dictionary<string, Platform> platforms = new();
     public PlatformEnum activePlatformOnUi
     {
         get
@@ -45,207 +40,103 @@ public class PlatformComponent : PlatformTemplateComponent
             platformsDropdown.value = (int)value;
         }
     }
-    public new bool loggedIn
+    public PlatformEnum activePlatform
     {
         get
         {
-            bool data = false;
-            switch (activePlatform)
-            {
-                case PlatformEnum.BINANCE:
-                    data = GlobalComponent.instance.binanceComponent.loggedIn;
-                    break;
-                case PlatformEnum.BINANCE_TESTNET:
-                    data = GlobalComponent.instance.binanceTestnetComponent.loggedIn;
-                    break;
-            }
-            return data;
-        }
-        set
-        {
-            switch (activePlatform)
-            {
-                case PlatformEnum.BINANCE:
-                    GlobalComponent.instance.binanceComponent.loggedIn = value;
-                    break;
-                case PlatformEnum.BINANCE_TESTNET:
-                    GlobalComponent.instance.binanceTestnetComponent.loggedIn = value;
-                    break;
-            }
+            if (GlobalComponent.instance.profileComponent.activeProfile.platformId == null ||
+            platforms[GlobalComponent.instance.profileComponent.activeProfile.platformId] == null) return PlatformEnum.NONE;
+            return platforms[GlobalComponent.instance.profileComponent.activeProfile.platformId].platform;
         }
     }
-    public new List<string> allSymbols
+    public List<string> allSymbols
     {
         get
         {
-            List<string> data = new();
-            switch (activePlatform)
-            {
-                case PlatformEnum.BINANCE:
-                    data = GlobalComponent.instance.binanceComponent.allSymbols;
-                    break;
-                case PlatformEnum.BINANCE_TESTNET:
-                    data = GlobalComponent.instance.binanceTestnetComponent.allSymbols;
-                    break;
-            }
-            return data;
+            if (GlobalComponent.instance.profileComponent.activeProfile.platformId == null ||
+            platforms[GlobalComponent.instance.profileComponent.activeProfile.platformId] == null) return new();
+            return platforms[GlobalComponent.instance.profileComponent.activeProfile.platformId].allSymbols;
         }
         set
         {
-            switch (activePlatform)
-            {
-                case PlatformEnum.BINANCE:
-                    GlobalComponent.instance.binanceComponent.allSymbols = value;
-                    break;
-                case PlatformEnum.BINANCE_TESTNET:
-                    GlobalComponent.instance.binanceTestnetComponent.allSymbols = value;
-                    break;
-            }
+            if (GlobalComponent.instance.profileComponent.activeProfile.platformId == null ||
+            platforms[GlobalComponent.instance.profileComponent.activeProfile.platformId] == null) return;
+            platforms[GlobalComponent.instance.profileComponent.activeProfile.platformId].allSymbols = value;
         }
     }
-    public new Dictionary<string, string> marginAssets
+    public Dictionary<string, string> marginAssets
     {
         get
         {
-            Dictionary<string, string> data = new();
-            switch (activePlatform)
-            {
-                case PlatformEnum.BINANCE:
-                    data = GlobalComponent.instance.binanceComponent.marginAssets;
-                    break;
-                case PlatformEnum.BINANCE_TESTNET:
-                    data = GlobalComponent.instance.binanceTestnetComponent.marginAssets;
-                    break;
-            }
-            return data;
+            if (GlobalComponent.instance.profileComponent.activeProfile.platformId == null ||
+            platforms[GlobalComponent.instance.profileComponent.activeProfile.platformId] == null) return new();
+            return platforms[GlobalComponent.instance.profileComponent.activeProfile.platformId].marginAssets;
         }
         set
         {
-            switch (activePlatform)
-            {
-                case PlatformEnum.BINANCE:
-                    GlobalComponent.instance.binanceComponent.marginAssets = value;
-                    break;
-                case PlatformEnum.BINANCE_TESTNET:
-                    GlobalComponent.instance.binanceTestnetComponent.marginAssets = value;
-                    break;
-            }
+            if (GlobalComponent.instance.profileComponent.activeProfile.platformId == null ||
+            platforms[GlobalComponent.instance.profileComponent.activeProfile.platformId] == null) return;
+            platforms[GlobalComponent.instance.profileComponent.activeProfile.platformId].marginAssets = value;
         }
     }
-    public new Dictionary<string, long> quantityPrecisions
+    public Dictionary<string, long> quantityPrecisions
     {
         get
         {
-            Dictionary<string, long> data = new();
-            switch (activePlatform)
-            {
-                case PlatformEnum.BINANCE:
-                    data = GlobalComponent.instance.binanceComponent.quantityPrecisions;
-                    break;
-                case PlatformEnum.BINANCE_TESTNET:
-                    data = GlobalComponent.instance.binanceTestnetComponent.quantityPrecisions;
-                    break;
-            }
-            return data;
+            if (GlobalComponent.instance.profileComponent.activeProfile.platformId == null ||
+            platforms[GlobalComponent.instance.profileComponent.activeProfile.platformId] == null) return new();
+            return platforms[GlobalComponent.instance.profileComponent.activeProfile.platformId].quantityPrecisions;
         }
         set
         {
-            switch (activePlatform)
-            {
-                case PlatformEnum.BINANCE:
-                    GlobalComponent.instance.binanceComponent.quantityPrecisions = value;
-                    break;
-                case PlatformEnum.BINANCE_TESTNET:
-                    GlobalComponent.instance.binanceTestnetComponent.quantityPrecisions = value;
-                    break;
-            }
+            if (GlobalComponent.instance.profileComponent.activeProfile.platformId == null ||
+            platforms[GlobalComponent.instance.profileComponent.activeProfile.platformId] == null) return;
+            platforms[GlobalComponent.instance.profileComponent.activeProfile.platformId].quantityPrecisions = value;
         }
     }
-    public new Dictionary<string, long> pricePrecisions
+    public Dictionary<string, long> pricePrecisions
     {
         get
         {
-            Dictionary<string, long> data = new();
-            switch (activePlatform)
-            {
-                case PlatformEnum.BINANCE:
-                    data = GlobalComponent.instance.binanceComponent.pricePrecisions;
-                    break;
-                case PlatformEnum.BINANCE_TESTNET:
-                    data = GlobalComponent.instance.binanceTestnetComponent.pricePrecisions;
-                    break;
-            }
-            return data;
+            if (GlobalComponent.instance.profileComponent.activeProfile.platformId == null ||
+            platforms[GlobalComponent.instance.profileComponent.activeProfile.platformId] == null) return new();
+            return platforms[GlobalComponent.instance.profileComponent.activeProfile.platformId].pricePrecisions;
         }
         set
         {
-            switch (activePlatform)
-            {
-                case PlatformEnum.BINANCE:
-                    GlobalComponent.instance.binanceComponent.pricePrecisions = value;
-                    break;
-                case PlatformEnum.BINANCE_TESTNET:
-                    GlobalComponent.instance.binanceTestnetComponent.pricePrecisions = value;
-                    break;
-            }
+            if (GlobalComponent.instance.profileComponent.activeProfile.platformId == null ||
+            platforms[GlobalComponent.instance.profileComponent.activeProfile.platformId] == null) return;
+            platforms[GlobalComponent.instance.profileComponent.activeProfile.platformId].pricePrecisions = value;
         }
     }
-    public new Dictionary<string, double?> fees
+    public Dictionary<string, double?> fees
     {
         get
         {
-            Dictionary<string, double?> data = new();
-            switch (activePlatform)
-            {
-                case PlatformEnum.BINANCE:
-                    data = GlobalComponent.instance.binanceComponent.fees;
-                    break;
-                case PlatformEnum.BINANCE_TESTNET:
-                    data = GlobalComponent.instance.binanceTestnetComponent.fees;
-                    break;
-            }
-            return data;
+            if (GlobalComponent.instance.profileComponent.activeProfile.platformId == null ||
+            platforms[GlobalComponent.instance.profileComponent.activeProfile.platformId] == null) return new();
+            return platforms[GlobalComponent.instance.profileComponent.activeProfile.platformId].fees;
         }
         set
         {
-            switch (activePlatform)
-            {
-                case PlatformEnum.BINANCE:
-                    GlobalComponent.instance.binanceComponent.fees = value;
-                    break;
-                case PlatformEnum.BINANCE_TESTNET:
-                    GlobalComponent.instance.binanceTestnetComponent.fees = value;
-                    break;
-            }
+            if (GlobalComponent.instance.profileComponent.activeProfile.platformId == null ||
+            platforms[GlobalComponent.instance.profileComponent.activeProfile.platformId] == null) return;
+            platforms[GlobalComponent.instance.profileComponent.activeProfile.platformId].fees = value;
         }
     }
-    public new SerializedDictionary<string, double> walletBalances
+    public SerializedDictionary<string, double> walletBalances
     {
         get
         {
-            SerializedDictionary<string, double> data = new();
-            switch (activePlatform)
-            {
-                case PlatformEnum.BINANCE:
-                    data = GlobalComponent.instance.binanceComponent.walletBalances;
-                    break;
-                case PlatformEnum.BINANCE_TESTNET:
-                    data = GlobalComponent.instance.binanceTestnetComponent.walletBalances;
-                    break;
-            }
-            return data;
+            if (GlobalComponent.instance.profileComponent.activeProfile.platformId == null ||
+            platforms[GlobalComponent.instance.profileComponent.activeProfile.platformId] == null) return new();
+            return platforms[GlobalComponent.instance.profileComponent.activeProfile.platformId].walletBalances;
         }
         set
         {
-            switch (activePlatform)
-            {
-                case PlatformEnum.BINANCE:
-                    GlobalComponent.instance.binanceComponent.walletBalances = value;
-                    break;
-                case PlatformEnum.BINANCE_TESTNET:
-                    GlobalComponent.instance.binanceTestnetComponent.walletBalances = value;
-                    break;
-            }
+            if (GlobalComponent.instance.profileComponent.activeProfile.platformId == null ||
+            platforms[GlobalComponent.instance.profileComponent.activeProfile.platformId] == null) return;
+            platforms[GlobalComponent.instance.profileComponent.activeProfile.platformId].walletBalances = value;
         }
     }
 

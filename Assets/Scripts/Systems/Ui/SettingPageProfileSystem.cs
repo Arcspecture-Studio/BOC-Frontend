@@ -121,7 +121,7 @@ public class SettingPageProfileSystem : MonoBehaviour
             () => promptComponent.active = false);
             return;
         }
-        General.WebsocketAddProfileRequest request = new(loginComponent.token, settingPageComponent.addProfileNameInput.text, platformComponent.activePlatform);
+        General.WebsocketAddProfileRequest request = new(loginComponent.token, settingPageComponent.addProfileNameInput.text, profileComponent.activeProfile.platformId);
         websocketComponent.generalRequests.Add(request);
 
         settingPageComponent.confirmAddProfileButton.interactable = false;
@@ -193,7 +193,7 @@ public class SettingPageProfileSystem : MonoBehaviour
             () => promptComponent.active = false);
             return;
         }
-        General.WebsocketUpdateProfileRequest request = new(loginComponent.token, profileComponent.activeProfileId, settingPageComponent.renameProfileNameInput.text);
+        General.WebsocketUpdateProfileRequest request = new(loginComponent.token, profileComponent.activeProfileId, settingPageComponent.renameProfileNameInput.text, UpdateProfilePropertyEnum.name);
         websocketComponent.generalRequests.Add(request);
 
         settingPageComponent.confirmRenameProfileButton.interactable = false;
@@ -219,7 +219,7 @@ public class SettingPageProfileSystem : MonoBehaviour
             case UpdateProfilePropertyEnum.name:
                 OnRenameProfileResponse(response);
                 break;
-            case UpdateProfilePropertyEnum.activePlatform:
+            case UpdateProfilePropertyEnum.platformId:
             case UpdateProfilePropertyEnum.makeItDefault:
                 getInitialDataComponent.getInitialData = true;
                 break;

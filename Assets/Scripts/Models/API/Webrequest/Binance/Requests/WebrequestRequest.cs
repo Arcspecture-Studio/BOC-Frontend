@@ -5,9 +5,8 @@ namespace Binance
     [Serializable]
     public class WebrequestRequest : Request
     {
-        public WebrequestRequest(bool testnet)
+        public WebrequestRequest(string platformId) : base(platformId)
         {
-            platform = testnet ? PlatformEnum.BINANCE_TESTNET : PlatformEnum.BINANCE;
         }
     }
 }

@@ -13,6 +13,6 @@ namespace General
     public class WebsocketGetInitialDataAccountData
     {
         public Dictionary<string, Profile> profiles;
-        public List<PlatformEnum> platformList;
+        public Dictionary<string, PlatformEnum> platforms;
     }
 }

@@ -92,7 +92,7 @@ public class GetRuntimeDataSystem : MonoBehaviour
             spawnTradingBotComponent.botToSpawn = tradingBot;
         }
 
-        if (platformComponent.gameObject.activeSelf)
+        if (platformComponent.gameObject.activeSelf && platformComponent.platforms.Count > 0)
         {
             platformComponent.gameObject.SetActive(false);
         }

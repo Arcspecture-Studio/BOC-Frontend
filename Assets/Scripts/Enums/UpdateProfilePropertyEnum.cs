@@ -1,7 +1,7 @@
 public enum UpdateProfilePropertyEnum
 {
     name,
-    activePlatform,
+    platformId,
     makeItDefault,
     preference
 }

@@ -5,11 +5,11 @@ namespace General
     [Serializable]
     public class WebsocketRemovePlatformRequest : WebsocketGeneralRequest
     {
-        public PlatformEnum platform;
+        public string platformId;
 
-        public WebsocketRemovePlatformRequest(string token, PlatformEnum platform) : base(WebsocketEventTypeEnum.REMOVE_PLATFORM, token)
+        public WebsocketRemovePlatformRequest(string token, string platformId) : base(WebsocketEventTypeEnum.REMOVE_PLATFORM, token)
         {
-            this.platform = platform;
+            this.platformId = platformId;
         }
     }
 }

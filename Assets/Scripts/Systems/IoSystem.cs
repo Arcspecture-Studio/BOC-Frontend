@@ -9,8 +9,6 @@ public class IoSystem : MonoBehaviour
 {
     IoComponent ioComponent;
     WebsocketComponent websocketComponent;
-    BinanceComponent binanceComponent;
-    BinanceComponent binanceTestnetComponent;
     LoginComponent loginComponent;
     PromptComponent promptComponent;
     SettingPageComponent settingPageComponent;
@@ -23,8 +21,6 @@ public class IoSystem : MonoBehaviour
     {
         ioComponent = GlobalComponent.instance.ioComponent;
         websocketComponent = GlobalComponent.instance.websocketComponent;
-        binanceComponent = GlobalComponent.instance.binanceComponent;
-        binanceTestnetComponent = GlobalComponent.instance.binanceTestnetComponent;
         loginComponent = GlobalComponent.instance.loginComponent;
         promptComponent = GlobalComponent.instance.promptComponent;
         settingPageComponent = GlobalComponent.instance.settingPageComponent;

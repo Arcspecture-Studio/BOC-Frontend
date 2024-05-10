@@ -9,6 +9,7 @@ public class GetExchangeInfoSystem : MonoBehaviour
     PlatformComponent platformComponent;
     WebsocketComponent websocketComponent;
     LoginComponent loginComponent;
+    ProfileComponent profileComponent;
 
     void Start()
     {
@@ -16,6 +17,7 @@ public class GetExchangeInfoSystem : MonoBehaviour
         platformComponent = GlobalComponent.instance.platformComponent;
         websocketComponent = GlobalComponent.instance.websocketComponent;
         loginComponent = GlobalComponent.instance.loginComponent;
+        profileComponent = GlobalComponent.instance.profileComponent;
 
         getExchangeInfoComponent.onChange_processExchangeInfo.AddListener(ProcessExchangeInfo);
         getExchangeInfoComponent.onChange_getExchangeInfo.AddListener(GetExchangeInfo);
@@ -27,7 +29,7 @@ public class GetExchangeInfoSystem : MonoBehaviour
 
     void GetExchangeInfo()
     {
-        General.WebsocketGetExchangeInfoRequest request = new(loginComponent.token, platformComponent.activePlatform);
+        General.WebsocketGetExchangeInfoRequest request = new(loginComponent.token, profileComponent.activeProfile.platformId);
         websocketComponent.generalRequests.Add(request);
     }
     void GetExchangeInfoResponse()

@@ -454,7 +454,6 @@ public class OrderPageSystem : MonoBehaviour
             new General.WebsocketAddOrderRequest(
             loginComponent.token,
             orderPageComponent.orderId,
-            platformComponent.activePlatform,
             orderPageComponent.symbolDropdownComponent.selectedSymbol,
             orderPageComponent.marginCalculator,
             (TakeProfitTypeEnum)orderPageComponent.takeProfitTypeDropdown.value,

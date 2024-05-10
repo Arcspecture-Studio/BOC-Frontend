@@ -5,11 +5,11 @@ namespace General
     [Serializable]
     public class WebsocketGetBalanceRequest : WebsocketGeneralRequest
     {
-        public PlatformEnum platform;
+        public string platformId;
 
-        public WebsocketGetBalanceRequest(string token, PlatformEnum platform) : base(WebsocketEventTypeEnum.GET_BALANCE, token)
+        public WebsocketGetBalanceRequest(string token, string platformId) : base(WebsocketEventTypeEnum.GET_BALANCE, token)
         {
-            this.platform = platform;
+            this.platformId = platformId;
         }
     }
 }

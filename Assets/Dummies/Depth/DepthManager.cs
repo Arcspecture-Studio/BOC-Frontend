@@ -198,7 +198,7 @@ public class DepthManager : MonoBehaviour
         if (!displayCurrentDepth) return;
         if (request == null)
         {
-            request = new(false, "ETHUSDT", 100);
+            request = new("", "ETHUSDT", 100);
             webrequestComponent.requests.Add(request);
         }
     }

@@ -10,6 +10,7 @@ public class GetBalanceSystem : MonoBehaviour
     WebsocketComponent websocketComponent;
     LoginComponent loginComponent;
     SettingPageComponent settingPageComponent;
+    ProfileComponent profileComponent;
 
     void Start()
     {
@@ -18,6 +19,7 @@ public class GetBalanceSystem : MonoBehaviour
         websocketComponent = GlobalComponent.instance.websocketComponent;
         loginComponent = GlobalComponent.instance.loginComponent;
         settingPageComponent = GlobalComponent.instance.settingPageComponent;
+        profileComponent = GlobalComponent.instance.profileComponent;
 
         getBalanceComponent.onChange_processBalance.AddListener(ProcessBalance);
         getBalanceComponent.onChange_getBalance.AddListener(GetBalance);
@@ -29,7 +31,7 @@ public class GetBalanceSystem : MonoBehaviour
 
     void GetBalance()
     {
-        General.WebsocketGetBalanceRequest request = new(loginComponent.token, platformComponent.activePlatform);
+        General.WebsocketGetBalanceRequest request = new(loginComponent.token, profileComponent.activeProfile.platformId);
         websocketComponent.generalRequests.Add(request);
     }
     void GetBalanceResponse()

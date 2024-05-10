@@ -22,8 +22,6 @@
     public static readonly string SWITCH_TO_REGISTER = "Dont' have account? Click here to register";
     public static readonly string SWITCH_TO_LOGIN = "Already have account? Click here to login";
     public static readonly string CONNECTED = "Connected";
-    public static readonly string CONNECT = "Connect";
-    public static readonly string DISCONNECT = "Disconnect";
     public static readonly string EMAIL_EMPTY = "Email can't be empty.";
     public static readonly string EMAIL_INVALID = "Email format invalid.";
     public static readonly string PASSWORD_EMPTY = "Password can't be empty.";
@@ -32,10 +30,10 @@
     public static readonly string REMOVE_PROFILE = "Remove Profile";
     public static readonly string REMOVE_PROFILE_CONFIRM = "Are you sure to remove current profile named ";
     public static readonly string DISCONNECT_PLATFORM = "Disconnect Platform";
-    public static readonly string DISCONNECT_PLATFORM_CONFIRM = "Are you sure to disconnect/unlink this platform from your account?";
+    public static readonly string DISCONNECT_PLATFORM_CONFIRM = "Disconnect platform will delete all the orders(including on going positions)/quick orders/bots under all profiles linked to this platform, are you sure to continue?";
     public static readonly string NOT_AUTHORIZED = "Not authorized.";
     public static readonly string SWITCH_PLATFORM = "Switch Platform";
-    public static readonly string SWITCH_PLATFORM_CONFIRM = "This action will delete all the orders(including on going positions)/quick orders/bots under this profile, are you sure to continue?";
+    public static readonly string SWITCH_PLATFORM_CONFIRM = "Switching to different platform will delete all the orders(including on going positions)/quick orders/bots under this profile, are you sure to continue?";
     public static readonly string SWITCH_PLATFORM_CANCELLED = "Switch Platform Cancelled";
     public static readonly string DATA_FETCHED = "Data Fetched";
 }

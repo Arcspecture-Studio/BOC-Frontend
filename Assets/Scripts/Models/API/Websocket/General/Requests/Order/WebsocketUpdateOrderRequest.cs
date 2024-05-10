@@ -10,7 +10,7 @@ namespace General
             CalculateMargin marginCalculator,
             TakeProfitTypeEnum takeProfitType,
             OrderTypeEnum orderType,
-            string tradingBotId) : base(WebsocketEventTypeEnum.UPDATE_ORDER, token, orderId, null, null, marginCalculator, takeProfitType, orderType, tradingBotId)
+            string tradingBotId) : base(WebsocketEventTypeEnum.UPDATE_ORDER, token, orderId, null, marginCalculator, takeProfitType, orderType, tradingBotId)
         {
         }
     }
