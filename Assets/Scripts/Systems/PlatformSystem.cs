@@ -7,33 +7,29 @@ using WebSocketSharp;
 public class PlatformSystem : MonoBehaviour
 {
     PlatformComponent platformComponent;
+    PromptComponent promptComponent;
     WebsocketComponent websocketComponent;
     LoginComponent loginComponent;
-    PromptComponent promptComponent;
+    LoadingComponent loadingComponent;
     ProfileComponent profileComponent;
     GetInitialDataComponent getInitialDataComponent;
-    LoadingComponent loadingComponent;
     MiniPromptComponent miniPromptComponent;
+
+    List<string> platformIdsMapper;
 
     void Start()
     {
         platformComponent = GlobalComponent.instance.platformComponent;
+        promptComponent = GlobalComponent.instance.promptComponent;
         websocketComponent = GlobalComponent.instance.websocketComponent;
         loginComponent = GlobalComponent.instance.loginComponent;
-        promptComponent = GlobalComponent.instance.promptComponent;
+        loadingComponent = GlobalComponent.instance.loadingComponent;
         profileComponent = GlobalComponent.instance.profileComponent;
         getInitialDataComponent = GlobalComponent.instance.getInitialDataComponent;
-        loadingComponent = GlobalComponent.instance.loadingComponent;
         miniPromptComponent = GlobalComponent.instance.miniPromptComponent;
 
-        // Set initial state
+        InitializeEventListeners();
         platformComponent.gameObject.SetActive(false);
-        platformComponent.onEnable.AddListener(OnComponentEnable);
-        platformComponent.platformsDropdown.onValueChanged.AddListener(value => UpdateObjectState());
-        // platformComponent.proceedButton.onClick.AddListener(AddOrRemovePlatform);
-        platformComponent.backButton.onClick.AddListener(PromptConfirmToUpdateProfileActivePlatformOnServer);
-        platformComponent.logoutButton.onClick.AddListener(Logout);
-        InitializePlatformDropdownOptions();
     }
     void Update()
     {
@@ -42,58 +38,27 @@ public class PlatformSystem : MonoBehaviour
     }
     void OnComponentEnable()
     {
-        if (platformComponent == null) return;
-        platformComponent.activePlatformOnUi = platformComponent.activePlatform;
-        UpdateObjectState();
-    }
-    void InitializePlatformDropdownOptions()
-    {
-        if (platformComponent.platformsDropdown.options.Count > 0) return;
-        List<TMP_Dropdown.OptionData> optionDataList = new()
+        if (GlobalComponent.instance.platformComponent.platforms.Count > 0)
         {
-            new TMP_Dropdown.OptionData(PlatformEnum.BINANCE.ToString()),
-            new TMP_Dropdown.OptionData(PlatformEnum.BINANCE_TESTNET.ToString())
-        };
-        platformComponent.platformsDropdown.options = optionDataList;
-    }
-    void UpdateObjectState()
-    {
-        for (int i = 0; i < platformComponent.platformsDropdown.options.Count; i++)
-        {
-            PlatformEnum platformEnum = (PlatformEnum)i;
-            PlatformTemplateComponent platformTemplateComponent = GlobalComponent.instance.binanceComponent;
-            switch (platformEnum)
-            {
-                case PlatformEnum.BINANCE_TESTNET:
-                    platformTemplateComponent = GlobalComponent.instance.binanceTestnetComponent;
-                    break;
-            }
-
-            if (platformTemplateComponent.loggedIn)
-            {
-                platformComponent.platformsDropdown.options[i].text = platformEnum.ToString() + " (" + PromptConstant.CONNECTED + ")";
-                if (platformComponent.platformsDropdown.value == i)
-                {
-                    // platformComponent.backButtonObj.SetActive(true);
-                    // platformComponent.apiKeyObj.SetActive(false);
-                    // platformComponent.apiSecretObj.SetActive(false);
-                    // platformComponent.proceedButtonText.text = PromptConstant.DISCONNECT;
-                }
-            }
-            else
-            {
-                platformComponent.platformsDropdown.options[i].text = platformEnum.ToString();
-                if (platformComponent.platformsDropdown.value == i)
-                {
-                    ClearInput();
-                    // platformComponent.backButtonObj.SetActive(false);
-                    // platformComponent.apiKeyObj.SetActive(true);
-                    // platformComponent.apiSecretObj.SetActive(true);
-                    // platformComponent.proceedButtonText.text = PromptConstant.CONNECT;
-                }
-            }
+            GlobalComponent.instance.platformComponent.platformPage = PlatformPageEnum.SWITCH_OR_REMOVE;
         }
-        platformComponent.platformsDropdown.captionText.text = platformComponent.platformsDropdown.options[platformComponent.platformsDropdown.value].text;
+        else
+        {
+            GlobalComponent.instance.platformComponent.platformPage = PlatformPageEnum.ADD;
+        }
+    }
+
+    void InitializeEventListeners()
+    {
+        platformComponent.onEnable.AddListener(OnComponentEnable);
+        platformComponent.onChange_platformPage.AddListener(OnSwitchPlatformPage);
+
+        platformComponent.addPlatformButton.onClick.AddListener(() => platformComponent.platformPage = PlatformPageEnum.ADD);
+        platformComponent.cancelRegisterButton.onClick.AddListener(() => platformComponent.platformPage = PlatformPageEnum.SWITCH_OR_REMOVE);
+        platformComponent.connectButton.onClick.AddListener(AddPlatformRequest);
+        platformComponent.disconnectButton.onClick.AddListener(RemovePlatformRequest);
+        platformComponent.backButton.onClick.AddListener(PromptConfirmToUpdateProfilePlatformIdOnServer);
+        platformComponent.logoutButton.onClick.AddListener(Logout);
     }
     bool InvalidateInput()
     {
@@ -110,60 +75,53 @@ public class PlatformSystem : MonoBehaviour
         }
         return false;
     }
-    void AllowForInteraction(bool yes)
-    {
-        platformComponent.platformsDropdown.interactable = yes;
-        platformComponent.apiKeyInput.interactable = yes;
-        platformComponent.apiSecretInput.interactable = yes;
-        // platformComponent.proceedButton.interactable = yes;
-        platformComponent.backButton.interactable = yes;
-    }
     void ClearInput()
     {
         platformComponent.apiKeyInput.text = "";
         platformComponent.apiSecretInput.text = "";
     }
-    void AddOrRemovePlatform()
+    void OnSwitchPlatformPage(PlatformPageEnum platformPageEnum)
     {
-        bool add = true;
-        switch (platformComponent.activePlatformOnUi)
+        platformComponent.addPlatformObj.SetActive(platformPageEnum == PlatformPageEnum.ADD);
+        platformComponent.switchOrRemovePlatformObj.SetActive(platformPageEnum == PlatformPageEnum.SWITCH_OR_REMOVE);
+
+        if (platformPageEnum == PlatformPageEnum.SWITCH_OR_REMOVE)
         {
-            case PlatformEnum.BINANCE:
-            case PlatformEnum.BINANCE_TESTNET:
-                BinanceComponent binanceComponent = platformComponent.activePlatformOnUi == PlatformEnum.BINANCE ?
-                GlobalComponent.instance.binanceComponent : GlobalComponent.instance.binanceTestnetComponent;
-                add = !binanceComponent.loggedIn;
-                break;
+            UpdatePlatformIdsDropdownUi();
+        }
+    }
+    void UpdatePlatformIdsDropdownUi()
+    {
+        platformComponent.platformIdsDropdown.ClearOptions();
+        platformIdsMapper = new();
+
+        foreach (KeyValuePair<string, Platform> platform in platformComponent.platforms)
+        {
+            string str = platform.Key + "(" + platform.Value.platform + ")";
+            platformIdsMapper.Add(platform.Key);
+            platformComponent.platformIdsDropdown.options.Add(new TMP_Dropdown.OptionData(str));
         }
 
-        General.WebsocketGeneralRequest request;
-        if (add)
+        if (platformComponent.platforms.Count > 0)
         {
-            if (InvalidateInput()) return;
-            request = new General.WebsocketAddPlatformRequest(
-                loginComponent.token,
-                platformComponent.apiKeyInput.text,
-                platformComponent.apiSecretInput.text,
-                platformComponent.activePlatformOnUi
-            );
-            websocketComponent.generalRequests.Add(request);
-            AllowForInteraction(false);
+            platformComponent.platformIdsDropdown.value = platformIdsMapper.IndexOf(profileComponent.activeProfile.platformId);
+            platformComponent.platformIdsDropdown.captionText.text = platformComponent.platformIdsDropdown.options[platformComponent.platformIdsDropdown.value].text;
         }
         else
         {
-            promptComponent.ShowSelection(PromptConstant.DISCONNECT_PLATFORM, PromptConstant.DISCONNECT_PLATFORM_CONFIRM, PromptConstant.YES_PROCEED, PromptConstant.NO, () =>
-            {
-                // request = new General.WebsocketRemovePlatformRequest(loginComponent.token, platformComponent.activePlatformOnUi);
-                // websocketComponent.generalRequests.Add(request);
-                AllowForInteraction(false);
-
-                promptComponent.active = false;
-            }, () =>
-            {
-                promptComponent.active = false;
-            });
+            platformComponent.platformPage = PlatformPageEnum.ADD;
         }
-
+    }
+    void AddPlatformRequest()
+    {
+        if (InvalidateInput()) return;
+        websocketComponent.generalRequests.Add(new General.WebsocketAddPlatformRequest(
+            loginComponent.token,
+            platformComponent.apiKeyInput.text,
+            platformComponent.apiSecretInput.text,
+            (PlatformEnum)platformComponent.platformsDropdown.value
+        ));
+        loadingComponent.active = true;
     }
     void AddPlatformResponse()
     {
@@ -171,7 +129,43 @@ public class PlatformSystem : MonoBehaviour
         websocketComponent.RemovesGeneralResponses(WebsocketEventTypeEnum.ADD_PLATFORM);
         if (jsonString.IsNullOrEmpty()) return;
 
-        // HandleResponse(jsonString, true);
+        General.WebsocketAddPlatformResponse response = JsonConvert.DeserializeObject
+        <General.WebsocketAddPlatformResponse>(jsonString, JsonSerializerConfig.settings);
+
+        ClearInput();
+
+        if (!response.success)
+        {
+            promptComponent.ShowPrompt(PromptConstant.ERROR, response.message, () =>
+            {
+                loadingComponent.active = false;
+                promptComponent.active = false;
+            });
+            return;
+        }
+        loadingComponent.active = false;
+
+        platformComponent.platforms.Add(response.platformId,
+        new Platform(response.platform));
+        profileComponent.activeProfile.platformId = response.platformId;
+        platformComponent.platformPage = PlatformPageEnum.SWITCH_OR_REMOVE;
+        getInitialDataComponent.getInitialData = true;
+    }
+    void RemovePlatformRequest()
+    {
+        promptComponent.ShowSelection(PromptConstant.DISCONNECT_PLATFORM, PromptConstant.DISCONNECT_PLATFORM_CONFIRM, PromptConstant.YES_PROCEED, PromptConstant.NO, () =>
+        {
+            websocketComponent.generalRequests.Add(new General.WebsocketRemovePlatformRequest(
+                loginComponent.token,
+                platformIdsMapper[platformComponent.platformIdsDropdown.value]
+            ));
+            loadingComponent.active = true;
+
+            promptComponent.active = false;
+        }, () =>
+        {
+            promptComponent.active = false;
+        });
     }
     void RemovePlatformResponse()
     {
@@ -179,63 +173,58 @@ public class PlatformSystem : MonoBehaviour
         websocketComponent.RemovesGeneralResponses(WebsocketEventTypeEnum.REMOVE_PLATFORM);
         if (jsonString.IsNullOrEmpty()) return;
 
-        // HandleResponse(jsonString, false);
+        General.WebsocketRemovePlatformResponse response = JsonConvert.DeserializeObject
+        <General.WebsocketRemovePlatformResponse>(jsonString, JsonSerializerConfig.settings);
+
+        if (!response.success)
+        {
+            promptComponent.ShowPrompt(PromptConstant.ERROR, response.message, () =>
+            {
+                loadingComponent.active = false;
+                promptComponent.active = false;
+            });
+            return;
+        }
+        loadingComponent.active = false;
+
+        platformComponent.platforms.Remove(response.platformId);
+        profileComponent.activeProfile.platformId = response.newActivePlatformId;
+        platformComponent.platformPage = PlatformPageEnum.SWITCH_OR_REMOVE;
+        getInitialDataComponent.getInitialData = true;
     }
-    // void HandleResponse(string jsonString, bool loggedIn)
-    // {
-    //     // General.WebsocketAddOrRemovePlatformResponse response = JsonConvert.DeserializeObject
-    //     // <General.WebsocketAddOrRemovePlatformResponse>(jsonString, JsonSerializerConfig.settings);
-
-    //     AllowForInteraction(true);
-    //     if (!response.success)
-    //     {
-    //         ClearInput();
-    //         promptComponent.ShowPrompt(PromptConstant.ERROR, response.message, () =>
-    //         {
-    //             promptComponent.active = false;
-    //         });
-    //         return;
-    //     }
-
-    //     PlatformTemplateComponent platformTemplateComponent = GlobalComponent.instance.binanceComponent;
-    //     switch (response.platform)
-    //     {
-    //         case PlatformEnum.BINANCE_TESTNET:
-    //             platformTemplateComponent = GlobalComponent.instance.binanceTestnetComponent;
-    //             break;
-    //     }
-    //     platformTemplateComponent.loggedIn = loggedIn;
-    //     UpdateObjectState();
-    //     // platformComponent.activePlatform = response.newActivePlatform;
-    //     getInitialDataComponent.getInitialData = true;
-    // }
-    void PromptConfirmToUpdateProfileActivePlatformOnServer()
+    void PromptConfirmToUpdateProfilePlatformIdOnServer()
     {
-        // if (!platformComponent.loggedIn) return;
-        if (profileComponent.activeProfile == null) return;
-        if (platformComponent.activePlatformOnUi == platformComponent.activePlatform)
+        if (profileComponent.activeProfile.platformId ==
+        platformIdsMapper[platformComponent.platformIdsDropdown.value])
         {
             platformComponent.gameObject.SetActive(false);
             return;
         }
 
-        promptComponent.ShowSelection(PromptConstant.SWITCH_PLATFORM, PromptConstant.SWITCH_PLATFORM_CONFIRM, PromptConstant.YES_PROCEED, PromptConstant.NO, () =>
+        if (platformComponent.platforms[profileComponent.activeProfile.platformId].platform == platformComponent.platforms[platformIdsMapper[platformComponent.platformIdsDropdown.value]].platform)
         {
-            UpdateProfileActivePlatformOnServer();
-            promptComponent.active = false;
-        }, () =>
+            UpdateProfilePlatformIdOnServer();
+        }
+        else // cross platform
         {
-            platformComponent.activePlatformOnUi = platformComponent.activePlatform;
-            platformComponent.gameObject.SetActive(false);
-            miniPromptComponent.message = PromptConstant.SWITCH_PLATFORM_CANCELLED;
-            promptComponent.active = false;
-        });
+            promptComponent.ShowSelection(PromptConstant.SWITCH_PLATFORM, PromptConstant.SWITCH_PLATFORM_CONFIRM, PromptConstant.YES_PROCEED, PromptConstant.NO, () =>
+            {
+                UpdateProfilePlatformIdOnServer();
+                promptComponent.active = false;
+            }, () =>
+            {
+                platformComponent.platformIdsDropdown.value = platformIdsMapper.IndexOf(profileComponent.activeProfile.platformId);
+                platformComponent.gameObject.SetActive(false);
+                miniPromptComponent.message = PromptConstant.SWITCH_PLATFORM_CANCELLED;
+                promptComponent.active = false;
+            });
+        }
     }
-    void UpdateProfileActivePlatformOnServer()
+    void UpdateProfilePlatformIdOnServer()
     {
-        // platformComponent.activePlatform = platformComponent.activePlatformOnUi;
+        profileComponent.activeProfile.platformId = platformIdsMapper[platformComponent.platformIdsDropdown.value];
 
-        General.WebsocketUpdateProfileRequest request = new(loginComponent.token, profileComponent.activeProfileId, "", UpdateProfilePropertyEnum.platformId);
+        General.WebsocketUpdateProfileRequest request = new(loginComponent.token, profileComponent.activeProfileId, profileComponent.activeProfile.platformId, UpdateProfilePropertyEnum.platformId);
         websocketComponent.generalRequests.Add(request);
 
         loadingComponent.active = true;

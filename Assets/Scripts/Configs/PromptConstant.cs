@@ -30,7 +30,7 @@
     public static readonly string REMOVE_PROFILE = "Remove Profile";
     public static readonly string REMOVE_PROFILE_CONFIRM = "Are you sure to remove current profile named ";
     public static readonly string DISCONNECT_PLATFORM = "Disconnect Platform";
-    public static readonly string DISCONNECT_PLATFORM_CONFIRM = "Are you sure to disconnect/unlink this platform from your account?";
+    public static readonly string DISCONNECT_PLATFORM_CONFIRM = "Disconnect platform will delete all the orders(including on going positions)/quick orders/bots under all profiles linked to this platform, are you sure to continue?";
     public static readonly string NOT_AUTHORIZED = "Not authorized.";
     public static readonly string SWITCH_PLATFORM = "Switch Platform";
     public static readonly string SWITCH_PLATFORM_CONFIRM = "Switching to different platform will delete all the orders(including on going positions)/quick orders/bots under this profile, are you sure to continue?";

@@ -32991,7 +32991,6 @@ GameObject:
   - component: {fileID: 1439778813}
   - component: {fileID: 1439778824}
   - component: {fileID: 1439778835}
-  - component: {fileID: 1439778838}
   - component: {fileID: 1439778857}
   - component: {fileID: 1439778829}
   - component: {fileID: 1439778832}
@@ -33385,18 +33384,6 @@ MonoBehaviour:
   onChange_getInitialData:
     m_PersistentCalls:
       m_Calls: []
---- !u!114 &1439778838
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1439778804}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 661c0bf560d6de8419f2d8ebdecaf03b, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!114 &1439778840
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -42818,7 +42805,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0, y: 137.00017}
+  m_AnchoredPosition: {x: 0, y: 137.00024}
   m_SizeDelta: {x: 0, y: 520}
   m_Pivot: {x: 0, y: 1}
 --- !u!114 &1904289440
@@ -46435,8 +46422,8 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 467063639}
   m_HandleRect: {fileID: 467063638}
   m_Direction: 2
-  m_Value: -0.0000013365362
-  m_Size: 0.73636883
+  m_Value: -0.0000017820483
+  m_Size: 0.73158646
   m_NumberOfSteps: 0
   m_OnValueChanged:
     m_PersistentCalls:
