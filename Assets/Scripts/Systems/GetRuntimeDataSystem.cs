@@ -96,10 +96,7 @@ public class GetRuntimeDataSystem : MonoBehaviour
         {
             platformComponent.gameObject.SetActive(false);
         }
-        if (loadingComponent.active)
-        {
-            loadingComponent.active = false;
-        }
+        loadingComponent.active = false;
         miniPromptComponent.message = PromptConstant.DATA_FETCHED;
     }
     void DestroyOrders()

@@ -16,8 +16,11 @@ public class LoadingComponent : MonoBehaviour
         get { return _active; }
         set
         {
-            _active = value;
-            onChange_active.Invoke();
+            if (_active != value)
+            {
+                _active = value;
+                onChange_active.Invoke();
+            }
         }
     }
     [HideInInspector] public UnityEvent onChange_active = new();

@@ -196,7 +196,7 @@ public class SettingPageProfileSystem : MonoBehaviour
         General.WebsocketUpdateProfileRequest request = new(loginComponent.token, profileComponent.activeProfileId, settingPageComponent.renameProfileNameInput.text, UpdateProfilePropertyEnum.name);
         websocketComponent.generalRequests.Add(request);
 
-        settingPageComponent.confirmRenameProfileButton.interactable = false;
+        loadingComponent.active = true;
     }
     void OnUpdateProfileResponse()
     {
@@ -206,6 +206,8 @@ public class SettingPageProfileSystem : MonoBehaviour
 
         General.WebsocketUpdateProfileResponse response = JsonConvert.DeserializeObject
         <General.WebsocketUpdateProfileResponse>(jsonString, JsonSerializerConfig.settings);
+
+        loadingComponent.active = false;
 
         if (!response.success)
         {
@@ -227,8 +229,6 @@ public class SettingPageProfileSystem : MonoBehaviour
     }
     void OnRenameProfileResponse(General.WebsocketUpdateProfileResponse response)
     {
-        settingPageComponent.confirmRenameProfileButton.interactable = true;
-
         profileComponent.profiles[response.profileId].name = settingPageComponent.renameProfileNameInput.text;
         settingPageComponent.showRenameProfileButton = false;
         settingPageComponent.updateProfileUI = true;
