@@ -145,8 +145,8 @@ public class SettingPageProfileSystem : MonoBehaviour
 
         settingPageComponent.showAddNewProfileButton = false;
 
-        profileComponent.profiles.Add(response.profile._id, response.profile);
-        profileComponent.activeProfileId = response.profile._id;
+        profileComponent.profiles.Add(response.profile.id, response.profile);
+        profileComponent.activeProfileId = response.profile.id;
         settingPageComponent.updateProfileUI = true;
     }
     void OnRemoveProfile()

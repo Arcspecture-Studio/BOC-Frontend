@@ -3,13 +3,10 @@ using System;
 namespace General
 {
     [Serializable]
-    public class WebsocketRemovePlatformRequest : WebsocketGeneralRequest
+    public class WebsocketRemovePlatformRequest : WebsocketIdRequest
     {
-        public string platformId;
-
-        public WebsocketRemovePlatformRequest(string token, string platformId) : base(WebsocketEventTypeEnum.REMOVE_PLATFORM, token)
+        public WebsocketRemovePlatformRequest(string token, string platformId) : base(WebsocketEventTypeEnum.REMOVE_PLATFORM, token, platformId)
         {
-            this.platformId = platformId;
         }
     }
 }

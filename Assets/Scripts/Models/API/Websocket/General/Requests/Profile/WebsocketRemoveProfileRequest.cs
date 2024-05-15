@@ -3,13 +3,10 @@ using System;
 namespace General
 {
     [Serializable]
-    public class WebsocketRemoveProfileRequest : WebsocketGeneralRequest
+    public class WebsocketRemoveProfileRequest : WebsocketIdRequest
     {
-        public string profileId;
-
-        public WebsocketRemoveProfileRequest(string token, string profileId) : base(WebsocketEventTypeEnum.REMOVE_PROFILE, token)
+        public WebsocketRemoveProfileRequest(string token, string profileId) : base(WebsocketEventTypeEnum.REMOVE_PROFILE, token, profileId)
         {
-            this.profileId = profileId;
         }
     }
 }
