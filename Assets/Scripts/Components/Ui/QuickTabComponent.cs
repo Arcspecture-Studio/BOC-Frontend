@@ -17,8 +17,8 @@ public class QuickTabComponent : MonoBehaviour
     public TMP_InputField atrMultiplierInput;
     public Button longButton;
     public Button shortButton;
-    public GameObject quickOrdersObject;
-    public Transform orderInfoTransform;
+    public GameObject quickOrderDataObjectList;
+    public Transform quickOrderDataRowParent;
     public GameObject quickOrderDataRowPrefab;
 
     [Header("Config")]
@@ -31,19 +31,22 @@ public class QuickTabComponent : MonoBehaviour
 
     [Header("Runtime")]
     public bool active = false;
-    public bool syncDataFromPreference = false;
-    public bool saveToServer = false;
-    public bool isLong;
-    public Dictionary<string, General.WebsocketRetrieveQuickOrdersData> _quickOrdersFromServer;
-    public Dictionary<string, General.WebsocketRetrieveQuickOrdersData> quickOrdersFromServer
+    public bool updatePreferenceUI
     {
-        get { return _quickOrdersFromServer; }
-        set
-        {
-            _quickOrdersFromServer = value;
-            onChange_quickOrdersFromServer.Invoke(value);
-        }
+        set { onChange_updatePreferenceUI.Invoke(); }
     }
-    [HideInInspector] public UnityEvent<Dictionary<string, General.WebsocketRetrieveQuickOrdersData>> onChange_quickOrdersFromServer = new();
-    public Dictionary<string, GameObject> spawnedQuickOrderObjects = new();
+    [HideInInspector] public UnityEvent onChange_updatePreferenceUI = new();
+    public bool updatingUIFromProfile;
+    public bool addToServer
+    {
+        set { onChange_addToServer.Invoke(); }
+    }
+    [HideInInspector] public UnityEvent onChange_addToServer = new();
+    public string deleteFromServer
+    {
+        set { onChange_deleteFromServer.Invoke(value); }
+    }
+    [HideInInspector] public UnityEvent<string> onChange_deleteFromServer = new();
+    public bool isLong;
+    public Dictionary<string, GameObject> spawnedQuickOrderDataObjects = new();
 }

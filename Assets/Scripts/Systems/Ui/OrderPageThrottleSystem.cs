@@ -1,4 +1,3 @@
-using Newtonsoft.Json;
 using UnityEngine;
 using WebSocketSharp;
 using MongoDB.Bson;
@@ -8,16 +7,16 @@ public class OrderPageThrottleSystem : MonoBehaviour
     OrderPageThrottleComponent orderPageThrottleComponent;
     OrderPageComponent orderPageComponent;
     PromptComponent promptComponent;
-    PlatformComponent platformComponent;
     WebsocketComponent websocketComponent;
+    LoginComponent loginComponent;
 
     bool? lockForEdit = null;
     bool calculateButtonPressed = false;
     void Start()
     {
         websocketComponent = GlobalComponent.instance.websocketComponent;
-        platformComponent = GlobalComponent.instance.platformComponent;
         promptComponent = GlobalComponent.instance.promptComponent;
+        loginComponent = GlobalComponent.instance.loginComponent;
         orderPageThrottleComponent = GetComponent<OrderPageThrottleComponent>();
         orderPageComponent = orderPageThrottleComponent.transform.parent.GetComponent<OrderPageThrottleParentComponent>().orderPageComponent;
 
@@ -41,7 +40,6 @@ public class OrderPageThrottleSystem : MonoBehaviour
             if (orderPageThrottleComponent.orderStatus == OrderStatusEnum.UNSUBMITTED)
             {
                 orderPageThrottleComponent.deleteFromServer = true;
-                UpdateOrderToServer();
                 Destroy(orderPageThrottleComponent.gameObject);
             }
             else
@@ -61,7 +59,6 @@ public class OrderPageThrottleSystem : MonoBehaviour
                 promptComponent.leftButton.onClick.AddListener(() =>
                 {
                     orderPageThrottleComponent.deleteFromServer = true;
-                    UpdateOrderToServer();
                     Destroy(orderPageThrottleComponent.gameObject);
                 });
             }
@@ -126,12 +123,15 @@ public class OrderPageThrottleSystem : MonoBehaviour
                 promptComponent.active = false;
             });
         });
+
+        orderPageThrottleComponent.onChange_addToServer.AddListener(AddToServer);
+        orderPageThrottleComponent.onChange_updateToServer.AddListener(UpdateToServer);
+        orderPageThrottleComponent.onChange_deleteFromServer.AddListener(DeleteFromServer);
+        orderPageThrottleComponent.onChange_submitToServer.AddListener(SubmitToServer);
     }
     void Update()
     {
         UpdateUiInteractableStatus();
-        UpdateOrderStatus();
-        UpdateOrderToServer();
         CalculateThrottle();
     }
 
@@ -215,7 +215,7 @@ public class OrderPageThrottleSystem : MonoBehaviour
         if (calculateButtonPressed)
         {
             calculateButtonPressed = false;
-            orderPageThrottleComponent.saveToServer = true;
+            orderPageThrottleComponent.addToServer = true;
         }
         #endregion
     }
@@ -236,7 +236,7 @@ public class OrderPageThrottleSystem : MonoBehaviour
     }
     void ShowPrompt(string message, bool goToEditMode = true)
     {
-        promptComponent.ShowPrompt("ERROR", message, () =>
+        promptComponent.ShowPrompt(PromptConstant.ERROR, message, () =>
         {
             promptComponent.active = false;
             if (goToEditMode)
@@ -245,78 +245,36 @@ public class OrderPageThrottleSystem : MonoBehaviour
             }
         });
     }
-    void UpdateOrderStatus()
+    void AddToServer()
     {
-        string saveThrottleOrderString = websocketComponent.RetrieveGeneralResponses(WebsocketEventTypeEnum.SAVE_THROTTLE_ORDER.ToString());
-        if (saveThrottleOrderString.IsNullOrEmpty()) return;
-        General.WebsocketSaveThrottleOrderResponse response = JsonConvert.DeserializeObject<General.WebsocketSaveThrottleOrderResponse>(saveThrottleOrderString, JsonSerializerConfig.settings);
-        if (response.orderId.Equals(orderPageThrottleComponent.orderId) && response.parentOrderId.Equals(orderPageComponent.orderId))
-        {
-            websocketComponent.RemovesGeneralResponses(WebsocketEventTypeEnum.SAVE_THROTTLE_ORDER.ToString());
-            orderPageThrottleComponent.orderStatus = response.status;
-            orderPageThrottleComponent.orderStatusError = response.statusError;
-            if (!response.errorJsonString.IsNullOrEmpty())
-            {
-                switch (platformComponent.tradingPlatform)
-                {
-                    case PlatformEnum.BINANCE:
-                    case PlatformEnum.BINANCE_TESTNET:
-                        Binance.WebrequestGeneralResponse binanceResponse = JsonConvert.DeserializeObject<Binance.WebrequestGeneralResponse>(response.errorJsonString, JsonSerializerConfig.settings);
-                        if (binanceResponse.code.HasValue)
-                        {
-                            string message = binanceResponse.msg + " (Binance Error Code: " + binanceResponse.code.Value + ")";
-                            ShowPrompt(message, false);
-                        }
-                        break;
-                }
-            }
-        }
-    }
-    void UpdateOrderToServer()
-    {
-        if (orderPageThrottleComponent.saveToServer)
-        {
-            orderPageThrottleComponent.saveToServer = false;
-            websocketComponent.generalRequests.Add(new General.WebsocketSaveThrottleOrderRequest(
-                orderPageThrottleComponent.orderId,
-                orderPageComponent.orderId,
-                platformComponent.tradingPlatform,
-                orderPageThrottleComponent.throttleCalculator,
-                (OrderTypeEnum)orderPageThrottleComponent.orderTypeDropdown.value
-            ));
-        }
-        if (orderPageThrottleComponent.updateToServer)
-        {
-            orderPageThrottleComponent.updateToServer = false;
-            websocketComponent.generalRequests.Add(new General.WebsocketSaveThrottleOrderRequest(
-                orderPageThrottleComponent.orderId,
-                orderPageComponent.orderId,
-                platformComponent.tradingPlatform,
-                (OrderTypeEnum)orderPageThrottleComponent.orderTypeDropdown.value
-            ));
-        }
-        if (orderPageThrottleComponent.submitToServer)
-        {
-            orderPageThrottleComponent.submitToServer = false;
-            websocketComponent.generalRequests.Add(new General.WebsocketSaveThrottleOrderRequest(
-                orderPageThrottleComponent.orderId,
-                orderPageComponent.orderId,
-                platformComponent.tradingPlatform,
-                true
-            ));
-        }
-        if (orderPageThrottleComponent.deleteFromServer)
-        {
-            orderPageThrottleComponent.deleteFromServer = false;
-            websocketComponent.generalRequests.Add(new General.WebsocketSaveThrottleOrderRequest(
-                orderPageThrottleComponent.orderId,
-                orderPageComponent.orderId,
-                platformComponent.tradingPlatform
-            ));
-        }
+        websocketComponent.generalRequests.Add(new General.WebsocketAddThrottleOrderRequest(
+            loginComponent.token,
+            orderPageThrottleComponent.orderId,
+            orderPageComponent.orderId,
+            orderPageThrottleComponent.throttleCalculator,
+            (OrderTypeEnum)orderPageThrottleComponent.orderTypeDropdown.value
+        ));
     }
     public void UpdateToServer()
     {
-        orderPageThrottleComponent.updateToServer = true;
+        websocketComponent.generalRequests.Add(new General.WebsocketUpdateThrottleOrderRequest(
+            loginComponent.token,
+            orderPageThrottleComponent.orderId,
+            (OrderTypeEnum)orderPageThrottleComponent.orderTypeDropdown.value
+        ));
+    }
+    void DeleteFromServer()
+    {
+        websocketComponent.generalRequests.Add(new General.WebsocketDeleteThrottleOrderRequest(
+            loginComponent.token,
+            orderPageThrottleComponent.orderId
+        ));
+    }
+    void SubmitToServer()
+    {
+        websocketComponent.generalRequests.Add(new General.WebsocketSubmitThrottleOrderRequest(
+            loginComponent.token,
+            orderPageThrottleComponent.orderId
+        ));
     }
 }

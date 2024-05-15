@@ -7,6 +7,7 @@ public class InputComponent : MonoBehaviour
     public InputAction hold;
     public InputAction screenPos;
     public InputAction drag;
+    public InputAction escape;
 
     void Awake()
     {
@@ -14,5 +15,6 @@ public class InputComponent : MonoBehaviour
         hold.Enable();
         screenPos.Enable();
         drag.Enable();
+        escape.Enable();
     }
 }

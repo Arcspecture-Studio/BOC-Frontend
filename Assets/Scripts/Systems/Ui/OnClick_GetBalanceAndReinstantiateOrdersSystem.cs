@@ -3,31 +3,22 @@ using UnityEngine.UI;
 
 public class OnClick_GetBalanceAndReinstantiateOrdersSystem : MonoBehaviour
 {
-    PlatformComponent platformComponent;
-    RetrieveOrdersComponent retrieveOrdersComponent;
-    HideAllPanelComponent hideAllPanelComponent;
-    TradingBotComponent tradingBotComponent;
-    MiniPromptComponent miniPromptComponent;
+    GetRuntimeDataComponent getRuntimeDataComponent;
+    LoadingComponent loadingComponent;
+
     Button button;
 
     void Start()
     {
-        platformComponent = GlobalComponent.instance.platformComponent;
-        retrieveOrdersComponent = GlobalComponent.instance.retrieveOrdersComponent;
-        hideAllPanelComponent = GlobalComponent.instance.hideAllPanelComponent;
-        tradingBotComponent = GlobalComponent.instance.tradingBotComponent;
-        miniPromptComponent = GlobalComponent.instance.miniPromptComponent;
+        getRuntimeDataComponent = GlobalComponent.instance.getRuntimeDataComponent;
+        loadingComponent = GlobalComponent.instance.loadingComponent;
+
         button = GetComponent<Button>();
 
         button.onClick.AddListener(() =>
         {
-            hideAllPanelComponent.hideNow = "true";
-
-            platformComponent.getBalance = true;
-            retrieveOrdersComponent.destroyOrders = true;
-            retrieveOrdersComponent.instantiateOrders = true;
-            tradingBotComponent.getTradingBots = true;
-            // miniPromptComponent.message = "Refreshed";
+            getRuntimeDataComponent.getRuntimeData = true;
+            loadingComponent.active = true;
         });
     }
 }

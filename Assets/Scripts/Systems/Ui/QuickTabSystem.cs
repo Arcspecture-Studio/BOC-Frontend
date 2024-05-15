@@ -1,4 +1,3 @@
-using System.Collections.Generic;
 using DG.Tweening;
 using Newtonsoft.Json;
 using UnityEngine;
@@ -8,8 +7,8 @@ public class QuickTabSystem : MonoBehaviour
 {
     QuickTabComponent quickTabComponent;
     WebsocketComponent websocketComponent;
-    PlatformComponent platformComponent;
-    PreferenceComponent preferenceComponent;
+    SpawnQuickOrderComponent spawnQuickOrderComponent;
+    LoginComponent loginComponent;
 
     bool? active = null;
     Tween tween = null;
@@ -19,22 +18,23 @@ public class QuickTabSystem : MonoBehaviour
     {
         quickTabComponent = GlobalComponent.instance.quickTabComponent;
         websocketComponent = GlobalComponent.instance.websocketComponent;
-        platformComponent = GlobalComponent.instance.platformComponent;
-        preferenceComponent = GlobalComponent.instance.preferenceComponent;
+        spawnQuickOrderComponent = GlobalComponent.instance.spawnQuickOrderComponent;
+        loginComponent = GlobalComponent.instance.loginComponent;
 
-        quickTabComponent.onChange_quickOrdersFromServer.AddListener(OnChange_QuickOrdersFromServer);
-        InitializeButtonListener();
+        InitializeListener();
     }
     void Update()
     {
         MovePage();
-        UpdateOrderToServer();
-        SpawnOrDestroyQuickOrderObject();
+        SpawnQuickOrderObject();
+        DestroyQuickOrderObject();
         ShowAndHideQuickOrdersObject();
     }
 
-    void InitializeButtonListener()
+    void InitializeListener()
     {
+        quickTabComponent.onChange_addToServer.AddListener(AddToServer);
+        quickTabComponent.onChange_deleteFromServer.AddListener(DeleteFromServer);
         quickTabComponent.longButton.onClick.AddListener(() =>
         {
             quickTabComponent.isLong = true;
@@ -52,43 +52,54 @@ public class QuickTabSystem : MonoBehaviour
     }
     void AfterClickLongShortButton()
     {
-        quickTabComponent.saveToServer = true;
+        quickTabComponent.addToServer = true;
         quickTabComponent.longButton.interactable = false;
         quickTabComponent.shortButton.interactable = false;
     }
-    void UpdateOrderToServer()
+    void AddToServer()
     {
-        if (quickTabComponent.saveToServer)
+        double entryPrice = quickTabComponent.entryPriceInput.text.IsNullOrEmpty() ? -1 : double.Parse(quickTabComponent.entryPriceInput.text);
+        websocketComponent.generalRequests.Add(new General.WebsocketAddQuickOrderRequest(
+            loginComponent.token,
+            entryPrice,
+            quickTabComponent.isLong
+        ));
+    }
+    void DeleteFromServer(string orderId)
+    {
+        websocketComponent.generalRequests.Add(new General.WebsocketDeleteQuickOrderRequest(loginComponent.token, orderId));
+    }
+    void SpawnQuickOrderObject()
+    {
+        string jsonString = websocketComponent.RetrieveGeneralResponses(WebsocketEventTypeEnum.ADD_QUICK_ORDER);
+        websocketComponent.RemovesGeneralResponses(WebsocketEventTypeEnum.ADD_QUICK_ORDER);
+        if (jsonString.IsNullOrEmpty()) return;
+
+        General.WebsocketAddQuickOrderResponse response = JsonConvert.DeserializeObject<General.WebsocketAddQuickOrderResponse>(jsonString, JsonSerializerConfig.settings);
+
+        quickTabComponent.longButton.interactable = true;
+        quickTabComponent.shortButton.interactable = true;
+        spawnQuickOrderComponent.quickOrderToSpawn = response.quickOrder;
+    }
+    void DestroyQuickOrderObject()
+    {
+        string jsonString = websocketComponent.RetrieveGeneralResponses(WebsocketEventTypeEnum.DELETE_QUICK_ORDER);
+        websocketComponent.RemovesGeneralResponses(WebsocketEventTypeEnum.DELETE_QUICK_ORDER);
+        if (jsonString.IsNullOrEmpty()) return;
+
+        General.WebsocketDeleteQuickOrderResponse response = JsonConvert.DeserializeObject<General.WebsocketDeleteQuickOrderResponse>(jsonString, JsonSerializerConfig.settings);
+
+        if (quickTabComponent.spawnedQuickOrderDataObjects.TryGetValue(response.orderId, out GameObject quickOrderDataObject))
         {
-            quickTabComponent.saveToServer = false;
-            double normalizedMarginWeightDistributionValue = preferenceComponent.marginWeightDistributionValue * OrderConfig.MARGIN_WEIGHT_DISTRIBUTION_RANGE;
-            double entryPrice = quickTabComponent.entryPriceInput.text.IsNullOrEmpty() ? -1 : double.Parse(quickTabComponent.entryPriceInput.text);
-            websocketComponent.generalRequests.Add(new General.WebsocketSaveQuickOrderRequest(
-               platformComponent.tradingPlatform,
-               preferenceComponent.symbol,
-               preferenceComponent.lossPercentage,
-               preferenceComponent.lossAmount,
-               preferenceComponent.marginDistributionMode == MarginDistributionModeEnum.WEIGHTED,
-               normalizedMarginWeightDistributionValue,
-               preferenceComponent.takeProfitType,
-               preferenceComponent.riskRewardRatio,
-               preferenceComponent.takeProfitTrailingCallbackPercentage,
-               entryPrice,
-               int.Parse(quickTabComponent.entryTimesInput.text),
-               WebsocketIntervalEnum.array[quickTabComponent.atrTimeframeDropdown.value],
-               int.Parse(quickTabComponent.atrLengthInput.text),
-               double.Parse(quickTabComponent.atrMultiplierInput.text),
-               quickTabComponent.isLong
-            ));
+            Destroy(quickOrderDataObject);
+            quickTabComponent.spawnedQuickOrderDataObjects.Remove(response.orderId);
         }
     }
     void MovePage()
     {
         if (active == quickTabComponent.active) return;
-        if (tween != null)
-        {
-            if (tween.IsPlaying()) return;
-        }
+        if (tween != null && tween.IsActive()) return;
+
         active = quickTabComponent.active;
         float initialValue = active.Value ? quickTabComponent.inactiveYPosition : quickTabComponent.activeYPosition;
         float moveValue = active.Value ? quickTabComponent.inactiveToActiveYMovement : quickTabComponent.activeToInactiveYMovement;
@@ -96,53 +107,10 @@ public class QuickTabSystem : MonoBehaviour
             initialValue);
         tween = quickTabComponent.rectTransform.DOBlendableLocalMoveBy(new Vector3(0, moveValue, 0), quickTabComponent.pageMoveDuration).SetEase(quickTabComponent.pageMoveEase);
     }
-    void OnChange_QuickOrdersFromServer(Dictionary<string, General.WebsocketRetrieveQuickOrdersData> quickOrdersFromServer)
-    {
-        if (quickOrdersFromServer == null) return;
-
-        #region Instantiate orders
-        foreach (KeyValuePair<string, General.WebsocketRetrieveQuickOrdersData> order in quickOrdersFromServer)
-        {
-            InstantiateQuickOrder(order.Key, order.Value);
-        }
-        #endregion
-    }
-    void InstantiateQuickOrder(string orderId, General.WebsocketRetrieveQuickOrdersData orderData)
-    {
-        if (quickTabComponent.spawnedQuickOrderObjects.ContainsKey(orderId)) return;
-        GameObject quickOrderDataRowObject = Instantiate(quickTabComponent.quickOrderDataRowPrefab);
-        quickOrderDataRowObject.transform.SetParent(quickTabComponent.orderInfoTransform, false);
-        QuickOrderDataRowComponent quickOrderDataRowComponent = quickOrderDataRowObject.GetComponent<QuickOrderDataRowComponent>();
-        quickOrderDataRowComponent.orderId = orderId;
-        quickOrderDataRowComponent.data = orderData;
-        quickTabComponent.spawnedQuickOrderObjects.TryAdd(orderId, quickOrderDataRowObject);
-    }
-    void SpawnOrDestroyQuickOrderObject()
-    {
-        string spawnQuickOrderString = websocketComponent.RetrieveGeneralResponses(WebsocketEventTypeEnum.SPAWN_QUICK_ORDER.ToString());
-        if (spawnQuickOrderString.IsNullOrEmpty()) return;
-        General.WebsocketSpawnQuickOrderResponse response = JsonConvert.DeserializeObject<General.WebsocketSpawnQuickOrderResponse>(spawnQuickOrderString, JsonSerializerConfig.settings);
-        websocketComponent.RemovesGeneralResponses(WebsocketEventTypeEnum.SPAWN_QUICK_ORDER.ToString());
-        if (response.quickOrder == null) // destroy
-        {
-            GameObject quickOrderObject;
-            if (quickTabComponent.spawnedQuickOrderObjects.TryGetValue(response.orderId, out quickOrderObject))
-            {
-                Destroy(quickOrderObject);
-                quickTabComponent.spawnedQuickOrderObjects.Remove(response.orderId);
-            }
-        }
-        else // spawn
-        {
-            InstantiateQuickOrder(response.orderId, response.quickOrder);
-            quickTabComponent.longButton.interactable = true;
-            quickTabComponent.shortButton.interactable = true;
-        }
-    }
     void ShowAndHideQuickOrdersObject()
     {
-        if (spawnedQuickOrderObjectCount == quickTabComponent.spawnedQuickOrderObjects.Count) return;
-        spawnedQuickOrderObjectCount = quickTabComponent.spawnedQuickOrderObjects.Count;
-        quickTabComponent.quickOrdersObject.SetActive(spawnedQuickOrderObjectCount > 0);
+        if (spawnedQuickOrderObjectCount == quickTabComponent.spawnedQuickOrderDataObjects.Count) return;
+        spawnedQuickOrderObjectCount = quickTabComponent.spawnedQuickOrderDataObjects.Count;
+        quickTabComponent.quickOrderDataObjectList.SetActive(spawnedQuickOrderObjectCount > 0);
     }
 }

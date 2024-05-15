@@ -4,7 +4,7 @@ using System;
 
 public static class Signature
 {
-    public static string Generate(string queryString, string apiSecret)
+    public static string Binance(string queryString, string apiSecret)
     {
         byte[] secretKeyBytes = Encoding.UTF8.GetBytes(apiSecret);
         byte[] queryStringBytes = Encoding.UTF8.GetBytes(queryString);

@@ -1,199 +1,225 @@
-﻿using System.Collections.Generic;
-using TMPro;
+using Newtonsoft.Json;
 using UnityEngine;
 using WebSocketSharp;
 
 public class LoginSystem : MonoBehaviour
 {
     LoginComponent loginComponent;
-    BinanceComponent binanceComponent;
-    BinanceComponent binanceTestnetComponent;
-    PlatformComponent platformComponent;
-    WebsocketComponent websocketComponent;
-    RetrieveOrdersComponent retrieveOrdersComponent;
     PromptComponent promptComponent;
+    WebsocketComponent websocketComponent;
     IoComponent ioComponent;
-
-    bool hideLoginPhrase;
+    GetInitialDataComponent getInitialDataComponent;
 
     void Start()
     {
         loginComponent = GlobalComponent.instance.loginComponent;
-        binanceComponent = GlobalComponent.instance.binanceComponent;
-        binanceTestnetComponent = GlobalComponent.instance.binanceTestnetComponent;
-        platformComponent = GlobalComponent.instance.platformComponent;
-        websocketComponent = GlobalComponent.instance.websocketComponent;
-        retrieveOrdersComponent = GlobalComponent.instance.retrieveOrdersComponent;
         promptComponent = GlobalComponent.instance.promptComponent;
+        websocketComponent = GlobalComponent.instance.websocketComponent;
         ioComponent = GlobalComponent.instance.ioComponent;
+        getInitialDataComponent = GlobalComponent.instance.getInitialDataComponent;
 
-        loginComponent.gameObj.SetActive(true);
-        loginComponent.platformsDropdown.onValueChanged.AddListener(value => OnPlatformValueChanged(value));
-        UpdateDropdownOptions();
+        loginComponent.onChange_loginStatus.AddListener(SwitchPageBasedOnLoginStatus);
+        loginComponent.onChange_token.AddListener(OnTokenUpdated);
+        loginComponent.onChange_logoutNow.AddListener(Logout);
 
-        loginComponent.logoutButtonObject.SetActive(false);
-        loginComponent.logoutButton.onClick.AddListener(() =>
-        {
-            loginComponent.loggedIn = false;
-            ioComponent.writeApiKey = true;
-            UpdateDropdownOptions();
-
-            General.WebsocketLogoutRequest request = new General.WebsocketLogoutRequest(platformComponent.tradingPlatform);
-            websocketComponent.generalRequests.Add(request);
-        });
-
-        hideLoginPhrase = loginComponent.loginPhraseInput.contentType == TMP_InputField.ContentType.Password;
-        loginComponent.loginPhraseInput.onValueChanged.AddListener(value =>
-        {
-            loginComponent.loginPhraseWordCountText.text = value.Length.ToString();
-        });
-        loginComponent.loginPhraseVisibleButton.onClick.AddListener(() =>
-        {
-            hideLoginPhrase = !hideLoginPhrase;
-            if (hideLoginPhrase)
-            {
-                loginComponent.loginPhraseInput.contentType = TMP_InputField.ContentType.Password;
-                loginComponent.loginPhraseVisibleIconOn.SetActive(true);
-                loginComponent.loginPhraseVisibleIconOff.SetActive(false);
-            }
-            else
-            {
-                loginComponent.loginPhraseInput.contentType = TMP_InputField.ContentType.Standard;
-                loginComponent.loginPhraseVisibleIconOn.SetActive(false);
-                loginComponent.loginPhraseVisibleIconOff.SetActive(true);
-            }
-            loginComponent.loginPhraseInput.ActivateInputField();
-        });
+        // Set initial state
+        loginComponent.loginStatus = LoginPageStatusEnum.LOGGED_IN;
+        loginComponent.gameObject.SetActive(true);
+        AllowForInteraction(false);
     }
     void Update()
     {
-        ChangePlatform();
+        CreateAccountResponse();
+        GetLoginResponse();
+        RevokeJwtResponse();
     }
-    void ChangePlatform()
+
+    void CreateAccountResponse()
     {
-        if (!loginComponent.changePlatform) return;
-        loginComponent.changePlatform = false;
-        loginComponent.gameObj.SetActive(true);
-        loginComponent.allowInput = true;
-        UpdateDropdownOptions();
-        retrieveOrdersComponent.destroyOrders = true;
+        string jsonString = websocketComponent.RetrieveGeneralResponses(WebsocketEventTypeEnum.CREATE_ACCOUNT);
+        websocketComponent.RemovesGeneralResponses(WebsocketEventTypeEnum.CREATE_ACCOUNT);
+        if (jsonString.IsNullOrEmpty()) return;
+
+        HandleResponse(jsonString);
     }
-    void UpdateDropdownOptions()
+    void GetLoginResponse()
     {
-        loginComponent.platformsDropdown.ClearOptions();
-        List<TMP_Dropdown.OptionData> optionDataList = new List<TMP_Dropdown.OptionData>();
+        string jsonString = websocketComponent.RetrieveGeneralResponses(WebsocketEventTypeEnum.GET_JWT);
+        websocketComponent.RemovesGeneralResponses(WebsocketEventTypeEnum.GET_JWT);
+        if (jsonString.IsNullOrEmpty()) return;
 
-        string binance = PlatformEnum.BINANCE.ToString();
-        if (binanceComponent.loggedIn) binance += " (Logged In)";
-        optionDataList.Add(new TMP_Dropdown.OptionData(binance));
-
-        string binanceTestnet = PlatformEnum.BINANCE_TESTNET.ToString();
-        binanceTestnet = binanceTestnet.Replace("_", " ");
-        if (binanceTestnetComponent.loggedIn) binanceTestnet += " (Logged In)";
-        optionDataList.Add(new TMP_Dropdown.OptionData(binanceTestnet));
-
-        string mexc = PlatformEnum.MEXC.ToString();
-        if (true) mexc += " (Coming Soon)"; // PENDING: replace with mexcComponent.loggedIn
-        optionDataList.Add(new TMP_Dropdown.OptionData(mexc));
-
-        loginComponent.platformsDropdown.AddOptions(optionDataList);
-        int tradingPlatform = (int)platformComponent.tradingPlatform;
-        if (loginComponent.platformsDropdown.value == tradingPlatform)
+        HandleResponse(jsonString);
+    }
+    void HandleResponse(string jsonString)
+    {
+        General.WebsocketTokenResponse response = JsonConvert.DeserializeObject
+        <General.WebsocketTokenResponse>(jsonString, JsonSerializerConfig.settings);
+        if (response.success)
         {
-            OnPlatformValueChanged(tradingPlatform);
+            loginComponent.token = response.token;
         }
         else
         {
-            loginComponent.platformsDropdown.value = tradingPlatform;
-        }
-    }
-    void OnPlatformValueChanged(int value)
-    {
-        switch (value)
-        {
-            case ((int)PlatformEnum.BINANCE):
-                platformComponent.tradingPlatform = PlatformEnum.BINANCE;
-                UpdateUiBehaviour(binanceComponent.loggedIn);
-                loginComponent.loginButton.interactable = true;
-                loginComponent.logoutButton.interactable = true;
-                break;
-            case ((int)PlatformEnum.BINANCE_TESTNET):
-                platformComponent.tradingPlatform = PlatformEnum.BINANCE_TESTNET;
-                UpdateUiBehaviour(binanceTestnetComponent.loggedIn);
-                loginComponent.loginButton.interactable = true;
-                loginComponent.logoutButton.interactable = true;
-                break;
-            case ((int)PlatformEnum.MEXC):
-                platformComponent.tradingPlatform = PlatformEnum.MEXC;
-                UpdateUiBehaviour(true); // PENDING: replace with mexcComponent.loggedIn
-                loginComponent.loginButton.interactable = false;
-                loginComponent.logoutButton.interactable = false;
-                break;
-        }
-        RemoveInputText();
-    }
-    void UpdateUiBehaviour(bool loggedIn)
-    {
-        loginComponent.loginPhraseObj.SetActive(!loggedIn);
-        loginComponent.apiKeyObj.SetActive(!loggedIn);
-        loginComponent.secretKeyObj.SetActive(!loggedIn);
-        loginComponent.loginButton.onClick.RemoveAllListeners();
-        loginComponent.logoutButtonObject.SetActive(loggedIn);
-        if (loggedIn)
-        {
-            loginComponent.loginButtonText.text = "Back";
-            loginComponent.loginButton.onClick.AddListener(() =>
+            AllowForInteraction(true);
+            promptComponent.ShowPrompt(PromptConstant.ERROR, response.message, () =>
             {
-                loginComponent.gameObj.SetActive(false);
-
-                retrieveOrdersComponent.instantiateOrders = true;
-                GlobalComponent.instance.tradingBotComponent.getTradingBots = true;
+                promptComponent.active = false;
             });
+        }
+    }
+    void RevokeJwtResponse()
+    {
+        string jsonString = websocketComponent.RetrieveGeneralResponses(WebsocketEventTypeEnum.REVOKE_JWT);
+        websocketComponent.RemovesGeneralResponses(WebsocketEventTypeEnum.REVOKE_JWT);
+        if (jsonString.IsNullOrEmpty()) return;
+
+        General.WebsocketGeneralResponse response = JsonConvert.DeserializeObject
+            <General.WebsocketGeneralResponse>(jsonString, JsonSerializerConfig.settings);
+
+        GlobalComponent.instance.settingPageComponent.logoutButton.interactable = true;
+        GlobalComponent.instance.platformComponent.logoutButton.interactable = true;
+
+        if (response.success)
+        {
+            loginComponent.loginStatus = LoginPageStatusEnum.LOGIN;
+            ioComponent.deleteToken = true;
         }
         else
         {
-            loginComponent.loginButtonText.text = "Login";
-            loginComponent.loginButton.onClick.AddListener(() =>
+            promptComponent.ShowPrompt(PromptConstant.ERROR, response.message, () =>
             {
-                if (loginComponent.loginPhraseInput.text.IsNullOrEmpty())
-                {
-                    promptComponent.ShowPrompt("ERROR", "Personal Secret Login Phrase cannot be blank.", () =>
-                    {
-                        promptComponent.active = false;
-                    });
-                }
-                else if (loginComponent.loginPhraseInput.text.Length < 20)
-                {
-                    promptComponent.ShowPrompt("ERROR", "Personal Secret Login Phrase must have minimum of 20 characters.", () =>
-                    {
-                        promptComponent.active = false;
-                    });
-                }
-                else if (loginComponent.apiKeyInput.text.IsNullOrEmpty() || loginComponent.secretKeyInput.text.IsNullOrEmpty())
-                {
-                    promptComponent.ShowPrompt("ERROR", "Key(s) cannot be blank.", () =>
-                    {
-                        promptComponent.active = false;
-                    });
-                }
-                else
-                {
-                    loginComponent.allowInput = false;
-
-                    loginComponent.loginPhrase = loginComponent.loginPhraseInput.text;
-                    platformComponent.apiKey = loginComponent.apiKeyInput.text;
-                    platformComponent.apiSecret = loginComponent.secretKeyInput.text;
-                    RemoveInputText();
-                    websocketComponent.syncApiKeyToServer = true;
-                    platformComponent.getBalance = true;
-                }
+                promptComponent.active = false;
             });
         }
     }
-    void RemoveInputText()
+    void AllowForInteraction(bool yes)
     {
-        loginComponent.loginPhraseInput.text = "";
-        loginComponent.apiKeyInput.text = "";
-        loginComponent.secretKeyInput.text = "";
+        loginComponent.emailInput.interactable = yes;
+        loginComponent.passwordInput.interactable = yes;
+        loginComponent.confirmPasswordInput.interactable = yes;
+        loginComponent.proceedButton.interactable = yes;
+        loginComponent.switchButton.interactable = yes;
+    }
+    bool InvalidateInput()
+    {
+        if (loginComponent.emailInput.text.IsNullOrEmpty() ||
+            !loginComponent.emailInput.text.Contains("@") ||
+            !loginComponent.emailInput.text.Contains(".") ||
+            loginComponent.passwordInput.text.IsNullOrEmpty() ||
+            (loginComponent.loginStatus == LoginPageStatusEnum.REGISTER && loginComponent.confirmPasswordInput.text.IsNullOrEmpty())
+        )
+        {
+            string message = PromptConstant.PASSWORD_EMPTY;
+            if (loginComponent.emailInput.text.IsNullOrEmpty())
+            {
+                message = PromptConstant.EMAIL_EMPTY;
+            }
+            else if (!loginComponent.emailInput.text.Contains("@") ||
+                    !loginComponent.emailInput.text.Contains("."))
+            {
+                message = PromptConstant.EMAIL_INVALID;
+            }
+            promptComponent.ShowPrompt(PromptConstant.ERROR, message, () =>
+            {
+                promptComponent.active = false;
+            });
+
+            return true;
+        }
+        return false;
+    }
+    void SwitchPageBasedOnLoginStatus()
+    {
+        AllowForInteraction(true);
+        loginComponent.gameObject.SetActive(loginComponent.loginStatus != LoginPageStatusEnum.LOGGED_IN);
+        loginComponent.proceedButton.onClick.RemoveAllListeners();
+        loginComponent.switchButton.onClick.RemoveAllListeners();
+        loginComponent.confirmPasswordObj.SetActive(loginComponent.loginStatus == LoginPageStatusEnum.REGISTER);
+        switch (loginComponent.loginStatus)
+        {
+            case LoginPageStatusEnum.REGISTER:
+                loginComponent.proceedButtonText.text = PromptConstant.REGISTER;
+                loginComponent.proceedButton.onClick.AddListener(Register);
+                loginComponent.switchButtonText.text = PromptConstant.SWITCH_TO_LOGIN;
+                loginComponent.switchButton.onClick.AddListener(SwitchToLogin);
+                loginComponent.switchButtonObj.SetActive(true);
+                loginComponent.emailInput.interactable = true;
+                loginComponent.passwordInput.interactable = true;
+                loginComponent.confirmPasswordInput.interactable = true;
+                break;
+            case LoginPageStatusEnum.LOGIN:
+                loginComponent.proceedButtonText.text = PromptConstant.LOGIN;
+                loginComponent.proceedButton.onClick.AddListener(Login);
+                loginComponent.switchButtonText.text = PromptConstant.SWITCH_TO_REGISTER;
+                loginComponent.switchButton.onClick.AddListener(SwitchToRegister);
+                loginComponent.switchButtonObj.SetActive(true);
+                loginComponent.emailInput.interactable = true;
+                loginComponent.passwordInput.interactable = true;
+                loginComponent.confirmPasswordInput.interactable = true;
+                break;
+            case LoginPageStatusEnum.LOGGED_IN:
+                loginComponent.proceedButtonText.text = PromptConstant.LOGOUT;
+                loginComponent.proceedButton.onClick.AddListener(Logout);
+                loginComponent.switchButtonObj.SetActive(false);
+                loginComponent.emailInput.interactable = false;
+                loginComponent.passwordInput.interactable = false;
+                loginComponent.confirmPasswordInput.interactable = false;
+                loginComponent.emailInput.text = "";
+                loginComponent.passwordInput.text = "";
+                loginComponent.confirmPasswordInput.text = "";
+                break;
+        }
+    }
+    void OnTokenUpdated()
+    {
+        if (loginComponent.token.IsNullOrEmpty()) return;
+        ioComponent.writeToken = true;
+        getInitialDataComponent.getInitialData = true;
+    }
+    void SwitchToRegister()
+    {
+        loginComponent.loginStatus = LoginPageStatusEnum.REGISTER;
+    }
+    void SwitchToLogin()
+    {
+        loginComponent.loginStatus = LoginPageStatusEnum.LOGIN;
+    }
+    void Register()
+    {
+        if (InvalidateInput()) return;
+        if (loginComponent.passwordInput.text == loginComponent.confirmPasswordInput.text)
+        {
+            General.WebsocketAccountRequest request = new(WebsocketEventTypeEnum.CREATE_ACCOUNT, loginComponent.emailInput.text, loginComponent.passwordInput.text);
+            websocketComponent.generalRequests.Add(request);
+
+            AllowForInteraction(false);
+        }
+        else
+        {
+            promptComponent.ShowPrompt(PromptConstant.ERROR, PromptConstant.PASSWORD_MISMATCH, () =>
+            {
+                promptComponent.active = false;
+
+                loginComponent.passwordInput.text = "";
+                loginComponent.confirmPasswordInput.text = "";
+            });
+        }
+    }
+    void Login()
+    {
+        if (InvalidateInput()) return;
+
+        General.WebsocketAccountRequest request = new(WebsocketEventTypeEnum.GET_JWT, loginComponent.emailInput.text, loginComponent.passwordInput.text);
+        websocketComponent.generalRequests.Add(request);
+
+        AllowForInteraction(false);
+    }
+    void Logout()
+    {
+        if (loginComponent.loginStatus == LoginPageStatusEnum.LOGGED_IN)
+        {
+            General.WebsocketGeneralRequest request = new(WebsocketEventTypeEnum.REVOKE_JWT, loginComponent.token);
+            websocketComponent.generalRequests.Add(request);
+        }
     }
 }

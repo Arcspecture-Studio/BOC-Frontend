@@ -8,10 +8,16 @@ public class QuickOrderDataRowComponent : MonoBehaviour
     public TMP_Text symbolText;
     public TMP_Text positionSideText;
     public TMP_Text entryPriceText;
-    public TMP_Text atrTimeframeText;
+    public Button infoButton;
     public Button closeButton;
+    public GameObject infoPanel;
+    public Transform infoPanelContent;
+    public GameObject infoPanelData;
 
     [Header("Config")]
     public string orderId;
-    public General.WebsocketRetrieveQuickOrdersData data;
+    public Preference setting;
+
+    [Header("Runtime")]
+    public bool infoPanelInstantiated = false;
 }

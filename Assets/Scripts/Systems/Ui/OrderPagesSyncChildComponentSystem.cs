@@ -11,13 +11,11 @@ public class OrderPagesSyncChildComponentSystem : MonoBehaviour
     }
     void Update()
     {
-        if (orderPagesComponent.childRectTransforms == null) orderPagesComponent.childRectTransforms = new List<RectTransform>();
-        if (orderPagesComponent.transform.childCount == orderPagesComponent.childRectTransforms.Count) return;
-        orderPagesComponent.childRectTransforms.Clear();
-        orderPagesComponent.childOrderPageComponents.Clear();
+        if (orderPagesComponent.childOrderPageComponents == null) orderPagesComponent.childOrderPageComponents = new();
+        if (orderPagesComponent.transform.childCount == orderPagesComponent.childOrderPageComponents.Count) return;
+        orderPagesComponent.childOrderPageComponents = new();
         for (int i = 0; i < orderPagesComponent.transform.childCount; i++)
         {
-            orderPagesComponent.childRectTransforms.Add(orderPagesComponent.transform.GetChild(i).GetComponent<RectTransform>());
             orderPagesComponent.childOrderPageComponents.Add(orderPagesComponent.transform.GetChild(i).GetComponent<OrderPageComponent>());
         }
     }

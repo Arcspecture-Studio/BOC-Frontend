@@ -19,7 +19,8 @@ public class OrderPagesScaleSystem : MonoBehaviour
     void Update()
     {
         UpdateScaleWhenStatusAndChildCountChanged();
-        UpdateScale();
+        KeepTrackForScrollRectYPos();
+        // UpdateScale();
     }
     void UpdateScaleWhenStatusAndChildCountChanged()
     {
@@ -38,34 +39,66 @@ public class OrderPagesScaleSystem : MonoBehaviour
     }
     bool isChildRectTransformsNotReady()
     {
-        return orderPagesComponent.childRectTransforms == null
-            || orderPagesComponent.childRectTransforms.Count == 0
-            || orderPagesComponent.transform.childCount != orderPagesComponent.childRectTransforms.Count;
+        if (orderPagesComponent.childOrderPageComponents.Count == 0) childCount = 0;
+        return orderPagesComponent.childOrderPageComponents == null
+            || orderPagesComponent.childOrderPageComponents.Count == 0
+            || orderPagesComponent.transform.childCount != orderPagesComponent.childOrderPageComponents.Count;
     }
     void Scale()
     {
-        for (int i = 0; i < orderPagesComponent.childRectTransforms.Count; i++)
+        for (int i = 0; i < orderPagesComponent.childOrderPageComponents.Count; i++)
         {
-            if (orderPagesComponent.childRectTransforms[i] == null) continue;
-            if (orderPagesComponent.childOrderPageComponents[i].spawnTween.IsActive())
+            OrderPageComponent orderPageComponent = orderPagesComponent.childOrderPageComponents[i];
+            if (orderPageComponent == null) continue;
+            if (orderPageComponent.spawnTween.IsActive())
             {
-                orderPagesComponent.childOrderPageComponents[i].spawnTween.Complete();
+                orderPageComponent.spawnTween.Complete();
             }
             switch (status)
             {
                 case OrderPagesStatusEnum.IMMERSIVE:
                     if (orderPagesComponent.currentPageIndex == i)
                     {
-                        orderPagesComponent.childRectTransforms[i].DOScale(1f, orderPagesComponent.pageAnimDuration).SetEase(orderPagesComponent.pageScaleEase);
+                        orderPageComponent.rectTransform.DOScale(1f, orderPagesComponent.pageAnimDuration)
+                        .SetEase(orderPagesComponent.pageScaleEase);
                     }
                     else
                     {
-                        orderPagesComponent.childRectTransforms[i].DOScale(0f, orderPagesComponent.pageAnimDuration).SetEase(orderPagesComponent.pageScaleEase);
+                        orderPageComponent.rectTransform.DOScale(0f, orderPagesComponent.pageAnimDuration)
+                        .SetEase(orderPagesComponent.pageScaleEase);
                     }
                     break;
                 case OrderPagesStatusEnum.DETACH:
-                    orderPagesComponent.childRectTransforms[i].DOScale(orderPagesComponent.pageScaleTarget, orderPagesComponent.pageAnimDuration).SetEase(orderPagesComponent.pageScaleEase);
+                    bool isMain = orderPagesComponent.currentPageIndex == i;
+                    orderPageComponent.rectTransform.DOScale(orderPagesComponent.pageScaleTarget, orderPagesComponent.pageAnimDuration)
+                    .SetEase(orderPagesComponent.pageScaleEase)
+                    .OnComplete(() =>
+                    {
+                        if (isMain)
+                        {
+                            orderPageComponent.scrollRect.velocity = Vector2.zero;
+                        }
+                        else
+                        {
+                            orderPageComponent.scrollRect.normalizedPosition = new Vector2(
+                                orderPageComponent.scrollRect.normalizedPosition.x,
+                                orderPageComponent.scrollRectYPos
+                            );
+                        }
+                    });
                     break;
+            }
+        }
+    }
+    void KeepTrackForScrollRectYPos()
+    {
+        for (int i = 0; i < orderPagesComponent.childOrderPageComponents.Count; i++)
+        {
+            if (status == OrderPagesStatusEnum.IMMERSIVE && orderPagesComponent.currentPageIndex == i)
+            {
+                OrderPageComponent orderPageComponent = orderPagesComponent.childOrderPageComponents[i];
+                if (orderPageComponent.gameObject == null) continue;
+                orderPageComponent.scrollRectYPos = orderPageComponent.scrollRect.normalizedPosition.y;
             }
         }
     }

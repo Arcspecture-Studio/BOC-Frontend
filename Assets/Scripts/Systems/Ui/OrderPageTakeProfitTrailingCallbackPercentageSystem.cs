@@ -7,15 +7,13 @@ public class OrderPageTakeProfitTrailingCallbackPercentageSystem : MonoBehaviour
 {
     [SerializeField] OrderPageComponent orderPageComponent;
     [SerializeField] SettingPageComponent settingPageComponent;
-    PreferenceComponent preferenceComponent;
-    IoComponent ioComponent;
+    ProfileComponent profileComponent;
     PlatformComponent platformComponent;
     OrderPageSystem orderPageSystem;
 
     void Start()
     {
-        preferenceComponent = GlobalComponent.instance.preferenceComponent;
-        ioComponent = GlobalComponent.instance.ioComponent;
+        profileComponent = GlobalComponent.instance.profileComponent;
         platformComponent = GlobalComponent.instance.platformComponent;
 
         ForOrderPageComponent();
@@ -26,7 +24,7 @@ public class OrderPageTakeProfitTrailingCallbackPercentageSystem : MonoBehaviour
         if (orderPageComponent == null) return;
         orderPageSystem = orderPageComponent.GetComponent<OrderPageSystem>();
 
-        switch (platformComponent.tradingPlatform)
+        switch (platformComponent.activePlatform)
         {
             case PlatformEnum.BINANCE:
             case PlatformEnum.BINANCE_TESTNET:
@@ -65,7 +63,7 @@ public class OrderPageTakeProfitTrailingCallbackPercentageSystem : MonoBehaviour
     {
         if (settingPageComponent == null) return;
 
-        switch (platformComponent.tradingPlatform)
+        switch (platformComponent.activePlatform)
         {
             case PlatformEnum.BINANCE:
             case PlatformEnum.BINANCE_TESTNET:
@@ -85,8 +83,8 @@ public class OrderPageTakeProfitTrailingCallbackPercentageSystem : MonoBehaviour
             settingPageComponent.takeProfitTrailingCallbackPercentageSlider.value = (float)roundedValue;
             settingPageComponent.takeProfitTrailingCallbackPercentageInput.text = roundedValue.ToString();
 
-            preferenceComponent.takeProfitTrailingCallbackPercentage = roundedValue;
-            ioComponent.writePreferences = true;
+            profileComponent.activeProfile.preference.order.takeProfitTrailingCallbackPercentage = roundedValue;
+            settingPageComponent.updatePreferenceToServer = true;
         });
         settingPageComponent.takeProfitTrailingCallbackPercentageSliderTrigger.triggers.Add(pointerUpEvent);
 
@@ -98,8 +96,8 @@ public class OrderPageTakeProfitTrailingCallbackPercentageSystem : MonoBehaviour
             settingPageComponent.takeProfitTrailingCallbackPercentageInput.text = roundedValue.ToString();
             settingPageComponent.takeProfitTrailingCallbackPercentageSlider.value = (float)roundedValue;
 
-            preferenceComponent.takeProfitTrailingCallbackPercentage = roundedValue;
-            ioComponent.writePreferences = true;
+            profileComponent.activeProfile.preference.order.takeProfitTrailingCallbackPercentage = roundedValue;
+            settingPageComponent.updatePreferenceToServer = true;
         });
     }
 }
