@@ -10,6 +10,7 @@ public class WebsocketComponent : MonoBehaviour
     public bool productionPort = false;
     public bool logging;
     public SslProtocols sslProtocols = SslProtocols.Tls12;
+    public bool encryption = true;
 
     [Header("Runtime")]
     public WebSocket generalSocket;

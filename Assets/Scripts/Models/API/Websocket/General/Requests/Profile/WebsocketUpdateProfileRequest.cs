@@ -5,17 +5,15 @@ using System;
 namespace General
 {
     [Serializable]
-    public class WebsocketUpdateProfileRequest : WebsocketGeneralRequest
+    public class WebsocketUpdateProfileRequest : WebsocketIdRequest
     {
-        public string profileId;
         public string? name;
         public string? platformId;
         public bool? makeItDefault;
         public Preference? preference;
 
-        public WebsocketUpdateProfileRequest(string token, string profileId, string nameOrPlatformId, UpdateProfilePropertyEnum updateProfilePropertyEnum) : base(WebsocketEventTypeEnum.UPDATE_PROFILE, token)
+        public WebsocketUpdateProfileRequest(string token, string profileId, string nameOrPlatformId, UpdateProfilePropertyEnum updateProfilePropertyEnum) : base(WebsocketEventTypeEnum.UPDATE_PROFILE, token, profileId)
         {
-            this.profileId = profileId;
             switch (updateProfilePropertyEnum)
             {
                 case UpdateProfilePropertyEnum.name:
@@ -26,14 +24,12 @@ namespace General
                     break;
             }
         }
-        public WebsocketUpdateProfileRequest(string token, string profileId, bool makeItDefault) : base(WebsocketEventTypeEnum.UPDATE_PROFILE, token)
+        public WebsocketUpdateProfileRequest(string token, string profileId, bool makeItDefault) : base(WebsocketEventTypeEnum.UPDATE_PROFILE, token, profileId)
         {
-            this.profileId = profileId;
             this.makeItDefault = makeItDefault;
         }
-        public WebsocketUpdateProfileRequest(string token, string profileId, Preference preference) : base(WebsocketEventTypeEnum.UPDATE_PROFILE, token)
+        public WebsocketUpdateProfileRequest(string token, string profileId, Preference preference) : base(WebsocketEventTypeEnum.UPDATE_PROFILE, token, profileId)
         {
-            this.profileId = profileId;
             this.preference = preference;
         }
     }

@@ -33091,6 +33091,7 @@ MonoBehaviour:
   productionPort: 0
   logging: 0
   sslProtocols: 3072
+  encryption: 0
   connectGeneralSocket: 0
   generalSocketIv: 
 --- !u!114 &1439778813

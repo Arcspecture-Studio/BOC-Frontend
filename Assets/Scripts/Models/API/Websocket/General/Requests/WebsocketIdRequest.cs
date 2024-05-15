@@ -5,11 +5,11 @@ namespace General
     [Serializable]
     public class WebsocketIdRequest : WebsocketGeneralRequest
     {
-        public string _id;
-        public WebsocketIdRequest(WebsocketEventTypeEnum eventType, string token, string orderId) :
+        public string id;
+        public WebsocketIdRequest(WebsocketEventTypeEnum eventType, string token, string id) :
         base(eventType, token)
         {
-            _id = orderId;
+            this.id = id;
         }
     }
 }
