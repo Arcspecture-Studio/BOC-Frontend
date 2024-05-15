@@ -10,6 +10,7 @@ public class WebsocketSystem : MonoBehaviour
     PromptComponent promptComponent;
     IoComponent ioComponent;
     ExitComponent exitComponent;
+    MiniPromptComponent miniPromptComponent;
 
     WebSocket generalSocket;
     string logPrefix = "[WebsocketSystem] ";
@@ -21,6 +22,7 @@ public class WebsocketSystem : MonoBehaviour
         promptComponent = GlobalComponent.instance.promptComponent;
         ioComponent = GlobalComponent.instance.ioComponent;
         exitComponent = GlobalComponent.instance.exitComponent;
+        miniPromptComponent = GlobalComponent.instance.miniPromptComponent;
 
         websocketComponent.connectGeneralSocket = true;
     }
@@ -39,6 +41,11 @@ public class WebsocketSystem : MonoBehaviour
         generalSocket.OnOpen += (sender, e) =>
         {
             if (websocketComponent.logging) Debug.Log(logPrefix + "Connection open: " + ((WebSocket)sender).Url);
+
+            UnityMainThread.AddJob(() =>
+            {
+                miniPromptComponent.message = PromptConstant.CONNECTED;
+            });
         };
         generalSocket.OnMessage += (sender, e) =>
         {
@@ -114,6 +121,11 @@ public class WebsocketSystem : MonoBehaviour
         {
             if (websocketComponent.logging) Debug.Log(logPrefix + "Connection closed at: " + ((WebSocket)sender).Url + ", Code: " + e.Code + ", WasClean: " + e.WasClean + ", Reason: " + e.Reason);
             if (!e.WasClean) websocketComponent.connectGeneralSocket = true;
+
+            UnityMainThread.AddJob(() =>
+            {
+                miniPromptComponent.message = PromptConstant.DISCONNECTED;
+            });
         };
     }
     void ProcessConnect()
@@ -126,7 +138,17 @@ public class WebsocketSystem : MonoBehaviour
 #else
             string host = WebsocketConfig.GENERAL_HOST;
 #endif
-            generalSocket = new WebSocket(host + ":" + (websocketComponent.productionPort ? WebsocketConfig.GENERAL_PORT_PRODUCTION : WebsocketConfig.GENERAL_PORT));
+            string port = WebsocketConfig.GENERAL_PORT;
+            switch (websocketComponent.envPort)
+            {
+                case EnvPort.TEST:
+                    port = WebsocketConfig.GENERAL_PORT_TEST;
+                    break;
+                case EnvPort.PRODUCTION:
+                    port = WebsocketConfig.GENERAL_PORT_PRODUCTION;
+                    break;
+            }
+            generalSocket = new WebSocket(host + ":" + port);
             //if (!websocketComponent.localhost) generalSocket.SslConfiguration.EnabledSslProtocols = websocketComponent.sslProtocols;
             ListenGeneralSocket();
             websocketComponent.generalSocket = generalSocket;

@@ -7,7 +7,7 @@ public class WebsocketComponent : MonoBehaviour
 {
     [Header("Config")]
     public bool localhost = true;
-    public bool productionPort = false;
+    public EnvPort envPort = EnvPort.DEVELOP;
     public bool logging;
     public SslProtocols sslProtocols = SslProtocols.Tls12;
     public bool encryption = true;
