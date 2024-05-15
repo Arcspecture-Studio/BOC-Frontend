@@ -19,6 +19,7 @@ public class OrderPagesScaleSystem : MonoBehaviour
     void Update()
     {
         UpdateScaleWhenStatusAndChildCountChanged();
+        KeepTrackForScrollRectYPos();
         // UpdateScale();
     }
     void UpdateScaleWhenStatusAndChildCountChanged()
@@ -63,7 +64,6 @@ public class OrderPagesScaleSystem : MonoBehaviour
                     }
                     else
                     {
-                        orderPageComponent.scrollRectYPos = orderPageComponent.scrollRect.normalizedPosition.y;
                         orderPageComponent.rectTransform.DOScale(0f, orderPagesComponent.pageAnimDuration)
                         .SetEase(orderPagesComponent.pageScaleEase);
                     }
@@ -87,6 +87,17 @@ public class OrderPagesScaleSystem : MonoBehaviour
                         }
                     });
                     break;
+            }
+        }
+    }
+    void KeepTrackForScrollRectYPos()
+    {
+        for (int i = 0; i < orderPagesComponent.childOrderPageComponents.Count; i++)
+        {
+            if (status == OrderPagesStatusEnum.IMMERSIVE && orderPagesComponent.currentPageIndex == i)
+            {
+                OrderPageComponent orderPageComponent = orderPagesComponent.childOrderPageComponents[i];
+                orderPageComponent.scrollRectYPos = orderPageComponent.scrollRect.normalizedPosition.y;
             }
         }
     }
