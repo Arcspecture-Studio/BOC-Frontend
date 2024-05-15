@@ -138,7 +138,17 @@ public class WebsocketSystem : MonoBehaviour
 #else
             string host = WebsocketConfig.GENERAL_HOST;
 #endif
-            generalSocket = new WebSocket(host + ":" + (websocketComponent.productionPort ? WebsocketConfig.GENERAL_PORT_PRODUCTION : WebsocketConfig.GENERAL_PORT));
+            string port = WebsocketConfig.GENERAL_PORT;
+            switch (websocketComponent.envPort)
+            {
+                case EnvPort.TEST:
+                    port = WebsocketConfig.GENERAL_PORT_TEST;
+                    break;
+                case EnvPort.PRODUCTION:
+                    port = WebsocketConfig.GENERAL_PORT_PRODUCTION;
+                    break;
+            }
+            generalSocket = new WebSocket(host + ":" + port);
             //if (!websocketComponent.localhost) generalSocket.SslConfiguration.EnabledSslProtocols = websocketComponent.sslProtocols;
             ListenGeneralSocket();
             websocketComponent.generalSocket = generalSocket;

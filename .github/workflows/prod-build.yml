@@ -35,6 +35,13 @@ jobs:
           key: Library-${{ matrix.targetPlatform }}
           restore-keys: Library-
 
+      - name: Write secret variables to SecretConfig.cs
+        run: |
+          echo 'public static class SecretConfig' > Assets/Scripts/Configs/SecretConfig.cs
+          echo '{' >> Assets/Scripts/Configs/SecretConfig.cs
+          echo '    public static readonly string ENCRYPTION_ACCESS_TOKEN_32 = "${{ secrets.PROD_ENCRYPTION_ACCESS_TOKEN_32 }}";' >> Assets/Scripts/Configs/SecretConfig.cs
+          echo '}' >> Assets/Scripts/Configs/SecretConfig.cs
+
       - name: Free disk space
         if: matrix.targetPlatform == 'Android'
         uses: jlumbroso/free-disk-space@v1.3.1
