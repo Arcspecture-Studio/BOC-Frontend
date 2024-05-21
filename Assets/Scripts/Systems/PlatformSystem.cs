@@ -97,7 +97,7 @@ public class PlatformSystem : MonoBehaviour
 
         foreach (KeyValuePair<string, Platform> platform in platformComponent.platforms)
         {
-            string str = platform.Key + "(" + platform.Value.platform + ")";
+            string str = platform.Key + " (" + platform.Value.platform + ")";
             platformIdsMapper.Add(platform.Key);
             platformComponent.platformIdsDropdown.options.Add(new TMP_Dropdown.OptionData(str));
         }
