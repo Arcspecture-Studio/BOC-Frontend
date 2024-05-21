@@ -13,9 +13,11 @@ public class SettingPageProfileSystem : MonoBehaviour
     WebsocketComponent websocketComponent;
     PromptComponent promptComponent;
     GetInitialDataComponent getInitialDataComponent;
+    GetRuntimeDataComponent getRuntimeDataComponent;
     LoadingComponent loadingComponent;
     QuickTabComponent quickTabComponent;
     BotTabComponent botTabComponent;
+    MiniPromptComponent miniPromptComponent;
 
     List<string> profileIndexToIds;
     void Start()
@@ -27,9 +29,11 @@ public class SettingPageProfileSystem : MonoBehaviour
         websocketComponent = GlobalComponent.instance.websocketComponent;
         promptComponent = GlobalComponent.instance.promptComponent;
         getInitialDataComponent = GlobalComponent.instance.getInitialDataComponent;
+        getRuntimeDataComponent = GlobalComponent.instance.getRuntimeDataComponent;
         loadingComponent = GlobalComponent.instance.loadingComponent;
         quickTabComponent = GlobalComponent.instance.quickTabComponent;
         botTabComponent = GlobalComponent.instance.botTabComponent;
+        miniPromptComponent = GlobalComponent.instance.miniPromptComponent;
 
         DefineListeners();
         OnShowAddNewProfileButton();
@@ -146,8 +150,9 @@ public class SettingPageProfileSystem : MonoBehaviour
         settingPageComponent.showAddNewProfileButton = false;
 
         profileComponent.profiles.Add(response.profile.id, response.profile);
-        profileComponent.activeProfileId = response.profile.id;
+        // profileComponent.activeProfileId = response.profile.id;
         settingPageComponent.updateProfileUI = true;
+        miniPromptComponent.message = PromptConstant.PROFILE_ADDED;
     }
     void OnRemoveProfile()
     {
@@ -184,6 +189,7 @@ public class SettingPageProfileSystem : MonoBehaviour
         profileComponent.profiles.Remove(response.profileId);
         profileComponent.activeProfileId = response.newDefaultProfileId;
         settingPageComponent.updateProfileUI = true;
+        getRuntimeDataComponent.getRuntimeData = true;
     }
     void OnRenameProfile()
     {

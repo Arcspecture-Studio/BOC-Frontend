@@ -97,7 +97,7 @@ public class OrderPagesScaleSystem : MonoBehaviour
             if (status == OrderPagesStatusEnum.IMMERSIVE && orderPagesComponent.currentPageIndex == i)
             {
                 OrderPageComponent orderPageComponent = orderPagesComponent.childOrderPageComponents[i];
-                if (orderPageComponent.gameObject == null) continue;
+                if (orderPageComponent == null || orderPageComponent.gameObject == null) continue;
                 orderPageComponent.scrollRectYPos = orderPageComponent.scrollRect.normalizedPosition.y;
             }
         }

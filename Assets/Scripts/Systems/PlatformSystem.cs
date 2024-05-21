@@ -85,7 +85,11 @@ public class PlatformSystem : MonoBehaviour
         platformComponent.addPlatformObj.SetActive(platformPageEnum == PlatformPageEnum.ADD);
         platformComponent.switchOrRemovePlatformObj.SetActive(platformPageEnum == PlatformPageEnum.SWITCH_OR_REMOVE);
 
-        if (platformPageEnum == PlatformPageEnum.SWITCH_OR_REMOVE)
+        if (platformPageEnum == PlatformPageEnum.ADD)
+        {
+            platformComponent.cancelRegisterButton.interactable = platformComponent.platforms.Count > 0;
+        }
+        else if (platformPageEnum == PlatformPageEnum.SWITCH_OR_REMOVE)
         {
             UpdatePlatformIdsDropdownUi();
         }
@@ -97,7 +101,7 @@ public class PlatformSystem : MonoBehaviour
 
         foreach (KeyValuePair<string, Platform> platform in platformComponent.platforms)
         {
-            string str = platform.Key + "(" + platform.Value.platform + ")";
+            string str = platform.Key + " (" + platform.Value.platform + ")";
             platformIdsMapper.Add(platform.Key);
             platformComponent.platformIdsDropdown.options.Add(new TMP_Dropdown.OptionData(str));
         }
@@ -147,9 +151,13 @@ public class PlatformSystem : MonoBehaviour
 
         platformComponent.platforms.Add(response.platformId,
         new Platform(response.platform));
-        profileComponent.activeProfile.platformId = response.platformId;
+        if (profileComponent.activeProfile.platformId == null)
+        {
+            profileComponent.activeProfile.platformId = response.platformId;
+            getInitialDataComponent.getInitialData = true;
+        }
         platformComponent.platformPage = PlatformPageEnum.SWITCH_OR_REMOVE;
-        getInitialDataComponent.getInitialData = true;
+        miniPromptComponent.message = PromptConstant.PLATFORM_ADDED;
     }
     void RemovePlatformRequest()
     {
