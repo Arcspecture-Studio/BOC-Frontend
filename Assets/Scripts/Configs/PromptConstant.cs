@@ -36,5 +36,6 @@
     public static readonly string SWITCH_PLATFORM = "Switch Platform";
     public static readonly string SWITCH_PLATFORM_CONFIRM = "Switching to different platform will delete all the orders(including on going positions)/quick orders/bots under this profile, are you sure to continue?";
     public static readonly string SWITCH_PLATFORM_CANCELLED = "Switch Platform Cancelled";
+    public static readonly string PLATFORM_ADDED = "Platform Added";
     public static readonly string DATA_FETCHED = "Data Fetched";
 }

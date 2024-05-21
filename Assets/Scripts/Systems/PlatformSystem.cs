@@ -147,9 +147,10 @@ public class PlatformSystem : MonoBehaviour
 
         platformComponent.platforms.Add(response.platformId,
         new Platform(response.platform));
-        profileComponent.activeProfile.platformId = response.platformId;
+        // profileComponent.activeProfile.platformId = response.platformId;
         platformComponent.platformPage = PlatformPageEnum.SWITCH_OR_REMOVE;
-        getInitialDataComponent.getInitialData = true;
+        miniPromptComponent.message = PromptConstant.PLATFORM_ADDED;
+        // getInitialDataComponent.getInitialData = true;
     }
     void RemovePlatformRequest()
     {
