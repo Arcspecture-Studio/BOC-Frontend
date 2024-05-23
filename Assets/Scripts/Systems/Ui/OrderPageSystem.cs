@@ -146,6 +146,7 @@ public class OrderPageSystem : MonoBehaviour
         orderPageComponent.onChange_updateToServer.AddListener(UpdateToServer);
         orderPageComponent.onChange_deleteFromServer.AddListener(DeleteFromServer);
         orderPageComponent.onChange_submitToServer.AddListener(SubmitToServer);
+        orderPageComponent.onChange_updateTakeProfitPrice.AddListener(UpdateTakeProfitPrice);
 
         orderPageComponent.orderIdText.text = "Order Id: " + orderPageComponent.orderId.ToString();
 
@@ -306,12 +307,13 @@ public class OrderPageSystem : MonoBehaviour
         #endregion
         #region Order info
         orderPageComponent.resultComponent.orderInfoDataObject.transform.GetChild(0).GetComponent<TMP_Text>().text = orderPageComponent.symbolDropdownComponent.selectedSymbol;
-        temp = orderPageComponent.resultComponent.orderInfoDataObject.transform.GetChild(1).GetComponent<TMP_Text>();
+        orderPageComponent.resultComponent.orderInfoDataObject.transform.GetChild(1).gameObject.SetActive(false);
+        temp = orderPageComponent.resultComponent.orderInfoDataObject.transform.GetChild(2).GetComponent<TMP_Text>();
         temp.text = direction;
         temp.color = directionColor;
-        orderPageComponent.resultComponent.orderInfoDataObject.transform.GetChild(2).gameObject.SetActive(false);
-        orderPageComponent.resultComponent.orderInfoDataObject.transform.GetChild(3).GetComponent<TMP_Text>().text = orderPageComponent.orderStatus.ToString();
-        orderPageComponent.resultComponent.orderInfoDataObject.transform.GetChild(4).gameObject.SetActive(false);
+        orderPageComponent.resultComponent.orderInfoDataObject.transform.GetChild(3).gameObject.SetActive(false);
+        orderPageComponent.resultComponent.orderInfoDataObject.transform.GetChild(4).GetComponent<TMP_Text>().text = orderPageComponent.orderStatus.ToString();
+        orderPageComponent.resultComponent.orderInfoDataObject.transform.GetChild(5).gameObject.SetActive(false);
         #endregion
         #region Prices & Quantities
         List<double> tpPrices = (TakeProfitTypeEnum)orderPageComponent.takeProfitTypeDropdown.value == TakeProfitTypeEnum.TRAILING ? orderPageComponent.marginCalculator.takeProfitTrailingPrices : orderPageComponent.marginCalculator.takeProfitPrices;
@@ -320,24 +322,26 @@ public class OrderPageSystem : MonoBehaviour
             #region Prices
             GameObject entryPriceDataObject = Instantiate(orderPageComponent.dataRowPrefab, orderPageComponent.resultComponent.pricesParent);
             entryPriceDataObject.transform.GetChild(0).GetComponent<TMP_Text>().text = orderPageComponent.marginCalculator.entryPrices[i].ToString();
-            entryPriceDataObject.transform.GetChild(1).GetComponent<TMP_Text>().text = orderPageComponent.marginCalculator.avgEntryPrices[i].ToString();
-            entryPriceDataObject.transform.GetChild(2).gameObject.SetActive(false);
-            temp = entryPriceDataObject.transform.GetChild(3).GetComponent<TMP_Text>();
+            entryPriceDataObject.transform.GetChild(1).gameObject.SetActive(false);
+            entryPriceDataObject.transform.GetChild(2).GetComponent<TMP_Text>().text = orderPageComponent.marginCalculator.avgEntryPrices[i].ToString();
+            entryPriceDataObject.transform.GetChild(3).gameObject.SetActive(false);
+            temp = entryPriceDataObject.transform.GetChild(4).GetComponent<TMP_Text>();
             temp.text = tpPrices[i].ToString();
             temp.color = OrderConfig.DISPLAY_COLOR_GREEN;
-            entryPriceDataObject.transform.GetChild(4).gameObject.SetActive(false);
+            entryPriceDataObject.transform.GetChild(5).gameObject.SetActive(false);
             orderPageComponent.resultComponent.pricesDataObjects.Add(entryPriceDataObject);
             #endregion
             #region Quantities
             GameObject listedWinLossAmountDataObject = Instantiate(orderPageComponent.dataRowPrefab,
                 orderPageComponent.resultComponent.quantitiesParent);
             listedWinLossAmountDataObject.transform.GetChild(0).GetComponent<TMP_Text>().text = orderPageComponent.marginCalculator.quantities[i].ToString();
-            listedWinLossAmountDataObject.transform.GetChild(1).GetComponent<TMP_Text>().text = orderPageComponent.marginCalculator.cumQuantities[i].ToString();
-            listedWinLossAmountDataObject.transform.GetChild(2).gameObject.SetActive(false);
-            temp = listedWinLossAmountDataObject.transform.GetChild(3).GetComponent<TMP_Text>();
+            listedWinLossAmountDataObject.transform.GetChild(1).gameObject.SetActive(false);
+            listedWinLossAmountDataObject.transform.GetChild(2).GetComponent<TMP_Text>().text = orderPageComponent.marginCalculator.cumQuantities[i].ToString();
+            listedWinLossAmountDataObject.transform.GetChild(3).gameObject.SetActive(false);
+            temp = listedWinLossAmountDataObject.transform.GetChild(4).GetComponent<TMP_Text>();
             temp.text = Utils.RoundTwoDecimal(orderPageComponent.marginCalculator.stopLossAmounts[i]).ToString();
             temp.color = Color.red;
-            temp = listedWinLossAmountDataObject.transform.GetChild(4).GetComponent<TMP_Text>();
+            temp = listedWinLossAmountDataObject.transform.GetChild(5).GetComponent<TMP_Text>();
             temp.text = "Fee: " + Utils.RoundNDecimal(orderPageComponent.marginCalculator.fees[i], 6).ToString();
             temp.color = Color.red;
             orderPageComponent.resultComponent.quantitiesDataObjects.Add(listedWinLossAmountDataObject);
@@ -349,28 +353,32 @@ public class OrderPageSystem : MonoBehaviour
         temp.text = orderPageComponent.marginCalculator.stopLossPrice.ToString();
         temp.color = Color.red;
         temp = orderPageComponent.resultComponent.totalWinLossAmountDataObject.transform.GetChild(1).GetComponent<TMP_Text>();
-        temp.text = Utils.RoundTwoDecimal(orderPageComponent.marginCalculator.totalLossAmount).ToString();
+        temp.text = Utils.RoundTwoDecimal(orderPageComponent.marginCalculator.stopLossPercentage).ToString() + "%";
         temp.color = Color.red;
         temp = orderPageComponent.resultComponent.totalWinLossAmountDataObject.transform.GetChild(2).GetComponent<TMP_Text>();
-        temp.text = "Fee: " + Utils.RoundNDecimal(orderPageComponent.marginCalculator.totalFee, 6).ToString();
+        temp.text = Utils.RoundTwoDecimal(orderPageComponent.marginCalculator.totalLossAmount).ToString();
         temp.color = Color.red;
         temp = orderPageComponent.resultComponent.totalWinLossAmountDataObject.transform.GetChild(3).GetComponent<TMP_Text>();
+        temp.text = "Fee: " + Utils.RoundNDecimal(orderPageComponent.marginCalculator.totalFee, 6).ToString();
+        temp.color = Color.red;
+        temp = orderPageComponent.resultComponent.totalWinLossAmountDataObject.transform.GetChild(4).GetComponent<TMP_Text>();
         temp.text = Utils.RoundTwoDecimal(orderPageComponent.marginCalculator.totalWinAmount).ToString();
         temp.color = OrderConfig.DISPLAY_COLOR_GREEN;
-        orderPageComponent.resultComponent.totalWinLossAmountDataObject.transform.GetChild(4).gameObject.SetActive(false);
+        orderPageComponent.resultComponent.totalWinLossAmountDataObject.transform.GetChild(5).gameObject.SetActive(false);
         #endregion
         #region Balance
         orderPageComponent.resultComponent.balanceDataObject.transform.GetChild(0).GetComponent<TMP_Text>().text = Utils.TruncTwoDecimal(orderPageComponent.marginCalculator.balance).ToString();
-        temp = orderPageComponent.resultComponent.balanceDataObject.transform.GetChild(1).GetComponent<TMP_Text>();
+        orderPageComponent.resultComponent.balanceDataObject.transform.GetChild(1).gameObject.SetActive(false);
+        temp = orderPageComponent.resultComponent.balanceDataObject.transform.GetChild(2).GetComponent<TMP_Text>();
         temp.text = Utils.TruncTwoDecimal(orderPageComponent.marginCalculator.balanceAfterLoss).ToString();
         temp.color = Color.red;
-        temp = orderPageComponent.resultComponent.balanceDataObject.transform.GetChild(2).GetComponent<TMP_Text>();
+        temp = orderPageComponent.resultComponent.balanceDataObject.transform.GetChild(3).GetComponent<TMP_Text>();
         temp.text = "-" + Utils.RoundTwoDecimal(Utils.RateToPercentage(orderPageComponent.marginCalculator.balanceDecrementRate)).ToString() + " %";
         temp.color = Color.red;
-        temp = orderPageComponent.resultComponent.balanceDataObject.transform.GetChild(3).GetComponent<TMP_Text>();
+        temp = orderPageComponent.resultComponent.balanceDataObject.transform.GetChild(4).GetComponent<TMP_Text>();
         temp.text = Utils.TruncTwoDecimal(orderPageComponent.marginCalculator.balanceAfterFullWin).ToString();
         temp.color = OrderConfig.DISPLAY_COLOR_GREEN;
-        temp = orderPageComponent.resultComponent.balanceDataObject.transform.GetChild(4).GetComponent<TMP_Text>();
+        temp = orderPageComponent.resultComponent.balanceDataObject.transform.GetChild(5).GetComponent<TMP_Text>();
         temp.text = "+" + Utils.RoundTwoDecimal(Utils.RateToPercentage(orderPageComponent.marginCalculator.balanceIncrementRate)).ToString() + " %";
         temp.color = OrderConfig.DISPLAY_COLOR_GREEN;
         #endregion
@@ -513,12 +521,12 @@ public class OrderPageSystem : MonoBehaviour
         for (int i = 0; i < orderPageComponent.marginCalculator.entryPrices.Count; i++)
         {
             Transform entryPriceDataTransform = orderPageComponent.resultComponent.pricesParent.GetChild(i + 1);
-            TMP_Text temp = entryPriceDataTransform.GetChild(3).GetComponent<TMP_Text>();
+            TMP_Text temp = entryPriceDataTransform.GetChild(4).GetComponent<TMP_Text>();
             temp.text = tpPrices[i].ToString();
         }
-        orderPageComponent.resultComponent.totalWinLossAmountDataObject.transform.GetChild(3).GetComponent<TMP_Text>().text = Utils.RoundTwoDecimal(orderPageComponent.marginCalculator.totalWinAmount).ToString();
-        orderPageComponent.resultComponent.balanceDataObject.transform.GetChild(3).GetComponent<TMP_Text>().text = Utils.TruncTwoDecimal(orderPageComponent.marginCalculator.balanceAfterFullWin).ToString();
-        orderPageComponent.resultComponent.balanceDataObject.transform.GetChild(4).GetComponent<TMP_Text>().text = "+" + Utils.RoundTwoDecimal(Utils.RateToPercentage(orderPageComponent.marginCalculator.balanceIncrementRate)).ToString() + " %";
+        orderPageComponent.resultComponent.totalWinLossAmountDataObject.transform.GetChild(4).GetComponent<TMP_Text>().text = Utils.RoundTwoDecimal(orderPageComponent.marginCalculator.totalWinAmount).ToString();
+        orderPageComponent.resultComponent.balanceDataObject.transform.GetChild(4).GetComponent<TMP_Text>().text = Utils.TruncTwoDecimal(orderPageComponent.marginCalculator.balanceAfterFullWin).ToString();
+        orderPageComponent.resultComponent.balanceDataObject.transform.GetChild(5).GetComponent<TMP_Text>().text = "+" + Utils.RoundTwoDecimal(Utils.RateToPercentage(orderPageComponent.marginCalculator.balanceIncrementRate)).ToString() + " %";
         #endregion
 
         orderPageComponent.updateToServer = true;

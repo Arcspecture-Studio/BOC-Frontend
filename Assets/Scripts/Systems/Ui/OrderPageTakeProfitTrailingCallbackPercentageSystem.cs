@@ -9,7 +9,6 @@ public class OrderPageTakeProfitTrailingCallbackPercentageSystem : MonoBehaviour
     [SerializeField] SettingPageComponent settingPageComponent;
     ProfileComponent profileComponent;
     PlatformComponent platformComponent;
-    OrderPageSystem orderPageSystem;
 
     void Start()
     {
@@ -22,7 +21,6 @@ public class OrderPageTakeProfitTrailingCallbackPercentageSystem : MonoBehaviour
     void ForOrderPageComponent()
     {
         if (orderPageComponent == null) return;
-        orderPageSystem = orderPageComponent.GetComponent<OrderPageSystem>();
 
         switch (platformComponent.activePlatform)
         {
@@ -44,7 +42,7 @@ public class OrderPageTakeProfitTrailingCallbackPercentageSystem : MonoBehaviour
             orderPageComponent.takeProfitTrailingCallbackPercentageSlider.value = roundedValue;
             orderPageComponent.takeProfitTrailingCallbackPercentageInput.text = roundedValue.ToString();
 
-            orderPageSystem.UpdateTakeProfitPrice();
+            orderPageComponent.updateTakeProfitPrice = true;
         });
         orderPageComponent.takeProfitTrailingCallbackPercentageSliderTrigger.triggers.Add(pointerUpEvent);
 
@@ -56,7 +54,7 @@ public class OrderPageTakeProfitTrailingCallbackPercentageSystem : MonoBehaviour
             orderPageComponent.takeProfitTrailingCallbackPercentageInput.text = roundedValue.ToString();
             orderPageComponent.takeProfitTrailingCallbackPercentageSlider.value = roundedValue;
 
-            orderPageSystem.UpdateTakeProfitPrice();
+            orderPageComponent.updateTakeProfitPrice = true;
         });
     }
     void ForSettingPageComponent()
