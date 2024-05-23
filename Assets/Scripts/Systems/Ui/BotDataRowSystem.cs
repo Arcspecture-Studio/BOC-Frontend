@@ -159,6 +159,10 @@ public class BotDataRowSystem : MonoBehaviour
                 GameObject candleLength = Instantiate(botDataRowComponent.infoPanelData, botDataRowComponent.infoPanelContent);
                 TMP_Text candleLengthText = candleLength.GetComponent<TMP_Text>();
                 candleLengthText.text = "Candle Length: " + botDataRowComponent.setting.bot.premiumIndex.candleLength.ToString();
+
+                GameObject candleConfirmation = Instantiate(botDataRowComponent.infoPanelData, botDataRowComponent.infoPanelContent);
+                TMP_Text candleConfirmationText = candleConfirmation.GetComponent<TMP_Text>();
+                candleConfirmationText.text = "Candle Confirmation: " + botDataRowComponent.setting.bot.premiumIndex.candleConfirmation.ToString();
                 break;
         }
         #endregion
