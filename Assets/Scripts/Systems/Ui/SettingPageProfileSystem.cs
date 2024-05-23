@@ -9,7 +9,6 @@ public class SettingPageProfileSystem : MonoBehaviour
     SettingPageComponent settingPageComponent;
     ProfileComponent profileComponent;
     LoginComponent loginComponent;
-    PlatformComponent platformComponent;
     WebsocketComponent websocketComponent;
     PromptComponent promptComponent;
     GetInitialDataComponent getInitialDataComponent;
@@ -17,7 +16,6 @@ public class SettingPageProfileSystem : MonoBehaviour
     LoadingComponent loadingComponent;
     QuickTabComponent quickTabComponent;
     BotTabComponent botTabComponent;
-    MiniPromptComponent miniPromptComponent;
 
     List<string> profileIndexToIds;
     void Start()
@@ -25,7 +23,6 @@ public class SettingPageProfileSystem : MonoBehaviour
         settingPageComponent = GlobalComponent.instance.settingPageComponent;
         profileComponent = GlobalComponent.instance.profileComponent;
         loginComponent = GlobalComponent.instance.loginComponent;
-        platformComponent = GlobalComponent.instance.platformComponent;
         websocketComponent = GlobalComponent.instance.websocketComponent;
         promptComponent = GlobalComponent.instance.promptComponent;
         getInitialDataComponent = GlobalComponent.instance.getInitialDataComponent;
@@ -33,7 +30,6 @@ public class SettingPageProfileSystem : MonoBehaviour
         loadingComponent = GlobalComponent.instance.loadingComponent;
         quickTabComponent = GlobalComponent.instance.quickTabComponent;
         botTabComponent = GlobalComponent.instance.botTabComponent;
-        miniPromptComponent = GlobalComponent.instance.miniPromptComponent;
 
         DefineListeners();
         OnShowAddNewProfileButton();
@@ -150,9 +146,9 @@ public class SettingPageProfileSystem : MonoBehaviour
         settingPageComponent.showAddNewProfileButton = false;
 
         profileComponent.profiles.Add(response.profile.id, response.profile);
-        // profileComponent.activeProfileId = response.profile.id;
+        profileComponent.activeProfileId = response.profile.id;
+        getRuntimeDataComponent.getRuntimeData = true;
         settingPageComponent.updateProfileUI = true;
-        miniPromptComponent.message = PromptConstant.PROFILE_ADDED;
     }
     void OnRemoveProfile()
     {
@@ -188,8 +184,8 @@ public class SettingPageProfileSystem : MonoBehaviour
 
         profileComponent.profiles.Remove(response.profileId);
         profileComponent.activeProfileId = response.newDefaultProfileId;
-        settingPageComponent.updateProfileUI = true;
         getRuntimeDataComponent.getRuntimeData = true;
+        settingPageComponent.updateProfileUI = true;
     }
     void OnRenameProfile()
     {
