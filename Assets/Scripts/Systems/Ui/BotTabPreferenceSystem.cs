@@ -30,6 +30,7 @@ public class BotTabPreferenceSystem : MonoBehaviour
         botTabComponent.premiumIndexSetting_longThresholdPercentage.text = preferenceBot.premiumIndex.longThresholdPercentage.ToString();
         botTabComponent.premiumIndexSetting_shortThresholdPercentage.text = preferenceBot.premiumIndex.shortThresholdPercentage.ToString();
         botTabComponent.premiumIndexSetting_candleLength.text = preferenceBot.premiumIndex.candleLength.ToString();
+        botTabComponent.premiumIndexSetting_candleConfirmation.text = preferenceBot.premiumIndex.candleConfirmation.ToString();
 
         botTabComponent.updatingUIFromProfile = false;
     }
@@ -99,6 +100,17 @@ public class BotTabPreferenceSystem : MonoBehaviour
             }
             if (profileComponent.activeProfile.preference.bot.premiumIndex.candleLength.ToString() == value) return;
             profileComponent.activeProfile.preference.bot.premiumIndex.candleLength = int.Parse(value);
+            settingPageComponent.updatePreferenceToServer = true;
+        });
+        botTabComponent.premiumIndexSetting_candleConfirmation.onEndEdit.AddListener(value =>
+        {
+            if (value.IsNullOrEmpty())
+            {
+                value = profileComponent.activeProfile.preference.bot.premiumIndex.candleConfirmation.ToString();
+                botTabComponent.premiumIndexSetting_candleConfirmation.text = value;
+            }
+            if (profileComponent.activeProfile.preference.bot.premiumIndex.candleConfirmation.ToString() == value) return;
+            profileComponent.activeProfile.preference.bot.premiumIndex.candleConfirmation = int.Parse(value);
             settingPageComponent.updatePreferenceToServer = true;
         });
     }

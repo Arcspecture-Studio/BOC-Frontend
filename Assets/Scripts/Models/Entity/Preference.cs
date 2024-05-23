@@ -36,21 +36,6 @@ public class PreferenceBot
     public int shortOrderLimit;
     public bool autoDestroyOrder;
     public PreferenceBotPremiumIndex premiumIndex;
-
-    public PreferenceBot(BotTypeEnum botType, int longOrderLimit, int shortOrderLimit, bool autoDestroyOrder, PreferenceBotStrategy strategySetting)
-    {
-        this.botType = botType;
-        this.longOrderLimit = longOrderLimit;
-        this.shortOrderLimit = shortOrderLimit;
-        this.autoDestroyOrder = autoDestroyOrder;
-        this.premiumIndex = null;
-        switch (botType)
-        {
-            case BotTypeEnum.PREMIUM_INDEX:
-                this.premiumIndex = (PreferenceBotPremiumIndex)strategySetting;
-                break;
-        }
-    }
 }
 [Serializable]
 public class PreferenceBotStrategy { }
@@ -60,11 +45,5 @@ public class PreferenceBotPremiumIndex : PreferenceBotStrategy
     public double longThresholdPercentage;
     public double shortThresholdPercentage;
     public int candleLength;
-
-    public PreferenceBotPremiumIndex(double longThresholdPercentage, double shortThresholdPercentage, int candleLength)
-    {
-        this.longThresholdPercentage = longThresholdPercentage;
-        this.shortThresholdPercentage = shortThresholdPercentage;
-        this.candleLength = candleLength;
-    }
+    public int candleConfirmation;
 }
