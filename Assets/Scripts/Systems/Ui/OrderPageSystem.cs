@@ -146,6 +146,7 @@ public class OrderPageSystem : MonoBehaviour
         orderPageComponent.onChange_updateToServer.AddListener(UpdateToServer);
         orderPageComponent.onChange_deleteFromServer.AddListener(DeleteFromServer);
         orderPageComponent.onChange_submitToServer.AddListener(SubmitToServer);
+        orderPageComponent.onChange_updateTakeProfitPrice.AddListener(UpdateTakeProfitPrice);
 
         orderPageComponent.orderIdText.text = "Order Id: " + orderPageComponent.orderId.ToString();
 

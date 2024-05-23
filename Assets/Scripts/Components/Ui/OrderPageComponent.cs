@@ -116,4 +116,12 @@ public class OrderPageComponent : MonoBehaviour
     public Tween spawnTween;
     public bool instantiateWithData;
     public float scrollRectYPos;
+    public bool updateTakeProfitPrice
+    {
+        set
+        {
+            onChange_updateTakeProfitPrice.Invoke();
+        }
+    }
+    [HideInInspector] public UnityEvent onChange_updateTakeProfitPrice = new();
 }
