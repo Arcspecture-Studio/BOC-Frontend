@@ -21,6 +21,7 @@ public class CalculateMargin
     // runtime
     public bool isLong;
     public List<double> stopLossPriceGaps;
+    public double stopLossPercentage;
     public List<double> avgEntryPrices;
     public List<double> quantities;
     public List<double> cumQuantities;
@@ -131,6 +132,7 @@ public class CalculateMargin
         {
             stopLossPriceGaps.Add(Math.Abs(stopLossPrice - entryPrice));
         });
+        stopLossPercentage = Math.Abs(Utils.RateToPercentage(Utils.PriceMovingRate(entryPrices[isLong ? 0 : ^1], stopLossPrice)));
     }
     void CalculateEntryQuantity()
     {
