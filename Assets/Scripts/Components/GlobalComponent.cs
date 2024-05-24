@@ -36,4 +36,5 @@ public class GlobalComponent : MonoBehaviour
     public LoadingComponent loadingComponent;
     public GetProfileDataComponent getProfileDataComponent;
     public ExitComponent exitComponent;
+    public ClosePositionPromptComponent closePositionPromptComponent;
 }

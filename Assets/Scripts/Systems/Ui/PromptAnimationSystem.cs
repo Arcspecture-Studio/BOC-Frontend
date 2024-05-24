@@ -4,23 +4,30 @@ using UnityEngine.UI;
 public class PromptAnimationSystem : MonoBehaviour
 {
     PromptComponent promptComponent;
+    ClosePositionPromptComponent closePositionPromptComponent;
     Animation anim;
     Image image;
 
-    bool active;
     void Start()
     {
         promptComponent = GetComponent<PromptComponent>();
+        closePositionPromptComponent = GetComponent<ClosePositionPromptComponent>();
         anim = GetComponent<Animation>();
         image = GetComponent<Image>();
 
-        active = promptComponent.active;
-        image.enabled = active;
+        if (promptComponent != null)
+        {
+            image.enabled = promptComponent.active;
+            promptComponent.onChange_active.AddListener(Active);
+        }
+        if (closePositionPromptComponent != null)
+        {
+            image.enabled = closePositionPromptComponent.active;
+            closePositionPromptComponent.onChange_active.AddListener(Active);
+        }
     }
-    void Update()
+    void Active(bool active)
     {
-        if (active == promptComponent.active) return;
-        active = promptComponent.active;
         image.enabled = active;
         if (active)
         {
