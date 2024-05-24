@@ -45,5 +45,6 @@ public class PreferenceBotPremiumIndex : PreferenceBotStrategy
     public double longThresholdPercentage;
     public double shortThresholdPercentage;
     public int candleLength;
-    public int candleConfirmation;
+    public int reverseCandleConfirmation;
+    public int fomoCandleConfirmation;
 }

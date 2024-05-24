@@ -30,7 +30,8 @@ public class BotTabPreferenceSystem : MonoBehaviour
         botTabComponent.premiumIndexSetting_longThresholdPercentage.text = preferenceBot.premiumIndex.longThresholdPercentage.ToString();
         botTabComponent.premiumIndexSetting_shortThresholdPercentage.text = preferenceBot.premiumIndex.shortThresholdPercentage.ToString();
         botTabComponent.premiumIndexSetting_candleLength.text = preferenceBot.premiumIndex.candleLength.ToString();
-        botTabComponent.premiumIndexSetting_candleConfirmation.text = preferenceBot.premiumIndex.candleConfirmation.ToString();
+        botTabComponent.premiumIndexSetting_reverseCandleConfirmation.text = preferenceBot.premiumIndex.reverseCandleConfirmation.ToString();
+        botTabComponent.premiumIndexSetting_fomoCandleConfirmation.text = preferenceBot.premiumIndex.fomoCandleConfirmation.ToString();
 
         botTabComponent.updatingUIFromProfile = false;
     }
@@ -102,15 +103,26 @@ public class BotTabPreferenceSystem : MonoBehaviour
             profileComponent.activeProfile.preference.bot.premiumIndex.candleLength = int.Parse(value);
             settingPageComponent.updatePreferenceToServer = true;
         });
-        botTabComponent.premiumIndexSetting_candleConfirmation.onEndEdit.AddListener(value =>
+        botTabComponent.premiumIndexSetting_reverseCandleConfirmation.onEndEdit.AddListener(value =>
         {
             if (value.IsNullOrEmpty())
             {
-                value = profileComponent.activeProfile.preference.bot.premiumIndex.candleConfirmation.ToString();
-                botTabComponent.premiumIndexSetting_candleConfirmation.text = value;
+                value = profileComponent.activeProfile.preference.bot.premiumIndex.reverseCandleConfirmation.ToString();
+                botTabComponent.premiumIndexSetting_reverseCandleConfirmation.text = value;
             }
-            if (profileComponent.activeProfile.preference.bot.premiumIndex.candleConfirmation.ToString() == value) return;
-            profileComponent.activeProfile.preference.bot.premiumIndex.candleConfirmation = int.Parse(value);
+            if (profileComponent.activeProfile.preference.bot.premiumIndex.reverseCandleConfirmation.ToString() == value) return;
+            profileComponent.activeProfile.preference.bot.premiumIndex.reverseCandleConfirmation = int.Parse(value);
+            settingPageComponent.updatePreferenceToServer = true;
+        });
+        botTabComponent.premiumIndexSetting_fomoCandleConfirmation.onEndEdit.AddListener(value =>
+        {
+            if (value.IsNullOrEmpty())
+            {
+                value = profileComponent.activeProfile.preference.bot.premiumIndex.fomoCandleConfirmation.ToString();
+                botTabComponent.premiumIndexSetting_fomoCandleConfirmation.text = value;
+            }
+            if (profileComponent.activeProfile.preference.bot.premiumIndex.fomoCandleConfirmation.ToString() == value) return;
+            profileComponent.activeProfile.preference.bot.premiumIndex.fomoCandleConfirmation = int.Parse(value);
             settingPageComponent.updatePreferenceToServer = true;
         });
     }

@@ -17,7 +17,8 @@ public class BotTabComponent : MonoBehaviour
     public TMP_InputField premiumIndexSetting_longThresholdPercentage;
     public TMP_InputField premiumIndexSetting_shortThresholdPercentage;
     public TMP_InputField premiumIndexSetting_candleLength;
-    public TMP_InputField premiumIndexSetting_candleConfirmation;
+    public TMP_InputField premiumIndexSetting_reverseCandleConfirmation;
+    public TMP_InputField premiumIndexSetting_fomoCandleConfirmation;
     public Button addBotButton;
     public GameObject botDataObjectList;
     public Transform botDataRowParent;
