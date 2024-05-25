@@ -1430,6 +1430,7 @@ GameObject:
   - component: {fileID: 38819718}
   - component: {fileID: 38819717}
   - component: {fileID: 38819720}
+  - component: {fileID: 38819721}
   - component: {fileID: 38819715}
   m_Layer: 5
   m_Name: Close Position Prompt
@@ -1544,12 +1545,27 @@ MonoBehaviour:
   quantityInput: {fileID: 1706432798}
   closePositionButton: {fileID: 151640544}
   cancelButton: {fileID: 555244845}
-  orderPageComponent: {fileID: 0}
   minQuantity: 0
   maxQuantity: 0
   onChange_active:
     m_PersistentCalls:
       m_Calls: []
+  orderPageComponent: {fileID: 0}
+  onChange_show:
+    m_PersistentCalls:
+      m_Calls: []
+--- !u!114 &38819721
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 38819713}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 351fa1a41971d3a4ba55f740b135a483, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &39533990
 GameObject:
   m_ObjectHideFlags: 0
@@ -32731,7 +32747,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0.25}
   m_AnchorMax: {x: 1, y: 0.75}
-  m_AnchoredPosition: {x: -5.0000305, y: 0}
+  m_AnchoredPosition: {x: -5, y: 0}
   m_SizeDelta: {x: -20, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &1282936633
@@ -39121,7 +39137,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.823, y: 0.5}
   m_AnchorMax: {x: 0.823, y: 0.5}
-  m_AnchoredPosition: {x: 0.1000061, y: 10}
+  m_AnchoredPosition: {x: 0.099975586, y: 10}
   m_SizeDelta: {x: 30, y: 40}
   m_Pivot: {x: 1, y: 0.5}
 --- !u!114 &1505487876

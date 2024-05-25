@@ -83,7 +83,7 @@ public class OrderPageSystem : MonoBehaviour
         });
         orderPageComponent.closePositionButton.onClick.AddListener(() =>
         {
-            closePositionPromptComponent.Show(orderPageComponent);
+            closePositionPromptComponent.show = orderPageComponent;
         });
         orderPageComponent.cancelErrorOrderButton.onClick.AddListener(() =>
         {

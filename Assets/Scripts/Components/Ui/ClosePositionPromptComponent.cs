@@ -12,7 +12,6 @@ public class ClosePositionPromptComponent : MonoBehaviour
     public Button closePositionButton;
     public Button cancelButton;
 
-    public OrderPageComponent orderPageComponent;
     public float minQuantity;
     public float maxQuantity;
     private bool _active;
@@ -26,38 +25,14 @@ public class ClosePositionPromptComponent : MonoBehaviour
         }
     }
     [HideInInspector] public UnityEvent<bool> onChange_active = new();
-
-    void Start()
+    public OrderPageComponent orderPageComponent;
+    public OrderPageComponent show
     {
-        closePositionButton.onClick.AddListener(ClosePosition);
-        cancelButton.onClick.AddListener(() => active = false);
-    }
-    void ClosePosition()
-    {
-        active = false;
-        if (quantitySlider.value == maxQuantity)
+        set
         {
-            orderPageComponent.closePositionButton.interactable = false;
-            orderPageComponent.submitToServer = true;
-        }
-        else
-        {
-            // TODO: close partial quantity
+            orderPageComponent = value;
+            onChange_show.Invoke();
         }
     }
-    public void Show(OrderPageComponent orderPageComponent)
-    {
-        active = true;
-        this.orderPageComponent = orderPageComponent;
-        minQuantity = (float)Utils.GetDecimalPlaceNumber(orderPageComponent.marginCalculator.quantityPrecision);
-        maxQuantity = float.Parse(orderPageComponent.positionInfoQuantityFilledText.text);
-
-        minQuantityText.text = minQuantity.ToString();
-        maxQuantityText.text = orderPageComponent.positionInfoQuantityFilledText.text;
-        quantitySlider.minValue = minQuantity;
-        quantitySlider.maxValue = maxQuantity;
-
-        quantitySlider.value = maxQuantity;
-        quantityInput.text = orderPageComponent.positionInfoQuantityFilledText.text;
-    }
+    [HideInInspector] public UnityEvent onChange_show = new();
 }
