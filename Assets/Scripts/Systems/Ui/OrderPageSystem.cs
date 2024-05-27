@@ -15,6 +15,7 @@ public class OrderPageSystem : MonoBehaviour
     PlatformComponent platformComponent;
     ProfileComponent profileComponent;
     GetBalanceComponent getBalanceComponent;
+    ClosePositionPromptComponent closePositionPromptComponent;
 
     bool? lockForEdit = null;
     OrderStatusEnum? orderStatus = null;
@@ -29,6 +30,7 @@ public class OrderPageSystem : MonoBehaviour
         platformComponent = GlobalComponent.instance.platformComponent;
         profileComponent = GlobalComponent.instance.profileComponent;
         getBalanceComponent = GlobalComponent.instance.getBalanceComponent;
+        closePositionPromptComponent = GlobalComponent.instance.closePositionPromptComponent;
 
         if (orderPageComponent.orderId.IsNullOrEmpty())
             orderPageComponent.orderId = ObjectId.GenerateNewId().ToString();
@@ -81,18 +83,7 @@ public class OrderPageSystem : MonoBehaviour
         });
         orderPageComponent.closePositionButton.onClick.AddListener(() =>
         {
-            promptComponent.ShowSelection(PromptConstant.NOTICE, PromptConstant.CLOSE_POSITION_PROMPT,
-                PromptConstant.YES_PROCEED, PromptConstant.NO,
-            () =>
-            {
-                orderPageComponent.closePositionButton.interactable = false;
-                orderPageComponent.submitToServer = true;
-                promptComponent.active = false;
-            },
-            () =>
-            {
-                promptComponent.active = false;
-            });
+            closePositionPromptComponent.show = orderPageComponent;
         });
         orderPageComponent.cancelErrorOrderButton.onClick.AddListener(() =>
         {
@@ -498,7 +489,8 @@ public class OrderPageSystem : MonoBehaviour
         websocketComponent.generalRequests.Add(
             new General.WebsocketSubmitOrderRequest(
             loginComponent.token,
-            orderPageComponent.orderId
+            orderPageComponent.orderId,
+            orderPageComponent.quantityToClose
         ));
     }
     public void UpdateTakeProfitPrice()

@@ -68,6 +68,22 @@ public static class Utils
             return 0;
         }
     }
+    public static double GetDecimalPlaceNumber(long decimalPlace)
+    {
+        string valueStr = "0.";
+        for (int i = 0; i < decimalPlace; i++)
+        {
+            if (i == decimalPlace - 1)
+            {
+                valueStr += "1";
+            }
+            else
+            {
+                valueStr += "0";
+            }
+        }
+        return double.Parse(valueStr);
+    }
     public static double AveragePrice(double price1, double ratio1, double price2, double ratio2)
     {
         if (price1 == price2) return price1;

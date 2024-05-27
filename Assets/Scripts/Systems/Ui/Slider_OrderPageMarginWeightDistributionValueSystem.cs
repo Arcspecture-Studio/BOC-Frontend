@@ -3,7 +3,7 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using WebSocketSharp;
 
-public class OrderPageMarginWeightDistributionValueSystem : MonoBehaviour
+public class Slider_OrderPageMarginWeightDistributionValueSystem : MonoBehaviour
 {
     [SerializeField] OrderPageComponent orderPageComponent;
     [SerializeField] SettingPageComponent settingPageComponent;
@@ -28,7 +28,7 @@ public class OrderPageMarginWeightDistributionValueSystem : MonoBehaviour
         });
         orderPageComponent.marginWeightDistributionValueInput.onSubmit.AddListener(value =>
         {
-            if (value.IsNullOrEmpty()) value = "0";
+            if (value.IsNullOrEmpty()) value = orderPageComponent.marginWeightDistributionValueSlider.value.ToString();
             double parsedValue = Math.Min(Math.Max(double.Parse(value), orderPageComponent.marginWeightDistributionValueSlider.minValue), orderPageComponent.marginWeightDistributionValueSlider.maxValue);
             float roundedValue = (float)Utils.RoundTwoDecimal(parsedValue);
             orderPageComponent.marginWeightDistributionValueInput.text = roundedValue.ToString();
@@ -52,7 +52,7 @@ public class OrderPageMarginWeightDistributionValueSystem : MonoBehaviour
         settingPageComponent.marginWeightDistributionValueSliderTrigger.triggers.Add(pointerUpEvent);
         settingPageComponent.marginWeightDistributionValueInput.onSubmit.AddListener(value =>
         {
-            if (value.IsNullOrEmpty()) value = "0";
+            if (value.IsNullOrEmpty()) value = settingPageComponent.marginWeightDistributionValueSlider.value.ToString();
             double parsedValue = Math.Min(Math.Max(double.Parse(value), settingPageComponent.marginWeightDistributionValueSlider.minValue), settingPageComponent.marginWeightDistributionValueSlider.maxValue);
             double roundedValue = Utils.RoundTwoDecimal(parsedValue);
             settingPageComponent.marginWeightDistributionValueInput.text = roundedValue.ToString();

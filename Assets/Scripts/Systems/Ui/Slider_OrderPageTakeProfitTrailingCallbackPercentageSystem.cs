@@ -3,7 +3,7 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using WebSocketSharp;
 
-public class OrderPageTakeProfitTrailingCallbackPercentageSystem : MonoBehaviour
+public class Slider_OrderPageTakeProfitTrailingCallbackPercentageSystem : MonoBehaviour
 {
     [SerializeField] OrderPageComponent orderPageComponent;
     [SerializeField] SettingPageComponent settingPageComponent;
@@ -48,7 +48,7 @@ public class OrderPageTakeProfitTrailingCallbackPercentageSystem : MonoBehaviour
 
         orderPageComponent.takeProfitTrailingCallbackPercentageInput.onSubmit.AddListener(value =>
         {
-            if (value.IsNullOrEmpty()) value = "0";
+            if (value.IsNullOrEmpty()) value = orderPageComponent.takeProfitTrailingCallbackPercentageSlider.value.ToString();
             double parsedValue = Math.Min(Math.Max(double.Parse(value), BinanceConfig.TRAILING_MIN_PERCENTAGE), BinanceConfig.TRAILING_MAX_PERCENTAGE);
             float roundedValue = (float)Utils.RoundTwoDecimal(parsedValue);
             orderPageComponent.takeProfitTrailingCallbackPercentageInput.text = roundedValue.ToString();
@@ -88,7 +88,7 @@ public class OrderPageTakeProfitTrailingCallbackPercentageSystem : MonoBehaviour
 
         settingPageComponent.takeProfitTrailingCallbackPercentageInput.onSubmit.AddListener(value =>
         {
-            if (value.IsNullOrEmpty()) value = "0";
+            if (value.IsNullOrEmpty()) value = settingPageComponent.takeProfitTrailingCallbackPercentageSlider.value.ToString();
             double parsedValue = Math.Min(Math.Max(double.Parse(value), BinanceConfig.TRAILING_MIN_PERCENTAGE), BinanceConfig.TRAILING_MAX_PERCENTAGE);
             double roundedValue = Utils.RoundTwoDecimal(parsedValue);
             settingPageComponent.takeProfitTrailingCallbackPercentageInput.text = roundedValue.ToString();

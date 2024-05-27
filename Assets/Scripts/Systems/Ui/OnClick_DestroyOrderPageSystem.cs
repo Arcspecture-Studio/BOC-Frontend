@@ -54,7 +54,21 @@ public class OnClick_DestroyOrderPageSystem : MonoBehaviour, IPointerEnterHandle
                         if (orderPagesComponent.childOrderPageComponents[pageIndex].orderStatusError)
                             orderPagesComponent.childOrderPageComponents[pageIndex].closeErrorPositionButton.onClick.Invoke();
                         else
-                            orderPagesComponent.childOrderPageComponents[pageIndex].closePositionButton.onClick.Invoke();
+                        {
+                            // orderPagesComponent.childOrderPageComponents[pageIndex].closePositionButton.onClick.Invoke();
+                            promptComponent.ShowSelection(PromptConstant.NOTICE, PromptConstant.CLOSE_POSITION_PROMPT,
+                                PromptConstant.YES_PROCEED, PromptConstant.NO,
+                            () =>
+                            {
+                                orderPagesComponent.childOrderPageComponents[pageIndex].closePositionButton.interactable = false;
+                                orderPagesComponent.childOrderPageComponents[pageIndex].submitToServer = true;
+                                promptComponent.active = false;
+                            },
+                            () =>
+                            {
+                                promptComponent.active = false;
+                            });
+                        }
                         break;
                 }
                 promptComponent.leftButton.onClick.AddListener(() =>
