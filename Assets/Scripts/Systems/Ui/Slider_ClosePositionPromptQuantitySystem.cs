@@ -1,3 +1,5 @@
+#pragma warning disable CS0168
+
 using System;
 using UnityEngine;
 using WebSocketSharp;
@@ -12,17 +14,25 @@ public class Slider_ClosePositionPromptQuantitySystem : MonoBehaviour
 
         closePositionPromptComponent.quantitySlider.onValueChanged.AddListener(value =>
         {
-            float roundedValue = (float)Utils.RoundNDecimal((double)value, closePositionPromptComponent.orderPageComponent.marginCalculator.quantityPrecision);
-            closePositionPromptComponent.quantitySlider.value = roundedValue;
-            closePositionPromptComponent.quantityInput.text = roundedValue.ToString();
+            try
+            {
+                float roundedValue = (float)Utils.RoundNDecimal((double)value, closePositionPromptComponent.orderPageComponent.marginCalculator.quantityPrecision);
+                closePositionPromptComponent.quantitySlider.value = roundedValue;
+                closePositionPromptComponent.quantityInput.text = roundedValue.ToString();
+            }
+            catch (Exception ex) { }
         });
         closePositionPromptComponent.quantityInput.onSubmit.AddListener(value =>
         {
-            if (value.IsNullOrEmpty()) value = closePositionPromptComponent.quantitySlider.value.ToString();
-            double parsedValue = Math.Min(Math.Max(double.Parse(value), closePositionPromptComponent.minQuantity), closePositionPromptComponent.maxQuantity);
-            float roundedValue = (float)Utils.RoundNDecimal(parsedValue, closePositionPromptComponent.orderPageComponent.marginCalculator.quantityPrecision);
-            closePositionPromptComponent.quantityInput.text = roundedValue.ToString();
-            closePositionPromptComponent.quantitySlider.value = roundedValue;
+            try
+            {
+                if (value.IsNullOrEmpty()) value = closePositionPromptComponent.quantitySlider.value.ToString();
+                double parsedValue = Math.Min(Math.Max(double.Parse(value), closePositionPromptComponent.minQuantity), closePositionPromptComponent.maxQuantity);
+                float roundedValue = (float)Utils.RoundNDecimal(parsedValue, closePositionPromptComponent.orderPageComponent.marginCalculator.quantityPrecision);
+                closePositionPromptComponent.quantityInput.text = roundedValue.ToString();
+                closePositionPromptComponent.quantitySlider.value = roundedValue;
+            }
+            catch (Exception ex) { }
         });
     }
 }
