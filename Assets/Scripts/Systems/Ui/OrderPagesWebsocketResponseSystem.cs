@@ -22,6 +22,7 @@ public class OrderPagesWebsocketResponseSystem : MonoBehaviour
         SubmitOrderToServerResponse();
         PositionInfoUpdateResponse();
         SubmitThrottleToServerResponse();
+        DeleteOrderResponse();
     }
 
     void PositionInfoUpdateResponse()
@@ -149,6 +150,25 @@ public class OrderPagesWebsocketResponseSystem : MonoBehaviour
                         });
                     }
                     break;
+            }
+        }
+    }
+    void DeleteOrderResponse()
+    {
+        string jsonString = websocketComponent.RetrieveGeneralResponses(WebsocketEventTypeEnum.DELETE_ORDER);
+        websocketComponent.RemovesGeneralResponses(WebsocketEventTypeEnum.DELETE_ORDER);
+        if (jsonString.IsNullOrEmpty()) return;
+
+        General.WebsocketDeleteOrderResponse response = JsonConvert.DeserializeObject
+        <General.WebsocketDeleteOrderResponse>(jsonString, JsonSerializerConfig.settings);
+
+        if (response.id == null) return;
+        foreach (OrderPageComponent orderPageComponent in orderPagesComponent.childOrderPageComponents)
+        {
+            if (orderPageComponent.orderId == response.id)
+            {
+                orderPageComponent.destroySelf = true;
+                break;
             }
         }
     }
