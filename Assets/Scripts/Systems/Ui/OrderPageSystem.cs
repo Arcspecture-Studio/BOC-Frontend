@@ -489,7 +489,8 @@ public class OrderPageSystem : MonoBehaviour
         websocketComponent.generalRequests.Add(
             new General.WebsocketSubmitOrderRequest(
             loginComponent.token,
-            orderPageComponent.orderId
+            orderPageComponent.orderId,
+            orderPageComponent.quantityToClose
         ));
     }
     public void UpdateTakeProfitPrice()

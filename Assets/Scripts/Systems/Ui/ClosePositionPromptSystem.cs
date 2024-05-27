@@ -15,15 +15,9 @@ public class ClosePositionPromptSystem : MonoBehaviour
     void ClosePosition()
     {
         closePositionPromptComponent.active = false;
-        if (closePositionPromptComponent.quantitySlider.value == closePositionPromptComponent.maxQuantity)
-        {
-            closePositionPromptComponent.orderPageComponent.closePositionButton.interactable = false;
-            closePositionPromptComponent.orderPageComponent.submitToServer = true;
-        }
-        else
-        {
-            // TODO: close partial quantity
-        }
+        closePositionPromptComponent.orderPageComponent.quantityToClose = closePositionPromptComponent.quantitySlider.value == closePositionPromptComponent.maxQuantity ?
+        0 : closePositionPromptComponent.quantitySlider.value;
+        closePositionPromptComponent.orderPageComponent.submitToServer = true;
     }
     void Show()
     {
