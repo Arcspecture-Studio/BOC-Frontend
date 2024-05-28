@@ -457,7 +457,6 @@ public class OrderPageSystem : MonoBehaviour
             orderPageComponent.orderId,
             orderPageComponent.symbolDropdownComponent.selectedSymbol,
             orderPageComponent.marginCalculator,
-            (TakeProfitTypeEnum)orderPageComponent.takeProfitTypeDropdown.value,
             (OrderTypeEnum)orderPageComponent.orderTypeDropdown.value
         ));
     }
@@ -468,7 +467,6 @@ public class OrderPageSystem : MonoBehaviour
             loginComponent.token,
             orderPageComponent.orderId,
             orderPageComponent.marginCalculator,
-            (TakeProfitTypeEnum)orderPageComponent.takeProfitTypeDropdown.value,
             (OrderTypeEnum)orderPageComponent.orderTypeDropdown.value,
             orderPageComponent.tradingBotId
         ));
