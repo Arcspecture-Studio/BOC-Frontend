@@ -115,14 +115,14 @@ public class OrderPageSystem : MonoBehaviour
                 promptComponent.active = false;
             });
         });
-        orderPageComponent.riskRewardRatioInput.onSubmit.AddListener(value => UpdateTakeProfitPrice());
+        orderPageComponent.riskRewardRatioInput.onSubmit.AddListener(value => orderPageComponent.updateTakeProfitPrice = true);
         orderPageComponent.riskRewardMinusButton.onClick.AddListener(() =>
         {
             double rrr = double.Parse(orderPageComponent.riskRewardRatioInput.text);
             rrr -= 0.01;
             orderPageComponent.riskRewardRatioInput.text = rrr.ToString();
 
-            UpdateTakeProfitPrice();
+            orderPageComponent.updateTakeProfitPrice = true;
         });
         orderPageComponent.riskRewardAddButton.onClick.AddListener(() =>
         {
@@ -130,7 +130,7 @@ public class OrderPageSystem : MonoBehaviour
             rrr += 0.01;
             orderPageComponent.riskRewardRatioInput.text = rrr.ToString();
 
-            UpdateTakeProfitPrice();
+            orderPageComponent.updateTakeProfitPrice = true;
         });
 
         orderPageComponent.onChange_addToServer.AddListener(AddToServer);
@@ -253,19 +253,20 @@ public class OrderPageSystem : MonoBehaviour
 
             #region Create calculator instance
             orderPageComponent.marginCalculator = new CalculateMargin(
-                    currentWalletBalance,
-                    maxLossPercentage,
-                    amountToLoss,
-                    entryTimes,
-                    entryPrices,
-                    stopLossPrice,
-                    riskRewardRatio,
-                    takeProfitTrailingCallbackPercentage,
-                    feeRate,
-                    platformComponent.quantityPrecisions[orderPageComponent.symbolDropdownComponent.selectedSymbol],
-                    platformComponent.pricePrecisions[orderPageComponent.symbolDropdownComponent.selectedSymbol],
-                    orderPageComponent.marginDistributionModeDropdown.value == 1,
-                    orderPageComponent.marginWeightDistributionValueSlider.value);
+                currentWalletBalance,
+                maxLossPercentage,
+                amountToLoss,
+                entryTimes,
+                entryPrices,
+                stopLossPrice,
+                riskRewardRatio,
+                takeProfitTrailingCallbackPercentage,
+                feeRate,
+                platformComponent.quantityPrecisions[orderPageComponent.symbolDropdownComponent.selectedSymbol],
+                platformComponent.pricePrecisions[orderPageComponent.symbolDropdownComponent.selectedSymbol],
+                orderPageComponent.marginDistributionModeDropdown.value == 1,
+                orderPageComponent.marginWeightDistributionValueSlider.value
+            );
             #endregion
         }
 
