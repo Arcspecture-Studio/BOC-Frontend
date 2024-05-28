@@ -43,14 +43,18 @@ public class SettingPagePreferenceSystem : MonoBehaviour
         });
         settingPageComponent.lossPercentageInput.onEndEdit.AddListener(value =>
         {
-            if (value.IsNullOrEmpty()) value = profileComponent.activeProfile.preference.order.lossPercentage.ToString();
+            if (value.IsNullOrEmpty())
+            {
+                value = profileComponent.activeProfile.preference.order.lossPercentage.ToString();
+                settingPageComponent.lossPercentageInput.text = value;
+            }
             if (profileComponent.activeProfile.preference.order.lossPercentage == double.Parse(value)) return;
             profileComponent.activeProfile.preference.order.lossPercentage = double.Parse(value);
             settingPageComponent.updatePreferenceToServer = true;
         });
         settingPageComponent.lossAmountInput.onEndEdit.AddListener(value =>
         {
-            if (value.IsNullOrEmpty()) value = profileComponent.activeProfile.preference.order.lossAmount.ToString();
+            if (value.IsNullOrEmpty()) value = "0";
             if (profileComponent.activeProfile.preference.order.lossAmount == double.Parse(value)) return;
             profileComponent.activeProfile.preference.order.lossAmount = double.Parse(value);
             settingPageComponent.updatePreferenceToServer = true;
