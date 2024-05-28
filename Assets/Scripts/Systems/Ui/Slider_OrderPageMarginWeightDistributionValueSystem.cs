@@ -22,17 +22,17 @@ public class Slider_OrderPageMarginWeightDistributionValueSystem : MonoBehaviour
         orderPageComponent.marginWeightDistributionValueInput.text = orderPageComponent.marginWeightDistributionValueSlider.value.ToString();
         orderPageComponent.marginWeightDistributionValueSlider.onValueChanged.AddListener(value =>
         {
-            float roundedValue = (float)Utils.RoundTwoDecimal((double)value);
-            orderPageComponent.marginWeightDistributionValueSlider.value = roundedValue;
+            double roundedValue = Utils.RoundTwoDecimal(value);
+            orderPageComponent.marginWeightDistributionValueSlider.value = (float)roundedValue;
             orderPageComponent.marginWeightDistributionValueInput.text = roundedValue.ToString();
         });
         orderPageComponent.marginWeightDistributionValueInput.onSubmit.AddListener(value =>
         {
             if (value.IsNullOrEmpty()) value = orderPageComponent.marginWeightDistributionValueSlider.value.ToString();
             double parsedValue = Math.Min(Math.Max(double.Parse(value), orderPageComponent.marginWeightDistributionValueSlider.minValue), orderPageComponent.marginWeightDistributionValueSlider.maxValue);
-            float roundedValue = (float)Utils.RoundTwoDecimal(parsedValue);
+            double roundedValue = Utils.RoundTwoDecimal(parsedValue);
             orderPageComponent.marginWeightDistributionValueInput.text = roundedValue.ToString();
-            orderPageComponent.marginWeightDistributionValueSlider.value = roundedValue;
+            orderPageComponent.marginWeightDistributionValueSlider.value = (float)roundedValue;
         });
     }
     void ForSettingPageComponent()

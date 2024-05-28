@@ -35,24 +35,22 @@ public class Slider_OrderPageTakeProfitTrailingCallbackPercentageSystem : MonoBe
 
         orderPageComponent.takeProfitTrailingCallbackPercentageInput.text = orderPageComponent.takeProfitTrailingCallbackPercentageSlider.value.ToString();
 
-        EventTrigger.Entry pointerUpEvent = new() { eventID = EventTriggerType.PointerUp };
-        pointerUpEvent.callback.AddListener(eventData =>
+        orderPageComponent.takeProfitTrailingCallbackPercentageSlider.onValueChanged.AddListener(value =>
         {
-            float roundedValue = (float)Utils.RoundTwoDecimal(orderPageComponent.takeProfitTrailingCallbackPercentageSlider.value);
-            orderPageComponent.takeProfitTrailingCallbackPercentageSlider.value = roundedValue;
+            double roundedValue = Utils.RoundTwoDecimal(value);
+            orderPageComponent.takeProfitTrailingCallbackPercentageSlider.value = (float)roundedValue;
             orderPageComponent.takeProfitTrailingCallbackPercentageInput.text = roundedValue.ToString();
-
-            orderPageComponent.updateTakeProfitPrice = true;
         });
+        EventTrigger.Entry pointerUpEvent = new() { eventID = EventTriggerType.PointerUp };
+        pointerUpEvent.callback.AddListener(eventData => orderPageComponent.updateTakeProfitPrice = true);
         orderPageComponent.takeProfitTrailingCallbackPercentageSliderTrigger.triggers.Add(pointerUpEvent);
-
         orderPageComponent.takeProfitTrailingCallbackPercentageInput.onSubmit.AddListener(value =>
         {
             if (value.IsNullOrEmpty()) value = orderPageComponent.takeProfitTrailingCallbackPercentageSlider.value.ToString();
             double parsedValue = Math.Min(Math.Max(double.Parse(value), BinanceConfig.TRAILING_MIN_PERCENTAGE), BinanceConfig.TRAILING_MAX_PERCENTAGE);
-            float roundedValue = (float)Utils.RoundTwoDecimal(parsedValue);
+            double roundedValue = Utils.RoundTwoDecimal(parsedValue);
             orderPageComponent.takeProfitTrailingCallbackPercentageInput.text = roundedValue.ToString();
-            orderPageComponent.takeProfitTrailingCallbackPercentageSlider.value = roundedValue;
+            orderPageComponent.takeProfitTrailingCallbackPercentageSlider.value = (float)roundedValue;
 
             orderPageComponent.updateTakeProfitPrice = true;
         });
@@ -74,18 +72,17 @@ public class Slider_OrderPageTakeProfitTrailingCallbackPercentageSystem : MonoBe
 
         settingPageComponent.takeProfitTrailingCallbackPercentageInput.text = settingPageComponent.takeProfitTrailingCallbackPercentageSlider.value.ToString();
 
-        EventTrigger.Entry pointerUpEvent = new() { eventID = EventTriggerType.PointerUp };
-        pointerUpEvent.callback.AddListener(eventData =>
+        settingPageComponent.takeProfitTrailingCallbackPercentageSlider.onValueChanged.AddListener(value =>
         {
-            double roundedValue = Utils.RoundTwoDecimal(settingPageComponent.takeProfitTrailingCallbackPercentageSlider.value);
+            double roundedValue = Utils.RoundTwoDecimal(value);
             settingPageComponent.takeProfitTrailingCallbackPercentageSlider.value = (float)roundedValue;
             settingPageComponent.takeProfitTrailingCallbackPercentageInput.text = roundedValue.ToString();
 
             profileComponent.activeProfile.preference.order.takeProfitTrailingCallbackPercentage = roundedValue;
-            settingPageComponent.updatePreferenceToServer = true;
         });
+        EventTrigger.Entry pointerUpEvent = new() { eventID = EventTriggerType.PointerUp };
+        pointerUpEvent.callback.AddListener(eventData => settingPageComponent.updatePreferenceToServer = true);
         settingPageComponent.takeProfitTrailingCallbackPercentageSliderTrigger.triggers.Add(pointerUpEvent);
-
         settingPageComponent.takeProfitTrailingCallbackPercentageInput.onSubmit.AddListener(value =>
         {
             if (value.IsNullOrEmpty()) value = settingPageComponent.takeProfitTrailingCallbackPercentageSlider.value.ToString();

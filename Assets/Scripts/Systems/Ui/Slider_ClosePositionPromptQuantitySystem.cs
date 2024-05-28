@@ -16,8 +16,8 @@ public class Slider_ClosePositionPromptQuantitySystem : MonoBehaviour
         {
             try
             {
-                float roundedValue = (float)Utils.RoundNDecimal((double)value, closePositionPromptComponent.orderPageComponent.marginCalculator.quantityPrecision);
-                closePositionPromptComponent.quantitySlider.value = roundedValue;
+                double roundedValue = Utils.RoundNDecimal(value, closePositionPromptComponent.orderPageComponent.marginCalculator.quantityPrecision);
+                closePositionPromptComponent.quantitySlider.value = (float)roundedValue;
                 closePositionPromptComponent.quantityInput.text = roundedValue.ToString();
             }
             catch (Exception ex) { }
@@ -28,9 +28,9 @@ public class Slider_ClosePositionPromptQuantitySystem : MonoBehaviour
             {
                 if (value.IsNullOrEmpty()) value = closePositionPromptComponent.quantitySlider.value.ToString();
                 double parsedValue = Math.Min(Math.Max(double.Parse(value), closePositionPromptComponent.minQuantity), closePositionPromptComponent.maxQuantity);
-                float roundedValue = (float)Utils.RoundNDecimal(parsedValue, closePositionPromptComponent.orderPageComponent.marginCalculator.quantityPrecision);
+                double roundedValue = Utils.RoundNDecimal(parsedValue, closePositionPromptComponent.orderPageComponent.marginCalculator.quantityPrecision);
                 closePositionPromptComponent.quantityInput.text = roundedValue.ToString();
-                closePositionPromptComponent.quantitySlider.value = roundedValue;
+                closePositionPromptComponent.quantitySlider.value = (float)roundedValue;
             }
             catch (Exception ex) { }
         });
