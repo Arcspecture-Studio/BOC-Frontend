@@ -20,6 +20,8 @@ public class OrderPageTakeProfitTypeSystem : MonoBehaviour
         {
             orderPageComponent.riskRewardRatioObject.SetActive(orderPageComponent.lockForEdit && value > (int)TakeProfitTypeEnum.NONE);
             orderPageComponent.takeProfitTrailingCallbackPercentageObject.SetActive(orderPageComponent.lockForEdit && value == takeOnReturnTrailingEnum);
+
+            orderPageComponent.updateTakeProfitPrice = true;
         });
     }
     void ForSettingPageComponent()

@@ -10,6 +10,7 @@ public class CalculateMargin
     public long entryTimes;
     public List<double> entryPrices;
     public double stopLossPrice;
+    public TakeProfitTypeEnum takeProfitType;
     public double riskRewardRatio;
     public double takeProfitTrailingCallbackPercentage;
     public double feeRate;
@@ -33,7 +34,6 @@ public class CalculateMargin
     public double balanceAfterLoss;
     public double takeProfitPrice;
     public List<double> takeProfitPrices;
-    public List<double> takeProfitTrailingPrices;
     public double totalWinAmount;
     public double balanceIncrementRate;
     public double balanceAfterFullWin;
@@ -44,6 +44,7 @@ public class CalculateMargin
         long entryTimes,
         List<double> entryPrices,
         double stopLossPrice,
+        TakeProfitTypeEnum takeProfitType,
         double riskRewardRatio,
         double takeProfitTrailingCallbackPercentage,
         double feeRate,
@@ -62,6 +63,7 @@ public class CalculateMargin
             this.entryPrices[i] = Math.Max(this.entryPrices[i], 0);
         }
         this.stopLossPrice = Utils.RoundNDecimal(Math.Max(stopLossPrice, 0), pricePrecision);
+        this.takeProfitType = takeProfitType;
         this.riskRewardRatio = Math.Max(riskRewardRatio, 0);
         this.takeProfitTrailingCallbackPercentage = takeProfitTrailingCallbackPercentage;
         this.feeRate = feeRate;
@@ -72,7 +74,7 @@ public class CalculateMargin
         Calculate();
     }
 
-    public void Calculate()
+    void Calculate()
     {
         DeterminePositionDirection();
         CalculateEntryPrices();
@@ -210,7 +212,6 @@ public class CalculateMargin
     void CalculateWinPercentageAndAmount()
     {
         takeProfitPrices = new();
-        takeProfitTrailingPrices = new();
 
         for (int i = 0; i < avgEntryPrices.Count; i++)
         {
@@ -219,12 +220,14 @@ public class CalculateMargin
                 (isLong ? cumQuantities[i] * avgEntryPrices[i] : -cumQuantities[i] * avgEntryPrices[i])) /
                 (cumQuantities[i] * (isLong ? 1 - feeRate : 1 + feeRate));
             if (double.IsNaN(price) || double.IsInfinity(price)) price = 0;
-            takeProfitPrices.Add(Utils.RoundNDecimal(Math.Max(price, 0), pricePrecision));
 
-            double percentage = takeProfitTrailingCallbackPercentage;
-            if (isLong) percentage *= -1;
-            price = Utils.CalculateInitialPriceByMovingPercentage(percentage, price);
-            takeProfitTrailingPrices.Add(Utils.RoundNDecimal(Math.Max(price, 0), pricePrecision));
+            if (takeProfitType == TakeProfitTypeEnum.TRAILING)
+            {
+                double percentage = takeProfitTrailingCallbackPercentage;
+                if (isLong) percentage *= -1;
+                price = Utils.CalculateInitialPriceByMovingPercentage(percentage, price);
+            }
+            takeProfitPrices.Add(Utils.RoundNDecimal(Math.Max(price, 0), pricePrecision));
         }
 
         takeProfitPrice = takeProfitPrices[isLong ? 0 : ^1];
@@ -232,9 +235,10 @@ public class CalculateMargin
         balanceIncrementRate = balance == 0 ? 0 : totalWinAmount / balance;
         balanceAfterFullWin = balance + totalWinAmount;
     }
-    public void RecalculateTakeProfitPrices(double riskRewardRatio,
+    public void RecalculateTakeProfitPrices(TakeProfitTypeEnum takeProfitType, double riskRewardRatio,
         double takeProfitTrailingCallbackPercentage)
     {
+        this.takeProfitType = takeProfitType;
         this.riskRewardRatio = riskRewardRatio;
         this.takeProfitTrailingCallbackPercentage = takeProfitTrailingCallbackPercentage;
         CalculateWinPercentageAndAmount();

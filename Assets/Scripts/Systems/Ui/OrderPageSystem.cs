@@ -259,6 +259,7 @@ public class OrderPageSystem : MonoBehaviour
                 entryTimes,
                 entryPrices,
                 stopLossPrice,
+                (TakeProfitTypeEnum)orderPageComponent.takeProfitTypeDropdown.value,
                 riskRewardRatio,
                 takeProfitTrailingCallbackPercentage,
                 feeRate,
@@ -308,7 +309,7 @@ public class OrderPageSystem : MonoBehaviour
         orderPageComponent.resultComponent.orderInfoDataObject.transform.GetChild(5).gameObject.SetActive(false);
         #endregion
         #region Prices & Quantities
-        List<double> tpPrices = (TakeProfitTypeEnum)orderPageComponent.takeProfitTypeDropdown.value == TakeProfitTypeEnum.TRAILING ? orderPageComponent.marginCalculator.takeProfitTrailingPrices : orderPageComponent.marginCalculator.takeProfitPrices;
+        List<double> tpPrices = orderPageComponent.marginCalculator.takeProfitPrices;
         for (int i = 0; i < orderPageComponent.marginCalculator.entryPrices.Count; i++)
         {
             #region Prices
@@ -500,14 +501,11 @@ public class OrderPageSystem : MonoBehaviour
         if (orderPageComponent.takeProfitTypeDropdown.value > (int)TakeProfitTypeEnum.NONE)
         {
             orderPageComponent.marginCalculator.RecalculateTakeProfitPrices(
+                (TakeProfitTypeEnum)orderPageComponent.takeProfitTypeDropdown.value,
                 double.Parse(orderPageComponent.riskRewardRatioInput.text),
                 double.Parse(orderPageComponent.takeProfitTrailingCallbackPercentageInput.text));
         }
         List<double> tpPrices = orderPageComponent.marginCalculator.takeProfitPrices;
-        if (orderPageComponent.takeProfitTypeDropdown.value == (int)TakeProfitTypeEnum.TRAILING)
-        {
-            tpPrices = orderPageComponent.marginCalculator.takeProfitTrailingPrices;
-        }
         #endregion
 
         #region Update value in game object for display
