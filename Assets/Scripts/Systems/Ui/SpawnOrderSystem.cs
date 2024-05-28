@@ -55,7 +55,7 @@ public class SpawnOrderSystem : MonoBehaviour
         #endregion
         orderPageComponent.entryTimesInput.text = response.marginCalculator.entryPrices.Count.ToString();
         orderPageComponent.stopLossInput.text = Utils.RoundTwoDecimal(response.marginCalculator.stopLossPrice).ToString();
-        orderPageComponent.takeProfitTypeDropdown.value = (int)response.takeProfitType;
+        orderPageComponent.takeProfitTypeDropdown.value = (int)response.marginCalculator.takeProfitType;
         orderPageComponent.riskRewardRatioInput.text = response.marginCalculator.riskRewardRatio.ToString();
         orderPageComponent.takeProfitTrailingCallbackPercentageSlider.value = (float)response.marginCalculator.takeProfitTrailingCallbackPercentage;
         orderPageComponent.takeProfitTrailingCallbackPercentageInput.text = response.marginCalculator.takeProfitTrailingCallbackPercentage.ToString();
