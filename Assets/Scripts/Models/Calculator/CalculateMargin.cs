@@ -47,6 +47,7 @@ public class CalculateMargin
         float stopLossPrice,
         TakeProfitTypeEnum takeProfitType,
         float riskRewardRatio,
+        float takeProfitQuantityPercentage,
         float takeProfitTrailingCallbackPercentage,
         float feeRate,
         int quantityPrecision,
@@ -66,6 +67,7 @@ public class CalculateMargin
         this.stopLossPrice = Utils.RoundNDecimal(Mathf.Max(stopLossPrice, 0), pricePrecision);
         this.takeProfitType = takeProfitType;
         this.riskRewardRatio = Mathf.Max(riskRewardRatio, 0);
+        this.takeProfitQuantityPercentage = takeProfitQuantityPercentage;
         this.takeProfitTrailingCallbackPercentage = takeProfitTrailingCallbackPercentage;
         this.feeRate = feeRate;
         this.quantityPrecision = quantityPrecision;

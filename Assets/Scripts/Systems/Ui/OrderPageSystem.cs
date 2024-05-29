@@ -203,7 +203,6 @@ public class OrderPageSystem : MonoBehaviour
             float takeProfitPrice = orderPageComponent.takeProfitInput.text.IsNullOrEmpty() ? float.NaN :
                 float.Parse(orderPageComponent.takeProfitInput.text);
             float riskRewardRatio = orderPageComponent.riskRewardRatioInput.text.IsNullOrEmpty() ? profileComponent.activeProfile.preference.order.riskRewardRatio : float.Parse(orderPageComponent.riskRewardRatioInput.text);
-            float takeProfitTrailingCallbackPercentage = orderPageComponent.takeProfitTrailingCallbackPercentageCustomSlider.input.text.IsNullOrEmpty() ? profileComponent.activeProfile.preference.order.takeProfitTrailingCallbackPercentage : float.Parse(orderPageComponent.takeProfitTrailingCallbackPercentageCustomSlider.input.text);
 
             // validate input
             if (walletUnit.IsNullOrEmpty())
@@ -261,7 +260,8 @@ public class OrderPageSystem : MonoBehaviour
                 stopLossPrice,
                 (TakeProfitTypeEnum)orderPageComponent.takeProfitTypeDropdown.value,
                 riskRewardRatio,
-                takeProfitTrailingCallbackPercentage,
+                orderPageComponent.takeProfitQuantityPercentageCustomSlider.slider.value,
+                orderPageComponent.takeProfitTrailingCallbackPercentageCustomSlider.slider.value,
                 feeRate,
                 platformComponent.quantityPrecisions[orderPageComponent.symbolDropdownComponent.selectedSymbol],
                 platformComponent.pricePrecisions[orderPageComponent.symbolDropdownComponent.selectedSymbol],
