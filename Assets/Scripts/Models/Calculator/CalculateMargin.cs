@@ -33,6 +33,8 @@ public class CalculateMargin
     public float totalFee;
     public float balanceDecrementRate;
     public float balanceAfterLoss;
+    public float breakEvenPrice;
+    public List<float> breakEvenPrices;
     public float takeProfitPrice;
     public List<float> takeProfitPrices;
     public float totalWinAmount;
@@ -215,25 +217,39 @@ public class CalculateMargin
     void CalculateWinPercentageAndAmount()
     {
         takeProfitPrices = new();
-
+        breakEvenPrices = new();
         for (int i = 0; i < avgEntryPrices.Count; i++)
         {
-            float price = (isLong ? 1 : -1) *
-                (avgEntryPrices[i] * cumQuantities[i] * feeRate + totalLossAmount * riskRewardRatio +
-                (isLong ? cumQuantities[i] * avgEntryPrices[i] : -cumQuantities[i] * avgEntryPrices[i])) /
-                (cumQuantities[i] * (isLong ? 1 - feeRate : 1 + feeRate));
-            if (float.IsNaN(price) || float.IsInfinity(price)) price = 0;
+            #region Calculate tp price
+            float cumQuantity = Utils.RoundNDecimal(cumQuantities[i] * Utils.RateToPercentage(takeProfitQuantityPercentage), quantityPrecision);
+            float takeProfitPrice = (isLong ? 1 : -1) *
+                (avgEntryPrices[i] * cumQuantity * feeRate + totalLossAmount * riskRewardRatio +
+                (isLong ? cumQuantity * avgEntryPrices[i] : -cumQuantity * avgEntryPrices[i])) /
+                (cumQuantity * (isLong ? 1 - feeRate : 1 + feeRate));
+            if (float.IsNaN(takeProfitPrice) || float.IsInfinity(takeProfitPrice)) takeProfitPrice = 0;
 
             if (takeProfitType == TakeProfitTypeEnum.TRAILING)
             {
                 float percentage = takeProfitTrailingCallbackPercentage;
                 if (isLong) percentage *= -1;
-                price = Utils.CalculateInitialPriceByMovingPercentage(percentage, price);
+                takeProfitPrice = Utils.CalculateInitialPriceByMovingPercentage(percentage, takeProfitPrice);
             }
-            takeProfitPrices.Add(Utils.RoundNDecimal(Mathf.Max(price, 0), pricePrecision));
+            takeProfitPrices.Add(Utils.RoundNDecimal(Mathf.Max(takeProfitPrice, 0), pricePrecision));
+            #endregion
+
+            #region Calculate break even price
+            float breakEvenCumQuantity = cumQuantities[i] - cumQuantity;
+            float breakEvenPrice = (isLong ? 1 : -1) *
+                (avgEntryPrices[i] * breakEvenCumQuantity * feeRate +
+                (isLong ? breakEvenCumQuantity * avgEntryPrices[i] : -breakEvenCumQuantity * avgEntryPrices[i])) /
+                (breakEvenCumQuantity * (isLong ? 1 - feeRate : 1 + feeRate));
+            if (float.IsNaN(breakEvenPrice) || float.IsInfinity(breakEvenPrice)) breakEvenPrice = 0;
+            breakEvenPrices.Add(Utils.RoundNDecimal(Mathf.Max(breakEvenPrice, 0), pricePrecision));
+            #endregion
         }
 
         takeProfitPrice = takeProfitPrices[isLong ? 0 : ^1];
+        breakEvenPrice = takeProfitPrices[isLong ? 0 : ^1];
         totalWinAmount = cumQuantities[isLong ? 0 : ^1] * Mathf.Abs(takeProfitPrice - avgEntryPrices[isLong ? 0 : ^1]) - takeProfitPrice * cumQuantities[isLong ? 0 : ^1] * feeRate - avgEntryPrices[isLong ? 0 : ^1] * cumQuantities[isLong ? 0 : ^1] * feeRate;
         balanceIncrementRate = balance == 0 ? 0 : totalWinAmount / balance;
         balanceAfterFullWin = balance + totalWinAmount;
