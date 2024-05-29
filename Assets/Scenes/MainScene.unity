@@ -7731,8 +7731,8 @@ RectTransform:
   m_Father: {fileID: 1953580743}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
+  m_AnchorMin: {x: 0.4949495, y: 0}
+  m_AnchorMax: {x: 0.4949495, y: 1}
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 30, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
@@ -13124,8 +13124,8 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 2033694428}
   m_HandleRect: {fileID: 2033694427}
   m_Direction: 2
-  m_Value: -0.00000044644312
-  m_Size: 0.47417578
+  m_Value: 0.0034253604
+  m_Size: 0.4988439
   m_NumberOfSteps: 0
   m_OnValueChanged:
     m_PersistentCalls:
@@ -23274,13 +23274,14 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 867372052}
+  - component: {fileID: 867372053}
   m_Layer: 5
   m_Name: Take Profit Quantity Percentage
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &867372052
 RectTransform:
   m_ObjectHideFlags: 0
@@ -23297,11 +23298,38 @@ RectTransform:
   m_Father: {fileID: 1185559200}
   m_RootOrder: 20
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 0, y: 80}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 1}
+  m_AnchoredPosition: {x: 191.5, y: -1590}
+  m_SizeDelta: {x: 383, y: 80}
   m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &867372053
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 867372051}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: aa0c320481823aa478f609f2798266ef, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  slider: {fileID: 1166920467}
+  sliderTrigger: {fileID: 1166920466}
+  minText: {fileID: 394483684}
+  maxText: {fileID: 1374183010}
+  input: {fileID: 969196118}
+  postfix: '%'
+  onSliderMove:
+    m_PersistentCalls:
+      m_Calls: []
+  onSliderUp:
+    m_PersistentCalls:
+      m_Calls: []
+  onInputSubmit:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!1 &877538928
 GameObject:
   m_ObjectHideFlags: 0
@@ -23471,7 +23499,7 @@ RectTransform:
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
+  m_AnchorMax: {x: 0.4949495, y: 1}
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 10, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
@@ -31565,8 +31593,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0, y: 957.0005}
-  m_SizeDelta: {x: 0, y: 1820}
+  m_AnchoredPosition: {x: 0, y: 864.0303}
+  m_SizeDelta: {x: 0, y: 1730}
   m_Pivot: {x: 0, y: 1}
 --- !u!114 &1185559201
 MonoBehaviour:
