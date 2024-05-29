@@ -21,4 +21,6 @@ public static class OrderConfig
         "1 week",
         "1 month"
     };
+    public static readonly float marginWeightDistributionValueMin = -5;
+    public static readonly float marginWeightDistributionValueMax = 5;
 }

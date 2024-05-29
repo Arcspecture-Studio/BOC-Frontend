@@ -11,13 +11,13 @@ public class Preference
 public class PreferenceOrder
 {
     public string symbol;
-    public double lossPercentage;
-    public double lossAmount;
+    public float lossPercentage;
+    public float lossAmount;
     public MarginDistributionModeEnum marginDistributionMode;
-    public double marginWeightDistributionValue;
+    public float marginWeightDistributionValue;
     public TakeProfitTypeEnum takeProfitType;
-    public double riskRewardRatio;
-    public double takeProfitTrailingCallbackPercentage;
+    public float riskRewardRatio;
+    public float takeProfitTrailingCallbackPercentage;
     public OrderTypeEnum orderType;
 }
 [Serializable]
@@ -26,7 +26,7 @@ public class PreferenceQuickOrder
     public int quickEntryTimes;
     public TimeframeEnum atrTimeframe;
     public int atrLength;
-    public double atrMultiplier;
+    public float atrMultiplier;
 }
 [Serializable]
 public class PreferenceBot
@@ -42,8 +42,8 @@ public class PreferenceBotStrategy { }
 [Serializable]
 public class PreferenceBotPremiumIndex : PreferenceBotStrategy
 {
-    public double longThresholdPercentage;
-    public double shortThresholdPercentage;
+    public float longThresholdPercentage;
+    public float shortThresholdPercentage;
     public int candleLength;
     public int reverseCandleConfirmation;
     public int fomoCandleConfirmation;

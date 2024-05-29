@@ -1539,14 +1539,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c788a795b79c3a3429f7ef934a7b6f13, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  minQuantityText: {fileID: 2047885620}
-  maxQuantityText: {fileID: 1505487876}
-  quantitySlider: {fileID: 1930749215}
-  quantityInput: {fileID: 1706432798}
+  customSlider: {fileID: 1606949495}
   closePositionButton: {fileID: 151640544}
   cancelButton: {fileID: 555244845}
-  minQuantity: 0
-  maxQuantity: 0
   onChange_active:
     m_PersistentCalls:
       m_Calls: []
@@ -13129,7 +13124,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 2033694428}
   m_HandleRect: {fileID: 2033694427}
   m_Direction: 2
-  m_Value: 0.09404388
+  m_Value: -0.00000044644312
   m_Size: 0.47417578
   m_NumberOfSteps: 0
   m_OnValueChanged:
@@ -19283,19 +19278,11 @@ MonoBehaviour:
   lossPercentageInput: {fileID: 121563223}
   lossAmountInput: {fileID: 938926895}
   marginDistributionModeDropdown: {fileID: 2054683797}
-  marginWeightDistributionValueObject: {fileID: 1851920181}
-  marginWeightDistributionValueSlider: {fileID: 1056342555}
-  marginWeightDistributionValueSliderTrigger: {fileID: 1056342554}
-  marginWeightDistributionValueInput: {fileID: 621967040}
+  marginWeightDistributionValueCustomSlider: {fileID: 1851920184}
   takeProfitTypeDropdown: {fileID: 1293686962}
   riskRewardRatioObject: {fileID: 1139313272}
   riskRewardRatioInput: {fileID: 1919628519}
-  takeProfitTrailingCallbackPercentageObject: {fileID: 1171171570}
-  takeProfitTrailingCallbackPercentageSlider: {fileID: 1119559778}
-  takeProfitTrailingCallbackPercentageSliderTrigger: {fileID: 1119559777}
-  takeProfitTrailingCallbackPercentageMinText: {fileID: 548798178}
-  takeProfitTrailingCallbackPercentageMaxText: {fileID: 1703512511}
-  takeProfitTrailingCallbackPercentageInput: {fileID: 1015288059}
+  takeProfitTrailingCallbackPercentageCustomSlider: {fileID: 1171171573}
   orderTypeDropdown: {fileID: 76029976}
   pageMoveDuration: 0.4
   pageMoveEase: 19
@@ -31448,6 +31435,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1171171571}
+  - component: {fileID: 1171171573}
   - component: {fileID: 1171171572}
   m_Layer: 5
   m_Name: Take Profit Trailing Callback Percentage
@@ -31491,6 +31479,33 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   orderPageComponent: {fileID: 0}
   settingPageComponent: {fileID: 680527080}
+--- !u!114 &1171171573
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1171171570}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: aa0c320481823aa478f609f2798266ef, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  slider: {fileID: 1119559778}
+  sliderTrigger: {fileID: 1119559777}
+  minText: {fileID: 548798178}
+  maxText: {fileID: 1703512511}
+  input: {fileID: 1015288059}
+  postfix: '%'
+  onSliderMove:
+    m_PersistentCalls:
+      m_Calls: []
+  onSliderUp:
+    m_PersistentCalls:
+      m_Calls: []
+  onInputSubmit:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!1 &1185559199
 GameObject:
   m_ObjectHideFlags: 0
@@ -31550,7 +31565,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0, y: 867.00006}
+  m_AnchoredPosition: {x: 0, y: 957.0005}
   m_SizeDelta: {x: 0, y: 1820}
   m_Pivot: {x: 0, y: 1}
 --- !u!114 &1185559201
@@ -42044,9 +42059,24 @@ MonoBehaviour:
   m_GameObject: {fileID: 1606949493}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f01a49bdb28b85140b5588faae657309, type: 3}
+  m_Script: {fileID: 11500000, guid: aa0c320481823aa478f609f2798266ef, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  slider: {fileID: 1930749215}
+  sliderTrigger: {fileID: 1930749214}
+  minText: {fileID: 2047885620}
+  maxText: {fileID: 1505487876}
+  input: {fileID: 1706432798}
+  postfix: 
+  onSliderMove:
+    m_PersistentCalls:
+      m_Calls: []
+  onSliderUp:
+    m_PersistentCalls:
+      m_Calls: []
+  onInputSubmit:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!1 &1612258925
 GameObject:
   m_ObjectHideFlags: 0
@@ -47081,6 +47111,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1851920182}
+  - component: {fileID: 1851920184}
   - component: {fileID: 1851920183}
   m_Layer: 5
   m_Name: Margin Weight Distribution Value
@@ -47124,6 +47155,33 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   orderPageComponent: {fileID: 0}
   settingPageComponent: {fileID: 680527080}
+--- !u!114 &1851920184
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1851920181}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: aa0c320481823aa478f609f2798266ef, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  slider: {fileID: 1056342555}
+  sliderTrigger: {fileID: 1056342554}
+  minText: {fileID: 18657505}
+  maxText: {fileID: 51832851}
+  input: {fileID: 621967040}
+  postfix: 
+  onSliderMove:
+    m_PersistentCalls:
+      m_Calls: []
+  onSliderUp:
+    m_PersistentCalls:
+      m_Calls: []
+  onInputSubmit:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!1 &1860425911
 GameObject:
   m_ObjectHideFlags: 0

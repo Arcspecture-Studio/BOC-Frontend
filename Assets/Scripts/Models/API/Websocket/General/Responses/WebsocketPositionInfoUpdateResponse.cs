@@ -8,9 +8,9 @@ namespace General
     public class WebsocketPositionInfoUpdateResponse : WebsocketGeneralResponse
     {
         public string orderId;
-        public double? quantityFilled;
-        public double? averagePriceFilled;
-        public double? actualTakeProfitPrice;
-        public double? paidFundingAmount;
+        public float? quantityFilled;
+        public float? averagePriceFilled;
+        public float? actualTakeProfitPrice;
+        public float? paidFundingAmount;
     }
 }

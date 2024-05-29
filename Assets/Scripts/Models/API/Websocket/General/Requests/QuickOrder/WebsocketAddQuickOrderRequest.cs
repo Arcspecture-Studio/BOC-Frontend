@@ -6,7 +6,7 @@ namespace General
     public class WebsocketAddQuickOrderRequest : WebsocketQuickOrderRequest
     {
         public WebsocketAddQuickOrderRequest(string token,
-            double entryPrice,
+            float entryPrice,
             bool isLong) : base(WebsocketEventTypeEnum.ADD_QUICK_ORDER, token, entryPrice, isLong)
         {
         }

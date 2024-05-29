@@ -13,19 +13,19 @@ public class OrderPageMarginDistributionModeSystem : MonoBehaviour
     void ForOrderPageComponent()
     {
         if (orderPageComponent == null) return;
-        orderPageComponent.marginWeightDistributionValueObject.SetActive(orderPageComponent.marginDistributionModeDropdown.value == 1);
+        orderPageComponent.marginWeightDistributionValueCustomSlider.gameObject.SetActive(orderPageComponent.marginDistributionModeDropdown.value == 1);
         orderPageComponent.marginDistributionModeDropdown.onValueChanged.AddListener(value =>
         {
-            orderPageComponent.marginWeightDistributionValueObject.SetActive(value == 1);
+            orderPageComponent.marginWeightDistributionValueCustomSlider.gameObject.SetActive(value == 1);
         });
     }
     void ForSettingPageComponent()
     {
         if (settingPageComponent == null) return;
-        settingPageComponent.marginWeightDistributionValueObject.SetActive(settingPageComponent.marginDistributionModeDropdown.value == 1);
+        settingPageComponent.marginWeightDistributionValueCustomSlider.gameObject.SetActive(settingPageComponent.marginDistributionModeDropdown.value == 1);
         settingPageComponent.marginDistributionModeDropdown.onValueChanged.AddListener(value =>
         {
-            settingPageComponent.marginWeightDistributionValueObject.SetActive(value == 1);
+            settingPageComponent.marginWeightDistributionValueCustomSlider.gameObject.SetActive(value == 1);
         });
     }
 }

@@ -6,6 +6,6 @@ namespace General
     public class WebsocketGetFeeResponse : WebsocketGeneralResponse
     {
         public string symbol;
-        public double fee;
+        public float fee;
     }
 }

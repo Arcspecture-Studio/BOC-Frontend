@@ -1,18 +1,18 @@
-using System;
+using UnityEngine;
 
 public class CalculateRemainingLoss
 {
     // config
-    public double amountToLoss;
-    public double qty;
-    public double entryPrice;
-    public double stopLossPrice;
-    public double feeRate;
+    public float amountToLoss;
+    public float qty;
+    public float entryPrice;
+    public float stopLossPrice;
+    public float feeRate;
 
     // runtime
-    public double remainingLoss;
+    public float remainingLoss;
 
-    public CalculateRemainingLoss(double amountToLoss, double qty, double entryPrice, double stopLossPrice, double feeRate)
+    public CalculateRemainingLoss(float amountToLoss, float qty, float entryPrice, float stopLossPrice, float feeRate)
     {
         this.amountToLoss = amountToLoss;
         this.qty = qty;
@@ -25,8 +25,8 @@ public class CalculateRemainingLoss
 
     void Calculate()
     {
-        double fee = qty * feeRate * (entryPrice + stopLossPrice);
-        double lossAmount = qty * Math.Abs(stopLossPrice - entryPrice);
+        float fee = qty * feeRate * (entryPrice + stopLossPrice);
+        float lossAmount = qty * Mathf.Abs(stopLossPrice - entryPrice);
         remainingLoss = amountToLoss - lossAmount - fee;
     }
 }

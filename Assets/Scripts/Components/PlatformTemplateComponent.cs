@@ -6,10 +6,10 @@ public class PlatformTemplateComponent : MonoBehaviour
 {
     public bool loggedIn;
     public PlatformEnum activePlatform;
-    public SerializedDictionary<string, double> walletBalances = new();
+    public SerializedDictionary<string, float> walletBalances = new();
     public List<string> allSymbols = new();
     public Dictionary<string, string> marginAssets = new();
-    public Dictionary<string, long> quantityPrecisions = new();
-    public Dictionary<string, long> pricePrecisions = new();
-    public Dictionary<string, double?> fees = new();
+    public Dictionary<string, int> quantityPrecisions = new();
+    public Dictionary<string, int> pricePrecisions = new();
+    public Dictionary<string, float?> fees = new();
 }

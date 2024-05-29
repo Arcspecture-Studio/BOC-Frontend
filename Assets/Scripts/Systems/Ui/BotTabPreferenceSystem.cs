@@ -78,7 +78,7 @@ public class BotTabPreferenceSystem : MonoBehaviour
                 botTabComponent.premiumIndexSetting_longThresholdPercentage.text = value;
             }
             if (profileComponent.activeProfile.preference.bot.premiumIndex.longThresholdPercentage.ToString() == value) return;
-            profileComponent.activeProfile.preference.bot.premiumIndex.longThresholdPercentage = double.Parse(value);
+            profileComponent.activeProfile.preference.bot.premiumIndex.longThresholdPercentage = float.Parse(value);
             settingPageComponent.updatePreferenceToServer = true;
         });
         botTabComponent.premiumIndexSetting_shortThresholdPercentage.onEndEdit.AddListener(value =>
@@ -89,7 +89,7 @@ public class BotTabPreferenceSystem : MonoBehaviour
                 botTabComponent.premiumIndexSetting_shortThresholdPercentage.text = value;
             }
             if (profileComponent.activeProfile.preference.bot.premiumIndex.shortThresholdPercentage.ToString() == value) return;
-            profileComponent.activeProfile.preference.bot.premiumIndex.shortThresholdPercentage = double.Parse(value);
+            profileComponent.activeProfile.preference.bot.premiumIndex.shortThresholdPercentage = float.Parse(value);
             settingPageComponent.updatePreferenceToServer = true;
         });
         botTabComponent.premiumIndexSetting_candleLength.onEndEdit.AddListener(value =>

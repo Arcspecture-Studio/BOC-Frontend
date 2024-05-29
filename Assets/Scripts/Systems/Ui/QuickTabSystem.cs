@@ -58,7 +58,7 @@ public class QuickTabSystem : MonoBehaviour
     }
     void AddToServer()
     {
-        double entryPrice = quickTabComponent.entryPriceInput.text.IsNullOrEmpty() ? -1 : double.Parse(quickTabComponent.entryPriceInput.text);
+        float entryPrice = quickTabComponent.entryPriceInput.text.IsNullOrEmpty() ? -1 : float.Parse(quickTabComponent.entryPriceInput.text);
         websocketComponent.generalRequests.Add(new General.WebsocketAddQuickOrderRequest(
             loginComponent.token,
             entryPrice,

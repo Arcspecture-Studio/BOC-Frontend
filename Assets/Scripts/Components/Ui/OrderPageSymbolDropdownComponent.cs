@@ -10,5 +10,5 @@ public class OrderPageSymbolDropdownComponent : MonoBehaviour
     [Header("Runtime")]
     public List<string> symbols;
     public string selectedSymbol;
-    public long allSymbolsCount;
+    public int allSymbolsCount;
 }

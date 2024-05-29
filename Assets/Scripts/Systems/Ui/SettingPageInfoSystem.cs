@@ -27,7 +27,7 @@ public class SettingPageInfoSystem : MonoBehaviour
     void UpdateInfoUI()
     {
         settingPageComponent.activePlatformText.text = platformComponent.activePlatform.ToString();
-        foreach (KeyValuePair<string, double> walletBalance in platformComponent.walletBalances)
+        foreach (KeyValuePair<string, float> walletBalance in platformComponent.walletBalances)
         {
             if (walletBalance.Value == 0)
             {

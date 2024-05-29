@@ -7,7 +7,7 @@ namespace General
     public class WebsocketGeneralRequest
     {
         public WebsocketEventTypeEnum eventType;
-        public long eventTime;
+        public int eventTime;
         public string version;
         public string token;
 

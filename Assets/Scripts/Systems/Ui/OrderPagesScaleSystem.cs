@@ -6,7 +6,7 @@ public class OrderPagesScaleSystem : MonoBehaviour
     OrderPagesComponent orderPagesComponent;
 
     OrderPagesStatusEnum? status;
-    long? childCount;
+    int? childCount;
 
     void Start()
     {

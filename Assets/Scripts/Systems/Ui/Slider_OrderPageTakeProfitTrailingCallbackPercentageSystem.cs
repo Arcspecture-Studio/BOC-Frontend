@@ -1,7 +1,4 @@
-﻿using System;
-using UnityEngine;
-using UnityEngine.EventSystems;
-using WebSocketSharp;
+﻿using UnityEngine;
 
 public class Slider_OrderPageTakeProfitTrailingCallbackPercentageSystem : MonoBehaviour
 {
@@ -26,34 +23,15 @@ public class Slider_OrderPageTakeProfitTrailingCallbackPercentageSystem : MonoBe
         {
             case PlatformEnum.BINANCE:
             case PlatformEnum.BINANCE_TESTNET:
-                orderPageComponent.takeProfitTrailingCallbackPercentageSlider.minValue = BinanceConfig.TRAILING_MIN_PERCENTAGE;
-                orderPageComponent.takeProfitTrailingCallbackPercentageSlider.maxValue = BinanceConfig.TRAILING_MAX_PERCENTAGE;
-                orderPageComponent.takeProfitTrailingCallbackPercentageMinText.text = BinanceConfig.TRAILING_MIN_PERCENTAGE.ToString() + "%";
-                orderPageComponent.takeProfitTrailingCallbackPercentageMaxText.text = BinanceConfig.TRAILING_MAX_PERCENTAGE.ToString() + "%";
+                orderPageComponent.takeProfitTrailingCallbackPercentageCustomSlider.SetRangeAndPrecision(
+                    BinanceConfig.TRAILING_MIN_PERCENTAGE,
+                    BinanceConfig.TRAILING_MAX_PERCENTAGE
+                );
                 break;
         }
 
-        orderPageComponent.takeProfitTrailingCallbackPercentageInput.text = orderPageComponent.takeProfitTrailingCallbackPercentageSlider.value.ToString();
-
-        orderPageComponent.takeProfitTrailingCallbackPercentageSlider.onValueChanged.AddListener(value =>
-        {
-            double roundedValue = Utils.RoundTwoDecimal(value);
-            orderPageComponent.takeProfitTrailingCallbackPercentageSlider.value = (float)roundedValue;
-            orderPageComponent.takeProfitTrailingCallbackPercentageInput.text = roundedValue.ToString();
-        });
-        EventTrigger.Entry pointerUpEvent = new() { eventID = EventTriggerType.PointerUp };
-        pointerUpEvent.callback.AddListener(eventData => orderPageComponent.updateTakeProfitPrice = true);
-        orderPageComponent.takeProfitTrailingCallbackPercentageSliderTrigger.triggers.Add(pointerUpEvent);
-        orderPageComponent.takeProfitTrailingCallbackPercentageInput.onSubmit.AddListener(value =>
-        {
-            if (value.IsNullOrEmpty()) value = orderPageComponent.takeProfitTrailingCallbackPercentageSlider.value.ToString();
-            double parsedValue = Math.Min(Math.Max(double.Parse(value), BinanceConfig.TRAILING_MIN_PERCENTAGE), BinanceConfig.TRAILING_MAX_PERCENTAGE);
-            double roundedValue = Utils.RoundTwoDecimal(parsedValue);
-            orderPageComponent.takeProfitTrailingCallbackPercentageInput.text = roundedValue.ToString();
-            orderPageComponent.takeProfitTrailingCallbackPercentageSlider.value = (float)roundedValue;
-
-            orderPageComponent.updateTakeProfitPrice = true;
-        });
+        orderPageComponent.takeProfitTrailingCallbackPercentageCustomSlider.onSliderUp.AddListener(() => orderPageComponent.updateTakeProfitPrice = true);
+        orderPageComponent.takeProfitTrailingCallbackPercentageCustomSlider.onInputSubmit.AddListener(value => orderPageComponent.updateTakeProfitPrice = true);
     }
     void ForSettingPageComponent()
     {
@@ -63,35 +41,18 @@ public class Slider_OrderPageTakeProfitTrailingCallbackPercentageSystem : MonoBe
         {
             case PlatformEnum.BINANCE:
             case PlatformEnum.BINANCE_TESTNET:
-                settingPageComponent.takeProfitTrailingCallbackPercentageSlider.minValue = BinanceConfig.TRAILING_MIN_PERCENTAGE;
-                settingPageComponent.takeProfitTrailingCallbackPercentageSlider.maxValue = BinanceConfig.TRAILING_MAX_PERCENTAGE;
-                settingPageComponent.takeProfitTrailingCallbackPercentageMinText.text = BinanceConfig.TRAILING_MIN_PERCENTAGE.ToString() + "%";
-                settingPageComponent.takeProfitTrailingCallbackPercentageMaxText.text = BinanceConfig.TRAILING_MAX_PERCENTAGE.ToString() + "%";
+                settingPageComponent.takeProfitTrailingCallbackPercentageCustomSlider.SetRangeAndPrecision(
+                    BinanceConfig.TRAILING_MIN_PERCENTAGE,
+                    BinanceConfig.TRAILING_MAX_PERCENTAGE
+                );
                 break;
         }
 
-        settingPageComponent.takeProfitTrailingCallbackPercentageInput.text = settingPageComponent.takeProfitTrailingCallbackPercentageSlider.value.ToString();
-
-        settingPageComponent.takeProfitTrailingCallbackPercentageSlider.onValueChanged.AddListener(value =>
+        settingPageComponent.takeProfitTrailingCallbackPercentageCustomSlider.onSliderMove.AddListener(value => profileComponent.activeProfile.preference.order.takeProfitTrailingCallbackPercentage = value);
+        settingPageComponent.takeProfitTrailingCallbackPercentageCustomSlider.onSliderUp.AddListener(() => settingPageComponent.updatePreferenceToServer = true);
+        settingPageComponent.takeProfitTrailingCallbackPercentageCustomSlider.onInputSubmit.AddListener(value =>
         {
-            double roundedValue = Utils.RoundTwoDecimal(value);
-            settingPageComponent.takeProfitTrailingCallbackPercentageSlider.value = (float)roundedValue;
-            settingPageComponent.takeProfitTrailingCallbackPercentageInput.text = roundedValue.ToString();
-
-            profileComponent.activeProfile.preference.order.takeProfitTrailingCallbackPercentage = roundedValue;
-        });
-        EventTrigger.Entry pointerUpEvent = new() { eventID = EventTriggerType.PointerUp };
-        pointerUpEvent.callback.AddListener(eventData => settingPageComponent.updatePreferenceToServer = true);
-        settingPageComponent.takeProfitTrailingCallbackPercentageSliderTrigger.triggers.Add(pointerUpEvent);
-        settingPageComponent.takeProfitTrailingCallbackPercentageInput.onSubmit.AddListener(value =>
-        {
-            if (value.IsNullOrEmpty()) value = settingPageComponent.takeProfitTrailingCallbackPercentageSlider.value.ToString();
-            double parsedValue = Math.Min(Math.Max(double.Parse(value), BinanceConfig.TRAILING_MIN_PERCENTAGE), BinanceConfig.TRAILING_MAX_PERCENTAGE);
-            double roundedValue = Utils.RoundTwoDecimal(parsedValue);
-            settingPageComponent.takeProfitTrailingCallbackPercentageInput.text = roundedValue.ToString();
-            settingPageComponent.takeProfitTrailingCallbackPercentageSlider.value = (float)roundedValue;
-
-            profileComponent.activeProfile.preference.order.takeProfitTrailingCallbackPercentage = roundedValue;
+            profileComponent.activeProfile.preference.order.takeProfitTrailingCallbackPercentage = value;
             settingPageComponent.updatePreferenceToServer = true;
         });
     }

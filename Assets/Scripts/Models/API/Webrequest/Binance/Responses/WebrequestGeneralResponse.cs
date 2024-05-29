@@ -7,7 +7,7 @@ namespace Binance
     [Serializable]
     public class WebrequestGeneralResponse
     {
-        public long? code;
+        public int? code;
         public string? msg;
     }
 }

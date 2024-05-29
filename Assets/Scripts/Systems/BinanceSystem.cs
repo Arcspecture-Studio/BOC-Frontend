@@ -56,7 +56,7 @@ public class BinanceSystem : MonoBehaviour
     //         binanceComponent.walletBalances.Clear();
     //         response.ForEach(asset =>
     //         {
-    //             binanceComponent.walletBalances.Add(asset.asset, double.Parse(asset.balance));
+    //             binanceComponent.walletBalances.Add(asset.asset, float.Parse(asset.balance));
     //         });
     //     }
     // }
@@ -87,12 +87,12 @@ public class BinanceSystem : MonoBehaviour
     //             binanceComponent.allSymbols.Add(symbol.symbol);
     //             binanceComponent.marginAssets.TryAdd(symbol.symbol, symbol.marginAsset);
     //             binanceComponent.quantityPrecisions.TryAdd(symbol.symbol, symbol.quantityPrecision);
-    //             long pricePrecision = symbol.pricePrecision;
+    //             int pricePrecision = symbol.pricePrecision;
     //             symbol.filters.ForEach(filter =>
     //             {
     //                 if (filter.tickSize != null)
     //                 {
-    //                     pricePrecision = Math.Min(Utils.CountDecimalPlaces(double.Parse(filter.tickSize)), pricePrecision);
+    //                     pricePrecision = Mathf.Min(Utils.CountDecimalPlaces(float.Parse(filter.tickSize)), pricePrecision);
     //                 }
     //             });
     //             binanceComponent.pricePrecisions.TryAdd(symbol.symbol, pricePrecision);
