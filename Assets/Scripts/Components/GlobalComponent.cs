@@ -10,8 +10,6 @@ public class GlobalComponent : MonoBehaviour
         else Destroy(gameObject);
     }
 
-    public BinanceComponent binanceComponent;
-    public BinanceComponent binanceTestnetComponent;
     public WebsocketComponent websocketComponent;
     public WebrequestComponent webrequestComponent;
     public InputComponent inputComponent;

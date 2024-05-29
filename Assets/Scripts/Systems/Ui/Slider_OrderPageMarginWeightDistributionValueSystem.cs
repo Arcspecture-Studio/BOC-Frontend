@@ -16,12 +16,18 @@ public class Slider_OrderPageMarginWeightDistributionValueSystem : MonoBehaviour
     void ForOrderPageComponent()
     {
         if (orderPageComponent == null) return;
-        orderPageComponent.marginWeightDistributionValueCustomSlider.SetRangeAndPrecision(OrderConfig.marginWeightDistributionValueMin, OrderConfig.marginWeightDistributionValueMax);
+        orderPageComponent.marginWeightDistributionValueCustomSlider.SetRangeAndPrecision(
+            OrderConfig.marginWeightDistributionValueMin,
+            OrderConfig.marginWeightDistributionValueMax
+        );
     }
     void ForSettingPageComponent()
     {
         if (settingPageComponent == null) return;
-        settingPageComponent.marginWeightDistributionValueCustomSlider.SetRangeAndPrecision(OrderConfig.marginWeightDistributionValueMin, OrderConfig.marginWeightDistributionValueMax);
+        settingPageComponent.marginWeightDistributionValueCustomSlider.SetRangeAndPrecision(
+            OrderConfig.marginWeightDistributionValueMin,
+            OrderConfig.marginWeightDistributionValueMax
+        );
 
         settingPageComponent.marginWeightDistributionValueCustomSlider.onSliderMove.AddListener(value => profileComponent.activeProfile.preference.order.marginWeightDistributionValue = value);
         settingPageComponent.marginWeightDistributionValueCustomSlider.onSliderUp.AddListener(() => settingPageComponent.updatePreferenceToServer = true);

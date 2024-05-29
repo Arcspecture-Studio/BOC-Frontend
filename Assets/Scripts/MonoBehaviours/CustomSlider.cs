@@ -21,7 +21,7 @@ public class CustomSlider : MonoBehaviour
     [HideInInspector] public UnityEvent<float> onSliderMove = new();
     [HideInInspector] public UnityEvent onSliderUp = new();
     [HideInInspector] public UnityEvent<float> onInputSubmit = new();
-    int precision;
+    int precision = 2;
 
     void Start()
     {
@@ -32,7 +32,7 @@ public class CustomSlider : MonoBehaviour
         sliderTrigger.triggers.Add(pointerUpEvent);
     }
 
-    public void SetRangeAndPrecision(float min, float max, float defaultValue = 0, int precision = 2)
+    public void SetRangeAndPrecision(float min, float max, float defaultValue = float.NaN, int precision = 2)
     {
         slider.minValue = min;
         slider.maxValue = max;
@@ -40,7 +40,7 @@ public class CustomSlider : MonoBehaviour
         maxText.text = max.ToString() + postfix;
         this.precision = precision;
 
-        SetValue(defaultValue);
+        SetValue(float.IsNaN(defaultValue) ? slider.value : defaultValue);
     }
     public void SetValue(float value)
     {
