@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-public class Slider_OrderPageTakeProfitTrailingCallbackPercentageSystem : MonoBehaviour
+public class Slider_TakeProfitTrailingCallbackPercentageSystem : MonoBehaviour
 {
     [SerializeField] OrderPageComponent orderPageComponent;
     [SerializeField] SettingPageComponent settingPageComponent;
