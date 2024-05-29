@@ -168,6 +168,7 @@ public class OrderPageSystem : MonoBehaviour
         orderPageComponent.marginWeightDistributionValueCustomSlider.SetValue(preference.order.marginWeightDistributionValue);
         orderPageComponent.takeProfitTypeDropdown.value = (int)preference.order.takeProfitType;
         orderPageComponent.riskRewardRatioInput.text = preference.order.riskRewardRatio.ToString();
+        orderPageComponent.takeProfitQuantityPercentageCustomSlider.SetValue(preference.order.takeProfitQuantityPercentage);
         orderPageComponent.takeProfitTrailingCallbackPercentageCustomSlider.SetValue(preference.order.takeProfitTrailingCallbackPercentage);
         orderPageComponent.orderTypeDropdown.value = (int)preference.order.orderType;
     }

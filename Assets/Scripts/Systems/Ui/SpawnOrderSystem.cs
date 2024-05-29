@@ -57,6 +57,7 @@ public class SpawnOrderSystem : MonoBehaviour
         orderPageComponent.stopLossInput.text = Utils.RoundTwoDecimal(response.marginCalculator.stopLossPrice).ToString();
         orderPageComponent.takeProfitTypeDropdown.value = (int)response.marginCalculator.takeProfitType;
         orderPageComponent.riskRewardRatioInput.text = response.marginCalculator.riskRewardRatio.ToString();
+        orderPageComponent.takeProfitQuantityPercentageCustomSlider.SetValue(response.marginCalculator.takeProfitQuantityPercentage);
         orderPageComponent.takeProfitTrailingCallbackPercentageCustomSlider.SetValue(response.marginCalculator.takeProfitTrailingCallbackPercentage);
         orderPageComponent.orderTypeDropdown.value = (int)response.orderType;
         orderPageComponent.marginDistributionModeDropdown.value = response.marginCalculator.weightedQuantity ? 1 : 0;

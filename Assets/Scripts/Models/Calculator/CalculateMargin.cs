@@ -12,6 +12,7 @@ public class CalculateMargin
     public float stopLossPrice;
     public TakeProfitTypeEnum takeProfitType;
     public float riskRewardRatio;
+    public float takeProfitQuantityPercentage;
     public float takeProfitTrailingCallbackPercentage;
     public float feeRate;
     public int quantityPrecision;

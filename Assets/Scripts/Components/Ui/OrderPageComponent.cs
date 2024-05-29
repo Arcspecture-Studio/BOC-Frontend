@@ -31,6 +31,7 @@ public class OrderPageComponent : MonoBehaviour
     public TMP_InputField riskRewardRatioInput;
     public Button riskRewardMinusButton;
     public Button riskRewardAddButton;
+    public CustomSlider takeProfitQuantityPercentageCustomSlider;
     public CustomSlider takeProfitTrailingCallbackPercentageCustomSlider;
     public GameObject orderTypeObject;
     public TMP_Dropdown orderTypeDropdown;

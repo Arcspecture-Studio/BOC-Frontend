@@ -48,8 +48,10 @@ public class Slider_TakeProfitTrailingCallbackPercentageSystem : MonoBehaviour
                 break;
         }
 
-        settingPageComponent.takeProfitTrailingCallbackPercentageCustomSlider.onSliderMove.AddListener(value => profileComponent.activeProfile.preference.order.takeProfitTrailingCallbackPercentage = value);
-        settingPageComponent.takeProfitTrailingCallbackPercentageCustomSlider.onSliderUp.AddListener(() => settingPageComponent.updatePreferenceToServer = true);
+        settingPageComponent.takeProfitTrailingCallbackPercentageCustomSlider.onSliderMove.AddListener(value =>
+        profileComponent.activeProfile.preference.order.takeProfitTrailingCallbackPercentage = value);
+        settingPageComponent.takeProfitTrailingCallbackPercentageCustomSlider.onSliderUp.AddListener(() =>
+        settingPageComponent.updatePreferenceToServer = true);
         settingPageComponent.takeProfitTrailingCallbackPercentageCustomSlider.onInputSubmit.AddListener(value =>
         {
             profileComponent.activeProfile.preference.order.takeProfitTrailingCallbackPercentage = value;

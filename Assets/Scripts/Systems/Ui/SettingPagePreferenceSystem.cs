@@ -108,6 +108,7 @@ public class SettingPagePreferenceSystem : MonoBehaviour
         settingPageComponent.marginWeightDistributionValueCustomSlider.SetValue(preferenceOrder.marginWeightDistributionValue);
         settingPageComponent.takeProfitTypeDropdown.value = (int)preferenceOrder.takeProfitType;
         settingPageComponent.riskRewardRatioInput.text = preferenceOrder.riskRewardRatio.ToString();
+        settingPageComponent.takeProfitQuantityPercentageCustomSlider.SetValue(preferenceOrder.takeProfitQuantityPercentage);
         settingPageComponent.takeProfitTrailingCallbackPercentageCustomSlider.SetValue(preferenceOrder.takeProfitTrailingCallbackPercentage);
         settingPageComponent.orderTypeDropdown.value = (int)preferenceOrder.orderType;
 

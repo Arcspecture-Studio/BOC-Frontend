@@ -46,6 +46,7 @@ public class SettingPageComponent : MonoBehaviour
     public TMP_Dropdown takeProfitTypeDropdown;
     public GameObject riskRewardRatioObject;
     public TMP_InputField riskRewardRatioInput;
+    public CustomSlider takeProfitQuantityPercentageCustomSlider;
     public CustomSlider takeProfitTrailingCallbackPercentageCustomSlider;
     public TMP_Dropdown orderTypeDropdown;
     #endregion

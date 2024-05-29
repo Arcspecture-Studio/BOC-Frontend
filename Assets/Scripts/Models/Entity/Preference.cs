@@ -17,6 +17,7 @@ public class PreferenceOrder
     public float marginWeightDistributionValue;
     public TakeProfitTypeEnum takeProfitType;
     public float riskRewardRatio;
+    public float takeProfitQuantityPercentage;
     public float takeProfitTrailingCallbackPercentage;
     public OrderTypeEnum orderType;
 }

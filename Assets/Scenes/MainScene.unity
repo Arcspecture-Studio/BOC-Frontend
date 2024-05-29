@@ -19282,6 +19282,7 @@ MonoBehaviour:
   takeProfitTypeDropdown: {fileID: 1293686962}
   riskRewardRatioObject: {fileID: 1139313272}
   riskRewardRatioInput: {fileID: 1919628519}
+  takeProfitQuantityPercentageCustomSlider: {fileID: 867372053}
   takeProfitTrailingCallbackPercentageCustomSlider: {fileID: 1171171573}
   orderTypeDropdown: {fileID: 76029976}
   pageMoveDuration: 0.4
@@ -23275,6 +23276,7 @@ GameObject:
   m_Component:
   - component: {fileID: 867372052}
   - component: {fileID: 867372053}
+  - component: {fileID: 867372054}
   m_Layer: 5
   m_Name: Take Profit Quantity Percentage
   m_TagString: Untagged
@@ -23330,6 +23332,20 @@ MonoBehaviour:
   onInputSubmit:
     m_PersistentCalls:
       m_Calls: []
+--- !u!114 &867372054
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 867372051}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ae97f1d37877a024783cf2f86ae48cd0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  orderPageComponent: {fileID: 0}
+  settingPageComponent: {fileID: 680527080}
 --- !u!1 &877538928
 GameObject:
   m_ObjectHideFlags: 0
