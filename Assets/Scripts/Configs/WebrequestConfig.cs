@@ -2,5 +2,5 @@
 {
     public static readonly string BINANCE_HOST_TEST = "https://testnet.binancefuture.com";
     public static readonly string BINANCE_HOST = "https://fapi.binance.com";
-    public static readonly long BINANCE_RECV_WINDOW = 5000;
+    public static readonly int BINANCE_RECV_WINDOW = 5000;
 }

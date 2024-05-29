@@ -43,19 +43,21 @@ public class SettingPageComponent : MonoBehaviour
     public TMP_InputField lossPercentageInput;
     public TMP_InputField lossAmountInput;
     public TMP_Dropdown marginDistributionModeDropdown;
-    public GameObject marginWeightDistributionValueObject;
-    public Slider marginWeightDistributionValueSlider;
-    public EventTrigger marginWeightDistributionValueSliderTrigger;
-    public TMP_InputField marginWeightDistributionValueInput;
+    public CustomSlider marginWeightDistributionValueCustomSlider;
+    // public GameObject marginWeightDistributionValueObject; // TODO: remove
+    // public Slider marginWeightDistributionValueSlider;
+    // public EventTrigger marginWeightDistributionValueSliderTrigger;
+    // public TMP_InputField marginWeightDistributionValueInput;
     public TMP_Dropdown takeProfitTypeDropdown;
     public GameObject riskRewardRatioObject;
     public TMP_InputField riskRewardRatioInput;
-    public GameObject takeProfitTrailingCallbackPercentageObject;
-    public Slider takeProfitTrailingCallbackPercentageSlider;
-    public EventTrigger takeProfitTrailingCallbackPercentageSliderTrigger;
-    public TMP_Text takeProfitTrailingCallbackPercentageMinText;
-    public TMP_Text takeProfitTrailingCallbackPercentageMaxText;
-    public TMP_InputField takeProfitTrailingCallbackPercentageInput;
+    public CustomSlider takeProfitTrailingCallbackPercentageCustomSlider;
+    // public GameObject takeProfitTrailingCallbackPercentageObject; // TODO: remove
+    // public Slider takeProfitTrailingCallbackPercentageSlider;
+    // public EventTrigger takeProfitTrailingCallbackPercentageSliderTrigger;
+    // public TMP_Text takeProfitTrailingCallbackPercentageMinText;
+    // public TMP_Text takeProfitTrailingCallbackPercentageMaxText;
+    // public TMP_InputField takeProfitTrailingCallbackPercentageInput;
     public TMP_Dropdown orderTypeDropdown;
     #endregion
 

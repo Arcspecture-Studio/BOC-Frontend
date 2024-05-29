@@ -1,19 +1,17 @@
-using TMPro;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.UI;
 
 public class ClosePositionPromptComponent : MonoBehaviour
 {
-    public TMP_Text minQuantityText;
-    public TMP_Text maxQuantityText;
-    public Slider quantitySlider;
-    public TMP_InputField quantityInput;
+    public CustomSlider customSlider;
+    // public TMP_Text minQuantityText; // TODO: remove
+    // public TMP_Text maxQuantityText;
+    // public Slider quantitySlider;
+    // public TMP_InputField quantityInput;
     public Button closePositionButton;
     public Button cancelButton;
 
-    public float minQuantity;
-    public float maxQuantity;
     private bool _active;
     public bool active
     {
@@ -25,7 +23,7 @@ public class ClosePositionPromptComponent : MonoBehaviour
         }
     }
     [HideInInspector] public UnityEvent<bool> onChange_active = new();
-    public OrderPageComponent orderPageComponent;
+    [HideInInspector] public OrderPageComponent orderPageComponent;
     public OrderPageComponent show
     {
         set

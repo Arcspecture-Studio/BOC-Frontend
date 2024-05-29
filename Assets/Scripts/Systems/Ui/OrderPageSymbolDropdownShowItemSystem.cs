@@ -7,13 +7,14 @@ public class OrderPageSymbolDropdownShowItemSystem : MonoBehaviour
     [SerializeField] OrderPageSymbolDropdownComponent orderPageSymbolDropdownComponent;
     RectTransform rectTransform;
     List<TMP_Text> texts;
-    long count;
+    int count;
 
     void Start()
     {
         rectTransform = GetComponent<RectTransform>();
         texts = new List<TMP_Text>();
-        for(int i = 0; i < transform.childCount; i++) {
+        for (int i = 0; i < transform.childCount; i++)
+        {
             texts.Add(transform.GetChild(i).GetChild(2).GetComponent<TMP_Text>());
         }
     }
@@ -21,7 +22,7 @@ public class OrderPageSymbolDropdownShowItemSystem : MonoBehaviour
     {
         if (count == orderPageSymbolDropdownComponent.symbols.Count) return;
         count = orderPageSymbolDropdownComponent.symbols.Count;
-        long activeChildCounts = 0;
+        int activeChildCounts = 0;
         for (int i = 1; i < texts.Count; i++)
         {
             bool active = orderPageSymbolDropdownComponent.symbols.Contains(texts[i].text);

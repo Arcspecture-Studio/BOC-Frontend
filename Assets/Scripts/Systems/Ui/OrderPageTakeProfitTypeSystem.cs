@@ -15,22 +15,24 @@ public class OrderPageTakeProfitTypeSystem : MonoBehaviour
     {
         if (orderPageComponent == null) return;
         orderPageComponent.riskRewardRatioObject.SetActive(orderPageComponent.lockForEdit && orderPageComponent.takeProfitTypeDropdown.value > (int)TakeProfitTypeEnum.NONE);
-        orderPageComponent.takeProfitTrailingCallbackPercentageObject.SetActive(orderPageComponent.lockForEdit && orderPageComponent.takeProfitTypeDropdown.value == takeOnReturnTrailingEnum);
+        orderPageComponent.takeProfitTrailingCallbackPercentageCustomSlider.gameObject.SetActive(orderPageComponent.lockForEdit && orderPageComponent.takeProfitTypeDropdown.value == takeOnReturnTrailingEnum);
         orderPageComponent.takeProfitTypeDropdown.onValueChanged.AddListener(value =>
         {
             orderPageComponent.riskRewardRatioObject.SetActive(orderPageComponent.lockForEdit && value > (int)TakeProfitTypeEnum.NONE);
-            orderPageComponent.takeProfitTrailingCallbackPercentageObject.SetActive(orderPageComponent.lockForEdit && value == takeOnReturnTrailingEnum);
+            orderPageComponent.takeProfitTrailingCallbackPercentageCustomSlider.gameObject.SetActive(orderPageComponent.lockForEdit && value == takeOnReturnTrailingEnum);
+
+            orderPageComponent.updateTakeProfitPrice = true;
         });
     }
     void ForSettingPageComponent()
     {
         if (settingPageComponent == null) return;
         settingPageComponent.riskRewardRatioObject.SetActive(settingPageComponent.takeProfitTypeDropdown.value != (int)TakeProfitTypeEnum.NONE);
-        settingPageComponent.takeProfitTrailingCallbackPercentageObject.SetActive(settingPageComponent.takeProfitTypeDropdown.value == takeOnReturnTrailingEnum);
+        settingPageComponent.takeProfitTrailingCallbackPercentageCustomSlider.gameObject.SetActive(settingPageComponent.takeProfitTypeDropdown.value == takeOnReturnTrailingEnum);
         settingPageComponent.takeProfitTypeDropdown.onValueChanged.AddListener(value =>
         {
             settingPageComponent.riskRewardRatioObject.SetActive(value != (int)TakeProfitTypeEnum.NONE);
-            settingPageComponent.takeProfitTrailingCallbackPercentageObject.SetActive(value == takeOnReturnTrailingEnum);
+            settingPageComponent.takeProfitTrailingCallbackPercentageCustomSlider.gameObject.SetActive(value == takeOnReturnTrailingEnum);
         });
     }
 }

@@ -16,31 +16,31 @@ public class Depth
 [Serializable]
 public class BarData
 {
-    public double price;
-    public double quantity;
+    public float price;
+    public float quantity;
     public BarData() { }
     public BarData(List<string> array)
     {
-        price = double.Parse(array[0]);
-        quantity = double.Parse(array[1]);
+        price = float.Parse(array[0]);
+        quantity = float.Parse(array[1]);
     }
 }
 [Serializable]
 public class DepthResult
 {
-    public double totalQuantityOnAskSide;
-    public double totalQuantityOnBidSide;
-    public double totalAmountOnAskSide;
-    public double totalAmountOnBidSide;
-    public double impactAskPrice;
-    public double impactBidPrice;
-    public double impactAskPricePercentage;
-    public double impactBidPricePercentage;
-    public double impactAskRatio;
-    public double impactBidRatio;
+    public float totalQuantityOnAskSide;
+    public float totalQuantityOnBidSide;
+    public float totalAmountOnAskSide;
+    public float totalAmountOnBidSide;
+    public float impactAskPrice;
+    public float impactBidPrice;
+    public float impactAskPricePercentage;
+    public float impactBidPricePercentage;
+    public float impactAskRatio;
+    public float impactBidRatio;
 
-    public DepthResult(double totalQuantityOnAskSide, double totalQuantityOnBidSide, double totalAmountOnAskSide, double totalAmountOnBidSide,
-    double impactAskPrice, double impactBidPrice, double impactAskPricePercentage, double impactBidPricePercentage, double impactAskRatio, double impactBidRatio)
+    public DepthResult(float totalQuantityOnAskSide, float totalQuantityOnBidSide, float totalAmountOnAskSide, float totalAmountOnBidSide,
+    float impactAskPrice, float impactBidPrice, float impactAskPricePercentage, float impactBidPricePercentage, float impactAskRatio, float impactBidRatio)
     {
         this.totalQuantityOnAskSide = totalQuantityOnAskSide;
         this.totalQuantityOnBidSide = totalQuantityOnBidSide;

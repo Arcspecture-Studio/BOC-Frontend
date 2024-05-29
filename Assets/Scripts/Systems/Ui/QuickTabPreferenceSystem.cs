@@ -67,8 +67,8 @@ public class QuickTabPreferenceSystem : MonoBehaviour
                 value = profileComponent.activeProfile.preference.quickOrder.atrMultiplier.ToString();
                 quickTabComponent.atrMultiplierInput.text = value;
             }
-            if (profileComponent.activeProfile.preference.quickOrder.atrMultiplier == double.Parse(value)) return;
-            profileComponent.activeProfile.preference.quickOrder.atrMultiplier = double.Parse(value);
+            if (profileComponent.activeProfile.preference.quickOrder.atrMultiplier == float.Parse(value)) return;
+            profileComponent.activeProfile.preference.quickOrder.atrMultiplier = float.Parse(value);
             settingPageComponent.updatePreferenceToServer = true;
         });
     }

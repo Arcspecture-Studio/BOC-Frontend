@@ -5,9 +5,9 @@ public class ShowVisibilityBasedOnNoOfChild : MonoBehaviour
 {
     public GameObject visibleObject;
     public Transform parent;
-    public long targetChildCountMin;
-    public long targetChildCountMax;
-    long childCount;
+    public int targetChildCountMin;
+    public int targetChildCountMax;
+    int childCount;
 
     void Start()
     {

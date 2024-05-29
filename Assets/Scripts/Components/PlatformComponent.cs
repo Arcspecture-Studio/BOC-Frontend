@@ -79,7 +79,7 @@ public class PlatformComponent : MonoBehaviour
             platforms[GlobalComponent.instance.profileComponent.activeProfile.platformId].marginAssets = value;
         }
     }
-    public Dictionary<string, long> quantityPrecisions
+    public Dictionary<string, int> quantityPrecisions
     {
         get
         {
@@ -94,7 +94,7 @@ public class PlatformComponent : MonoBehaviour
             platforms[GlobalComponent.instance.profileComponent.activeProfile.platformId].quantityPrecisions = value;
         }
     }
-    public Dictionary<string, long> pricePrecisions
+    public Dictionary<string, int> pricePrecisions
     {
         get
         {
@@ -109,7 +109,7 @@ public class PlatformComponent : MonoBehaviour
             platforms[GlobalComponent.instance.profileComponent.activeProfile.platformId].pricePrecisions = value;
         }
     }
-    public Dictionary<string, double?> fees
+    public Dictionary<string, float?> fees
     {
         get
         {
@@ -124,7 +124,7 @@ public class PlatformComponent : MonoBehaviour
             platforms[GlobalComponent.instance.profileComponent.activeProfile.platformId].fees = value;
         }
     }
-    public SerializedDictionary<string, double> walletBalances
+    public SerializedDictionary<string, float> walletBalances
     {
         get
         {

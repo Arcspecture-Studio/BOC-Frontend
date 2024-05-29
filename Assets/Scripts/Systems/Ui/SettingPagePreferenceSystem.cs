@@ -48,15 +48,15 @@ public class SettingPagePreferenceSystem : MonoBehaviour
                 value = profileComponent.activeProfile.preference.order.lossPercentage.ToString();
                 settingPageComponent.lossPercentageInput.text = value;
             }
-            if (profileComponent.activeProfile.preference.order.lossPercentage == double.Parse(value)) return;
-            profileComponent.activeProfile.preference.order.lossPercentage = double.Parse(value);
+            if (profileComponent.activeProfile.preference.order.lossPercentage == float.Parse(value)) return;
+            profileComponent.activeProfile.preference.order.lossPercentage = float.Parse(value);
             settingPageComponent.updatePreferenceToServer = true;
         });
         settingPageComponent.lossAmountInput.onEndEdit.AddListener(value =>
         {
             if (value.IsNullOrEmpty()) value = "0";
-            if (profileComponent.activeProfile.preference.order.lossAmount == double.Parse(value)) return;
-            profileComponent.activeProfile.preference.order.lossAmount = double.Parse(value);
+            if (profileComponent.activeProfile.preference.order.lossAmount == float.Parse(value)) return;
+            profileComponent.activeProfile.preference.order.lossAmount = float.Parse(value);
             settingPageComponent.updatePreferenceToServer = true;
         });
         settingPageComponent.marginDistributionModeDropdown.onValueChanged.AddListener(value =>
@@ -76,8 +76,8 @@ public class SettingPagePreferenceSystem : MonoBehaviour
                 value = profileComponent.activeProfile.preference.order.riskRewardRatio.ToString();
                 settingPageComponent.riskRewardRatioInput.text = value;
             }
-            if (profileComponent.activeProfile.preference.order.riskRewardRatio == double.Parse(value)) return;
-            profileComponent.activeProfile.preference.order.riskRewardRatio = double.Parse(value);
+            if (profileComponent.activeProfile.preference.order.riskRewardRatio == float.Parse(value)) return;
+            profileComponent.activeProfile.preference.order.riskRewardRatio = float.Parse(value);
             settingPageComponent.updatePreferenceToServer = true;
         });
         settingPageComponent.orderTypeDropdown.onValueChanged.AddListener(value =>
@@ -105,12 +105,10 @@ public class SettingPagePreferenceSystem : MonoBehaviour
         settingPageComponent.lossAmountInput.text = preferenceOrder.lossAmount == 0 ?
         "" : preferenceOrder.lossAmount.ToString();
         settingPageComponent.marginDistributionModeDropdown.value = (int)preferenceOrder.marginDistributionMode;
-        settingPageComponent.marginWeightDistributionValueSlider.value = (float)preferenceOrder.marginWeightDistributionValue;
-        settingPageComponent.marginWeightDistributionValueInput.text = preferenceOrder.marginWeightDistributionValue.ToString();
+        settingPageComponent.marginWeightDistributionValueCustomSlider.SetValue(preferenceOrder.marginWeightDistributionValue);
         settingPageComponent.takeProfitTypeDropdown.value = (int)preferenceOrder.takeProfitType;
         settingPageComponent.riskRewardRatioInput.text = preferenceOrder.riskRewardRatio.ToString();
-        settingPageComponent.takeProfitTrailingCallbackPercentageSlider.value = (float)preferenceOrder.takeProfitTrailingCallbackPercentage;
-        settingPageComponent.takeProfitTrailingCallbackPercentageInput.text = preferenceOrder.takeProfitTrailingCallbackPercentage.ToString();
+        settingPageComponent.takeProfitTrailingCallbackPercentageCustomSlider.SetValue(preferenceOrder.takeProfitTrailingCallbackPercentage);
         settingPageComponent.orderTypeDropdown.value = (int)preferenceOrder.orderType;
 
         updatingUIFromProfile = false;

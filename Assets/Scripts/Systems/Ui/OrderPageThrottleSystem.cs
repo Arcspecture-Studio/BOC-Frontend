@@ -148,35 +148,35 @@ public class OrderPageThrottleSystem : MonoBehaviour
         {
             #region Prepare data
             // get input
-            double pnl = orderPageThrottleComponent.pnlInput.text.IsNullOrEmpty() ? double.NaN :
-                double.Parse(orderPageThrottleComponent.pnlInput.text);
-            double currentPrice = orderPageComponent.positionInfoAvgEntryPriceFilledText.text.IsNullOrEmpty() ? double.NaN :
-                double.Parse(orderPageComponent.positionInfoAvgEntryPriceFilledText.text);
-            double currentQuantity = orderPageComponent.positionInfoQuantityFilledText.text.IsNullOrEmpty() ? double.NaN :
-                double.Parse(orderPageComponent.positionInfoQuantityFilledText.text);
-            double throttlePrice = orderPageThrottleComponent.throttlePriceInput.text.IsNullOrEmpty() ? double.NaN :
-                double.Parse(orderPageThrottleComponent.throttlePriceInput.text);
-            double throttleQuantity = orderPageThrottleComponent.throttleQuantityInput.text.IsNullOrEmpty() ? 0 :
-                double.Parse(orderPageThrottleComponent.throttleQuantityInput.text);
-            double paidFundingAmount = orderPageComponent.positionInfoPaidFundingAmount.text.IsNullOrEmpty() ? 0 : double.Parse(orderPageComponent.positionInfoPaidFundingAmount.text);
+            float pnl = orderPageThrottleComponent.pnlInput.text.IsNullOrEmpty() ? float.NaN :
+                float.Parse(orderPageThrottleComponent.pnlInput.text);
+            float currentPrice = orderPageComponent.positionInfoAvgEntryPriceFilledText.text.IsNullOrEmpty() ? float.NaN :
+                float.Parse(orderPageComponent.positionInfoAvgEntryPriceFilledText.text);
+            float currentQuantity = orderPageComponent.positionInfoQuantityFilledText.text.IsNullOrEmpty() ? float.NaN :
+                float.Parse(orderPageComponent.positionInfoQuantityFilledText.text);
+            float throttlePrice = orderPageThrottleComponent.throttlePriceInput.text.IsNullOrEmpty() ? float.NaN :
+                float.Parse(orderPageThrottleComponent.throttlePriceInput.text);
+            float throttleQuantity = orderPageThrottleComponent.throttleQuantityInput.text.IsNullOrEmpty() ? 0 :
+                float.Parse(orderPageThrottleComponent.throttleQuantityInput.text);
+            float paidFundingAmount = orderPageComponent.positionInfoPaidFundingAmount.text.IsNullOrEmpty() ? 0 : float.Parse(orderPageComponent.positionInfoPaidFundingAmount.text);
 
             // validate input
-            if (pnl.Equals(double.NaN))
+            if (pnl.Equals(float.NaN))
             {
                 ShowPrompt("PNL cannot be empty.");
                 return;
             }
-            if (currentPrice.Equals(double.NaN))
+            if (currentPrice.Equals(float.NaN))
             {
                 ShowPrompt("Current price cannot be empty.");
                 return;
             }
-            if (currentQuantity.Equals(double.NaN))
+            if (currentQuantity.Equals(float.NaN))
             {
                 ShowPrompt("Current quantity cannot be empty.");
                 return;
             }
-            if (throttlePrice.Equals(double.NaN))
+            if (throttlePrice.Equals(float.NaN))
             {
                 if (throttleQuantity > 0)
                 {
@@ -228,8 +228,8 @@ public class OrderPageThrottleSystem : MonoBehaviour
         orderPageThrottleComponent.throttleQuantityInput.interactable = !lockForEdit.Value;
         if (lockForEdit.Value) orderPageThrottleComponent.calculateButtonText.text = "Edit Order";
         else orderPageThrottleComponent.calculateButtonText.text = "Calculate";
-        double throttleQuantity = orderPageThrottleComponent.throttleQuantityInput.text.IsNullOrEmpty() ? 0 :
-            double.Parse(orderPageThrottleComponent.throttleQuantityInput.text);
+        float throttleQuantity = orderPageThrottleComponent.throttleQuantityInput.text.IsNullOrEmpty() ? 0 :
+            float.Parse(orderPageThrottleComponent.throttleQuantityInput.text);
         orderPageThrottleComponent.resultObject.SetActive(lockForEdit.Value);
         orderPageThrottleComponent.orderTypeObject.SetActive(throttleQuantity > 0 && lockForEdit.Value);
         orderPageThrottleComponent.applyButtonObject.SetActive(lockForEdit.Value);

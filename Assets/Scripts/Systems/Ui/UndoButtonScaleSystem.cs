@@ -8,7 +8,7 @@ public class UndoButtonScaleSystem : MonoBehaviour
     Button button;
 
     Tween delayedCallTween = null;
-    long deletedOrders = 0;
+    int deletedOrders = 0;
     void Start()
     {
         orderPagesComponent = GlobalComponent.instance.orderPagesComponent;

@@ -23,7 +23,7 @@ public class OrderPagesComponent : MonoBehaviour
 
     [Header("Runtime")]
     public float currentXPos;
-    public long currentPageIndex;
+    public int currentPageIndex;
     public float orderPagesGap;
     public List<OrderPageComponent> childOrderPageComponents;
 }

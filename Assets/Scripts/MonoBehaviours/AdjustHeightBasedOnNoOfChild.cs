@@ -5,7 +5,7 @@ public class AdjustHeightBasedOnNoOfChild : MonoBehaviour
 {
     public Transform parent;
     public float childHeight;
-    public long childOffset;
+    public int childOffset;
     int childCount;
     int actualChildCount
     {

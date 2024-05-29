@@ -55,13 +55,12 @@ public class SpawnOrderSystem : MonoBehaviour
         #endregion
         orderPageComponent.entryTimesInput.text = response.marginCalculator.entryPrices.Count.ToString();
         orderPageComponent.stopLossInput.text = Utils.RoundTwoDecimal(response.marginCalculator.stopLossPrice).ToString();
-        orderPageComponent.takeProfitTypeDropdown.value = (int)response.takeProfitType;
+        orderPageComponent.takeProfitTypeDropdown.value = (int)response.marginCalculator.takeProfitType;
         orderPageComponent.riskRewardRatioInput.text = response.marginCalculator.riskRewardRatio.ToString();
-        orderPageComponent.takeProfitTrailingCallbackPercentageSlider.value = (float)response.marginCalculator.takeProfitTrailingCallbackPercentage;
-        orderPageComponent.takeProfitTrailingCallbackPercentageInput.text = response.marginCalculator.takeProfitTrailingCallbackPercentage.ToString();
+        orderPageComponent.takeProfitTrailingCallbackPercentageCustomSlider.SetValue(response.marginCalculator.takeProfitTrailingCallbackPercentage);
         orderPageComponent.orderTypeDropdown.value = (int)response.orderType;
         orderPageComponent.marginDistributionModeDropdown.value = response.marginCalculator.weightedQuantity ? 1 : 0;
-        orderPageComponent.marginWeightDistributionValueSlider.value = (float)response.marginCalculator.quantityWeight;
+        orderPageComponent.marginWeightDistributionValueCustomSlider.SetValue(response.marginCalculator.quantityWeight);
         orderPageComponent.marginCalculator = response.marginCalculator;
         orderPageComponent.positionInfoAvgEntryPriceFilledText.text = Utils.RoundNDecimal(response.averagePriceFilled, platformComponent.pricePrecisions[orderPageComponent.symbolDropdownComponent.selectedSymbol]).ToString();
         orderPageComponent.positionInfoQuantityFilledText.text = Utils.RoundNDecimal(response.quantityFilled, platformComponent.quantityPrecisions[orderPageComponent.symbolDropdownComponent.selectedSymbol]).ToString();

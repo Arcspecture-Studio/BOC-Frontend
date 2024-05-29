@@ -1,30 +1,30 @@
-﻿using System;
+﻿using UnityEngine;
 
 public class CalculateThrottle
 {
     // config
-    public double currentPrice;
-    public double currentQty;
-    public double throttlePrice;
-    public double throttleQty;
+    public float currentPrice;
+    public float currentQty;
+    public float throttlePrice;
+    public float throttleQty;
     public bool isLong;
-    public double feeRate;
-    public double realizedPnl;
-    public double paidFundingAmount;
-    public long quantityPrecision;
-    public long pricePrecision;
+    public float feeRate;
+    public float realizedPnl;
+    public float paidFundingAmount;
+    public int quantityPrecision;
+    public int pricePrecision;
 
     // runtime
-    public double totalQuantity;
-    public double avgPrice;
-    public double breakEvenPrice;
+    public float totalQuantity;
+    public float avgPrice;
+    public float breakEvenPrice;
 
-    public CalculateThrottle(double currentPrice, double currentQty, double throttlePrice, double throttleQty, double realizedPnl, double paidFundingAmount, bool isLong, double feeRate, long quantityPrecision, long pricePrecision)
+    public CalculateThrottle(float currentPrice, float currentQty, float throttlePrice, float throttleQty, float realizedPnl, float paidFundingAmount, bool isLong, float feeRate, int quantityPrecision, int pricePrecision)
     {
-        this.currentPrice = Math.Max(currentPrice, 0);
-        this.currentQty = Math.Max(currentQty, 0);
-        this.throttlePrice = Math.Max(throttlePrice, 0);
-        this.throttleQty = Math.Max(throttleQty, 0);
+        this.currentPrice = Mathf.Max(currentPrice, 0);
+        this.currentQty = Mathf.Max(currentQty, 0);
+        this.throttlePrice = Mathf.Max(throttlePrice, 0);
+        this.throttleQty = Mathf.Max(throttleQty, 0);
         this.realizedPnl = realizedPnl;
         this.paidFundingAmount = paidFundingAmount;
         this.isLong = isLong;
