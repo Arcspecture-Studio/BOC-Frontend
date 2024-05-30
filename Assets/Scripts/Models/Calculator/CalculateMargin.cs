@@ -220,7 +220,7 @@ public class CalculateMargin
         breakEvenPrices = new();
         for (int i = 0; i < avgEntryPrices.Count; i++)
         {
-            #region Calculate tp price
+            #region Calculate take profit price
             float cumQuantity = Utils.RoundNDecimal(cumQuantities[i] * Utils.PercentageToRate(takeProfitQuantityPercentage), quantityPrecision);
             float takeProfitPrice = (isLong ? 1 : -1) *
                 (avgEntryPrices[i] * cumQuantity * feeRate + totalLossAmount * riskRewardRatio +
