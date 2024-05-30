@@ -437,6 +437,7 @@ public class OrderPageSystem : MonoBehaviour
         orderPageComponent.resultComponent.gameObject.SetActive(lockForEdit.Value);
         orderPageComponent.takeProfitTypeObject.SetActive(lockForEdit.Value);
         orderPageComponent.riskRewardRatioObject.SetActive(orderPageComponent.lockForEdit && orderPageComponent.takeProfitTypeDropdown.value > (int)TakeProfitTypeEnum.NONE);
+        orderPageComponent.takeProfitQuantityPercentageCustomSlider.gameObject.SetActive(orderPageComponent.lockForEdit && orderPageComponent.takeProfitTypeDropdown.value > (int)TakeProfitTypeEnum.NONE);
         orderPageComponent.takeProfitTrailingCallbackPercentageCustomSlider.gameObject.SetActive(orderPageComponent.lockForEdit && orderPageComponent.takeProfitTypeDropdown.value == (int)TakeProfitTypeEnum.TRAILING);
         orderPageComponent.orderTypeObject.SetActive(lockForEdit.Value);
         orderPageComponent.applyButtonObject.SetActive(lockForEdit.Value);
@@ -503,7 +504,8 @@ public class OrderPageSystem : MonoBehaviour
             orderPageComponent.marginCalculator.RecalculateTakeProfitPrices(
                 (TakeProfitTypeEnum)orderPageComponent.takeProfitTypeDropdown.value,
                 float.Parse(orderPageComponent.riskRewardRatioInput.text),
-                float.Parse(orderPageComponent.takeProfitTrailingCallbackPercentageCustomSlider.input.text));
+                orderPageComponent.takeProfitQuantityPercentageCustomSlider.slider.value,
+                orderPageComponent.takeProfitTrailingCallbackPercentageCustomSlider.slider.value);
         }
         List<float> tpPrices = (TakeProfitTypeEnum)orderPageComponent.takeProfitTypeDropdown.value == TakeProfitTypeEnum.TRAILING ?
         orderPageComponent.marginCalculator.takeProfitTrailingPrices :

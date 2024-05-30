@@ -232,13 +232,10 @@ public class CalculateMargin
             if (float.IsNaN(takeProfitPrice) || float.IsInfinity(takeProfitPrice)) takeProfitPrice = 0;
             takeProfitPrices.Add(Utils.RoundNDecimal(Mathf.Max(takeProfitPrice, 0), pricePrecision));
 
-            if (takeProfitType == TakeProfitTypeEnum.TRAILING)
-            {
-                float percentage = takeProfitTrailingCallbackPercentage;
-                if (isLong) percentage *= -1;
-                takeProfitPrice = Utils.CalculateInitialPriceByMovingPercentage(percentage, takeProfitPrice);
-                takeProfitTrailingPrices.Add(Utils.RoundNDecimal(Mathf.Max(takeProfitPrice, 0), pricePrecision));
-            }
+            float percentage = takeProfitTrailingCallbackPercentage;
+            if (isLong) percentage *= -1;
+            takeProfitPrice = Utils.CalculateInitialPriceByMovingPercentage(percentage, takeProfitPrice);
+            takeProfitTrailingPrices.Add(Utils.RoundNDecimal(Mathf.Max(takeProfitPrice, 0), pricePrecision));
             #endregion
 
             #region Calculate break even price
@@ -259,10 +256,11 @@ public class CalculateMargin
         balanceAfterFullWin = balance + totalWinAmount;
     }
     public void RecalculateTakeProfitPrices(TakeProfitTypeEnum takeProfitType, float riskRewardRatio,
-        float takeProfitTrailingCallbackPercentage)
+        float takeProfitQuantityPercentage, float takeProfitTrailingCallbackPercentage) // only at frontend
     {
         this.takeProfitType = takeProfitType;
         this.riskRewardRatio = riskRewardRatio;
+        this.takeProfitQuantityPercentage = takeProfitQuantityPercentage;
         this.takeProfitTrailingCallbackPercentage = takeProfitTrailingCallbackPercentage;
         CalculateWinPercentageAndAmount();
     }
