@@ -221,7 +221,7 @@ public class CalculateMargin
         for (int i = 0; i < avgEntryPrices.Count; i++)
         {
             #region Calculate tp price
-            float cumQuantity = Utils.RoundNDecimal(cumQuantities[i] * Utils.RateToPercentage(takeProfitQuantityPercentage), quantityPrecision);
+            float cumQuantity = Utils.RoundNDecimal(cumQuantities[i] * Utils.PercentageToRate(takeProfitQuantityPercentage), quantityPrecision);
             float takeProfitPrice = (isLong ? 1 : -1) *
                 (avgEntryPrices[i] * cumQuantity * feeRate + totalLossAmount * riskRewardRatio +
                 (isLong ? cumQuantity * avgEntryPrices[i] : -cumQuantity * avgEntryPrices[i])) /
