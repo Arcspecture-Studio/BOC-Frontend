@@ -224,11 +224,11 @@ public class CalculateMargin
         for (int i = 0; i < avgEntryPrices.Count; i++)
         {
             #region Calculate take profit price
-            float cumQuantity = Utils.RoundNDecimal(cumQuantities[i] * Utils.PercentageToRate(takeProfitQuantityPercentage), quantityPrecision);
+            float takeProfitCumQuantity = Utils.RoundNDecimal(cumQuantities[i] * Utils.PercentageToRate(takeProfitQuantityPercentage), quantityPrecision);
             float takeProfitPrice = (isLong ? 1 : -1) *
-                (avgEntryPrices[i] * cumQuantity * feeRate + totalLossAmount * riskRewardRatio +
-                (isLong ? cumQuantity * avgEntryPrices[i] : -cumQuantity * avgEntryPrices[i])) /
-                (cumQuantity * (isLong ? 1 - feeRate : 1 + feeRate));
+                (avgEntryPrices[i] * takeProfitCumQuantity * feeRate + totalLossAmount * riskRewardRatio +
+                (isLong ? takeProfitCumQuantity * avgEntryPrices[i] : -takeProfitCumQuantity * avgEntryPrices[i])) /
+                (takeProfitCumQuantity * (isLong ? 1 - feeRate : 1 + feeRate));
             if (float.IsNaN(takeProfitPrice) || float.IsInfinity(takeProfitPrice)) takeProfitPrice = 0;
             takeProfitPrices.Add(Utils.RoundNDecimal(Mathf.Max(takeProfitPrice, 0), pricePrecision));
 
@@ -239,7 +239,7 @@ public class CalculateMargin
             #endregion
 
             #region Calculate break even price
-            float breakEvenCumQuantity = cumQuantities[i] - cumQuantity;
+            float breakEvenCumQuantity = cumQuantities[i] - takeProfitCumQuantity;
             float breakEvenPrice = (isLong ? 1 : -1) *
                 (avgEntryPrices[i] * breakEvenCumQuantity * feeRate +
                 (isLong ? breakEvenCumQuantity * avgEntryPrices[i] : -breakEvenCumQuantity * avgEntryPrices[i])) /
@@ -250,8 +250,9 @@ public class CalculateMargin
         }
 
         takeProfitPrice = takeProfitPrices[isLong ? 0 : ^1];
-        breakEvenPrice = takeProfitPrices[isLong ? 0 : ^1];
-        totalWinAmount = cumQuantities[isLong ? 0 : ^1] * Mathf.Abs(takeProfitPrice - avgEntryPrices[isLong ? 0 : ^1]) - takeProfitPrice * cumQuantities[isLong ? 0 : ^1] * feeRate - avgEntryPrices[isLong ? 0 : ^1] * cumQuantities[isLong ? 0 : ^1] * feeRate;
+        breakEvenPrice = breakEvenPrices[isLong ? 0 : ^1];
+        float cumQuantity = Utils.RoundNDecimal(cumQuantities[isLong ? 0 : ^1] * Utils.PercentageToRate(takeProfitQuantityPercentage), quantityPrecision);
+        totalWinAmount = cumQuantity * Mathf.Abs(takeProfitPrice - avgEntryPrices[isLong ? 0 : ^1]) - takeProfitPrice * cumQuantity * feeRate - avgEntryPrices[isLong ? 0 : ^1] * cumQuantity * feeRate;
         balanceIncrementRate = balance == 0 ? 0 : totalWinAmount / balance;
         balanceAfterFullWin = balance + totalWinAmount;
     }
