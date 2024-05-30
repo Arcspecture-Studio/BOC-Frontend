@@ -36,7 +36,7 @@ public static class Utils
     }
     public static float RoundTwoDecimal(float a)
     {
-        return Mathf.Round(a * 100) / 100;
+        return Mathf.Round(a * 100) / 100f;
     }
     public static float RoundNDecimal(float a, int n)
     {
@@ -45,12 +45,12 @@ public static class Utils
     }
     public static float TruncTwoDecimal(float a)
     {
-        return (int)(a * 100) / 100;
+        return Mathf.FloorToInt(a * 100) / 100f;
     }
     public static float TruncNDecimal(float a, int n)
     {
         float rounding = Mathf.Pow(10, n);
-        return (int)(a * rounding) / rounding;
+        return Mathf.FloorToInt(a * rounding) / rounding;
     }
     public static int CountDecimalPlaces(float value)
     {
