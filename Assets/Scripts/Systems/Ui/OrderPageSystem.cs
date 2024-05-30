@@ -309,7 +309,9 @@ public class OrderPageSystem : MonoBehaviour
         orderPageComponent.resultComponent.orderInfoDataObject.transform.GetChild(5).gameObject.SetActive(false);
         #endregion
         #region Prices & Quantities
-        List<float> tpPrices = orderPageComponent.marginCalculator.takeProfitPrices;
+        List<float> tpPrices = (TakeProfitTypeEnum)orderPageComponent.takeProfitTypeDropdown.value == TakeProfitTypeEnum.TRAILING ?
+        orderPageComponent.marginCalculator.takeProfitTrailingPrices :
+        orderPageComponent.marginCalculator.takeProfitPrices;
         for (int i = 0; i < orderPageComponent.marginCalculator.entryPrices.Count; i++)
         {
             #region Prices
@@ -503,7 +505,9 @@ public class OrderPageSystem : MonoBehaviour
                 float.Parse(orderPageComponent.riskRewardRatioInput.text),
                 float.Parse(orderPageComponent.takeProfitTrailingCallbackPercentageCustomSlider.input.text));
         }
-        List<float> tpPrices = orderPageComponent.marginCalculator.takeProfitPrices;
+        List<float> tpPrices = (TakeProfitTypeEnum)orderPageComponent.takeProfitTypeDropdown.value == TakeProfitTypeEnum.TRAILING ?
+        orderPageComponent.marginCalculator.takeProfitTrailingPrices :
+        orderPageComponent.marginCalculator.takeProfitPrices;
         #endregion
 
         #region Update value in game object for display

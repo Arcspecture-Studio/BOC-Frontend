@@ -37,6 +37,7 @@ public class CalculateMargin
     public List<float> breakEvenPrices;
     public float takeProfitPrice;
     public List<float> takeProfitPrices;
+    public List<float> takeProfitTrailingPrices;
     public float totalWinAmount;
     public float balanceIncrementRate;
     public float balanceAfterFullWin;
@@ -217,7 +218,9 @@ public class CalculateMargin
     void CalculateWinPercentageAndAmount()
     {
         takeProfitPrices = new();
+        takeProfitTrailingPrices = new();
         breakEvenPrices = new();
+
         for (int i = 0; i < avgEntryPrices.Count; i++)
         {
             #region Calculate take profit price
@@ -227,14 +230,15 @@ public class CalculateMargin
                 (isLong ? cumQuantity * avgEntryPrices[i] : -cumQuantity * avgEntryPrices[i])) /
                 (cumQuantity * (isLong ? 1 - feeRate : 1 + feeRate));
             if (float.IsNaN(takeProfitPrice) || float.IsInfinity(takeProfitPrice)) takeProfitPrice = 0;
+            takeProfitPrices.Add(Utils.RoundNDecimal(Mathf.Max(takeProfitPrice, 0), pricePrecision));
 
             if (takeProfitType == TakeProfitTypeEnum.TRAILING)
             {
                 float percentage = takeProfitTrailingCallbackPercentage;
                 if (isLong) percentage *= -1;
                 takeProfitPrice = Utils.CalculateInitialPriceByMovingPercentage(percentage, takeProfitPrice);
+                takeProfitTrailingPrices.Add(Utils.RoundNDecimal(Mathf.Max(takeProfitPrice, 0), pricePrecision));
             }
-            takeProfitPrices.Add(Utils.RoundNDecimal(Mathf.Max(takeProfitPrice, 0), pricePrecision));
             #endregion
 
             #region Calculate break even price
