@@ -8,6 +8,7 @@ public class InputComponent : MonoBehaviour
     public InputAction screenPos;
     public InputAction drag;
     public InputAction escape;
+    public InputAction space;
 
     void Awake()
     {
@@ -16,5 +17,6 @@ public class InputComponent : MonoBehaviour
         screenPos.Enable();
         drag.Enable();
         escape.Enable();
+        // space.Enable(); // DEBUG
     }
 }
