@@ -260,7 +260,7 @@ public class OrderPageSystem : MonoBehaviour
                 stopLossPrice,
                 (TakeProfitTypeEnum)orderPageComponent.takeProfitTypeDropdown.value,
                 riskRewardRatio,
-                orderPageComponent.takeProfitQuantityPercentageCustomSlider.slider.value,
+                (int)orderPageComponent.takeProfitQuantityPercentageCustomSlider.slider.value,
                 orderPageComponent.takeProfitTrailingCallbackPercentageCustomSlider.slider.value,
                 feeRate,
                 platformComponent.quantityPrecisions[orderPageComponent.symbolDropdownComponent.selectedSymbol],
@@ -504,7 +504,7 @@ public class OrderPageSystem : MonoBehaviour
             orderPageComponent.marginCalculator.RecalculateTakeProfitPrices(
                 (TakeProfitTypeEnum)orderPageComponent.takeProfitTypeDropdown.value,
                 float.Parse(orderPageComponent.riskRewardRatioInput.text),
-                orderPageComponent.takeProfitQuantityPercentageCustomSlider.slider.value,
+                (int)orderPageComponent.takeProfitQuantityPercentageCustomSlider.slider.value,
                 orderPageComponent.takeProfitTrailingCallbackPercentageCustomSlider.slider.value);
         }
         List<float> tpPrices = (TakeProfitTypeEnum)orderPageComponent.takeProfitTypeDropdown.value == TakeProfitTypeEnum.TRAILING ?
