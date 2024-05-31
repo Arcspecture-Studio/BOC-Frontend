@@ -16,7 +16,6 @@ public class LoadingSystem : MonoBehaviour
         inputComponent.space.started += Test;
 
         Deactive();
-
     }
 
     void ActiveOrDeactiveUi()
@@ -24,11 +23,11 @@ public class LoadingSystem : MonoBehaviour
         if (loadingComponent.active)
         {
             loadingComponent.gameObject.SetActive(loadingComponent.active);
-            loadingComponent.animator.Play("LoadingShow");
+            loadingComponent.animator.SetBool("show", true);
         }
         else
         {
-            loadingComponent.animator.SetBool("hide", true);
+            loadingComponent.animator.SetBool("show", false);
         }
     }
     void Deactive()
