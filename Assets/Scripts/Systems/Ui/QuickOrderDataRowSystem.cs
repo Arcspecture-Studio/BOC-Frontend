@@ -87,6 +87,10 @@ public class QuickOrderDataRowSystem : MonoBehaviour
         TMP_Text riskRewardRatioText = riskRewardRatio.GetComponent<TMP_Text>();
         riskRewardRatioText.text = "Risk Reward Ratio: " + quickOrderDataRowComponent.setting.order.riskRewardRatio.ToString();
 
+        GameObject takeProfitQuantityPercentage = Instantiate(quickOrderDataRowComponent.infoPanelData, quickOrderDataRowComponent.infoPanelContent);
+        TMP_Text takeProfitQuantityPercentageText = takeProfitQuantityPercentage.GetComponent<TMP_Text>();
+        takeProfitQuantityPercentageText.text = "Take Profit Quantity %: " + quickOrderDataRowComponent.setting.order.takeProfitQuantityPercentage.ToString();
+
         GameObject takeProfitTrailingCallbackPercentage = Instantiate(quickOrderDataRowComponent.infoPanelData, quickOrderDataRowComponent.infoPanelContent);
         TMP_Text takeProfitTrailingCallbackPercentageText = takeProfitTrailingCallbackPercentage.GetComponent<TMP_Text>();
         takeProfitTrailingCallbackPercentageText.text = "Take Profit Trailing Callback %: " + quickOrderDataRowComponent.setting.order.takeProfitTrailingCallbackPercentage.ToString();

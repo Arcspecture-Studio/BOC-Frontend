@@ -87,6 +87,10 @@ public class BotDataRowSystem : MonoBehaviour
         TMP_Text riskRewardRatioText = riskRewardRatio.GetComponent<TMP_Text>();
         riskRewardRatioText.text = "Risk Reward Ratio: " + botDataRowComponent.setting.order.riskRewardRatio.ToString();
 
+        GameObject takeProfitQuantityPercentage = Instantiate(botDataRowComponent.infoPanelData, botDataRowComponent.infoPanelContent);
+        TMP_Text takeProfitQuantityPercentageText = takeProfitQuantityPercentage.GetComponent<TMP_Text>();
+        takeProfitQuantityPercentageText.text = "Take Profit Quantity %: " + botDataRowComponent.setting.order.takeProfitQuantityPercentage.ToString();
+
         GameObject takeProfitTrailingCallbackPercentage = Instantiate(botDataRowComponent.infoPanelData, botDataRowComponent.infoPanelContent);
         TMP_Text takeProfitTrailingCallbackPercentageText = takeProfitTrailingCallbackPercentage.GetComponent<TMP_Text>();
         takeProfitTrailingCallbackPercentageText.text = "Take Profit Trailing Callback %: " + botDataRowComponent.setting.order.takeProfitTrailingCallbackPercentage.ToString();
