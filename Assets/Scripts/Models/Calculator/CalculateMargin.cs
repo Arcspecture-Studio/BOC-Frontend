@@ -12,7 +12,7 @@ public class CalculateMargin
     public float stopLossPrice;
     public TakeProfitTypeEnum takeProfitType;
     public float riskRewardRatio;
-    public float takeProfitQuantityPercentage;
+    public int takeProfitQuantityPercentage;
     public float takeProfitTrailingCallbackPercentage;
     public float feeRate;
     public int quantityPrecision;
@@ -50,7 +50,7 @@ public class CalculateMargin
         float stopLossPrice,
         TakeProfitTypeEnum takeProfitType,
         float riskRewardRatio,
-        float takeProfitQuantityPercentage,
+        int takeProfitQuantityPercentage,
         float takeProfitTrailingCallbackPercentage,
         float feeRate,
         int quantityPrecision,
@@ -257,7 +257,7 @@ public class CalculateMargin
         balanceAfterFullWin = balance + totalWinAmount;
     }
     public void RecalculateTakeProfitPrices(TakeProfitTypeEnum takeProfitType, float riskRewardRatio,
-        float takeProfitQuantityPercentage, float takeProfitTrailingCallbackPercentage) // only at frontend
+        int takeProfitQuantityPercentage, float takeProfitTrailingCallbackPercentage) // only at frontend
     {
         this.takeProfitType = takeProfitType;
         this.riskRewardRatio = riskRewardRatio;
