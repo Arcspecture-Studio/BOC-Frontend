@@ -2,7 +2,6 @@ using DG.Tweening;
 using TMPro;
 using UnityEngine;
 using UnityEngine.Events;
-using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
 public class SettingPageComponent : MonoBehaviour
@@ -44,20 +43,11 @@ public class SettingPageComponent : MonoBehaviour
     public TMP_InputField lossAmountInput;
     public TMP_Dropdown marginDistributionModeDropdown;
     public CustomSlider marginWeightDistributionValueCustomSlider;
-    // public GameObject marginWeightDistributionValueObject; // TODO: remove
-    // public Slider marginWeightDistributionValueSlider;
-    // public EventTrigger marginWeightDistributionValueSliderTrigger;
-    // public TMP_InputField marginWeightDistributionValueInput;
     public TMP_Dropdown takeProfitTypeDropdown;
     public GameObject riskRewardRatioObject;
     public TMP_InputField riskRewardRatioInput;
+    public CustomSlider takeProfitQuantityPercentageCustomSlider;
     public CustomSlider takeProfitTrailingCallbackPercentageCustomSlider;
-    // public GameObject takeProfitTrailingCallbackPercentageObject; // TODO: remove
-    // public Slider takeProfitTrailingCallbackPercentageSlider;
-    // public EventTrigger takeProfitTrailingCallbackPercentageSliderTrigger;
-    // public TMP_Text takeProfitTrailingCallbackPercentageMinText;
-    // public TMP_Text takeProfitTrailingCallbackPercentageMaxText;
-    // public TMP_InputField takeProfitTrailingCallbackPercentageInput;
     public TMP_Dropdown orderTypeDropdown;
     #endregion
 

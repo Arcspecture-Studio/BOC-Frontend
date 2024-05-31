@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-public class Slider_OrderPageTakeProfitTrailingCallbackPercentageSystem : MonoBehaviour
+public class Slider_TakeProfitTrailingCallbackPercentageSystem : MonoBehaviour
 {
     [SerializeField] OrderPageComponent orderPageComponent;
     [SerializeField] SettingPageComponent settingPageComponent;
@@ -48,8 +48,10 @@ public class Slider_OrderPageTakeProfitTrailingCallbackPercentageSystem : MonoBe
                 break;
         }
 
-        settingPageComponent.takeProfitTrailingCallbackPercentageCustomSlider.onSliderMove.AddListener(value => profileComponent.activeProfile.preference.order.takeProfitTrailingCallbackPercentage = value);
-        settingPageComponent.takeProfitTrailingCallbackPercentageCustomSlider.onSliderUp.AddListener(() => settingPageComponent.updatePreferenceToServer = true);
+        settingPageComponent.takeProfitTrailingCallbackPercentageCustomSlider.onSliderMove.AddListener(value =>
+        profileComponent.activeProfile.preference.order.takeProfitTrailingCallbackPercentage = value);
+        settingPageComponent.takeProfitTrailingCallbackPercentageCustomSlider.onSliderUp.AddListener(() =>
+        settingPageComponent.updatePreferenceToServer = true);
         settingPageComponent.takeProfitTrailingCallbackPercentageCustomSlider.onInputSubmit.AddListener(value =>
         {
             profileComponent.activeProfile.preference.order.takeProfitTrailingCallbackPercentage = value;

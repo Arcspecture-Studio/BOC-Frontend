@@ -5,10 +5,6 @@ using UnityEngine.UI;
 public class ClosePositionPromptComponent : MonoBehaviour
 {
     public CustomSlider customSlider;
-    // public TMP_Text minQuantityText; // TODO: remove
-    // public TMP_Text maxQuantityText;
-    // public Slider quantitySlider;
-    // public TMP_InputField quantityInput;
     public Button closePositionButton;
     public Button cancelButton;
 

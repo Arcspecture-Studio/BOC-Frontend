@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class Slider_OrderPageMarginWeightDistributionValueSystem : MonoBehaviour
+public class Slider_MarginWeightDistributionValueSystem : MonoBehaviour
 {
     [SerializeField] OrderPageComponent orderPageComponent;
     [SerializeField] SettingPageComponent settingPageComponent;

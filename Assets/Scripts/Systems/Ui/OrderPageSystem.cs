@@ -168,6 +168,7 @@ public class OrderPageSystem : MonoBehaviour
         orderPageComponent.marginWeightDistributionValueCustomSlider.SetValue(preference.order.marginWeightDistributionValue);
         orderPageComponent.takeProfitTypeDropdown.value = (int)preference.order.takeProfitType;
         orderPageComponent.riskRewardRatioInput.text = preference.order.riskRewardRatio.ToString();
+        orderPageComponent.takeProfitQuantityPercentageCustomSlider.SetValue(preference.order.takeProfitQuantityPercentage);
         orderPageComponent.takeProfitTrailingCallbackPercentageCustomSlider.SetValue(preference.order.takeProfitTrailingCallbackPercentage);
         orderPageComponent.orderTypeDropdown.value = (int)preference.order.orderType;
     }
@@ -202,7 +203,6 @@ public class OrderPageSystem : MonoBehaviour
             float takeProfitPrice = orderPageComponent.takeProfitInput.text.IsNullOrEmpty() ? float.NaN :
                 float.Parse(orderPageComponent.takeProfitInput.text);
             float riskRewardRatio = orderPageComponent.riskRewardRatioInput.text.IsNullOrEmpty() ? profileComponent.activeProfile.preference.order.riskRewardRatio : float.Parse(orderPageComponent.riskRewardRatioInput.text);
-            float takeProfitTrailingCallbackPercentage = orderPageComponent.takeProfitTrailingCallbackPercentageCustomSlider.input.text.IsNullOrEmpty() ? profileComponent.activeProfile.preference.order.takeProfitTrailingCallbackPercentage : float.Parse(orderPageComponent.takeProfitTrailingCallbackPercentageCustomSlider.input.text);
 
             // validate input
             if (walletUnit.IsNullOrEmpty())
@@ -260,7 +260,8 @@ public class OrderPageSystem : MonoBehaviour
                 stopLossPrice,
                 (TakeProfitTypeEnum)orderPageComponent.takeProfitTypeDropdown.value,
                 riskRewardRatio,
-                takeProfitTrailingCallbackPercentage,
+                orderPageComponent.takeProfitQuantityPercentageCustomSlider.slider.value,
+                orderPageComponent.takeProfitTrailingCallbackPercentageCustomSlider.slider.value,
                 feeRate,
                 platformComponent.quantityPrecisions[orderPageComponent.symbolDropdownComponent.selectedSymbol],
                 platformComponent.pricePrecisions[orderPageComponent.symbolDropdownComponent.selectedSymbol],
@@ -308,7 +309,9 @@ public class OrderPageSystem : MonoBehaviour
         orderPageComponent.resultComponent.orderInfoDataObject.transform.GetChild(5).gameObject.SetActive(false);
         #endregion
         #region Prices & Quantities
-        List<float> tpPrices = orderPageComponent.marginCalculator.takeProfitPrices;
+        List<float> tpPrices = (TakeProfitTypeEnum)orderPageComponent.takeProfitTypeDropdown.value == TakeProfitTypeEnum.TRAILING ?
+        orderPageComponent.marginCalculator.takeProfitTrailingPrices :
+        orderPageComponent.marginCalculator.takeProfitPrices;
         for (int i = 0; i < orderPageComponent.marginCalculator.entryPrices.Count; i++)
         {
             #region Prices
@@ -434,6 +437,7 @@ public class OrderPageSystem : MonoBehaviour
         orderPageComponent.resultComponent.gameObject.SetActive(lockForEdit.Value);
         orderPageComponent.takeProfitTypeObject.SetActive(lockForEdit.Value);
         orderPageComponent.riskRewardRatioObject.SetActive(orderPageComponent.lockForEdit && orderPageComponent.takeProfitTypeDropdown.value > (int)TakeProfitTypeEnum.NONE);
+        orderPageComponent.takeProfitQuantityPercentageCustomSlider.gameObject.SetActive(orderPageComponent.lockForEdit && orderPageComponent.takeProfitTypeDropdown.value > (int)TakeProfitTypeEnum.NONE);
         orderPageComponent.takeProfitTrailingCallbackPercentageCustomSlider.gameObject.SetActive(orderPageComponent.lockForEdit && orderPageComponent.takeProfitTypeDropdown.value == (int)TakeProfitTypeEnum.TRAILING);
         orderPageComponent.orderTypeObject.SetActive(lockForEdit.Value);
         orderPageComponent.applyButtonObject.SetActive(lockForEdit.Value);
@@ -500,9 +504,12 @@ public class OrderPageSystem : MonoBehaviour
             orderPageComponent.marginCalculator.RecalculateTakeProfitPrices(
                 (TakeProfitTypeEnum)orderPageComponent.takeProfitTypeDropdown.value,
                 float.Parse(orderPageComponent.riskRewardRatioInput.text),
-                float.Parse(orderPageComponent.takeProfitTrailingCallbackPercentageCustomSlider.input.text));
+                orderPageComponent.takeProfitQuantityPercentageCustomSlider.slider.value,
+                orderPageComponent.takeProfitTrailingCallbackPercentageCustomSlider.slider.value);
         }
-        List<float> tpPrices = orderPageComponent.marginCalculator.takeProfitPrices;
+        List<float> tpPrices = (TakeProfitTypeEnum)orderPageComponent.takeProfitTypeDropdown.value == TakeProfitTypeEnum.TRAILING ?
+        orderPageComponent.marginCalculator.takeProfitTrailingPrices :
+        orderPageComponent.marginCalculator.takeProfitPrices;
         #endregion
 
         #region Update value in game object for display
