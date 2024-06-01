@@ -39,4 +39,5 @@
     public static readonly string PLATFORM_ADDED = "Platform Added";
     public static readonly string PROFILE_ADDED = "Profile Added";
     public static readonly string DATA_FETCHED = "Data Fetched";
+    public static readonly string TAKE_PROFIT_QUANTITY_INVALID = "Take profit quantity percentage too small resulted in quantity became 0, no take profit order is placed";
 }
