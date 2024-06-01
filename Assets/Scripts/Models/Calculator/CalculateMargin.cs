@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class CalculateMargin
 {
-    // config
+    #region Config
     public float balance;
     public float amountToLoss;
     public int entryTimes;
@@ -19,8 +19,9 @@ public class CalculateMargin
     public int pricePrecision;
     public bool weightedQuantity;
     public float quantityWeight;
+    #endregion
 
-    // runtime
+    #region Runtime
     public bool isLong;
     public List<float> stopLossPriceGaps;
     public float stopLossPercentage;
@@ -37,10 +38,13 @@ public class CalculateMargin
     public List<float> breakEvenPrices;
     public float takeProfitPrice;
     public List<float> takeProfitPrices;
+    public List<float> takeProfitPricePercentages;
     public List<float> takeProfitTrailingPrices;
+    public List<float> takeProfitTrailingPricePercentages;
     public float totalWinAmount;
     public float balanceIncrementRate;
     public float balanceAfterFullWin;
+    #endregion
 
     public CalculateMargin(float balance,
         float maxLossPercentage,
@@ -218,7 +222,9 @@ public class CalculateMargin
     void CalculateWinPercentageAndAmount()
     {
         takeProfitPrices = new();
+        takeProfitPricePercentages = new();
         takeProfitTrailingPrices = new();
+        takeProfitTrailingPricePercentages = new();
         breakEvenPrices = new();
 
         for (int i = 0; i < avgEntryPrices.Count; i++)
@@ -231,11 +237,13 @@ public class CalculateMargin
                 (takeProfitCumQuantity * (isLong ? 1 - feeRate : 1 + feeRate));
             if (float.IsNaN(takeProfitPrice) || float.IsInfinity(takeProfitPrice)) takeProfitPrice = 0;
             takeProfitPrices.Add(Utils.RoundNDecimal(Mathf.Max(takeProfitPrice, 0), pricePrecision));
+            takeProfitPricePercentages.Add(Mathf.Abs(Utils.RateToPercentage(Utils.PriceMovingRate(avgEntryPrices[i], takeProfitPrice))));
 
             float percentage = takeProfitTrailingCallbackPercentage;
             if (isLong) percentage *= -1;
             takeProfitPrice = Utils.CalculateInitialPriceByMovingPercentage(percentage, takeProfitPrice);
             takeProfitTrailingPrices.Add(Utils.RoundNDecimal(Mathf.Max(takeProfitPrice, 0), pricePrecision));
+            takeProfitTrailingPricePercentages.Add(Mathf.Abs(Utils.RateToPercentage(Utils.PriceMovingRate(avgEntryPrices[i], takeProfitPrice))));
             #endregion
 
             #region Calculate break even price
