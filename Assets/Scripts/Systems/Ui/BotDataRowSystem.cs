@@ -63,37 +63,52 @@ public class BotDataRowSystem : MonoBehaviour
         TMP_Text symbolText = symbol.GetComponent<TMP_Text>();
         symbolText.text = "Symbol: " + botDataRowComponent.setting.order.symbol;
 
-        GameObject lossPercentage = Instantiate(botDataRowComponent.infoPanelData, botDataRowComponent.infoPanelContent);
-        TMP_Text lossPercentageText = lossPercentage.GetComponent<TMP_Text>();
-        lossPercentageText.text = "Max Loss Percentage: " + botDataRowComponent.setting.order.lossPercentage.ToString();
+        if (botDataRowComponent.setting.order.lossAmount <= 0)
+        {
+            GameObject lossPercentage = Instantiate(botDataRowComponent.infoPanelData, botDataRowComponent.infoPanelContent);
+            TMP_Text lossPercentageText = lossPercentage.GetComponent<TMP_Text>();
+            lossPercentageText.text = "Max Loss Percentage: " + botDataRowComponent.setting.order.lossPercentage.ToString();
+        }
+        else
+        {
+            GameObject lossAmount = Instantiate(botDataRowComponent.infoPanelData, botDataRowComponent.infoPanelContent);
+            TMP_Text lossAmountText = lossAmount.GetComponent<TMP_Text>();
+            lossAmountText.text = "Max Loss Amount: " + botDataRowComponent.setting.order.lossAmount.ToString();
+        }
 
-        GameObject lossAmount = Instantiate(botDataRowComponent.infoPanelData, botDataRowComponent.infoPanelContent);
-        TMP_Text lossAmountText = lossAmount.GetComponent<TMP_Text>();
-        lossAmountText.text = "Max Loss Amount: " + botDataRowComponent.setting.order.lossAmount.ToString();
 
         GameObject marginDistributionMode = Instantiate(botDataRowComponent.infoPanelData, botDataRowComponent.infoPanelContent);
         TMP_Text marginDistributionModeText = marginDistributionMode.GetComponent<TMP_Text>();
         marginDistributionModeText.text = "Margin Distribution Mode: " + botDataRowComponent.setting.order.marginDistributionMode.ToString();
 
-        GameObject marginWeightDistributionValue = Instantiate(botDataRowComponent.infoPanelData, botDataRowComponent.infoPanelContent);
-        TMP_Text marginWeightDistributionValueText = marginWeightDistributionValue.GetComponent<TMP_Text>();
-        marginWeightDistributionValueText.text = "Margin Weight Distribution Value: " + botDataRowComponent.setting.order.marginWeightDistributionValue.ToString();
+        if (botDataRowComponent.setting.order.marginDistributionMode == MarginDistributionModeEnum.WEIGHTED)
+        {
+            GameObject marginWeightDistributionValue = Instantiate(botDataRowComponent.infoPanelData, botDataRowComponent.infoPanelContent);
+            TMP_Text marginWeightDistributionValueText = marginWeightDistributionValue.GetComponent<TMP_Text>();
+            marginWeightDistributionValueText.text = "Margin Weight Distribution Value: " + botDataRowComponent.setting.order.marginWeightDistributionValue.ToString();
+        }
 
         GameObject takeProfitType = Instantiate(botDataRowComponent.infoPanelData, botDataRowComponent.infoPanelContent);
         TMP_Text takeProfitTypeText = takeProfitType.GetComponent<TMP_Text>();
         takeProfitTypeText.text = "Take Profit Type: " + botDataRowComponent.setting.order.takeProfitType.ToString();
 
-        GameObject riskRewardRatio = Instantiate(botDataRowComponent.infoPanelData, botDataRowComponent.infoPanelContent);
-        TMP_Text riskRewardRatioText = riskRewardRatio.GetComponent<TMP_Text>();
-        riskRewardRatioText.text = "Risk Reward Ratio: " + botDataRowComponent.setting.order.riskRewardRatio.ToString();
+        if (botDataRowComponent.setting.order.takeProfitType > TakeProfitTypeEnum.NONE)
+        {
+            GameObject riskRewardRatio = Instantiate(botDataRowComponent.infoPanelData, botDataRowComponent.infoPanelContent);
+            TMP_Text riskRewardRatioText = riskRewardRatio.GetComponent<TMP_Text>();
+            riskRewardRatioText.text = "Risk Reward Ratio: " + botDataRowComponent.setting.order.riskRewardRatio.ToString();
 
-        GameObject takeProfitQuantityPercentage = Instantiate(botDataRowComponent.infoPanelData, botDataRowComponent.infoPanelContent);
-        TMP_Text takeProfitQuantityPercentageText = takeProfitQuantityPercentage.GetComponent<TMP_Text>();
-        takeProfitQuantityPercentageText.text = "Take Profit Quantity %: " + botDataRowComponent.setting.order.takeProfitQuantityPercentage.ToString();
+            GameObject takeProfitQuantityPercentage = Instantiate(botDataRowComponent.infoPanelData, botDataRowComponent.infoPanelContent);
+            TMP_Text takeProfitQuantityPercentageText = takeProfitQuantityPercentage.GetComponent<TMP_Text>();
+            takeProfitQuantityPercentageText.text = "Take Profit Quantity %: " + botDataRowComponent.setting.order.takeProfitQuantityPercentage.ToString();
 
-        GameObject takeProfitTrailingCallbackPercentage = Instantiate(botDataRowComponent.infoPanelData, botDataRowComponent.infoPanelContent);
-        TMP_Text takeProfitTrailingCallbackPercentageText = takeProfitTrailingCallbackPercentage.GetComponent<TMP_Text>();
-        takeProfitTrailingCallbackPercentageText.text = "Take Profit Trailing Callback %: " + botDataRowComponent.setting.order.takeProfitTrailingCallbackPercentage.ToString();
+            if (botDataRowComponent.setting.order.takeProfitType == TakeProfitTypeEnum.TRAILING)
+            {
+                GameObject takeProfitTrailingCallbackPercentage = Instantiate(botDataRowComponent.infoPanelData, botDataRowComponent.infoPanelContent);
+                TMP_Text takeProfitTrailingCallbackPercentageText = takeProfitTrailingCallbackPercentage.GetComponent<TMP_Text>();
+                takeProfitTrailingCallbackPercentageText.text = "Take Profit Trailing Callback %: " + botDataRowComponent.setting.order.takeProfitTrailingCallbackPercentage.ToString();
+            }
+        }
 
         GameObject orderType = Instantiate(botDataRowComponent.infoPanelData, botDataRowComponent.infoPanelContent);
         TMP_Text orderTypeText = orderType.GetComponent<TMP_Text>();
