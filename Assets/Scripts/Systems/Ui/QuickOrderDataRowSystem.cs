@@ -63,37 +63,51 @@ public class QuickOrderDataRowSystem : MonoBehaviour
         TMP_Text symbolText = symbol.GetComponent<TMP_Text>();
         symbolText.text = "Symbol: " + quickOrderDataRowComponent.setting.order.symbol;
 
-        GameObject lossPercentage = Instantiate(quickOrderDataRowComponent.infoPanelData, quickOrderDataRowComponent.infoPanelContent);
-        TMP_Text lossPercentageText = lossPercentage.GetComponent<TMP_Text>();
-        lossPercentageText.text = "Max Loss Percentage: " + quickOrderDataRowComponent.setting.order.lossPercentage.ToString();
-
-        GameObject lossAmount = Instantiate(quickOrderDataRowComponent.infoPanelData, quickOrderDataRowComponent.infoPanelContent);
-        TMP_Text lossAmountText = lossAmount.GetComponent<TMP_Text>();
-        lossAmountText.text = "Max Loss Amount: " + quickOrderDataRowComponent.setting.order.lossAmount.ToString();
+        if (quickOrderDataRowComponent.setting.order.lossAmount <= 0)
+        {
+            GameObject lossPercentage = Instantiate(quickOrderDataRowComponent.infoPanelData, quickOrderDataRowComponent.infoPanelContent);
+            TMP_Text lossPercentageText = lossPercentage.GetComponent<TMP_Text>();
+            lossPercentageText.text = "Max Loss Percentage: " + quickOrderDataRowComponent.setting.order.lossPercentage.ToString();
+        }
+        else
+        {
+            GameObject lossAmount = Instantiate(quickOrderDataRowComponent.infoPanelData, quickOrderDataRowComponent.infoPanelContent);
+            TMP_Text lossAmountText = lossAmount.GetComponent<TMP_Text>();
+            lossAmountText.text = "Max Loss Amount: " + quickOrderDataRowComponent.setting.order.lossAmount.ToString();
+        }
 
         GameObject marginDistributionMode = Instantiate(quickOrderDataRowComponent.infoPanelData, quickOrderDataRowComponent.infoPanelContent);
         TMP_Text marginDistributionModeText = marginDistributionMode.GetComponent<TMP_Text>();
         marginDistributionModeText.text = "Margin Distribution Mode: " + quickOrderDataRowComponent.setting.order.marginDistributionMode.ToString();
 
-        GameObject marginWeightDistributionValue = Instantiate(quickOrderDataRowComponent.infoPanelData, quickOrderDataRowComponent.infoPanelContent);
-        TMP_Text marginWeightDistributionValueText = marginWeightDistributionValue.GetComponent<TMP_Text>();
-        marginWeightDistributionValueText.text = "Margin Weight Distribution Value: " + quickOrderDataRowComponent.setting.order.marginWeightDistributionValue.ToString();
+        if (quickOrderDataRowComponent.setting.order.marginDistributionMode == MarginDistributionModeEnum.WEIGHTED)
+        {
+            GameObject marginWeightDistributionValue = Instantiate(quickOrderDataRowComponent.infoPanelData, quickOrderDataRowComponent.infoPanelContent);
+            TMP_Text marginWeightDistributionValueText = marginWeightDistributionValue.GetComponent<TMP_Text>();
+            marginWeightDistributionValueText.text = "Margin Weight Distribution Value: " + quickOrderDataRowComponent.setting.order.marginWeightDistributionValue.ToString();
+        }
 
         GameObject takeProfitType = Instantiate(quickOrderDataRowComponent.infoPanelData, quickOrderDataRowComponent.infoPanelContent);
         TMP_Text takeProfitTypeText = takeProfitType.GetComponent<TMP_Text>();
         takeProfitTypeText.text = "Take Profit Type: " + quickOrderDataRowComponent.setting.order.takeProfitType.ToString();
 
-        GameObject riskRewardRatio = Instantiate(quickOrderDataRowComponent.infoPanelData, quickOrderDataRowComponent.infoPanelContent);
-        TMP_Text riskRewardRatioText = riskRewardRatio.GetComponent<TMP_Text>();
-        riskRewardRatioText.text = "Risk Reward Ratio: " + quickOrderDataRowComponent.setting.order.riskRewardRatio.ToString();
+        if (quickOrderDataRowComponent.setting.order.takeProfitType > TakeProfitTypeEnum.NONE)
+        {
+            GameObject riskRewardRatio = Instantiate(quickOrderDataRowComponent.infoPanelData, quickOrderDataRowComponent.infoPanelContent);
+            TMP_Text riskRewardRatioText = riskRewardRatio.GetComponent<TMP_Text>();
+            riskRewardRatioText.text = "Risk Reward Ratio: " + quickOrderDataRowComponent.setting.order.riskRewardRatio.ToString();
 
-        GameObject takeProfitQuantityPercentage = Instantiate(quickOrderDataRowComponent.infoPanelData, quickOrderDataRowComponent.infoPanelContent);
-        TMP_Text takeProfitQuantityPercentageText = takeProfitQuantityPercentage.GetComponent<TMP_Text>();
-        takeProfitQuantityPercentageText.text = "Take Profit Quantity %: " + quickOrderDataRowComponent.setting.order.takeProfitQuantityPercentage.ToString();
+            GameObject takeProfitQuantityPercentage = Instantiate(quickOrderDataRowComponent.infoPanelData, quickOrderDataRowComponent.infoPanelContent);
+            TMP_Text takeProfitQuantityPercentageText = takeProfitQuantityPercentage.GetComponent<TMP_Text>();
+            takeProfitQuantityPercentageText.text = "Take Profit Quantity %: " + quickOrderDataRowComponent.setting.order.takeProfitQuantityPercentage.ToString();
 
-        GameObject takeProfitTrailingCallbackPercentage = Instantiate(quickOrderDataRowComponent.infoPanelData, quickOrderDataRowComponent.infoPanelContent);
-        TMP_Text takeProfitTrailingCallbackPercentageText = takeProfitTrailingCallbackPercentage.GetComponent<TMP_Text>();
-        takeProfitTrailingCallbackPercentageText.text = "Take Profit Trailing Callback %: " + quickOrderDataRowComponent.setting.order.takeProfitTrailingCallbackPercentage.ToString();
+            if (quickOrderDataRowComponent.setting.order.takeProfitType == TakeProfitTypeEnum.TRAILING)
+            {
+                GameObject takeProfitTrailingCallbackPercentage = Instantiate(quickOrderDataRowComponent.infoPanelData, quickOrderDataRowComponent.infoPanelContent);
+                TMP_Text takeProfitTrailingCallbackPercentageText = takeProfitTrailingCallbackPercentage.GetComponent<TMP_Text>();
+                takeProfitTrailingCallbackPercentageText.text = "Take Profit Trailing Callback %: " + quickOrderDataRowComponent.setting.order.takeProfitTrailingCallbackPercentage.ToString();
+            }
+        }
 
         GameObject orderType = Instantiate(quickOrderDataRowComponent.infoPanelData, quickOrderDataRowComponent.infoPanelContent);
         TMP_Text orderTypeText = orderType.GetComponent<TMP_Text>();

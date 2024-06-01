@@ -312,6 +312,9 @@ public class OrderPageSystem : MonoBehaviour
         List<float> tpPrices = (TakeProfitTypeEnum)orderPageComponent.takeProfitTypeDropdown.value == TakeProfitTypeEnum.TRAILING ?
         orderPageComponent.marginCalculator.takeProfitTrailingPrices :
         orderPageComponent.marginCalculator.takeProfitPrices;
+        List<float> tpPricePercentages = (TakeProfitTypeEnum)orderPageComponent.takeProfitTypeDropdown.value == TakeProfitTypeEnum.TRAILING ?
+        orderPageComponent.marginCalculator.takeProfitTrailingPricePercentages :
+        orderPageComponent.marginCalculator.takeProfitPricePercentages;
         for (int i = 0; i < orderPageComponent.marginCalculator.entryPrices.Count; i++)
         {
             #region Prices
@@ -323,7 +326,9 @@ public class OrderPageSystem : MonoBehaviour
             temp = entryPriceDataObject.transform.GetChild(4).GetComponent<TMP_Text>();
             temp.text = tpPrices[i].ToString();
             temp.color = OrderConfig.DISPLAY_COLOR_GREEN;
-            entryPriceDataObject.transform.GetChild(5).gameObject.SetActive(false);
+            temp = entryPriceDataObject.transform.GetChild(5).GetComponent<TMP_Text>();
+            temp.text = Utils.RoundTwoDecimal(tpPricePercentages[i]).ToString() + "%";
+            temp.color = OrderConfig.DISPLAY_COLOR_GREEN;
             orderPageComponent.resultComponent.pricesDataObjects.Add(entryPriceDataObject);
             #endregion
             #region Quantities
@@ -510,6 +515,9 @@ public class OrderPageSystem : MonoBehaviour
         List<float> tpPrices = (TakeProfitTypeEnum)orderPageComponent.takeProfitTypeDropdown.value == TakeProfitTypeEnum.TRAILING ?
         orderPageComponent.marginCalculator.takeProfitTrailingPrices :
         orderPageComponent.marginCalculator.takeProfitPrices;
+        List<float> tpPricePercentages = (TakeProfitTypeEnum)orderPageComponent.takeProfitTypeDropdown.value == TakeProfitTypeEnum.TRAILING ?
+        orderPageComponent.marginCalculator.takeProfitTrailingPricePercentages :
+        orderPageComponent.marginCalculator.takeProfitPricePercentages;
         #endregion
 
         #region Update value in game object for display
@@ -518,6 +526,8 @@ public class OrderPageSystem : MonoBehaviour
             Transform entryPriceDataTransform = orderPageComponent.resultComponent.pricesParent.GetChild(i + 1);
             TMP_Text temp = entryPriceDataTransform.GetChild(4).GetComponent<TMP_Text>();
             temp.text = tpPrices[i].ToString();
+            temp = entryPriceDataTransform.GetChild(5).GetComponent<TMP_Text>();
+            temp.text = Utils.RoundTwoDecimal(tpPricePercentages[i]).ToString() + "%";
         }
         orderPageComponent.resultComponent.totalWinLossAmountDataObject.transform.GetChild(4).GetComponent<TMP_Text>().text = Utils.RoundTwoDecimal(orderPageComponent.marginCalculator.totalWinAmount).ToString();
         orderPageComponent.resultComponent.balanceDataObject.transform.GetChild(4).GetComponent<TMP_Text>().text = Utils.TruncTwoDecimal(orderPageComponent.marginCalculator.balanceAfterFullWin).ToString();
