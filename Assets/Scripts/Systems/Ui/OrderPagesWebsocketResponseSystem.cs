@@ -55,6 +55,14 @@ public class OrderPagesWebsocketResponseSystem : MonoBehaviour
         if (response.actualTakeProfitPrice.HasValue && platformComponent.pricePrecisions.ContainsKey(orderPageComponent.symbolDropdownComponent.selectedSymbol))
         {
             orderPageComponent.positionInfoActualTakeProfitPriceText.text = Utils.RoundNDecimal(response.actualTakeProfitPrice.Value, platformComponent.pricePrecisions[orderPageComponent.symbolDropdownComponent.selectedSymbol]).ToString();
+
+            if (response.actualTakeProfitPrice.Value == 0)
+            {
+                promptComponent.ShowPrompt(PromptConstant.NOTICE, PromptConstant.TAKE_PROFIT_QUANTITY_INVALID, () =>
+                {
+                    promptComponent.active = false;
+                });
+            }
         }
         if (response.paidFundingAmount.HasValue)
         {
