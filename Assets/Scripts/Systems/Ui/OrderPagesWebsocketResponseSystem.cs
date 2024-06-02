@@ -97,7 +97,7 @@ public class OrderPagesWebsocketResponseSystem : MonoBehaviour
         }
         if (orderPageComponent.resultComponent.orderInfoDataObject != null)
         {
-            orderPageComponent.resultComponent.orderInfoDataObject.transform.GetChild(3).GetComponent<TMP_Text>().text = orderPageComponent.orderStatus.ToString();
+            orderPageComponent.resultComponent.orderInfoDataObject.transform.GetChild(4).GetComponent<TMP_Text>().text = orderPageComponent.orderStatus.ToString();
         }
         if (orderPageComponent.orderStatusError && !response.message.IsNullOrEmpty())
         {
