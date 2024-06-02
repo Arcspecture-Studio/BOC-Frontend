@@ -1,3 +1,4 @@
+using System;
 using Newtonsoft.Json;
 using TMPro;
 using UnityEngine;
@@ -19,6 +20,7 @@ public class OrderPagesWebsocketResponseSystem : MonoBehaviour
     }
     void Update()
     {
+        AddOrderToServerResponse();
         SubmitOrderToServerResponse();
         PositionInfoUpdateResponse();
         SubmitThrottleToServerResponse();
@@ -68,6 +70,27 @@ public class OrderPagesWebsocketResponseSystem : MonoBehaviour
         {
             orderPageComponent.positionInfoPaidFundingAmount.text = response.paidFundingAmount.Value.ToString();
         }
+    }
+    void AddOrderToServerResponse()
+    {
+        string jsonString = websocketComponent.RetrieveGeneralResponses(WebsocketEventTypeEnum.ADD_ORDER);
+        websocketComponent.RemovesGeneralResponses(WebsocketEventTypeEnum.ADD_ORDER);
+        if (jsonString.IsNullOrEmpty()) return;
+
+        General.WebsocketAddOrderResponse response = JsonConvert.DeserializeObject
+        <General.WebsocketAddOrderResponse>(jsonString, JsonSerializerConfig.settings);
+
+        OrderPageComponent orderPageComponent = null;
+        foreach (OrderPageComponent component in orderPagesComponent.childOrderPageComponents)
+        {
+            if (component.orderId.Equals(response.id))
+            {
+                orderPageComponent = component;
+            }
+        }
+        if (orderPageComponent == null) return;
+
+        orderPageComponent.resultComponent.spawnTimeText.text = DateTimeOffset.FromUnixTimeMilliseconds(response.spawnTime).ToLocalTime().ToString();
     }
     void SubmitOrderToServerResponse()
     {

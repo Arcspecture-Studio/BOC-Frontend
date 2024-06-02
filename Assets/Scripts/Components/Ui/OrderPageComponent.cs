@@ -118,5 +118,4 @@ public class OrderPageComponent : MonoBehaviour
     }
     [HideInInspector] public UnityEvent onChange_updateTakeProfitPrice = new();
     public float quantityToClose;
-    public long spawnTime; // TIMESTAMP
 }
