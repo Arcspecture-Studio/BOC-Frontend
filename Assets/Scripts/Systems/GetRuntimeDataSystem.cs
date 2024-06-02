@@ -100,6 +100,7 @@ public class GetRuntimeDataSystem : MonoBehaviour
         }
         loadingComponent.active = false;
         miniPromptComponent.message = PromptConstant.DATA_FETCHED;
+        quickTabComponent.clearEntryPriceButton.onClick.Invoke();
     }
     void DestroyOrders()
     {
