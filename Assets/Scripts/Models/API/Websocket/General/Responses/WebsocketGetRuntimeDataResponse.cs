@@ -25,6 +25,7 @@ namespace General
         public float actualTakeProfitPrice;
         public float paidFundingAmount;
         public List<WebsocketGetThrottleOrderResponse> throttleOrders;
+        public long spawnTime; // TIMESTAMP
     }
     [Serializable]
     public class WebsocketGetThrottleOrderResponse

@@ -28,6 +28,7 @@ public class SpawnOrderSystem : MonoBehaviour
         #region Apply data into game object
         orderPageComponent.instantiateWithData = true;
         orderPageComponent.orderId = response.id;
+        orderPageComponent.spawnTime = response.spawnTime;
         orderPageComponent.calculate = true;
         orderPageComponent.orderStatus = response.status;
         orderPageComponent.orderStatusError = response.statusError;
