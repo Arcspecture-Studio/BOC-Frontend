@@ -1,3 +1,4 @@
+using System;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -28,7 +29,6 @@ public class SpawnOrderSystem : MonoBehaviour
         #region Apply data into game object
         orderPageComponent.instantiateWithData = true;
         orderPageComponent.orderId = response.id;
-        orderPageComponent.spawnTime = response.spawnTime;
         orderPageComponent.calculate = true;
         orderPageComponent.orderStatus = response.status;
         orderPageComponent.orderStatusError = response.statusError;
@@ -64,6 +64,7 @@ public class SpawnOrderSystem : MonoBehaviour
         orderPageComponent.marginDistributionModeDropdown.value = response.marginCalculator.weightedQuantity ? 1 : 0;
         orderPageComponent.marginWeightDistributionValueCustomSlider.SetValue(response.marginCalculator.quantityWeight);
         orderPageComponent.marginCalculator = response.marginCalculator;
+        orderPageComponent.resultComponent.spawnTimeText.text = DateTimeOffset.FromUnixTimeMilliseconds(response.spawnTime).ToLocalTime().ToString();
         orderPageComponent.positionInfoAvgEntryPriceFilledText.text = Utils.RoundNDecimal(response.averagePriceFilled, platformComponent.pricePrecisions[orderPageComponent.symbolDropdownComponent.selectedSymbol]).ToString();
         orderPageComponent.positionInfoQuantityFilledText.text = Utils.RoundNDecimal(response.quantityFilled, platformComponent.quantityPrecisions[orderPageComponent.symbolDropdownComponent.selectedSymbol]).ToString();
         orderPageComponent.positionInfoActualTakeProfitPriceText.text = Utils.RoundNDecimal(response.actualTakeProfitPrice, platformComponent.pricePrecisions[orderPageComponent.symbolDropdownComponent.selectedSymbol]).ToString();

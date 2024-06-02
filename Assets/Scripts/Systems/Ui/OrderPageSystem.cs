@@ -383,9 +383,6 @@ public class OrderPageSystem : MonoBehaviour
         temp.text = "+" + Utils.RoundTwoDecimal(Utils.RateToPercentage(orderPageComponent.marginCalculator.balanceIncrementRate)).ToString() + " %";
         temp.color = OrderConfig.DISPLAY_COLOR_GREEN;
         #endregion
-        #region Spawn time
-        orderPageComponent.resultComponent.spawnTimeText.text = DateTimeOffset.FromUnixTimeMilliseconds(orderPageComponent.spawnTime).ToLocalTime().ToString();
-        #endregion
         #endregion
 
         #region Update button after finish calculated
