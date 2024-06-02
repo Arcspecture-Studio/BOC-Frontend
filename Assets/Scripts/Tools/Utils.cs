@@ -105,7 +105,7 @@ public static class Utils
     {
         return finalPrice / (1 + (percentage / 100));
     }
-    public static long CurrentTimestamp() // TODO: investigate why it return negative value, probably has something to do with int becuase it should have been long
+    public static long CurrentTimestamp()
     {
         DateTime epochStart = new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc);
         TimeSpan elapsedTime = DateTime.UtcNow - epochStart;

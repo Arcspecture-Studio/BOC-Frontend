@@ -5,6 +5,7 @@ using UnityEngine;
 using WebSocketSharp;
 using MongoDB.Bson;
 using DG.Tweening;
+using System;
 
 public class OrderPageSystem : MonoBehaviour
 {
@@ -381,6 +382,9 @@ public class OrderPageSystem : MonoBehaviour
         temp = orderPageComponent.resultComponent.balanceDataObject.transform.GetChild(5).GetComponent<TMP_Text>();
         temp.text = "+" + Utils.RoundTwoDecimal(Utils.RateToPercentage(orderPageComponent.marginCalculator.balanceIncrementRate)).ToString() + " %";
         temp.color = OrderConfig.DISPLAY_COLOR_GREEN;
+        #endregion
+        #region Spawn time
+        orderPageComponent.resultComponent.spawnTimeText.text = DateTimeOffset.FromUnixTimeMilliseconds(orderPageComponent.spawnTime).ToLocalTime().ToString();
         #endregion
         #endregion
 

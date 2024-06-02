@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 
 public class OrderPageResultComponent : MonoBehaviour
@@ -9,6 +10,7 @@ public class OrderPageResultComponent : MonoBehaviour
     public Transform quantitiesParent;
     public Transform totalWinLossAmountParent;
     public Transform balanceParent;
+    public TMP_Text spawnTimeText;
 
     [Header("Runtime")]
     public GameObject orderInfoDataObject;
