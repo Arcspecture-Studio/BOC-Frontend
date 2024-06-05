@@ -4897,8 +4897,9 @@ MonoBehaviour:
   premiumIndexSetting_longThresholdPercentage: {fileID: 1099480019}
   premiumIndexSetting_shortThresholdPercentage: {fileID: 576361481}
   premiumIndexSetting_candleLength: {fileID: 1780051496}
-  premiumIndexSetting_reverseCandleConfirmation: {fileID: 75572336}
-  premiumIndexSetting_fomoCandleConfirmation: {fileID: 1399581595}
+  premiumIndexSetting_reverseCandleBuffer: {fileID: 75572336}
+  premiumIndexSetting_reverseCandleConfirmation: {fileID: 1399581595}
+  premiumIndexSetting_fomoCandleConfirmation: {fileID: 540789848}
   addBotButton: {fileID: 146784775}
   botDataObjectList: {fileID: 11401249}
   botDataRowParent: {fileID: 1623810005}
@@ -10144,7 +10145,7 @@ GameObject:
   m_Component:
   - component: {fileID: 336338297}
   m_Layer: 5
-  m_Name: Fomo Candle Confirmation
+  m_Name: Reverse Candle Confirmation
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -12964,7 +12965,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Enter Length
+  m_text: Enter Candle
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -17302,7 +17303,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Fomo Candle
+  m_text: Reverse Candle
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -33815,7 +33816,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0.25}
   m_AnchorMax: {x: 1, y: 0.75}
-  m_AnchoredPosition: {x: -4.9999695, y: 0}
+  m_AnchoredPosition: {x: -5, y: 0}
   m_SizeDelta: {x: -20, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &1282936633
@@ -35479,7 +35480,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1349197455}
   m_Layer: 5
-  m_Name: Reverse Candle Confirmation
+  m_Name: Reverse Candle Buffer
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -42485,7 +42486,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 'Reverse Candle
+  m_text: 'Reverse Candle Buffer
 
 '
   m_isRightToLeft: 0
@@ -46332,12 +46333,12 @@ GameObject:
   m_Component:
   - component: {fileID: 1795767571}
   m_Layer: 5
-  m_Name: Candle Length
+  m_Name: Fomo Candle Confirmation
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &1795767571
 RectTransform:
   m_ObjectHideFlags: 0
@@ -52404,7 +52405,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Candle Length
+  m_text: Fomo Candle
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}

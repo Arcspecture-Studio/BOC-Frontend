@@ -179,6 +179,10 @@ public class BotDataRowSystem : MonoBehaviour
                 TMP_Text candleLengthText = candleLength.GetComponent<TMP_Text>();
                 candleLengthText.text = "Candle Length: " + botDataRowComponent.setting.bot.premiumIndex.candleLength.ToString();
 
+                GameObject reverseCandleBuffer = Instantiate(botDataRowComponent.infoPanelData, botDataRowComponent.infoPanelContent);
+                TMP_Text reverseCandleBufferText = reverseCandleBuffer.GetComponent<TMP_Text>();
+                reverseCandleBufferText.text = "Reverse Candle Buffer: " + botDataRowComponent.setting.bot.premiumIndex.reverseCandleBuffer.ToString();
+
                 GameObject reverseCandleConfirmation = Instantiate(botDataRowComponent.infoPanelData, botDataRowComponent.infoPanelContent);
                 TMP_Text reverseCandleConfirmationText = reverseCandleConfirmation.GetComponent<TMP_Text>();
                 reverseCandleConfirmationText.text = "Reverse Candle Confirmation: " + botDataRowComponent.setting.bot.premiumIndex.reverseCandleConfirmation.ToString();
