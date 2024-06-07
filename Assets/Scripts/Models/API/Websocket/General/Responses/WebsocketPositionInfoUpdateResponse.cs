@@ -12,5 +12,6 @@ namespace General
         public float? averagePriceFilled;
         public float? actualTakeProfitPrice;
         public float? paidFundingAmount;
+        public bool? removeBot;
     }
 }
