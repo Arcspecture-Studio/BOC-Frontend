@@ -37720,6 +37720,23 @@ MonoBehaviour:
       m_Action: Escape
       m_Flags: 0
     m_Flags: 0
+  back:
+    m_Name: Back
+    m_Type: 0
+    m_ExpectedControlType: 
+    m_Id: 1b808495-ee4f-40a0-8411-3b31ea36f665
+    m_Processors: 
+    m_Interactions: 
+    m_SingletonActionBindings:
+    - m_Name: 
+      m_Id: 92ae31e5-b607-4f79-b7d1-83ada9436aab
+      m_Path: '*/{Back}'
+      m_Interactions: 
+      m_Processors: 
+      m_Groups: 
+      m_Action: Back
+      m_Flags: 0
+    m_Flags: 0
   space:
     m_Name: Space
     m_Type: 0
