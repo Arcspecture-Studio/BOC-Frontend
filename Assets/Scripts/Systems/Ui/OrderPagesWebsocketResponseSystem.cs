@@ -70,6 +70,11 @@ public class OrderPagesWebsocketResponseSystem : MonoBehaviour
         {
             orderPageComponent.positionInfoPaidFundingAmount.text = response.paidFundingAmount.Value.ToString();
         }
+        if (response.removeBot.HasValue && response.removeBot.Value)
+        {
+            orderPageComponent.tradingBotId = "";
+            orderPageComponent.positionInfoBotInChargeDropdown.value = 0;
+        }
     }
     void AddOrderToServerResponse()
     {
