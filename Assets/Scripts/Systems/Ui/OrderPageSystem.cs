@@ -435,7 +435,7 @@ public class OrderPageSystem : MonoBehaviour
         orderPageComponent.marginWeightDistributionValueCustomSlider.input.interactable = !lockForEdit.Value;
         if (lockForEdit.Value) orderPageComponent.calculateButtonText.text = "Edit Order";
         else orderPageComponent.calculateButtonText.text = "Calculate";
-        orderPageComponent.orderTypeDropdown.interactable = lockForEdit.Value;
+        if (orderPageComponent.orderStatus == OrderStatusEnum.UNSUBMITTED) orderPageComponent.orderTypeDropdown.interactable = lockForEdit.Value;
         orderPageComponent.placeOrderButton.interactable = lockForEdit.Value;
         orderPageComponent.cancelOrderButton.interactable = lockForEdit.Value;
         orderPageComponent.closePositionButton.interactable = lockForEdit.Value;
