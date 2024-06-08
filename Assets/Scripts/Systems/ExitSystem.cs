@@ -15,7 +15,7 @@ public class ExitSystem : MonoBehaviour
 
         exitComponent.onChange_exit.AddListener(QuitApplication);
 
-        inputComponent.back.started += ShowExitPrompt;
+        inputComponent.back.performed += ShowExitPrompt;
     }
     void ShowExitPrompt(InputAction.CallbackContext context)
     {
@@ -32,13 +32,13 @@ public class ExitSystem : MonoBehaviour
             },
             () =>
             {
-                // promptComponent.active = false;
+                promptComponent.active = false;
             });
         }
     }
     void QuitApplication()
     {
-        inputComponent.back.started -= ShowExitPrompt;
+        inputComponent.back.performed -= ShowExitPrompt;
 
 #if UNITY_EDITOR
         UnityEditor.EditorApplication.isPlaying = false;
