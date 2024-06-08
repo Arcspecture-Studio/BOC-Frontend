@@ -13,7 +13,7 @@ public class LoadingSystem : MonoBehaviour
 
         loadingComponent.onChange_active.AddListener(ActiveOrDeactiveUi);
         loadingComponent.deactive.AddListener(Deactive);
-        inputComponent.space.started += Test;
+        // inputComponent.space.performed += Test;
 
         Deactive();
     }
