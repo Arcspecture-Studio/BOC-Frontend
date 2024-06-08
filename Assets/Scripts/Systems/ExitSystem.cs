@@ -25,7 +25,6 @@ public class ExitSystem : MonoBehaviour
         }
         else
         {
-            promptComponent.active = true;
             promptComponent.ShowSelection(PromptConstant.EXIT, PromptConstant.EXIT_PROMPT, PromptConstant.YES, PromptConstant.NO,
             () =>
             {
@@ -33,7 +32,7 @@ public class ExitSystem : MonoBehaviour
             },
             () =>
             {
-                promptComponent.active = false;
+                // promptComponent.active = false;
             });
         }
     }

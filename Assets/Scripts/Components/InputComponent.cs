@@ -7,7 +7,6 @@ public class InputComponent : MonoBehaviour
     public InputAction hold;
     public InputAction screenPos;
     public InputAction drag;
-    public InputAction escape;
     public InputAction back;
     public InputAction space;
 
@@ -17,7 +16,6 @@ public class InputComponent : MonoBehaviour
         hold.Enable();
         screenPos.Enable();
         drag.Enable();
-        // escape.Enable();
         back.Enable();
         // space.Enable(); // DEBUG
     }
