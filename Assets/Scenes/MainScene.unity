@@ -37653,31 +37653,6 @@ MonoBehaviour:
       m_Action: Hold
       m_Flags: 0
     m_Flags: 0
-  screenPos:
-    m_Name: Screen Pos
-    m_Type: 0
-    m_ExpectedControlType: Vector2
-    m_Id: ddc39e86-5d88-4425-a0de-ae1867297754
-    m_Processors: 
-    m_Interactions: 
-    m_SingletonActionBindings:
-    - m_Name: 
-      m_Id: 437b0923-e430-4e6b-af00-87f8369cf472
-      m_Path: <Mouse>/position
-      m_Interactions: 
-      m_Processors: 
-      m_Groups: 
-      m_Action: Screen Pos
-      m_Flags: 0
-    - m_Name: 
-      m_Id: daf7298c-b39f-4a4e-bcc8-c03455b6ffd6
-      m_Path: <Touchscreen>/position
-      m_Interactions: 
-      m_Processors: 
-      m_Groups: 
-      m_Action: Screen Pos
-      m_Flags: 0
-    m_Flags: 0
   drag:
     m_Name: Drag
     m_Type: 0
@@ -37720,23 +37695,6 @@ MonoBehaviour:
       m_Action: Back
       m_Flags: 0
     m_Flags: 0
-  space:
-    m_Name: Space
-    m_Type: 0
-    m_ExpectedControlType: 
-    m_Id: c30dae4b-7a29-4132-b728-610952e60928
-    m_Processors: 
-    m_Interactions: 
-    m_SingletonActionBindings:
-    - m_Name: 
-      m_Id: 0ae56d67-4974-454b-ba05-b237f0f7ce23
-      m_Path: <Keyboard>/space
-      m_Interactions: 
-      m_Processors: 
-      m_Groups: 
-      m_Action: Space
-      m_Flags: 0
-    m_Flags: 0
   submit:
     m_Name: Submit
     m_Type: 0
@@ -37752,6 +37710,48 @@ MonoBehaviour:
       m_Processors: 
       m_Groups: 
       m_Action: Submit
+      m_Flags: 0
+    m_Flags: 0
+  screenPos:
+    m_Name: Screen Pos
+    m_Type: 0
+    m_ExpectedControlType: Vector2
+    m_Id: ddc39e86-5d88-4425-a0de-ae1867297754
+    m_Processors: 
+    m_Interactions: 
+    m_SingletonActionBindings:
+    - m_Name: 
+      m_Id: 437b0923-e430-4e6b-af00-87f8369cf472
+      m_Path: <Mouse>/position
+      m_Interactions: 
+      m_Processors: 
+      m_Groups: 
+      m_Action: Screen Pos
+      m_Flags: 0
+    - m_Name: 
+      m_Id: daf7298c-b39f-4a4e-bcc8-c03455b6ffd6
+      m_Path: <Touchscreen>/position
+      m_Interactions: 
+      m_Processors: 
+      m_Groups: 
+      m_Action: Screen Pos
+      m_Flags: 0
+    m_Flags: 0
+  space:
+    m_Name: Space
+    m_Type: 0
+    m_ExpectedControlType: 
+    m_Id: c30dae4b-7a29-4132-b728-610952e60928
+    m_Processors: 
+    m_Interactions: 
+    m_SingletonActionBindings:
+    - m_Name: 
+      m_Id: 0ae56d67-4974-454b-ba05-b237f0f7ce23
+      m_Path: <Keyboard>/space
+      m_Interactions: 
+      m_Processors: 
+      m_Groups: 
+      m_Action: Space
       m_Flags: 0
     m_Flags: 0
 --- !u!114 &1439778819
@@ -44891,7 +44891,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_FirstSelected: {fileID: 0}
-  m_sendNavigationEvents: 1
+  m_sendNavigationEvents: 0
   m_DragThreshold: 10
 --- !u!4 &1743841760
 Transform:
