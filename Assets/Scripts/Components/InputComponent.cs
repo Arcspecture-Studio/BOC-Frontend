@@ -14,7 +14,7 @@ public class InputComponent : MonoBehaviour
     {
         click.Enable();
         hold.Enable();
-        screenPos.Enable();
+        // screenPos.Enable();
         drag.Enable();
         back.Enable();
         // space.Enable(); // DEBUG
