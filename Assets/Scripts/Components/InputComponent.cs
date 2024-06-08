@@ -19,4 +19,11 @@ public class InputComponent : MonoBehaviour
         back.Enable();
         // space.Enable(); // DEBUG
     }
+    void OnDestroy()
+    {
+        click.Disable();
+        hold.Disable();
+        drag.Disable();
+        back.Disable();
+    }
 }
