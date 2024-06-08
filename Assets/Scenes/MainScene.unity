@@ -37703,23 +37703,6 @@ MonoBehaviour:
       m_Action: Drag
       m_Flags: 0
     m_Flags: 0
-  escape:
-    m_Name: Escape
-    m_Type: 1
-    m_ExpectedControlType: Button
-    m_Id: e6c900fd-2813-4123-a5b8-6a74b4e386ee
-    m_Processors: 
-    m_Interactions: 
-    m_SingletonActionBindings:
-    - m_Name: 
-      m_Id: 006c0f1d-70c7-43f0-a457-44b9f3dc482a
-      m_Path: <Keyboard>/escape
-      m_Interactions: 
-      m_Processors: 
-      m_Groups: 
-      m_Action: Escape
-      m_Flags: 0
-    m_Flags: 0
   back:
     m_Name: Back
     m_Type: 0
@@ -37752,6 +37735,23 @@ MonoBehaviour:
       m_Processors: 
       m_Groups: 
       m_Action: Space
+      m_Flags: 0
+    m_Flags: 0
+  submit:
+    m_Name: Submit
+    m_Type: 0
+    m_ExpectedControlType: 
+    m_Id: bbf01bdf-2aec-4817-b82c-5f782ab51f02
+    m_Processors: 
+    m_Interactions: 
+    m_SingletonActionBindings:
+    - m_Name: 
+      m_Id: 92a84c37-aba5-4780-85bb-f7a8e3d4b5ee
+      m_Path: '*/{Submit}'
+      m_Interactions: 
+      m_Processors: 
+      m_Groups: 
+      m_Action: Submit
       m_Flags: 0
     m_Flags: 0
 --- !u!114 &1439778819
