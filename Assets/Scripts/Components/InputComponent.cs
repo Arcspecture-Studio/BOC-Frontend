@@ -7,10 +7,10 @@ public class InputComponent : MonoBehaviour
     public InputAction hold;
     public InputAction drag;
     public InputAction back;
-    public InputAction submit;
 
     // Debug
     public InputAction screenPos;
+    public InputAction submit;
     public InputAction space;
 
     void Awake()
@@ -19,7 +19,6 @@ public class InputComponent : MonoBehaviour
         hold.Enable();
         drag.Enable();
         back.Enable();
-        submit.Enable();
     }
     void OnDestroy()
     {
@@ -27,6 +26,5 @@ public class InputComponent : MonoBehaviour
         hold.Disable();
         drag.Disable();
         back.Disable();
-        submit.Disable();
     }
 }
