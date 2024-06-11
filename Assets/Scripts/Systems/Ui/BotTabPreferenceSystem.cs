@@ -29,7 +29,7 @@ public class BotTabPreferenceSystem : MonoBehaviour
         botTabComponent.botTypeDropdown.value = (int)preferenceBot.botType;
         botTabComponent.premiumIndexSetting_longThresholdPercentage.text = preferenceBot.premiumIndex.longThresholdPercentage.ToString();
         botTabComponent.premiumIndexSetting_shortThresholdPercentage.text = preferenceBot.premiumIndex.shortThresholdPercentage.ToString();
-        botTabComponent.premiumIndexSetting_candleLength.text = preferenceBot.premiumIndex.candleLength.ToString();
+        botTabComponent.premiumIndexSetting_averageCandleLength.text = preferenceBot.premiumIndex.averageCandleLength.ToString();
         botTabComponent.premiumIndexSetting_reverseCandleBuffer.text = preferenceBot.premiumIndex.reverseCandleBuffer.ToString();
         botTabComponent.premiumIndexSetting_reverseCandleConfirmation.text = preferenceBot.premiumIndex.reverseCandleConfirmation.ToString();
         botTabComponent.premiumIndexSetting_fomoCandleConfirmation.text = preferenceBot.premiumIndex.fomoCandleConfirmation.ToString();
@@ -93,15 +93,15 @@ public class BotTabPreferenceSystem : MonoBehaviour
             profileComponent.activeProfile.preference.bot.premiumIndex.shortThresholdPercentage = float.Parse(value);
             settingPageComponent.updatePreferenceToServer = true;
         });
-        botTabComponent.premiumIndexSetting_candleLength.onEndEdit.AddListener(value =>
+        botTabComponent.premiumIndexSetting_averageCandleLength.onEndEdit.AddListener(value =>
         {
             if (value.IsNullOrEmpty())
             {
-                value = profileComponent.activeProfile.preference.bot.premiumIndex.candleLength.ToString();
-                botTabComponent.premiumIndexSetting_candleLength.text = value;
+                value = profileComponent.activeProfile.preference.bot.premiumIndex.averageCandleLength.ToString();
+                botTabComponent.premiumIndexSetting_averageCandleLength.text = value;
             }
-            if (profileComponent.activeProfile.preference.bot.premiumIndex.candleLength.ToString() == value) return;
-            profileComponent.activeProfile.preference.bot.premiumIndex.candleLength = int.Parse(value);
+            if (profileComponent.activeProfile.preference.bot.premiumIndex.averageCandleLength.ToString() == value) return;
+            profileComponent.activeProfile.preference.bot.premiumIndex.averageCandleLength = int.Parse(value);
             settingPageComponent.updatePreferenceToServer = true;
         });
         botTabComponent.premiumIndexSetting_reverseCandleBuffer.onEndEdit.AddListener(value =>
