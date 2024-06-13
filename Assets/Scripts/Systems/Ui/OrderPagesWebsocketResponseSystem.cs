@@ -78,6 +78,18 @@ public class OrderPagesWebsocketResponseSystem : MonoBehaviour
         if (response.exitOrderType.HasValue)
         {
             orderPageComponent.resultComponent.exitOrderTypeText.text = response.exitOrderType.Value.ToString();
+            switch (response.exitOrderType.Value)
+            {
+                case ExitOrderTypeEnum.NONE:
+                    orderPageComponent.resultComponent.exitOrderTypeText.color = OrderConfig.DISPLAY_COLOR_BLACK;
+                    break;
+                case ExitOrderTypeEnum.STOP_LOSS:
+                    orderPageComponent.resultComponent.exitOrderTypeText.color = OrderConfig.DISPLAY_COLOR_RED;
+                    break;
+                case ExitOrderTypeEnum.TAKE_PROFIT:
+                    orderPageComponent.resultComponent.exitOrderTypeText.color = OrderConfig.DISPLAY_COLOR_GREEN;
+                    break;
+            }
         }
     }
     void AddOrderToServerResponse()

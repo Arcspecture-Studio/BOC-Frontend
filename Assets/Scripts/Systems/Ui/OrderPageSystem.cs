@@ -295,7 +295,7 @@ public class OrderPageSystem : MonoBehaviour
         TMP_Text temp;
         #region Order title
         string direction = orderPageComponent.marginCalculator.isLong ? "LONG" : "SHORT";
-        Color directionColor = orderPageComponent.marginCalculator.isLong ? OrderConfig.DISPLAY_COLOR_GREEN : Color.red;
+        Color directionColor = orderPageComponent.marginCalculator.isLong ? OrderConfig.DISPLAY_COLOR_GREEN : OrderConfig.DISPLAY_COLOR_RED;
         orderPageComponent.orderTitleText.text = orderPageComponent.symbolDropdownComponent.selectedSymbol + ": " + direction;
         orderPageComponent.orderTitleText.color = directionColor;
         #endregion
@@ -341,10 +341,10 @@ public class OrderPageSystem : MonoBehaviour
             listedWinLossAmountDataObject.transform.GetChild(3).gameObject.SetActive(false);
             temp = listedWinLossAmountDataObject.transform.GetChild(4).GetComponent<TMP_Text>();
             temp.text = Utils.RoundTwoDecimal(orderPageComponent.marginCalculator.stopLossAmounts[i]).ToString();
-            temp.color = Color.red;
+            temp.color = OrderConfig.DISPLAY_COLOR_RED;
             temp = listedWinLossAmountDataObject.transform.GetChild(5).GetComponent<TMP_Text>();
             temp.text = "Fee: " + Utils.RoundNDecimal(orderPageComponent.marginCalculator.fees[i], 6).ToString();
-            temp.color = Color.red;
+            temp.color = OrderConfig.DISPLAY_COLOR_RED;
             orderPageComponent.resultComponent.quantitiesDataObjects.Add(listedWinLossAmountDataObject);
             #endregion
         }
@@ -352,16 +352,16 @@ public class OrderPageSystem : MonoBehaviour
         #region Total win loss amount
         temp = orderPageComponent.resultComponent.totalWinLossAmountDataObject.transform.GetChild(0).GetComponent<TMP_Text>();
         temp.text = orderPageComponent.marginCalculator.stopLossPrice.ToString();
-        temp.color = Color.red;
+        temp.color = OrderConfig.DISPLAY_COLOR_RED;
         temp = orderPageComponent.resultComponent.totalWinLossAmountDataObject.transform.GetChild(1).GetComponent<TMP_Text>();
         temp.text = Utils.RoundTwoDecimal(orderPageComponent.marginCalculator.stopLossPercentage).ToString() + "%";
-        temp.color = Color.red;
+        temp.color = OrderConfig.DISPLAY_COLOR_RED;
         temp = orderPageComponent.resultComponent.totalWinLossAmountDataObject.transform.GetChild(2).GetComponent<TMP_Text>();
         temp.text = Utils.RoundTwoDecimal(orderPageComponent.marginCalculator.totalLossAmount).ToString();
-        temp.color = Color.red;
+        temp.color = OrderConfig.DISPLAY_COLOR_RED;
         temp = orderPageComponent.resultComponent.totalWinLossAmountDataObject.transform.GetChild(3).GetComponent<TMP_Text>();
         temp.text = "Fee: " + Utils.RoundNDecimal(orderPageComponent.marginCalculator.totalFee, 6).ToString();
-        temp.color = Color.red;
+        temp.color = OrderConfig.DISPLAY_COLOR_RED;
         temp = orderPageComponent.resultComponent.totalWinLossAmountDataObject.transform.GetChild(4).GetComponent<TMP_Text>();
         temp.text = Utils.RoundTwoDecimal(orderPageComponent.marginCalculator.totalWinAmount).ToString();
         temp.color = OrderConfig.DISPLAY_COLOR_GREEN;
@@ -372,10 +372,10 @@ public class OrderPageSystem : MonoBehaviour
         orderPageComponent.resultComponent.balanceDataObject.transform.GetChild(1).gameObject.SetActive(false);
         temp = orderPageComponent.resultComponent.balanceDataObject.transform.GetChild(2).GetComponent<TMP_Text>();
         temp.text = Utils.TruncTwoDecimal(orderPageComponent.marginCalculator.balanceAfterLoss).ToString();
-        temp.color = Color.red;
+        temp.color = OrderConfig.DISPLAY_COLOR_RED;
         temp = orderPageComponent.resultComponent.balanceDataObject.transform.GetChild(3).GetComponent<TMP_Text>();
         temp.text = "-" + Utils.RoundTwoDecimal(Utils.RateToPercentage(orderPageComponent.marginCalculator.balanceDecrementRate)).ToString() + " %";
-        temp.color = Color.red;
+        temp.color = OrderConfig.DISPLAY_COLOR_RED;
         temp = orderPageComponent.resultComponent.balanceDataObject.transform.GetChild(4).GetComponent<TMP_Text>();
         temp.text = Utils.TruncTwoDecimal(orderPageComponent.marginCalculator.balanceAfterFullWin).ToString();
         temp.color = OrderConfig.DISPLAY_COLOR_GREEN;

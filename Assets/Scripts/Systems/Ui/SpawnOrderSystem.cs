@@ -66,6 +66,18 @@ public class SpawnOrderSystem : MonoBehaviour
         orderPageComponent.marginCalculator = response.marginCalculator;
         orderPageComponent.resultComponent.spawnTimeText.text = DateTimeOffset.FromUnixTimeMilliseconds(response.spawnTime).ToLocalTime().ToString();
         orderPageComponent.resultComponent.exitOrderTypeText.text = response.exitOrderType.ToString();
+        switch (response.exitOrderType)
+        {
+            case ExitOrderTypeEnum.NONE:
+                orderPageComponent.resultComponent.exitOrderTypeText.color = OrderConfig.DISPLAY_COLOR_BLACK;
+                break;
+            case ExitOrderTypeEnum.STOP_LOSS:
+                orderPageComponent.resultComponent.exitOrderTypeText.color = OrderConfig.DISPLAY_COLOR_RED;
+                break;
+            case ExitOrderTypeEnum.TAKE_PROFIT:
+                orderPageComponent.resultComponent.exitOrderTypeText.color = OrderConfig.DISPLAY_COLOR_GREEN;
+                break;
+        }
         orderPageComponent.positionInfoAvgEntryPriceFilledText.text = Utils.RoundNDecimal(response.averagePriceFilled, platformComponent.pricePrecisions[orderPageComponent.symbolDropdownComponent.selectedSymbol]).ToString();
         orderPageComponent.positionInfoQuantityFilledText.text = Utils.RoundNDecimal(response.quantityFilled, platformComponent.quantityPrecisions[orderPageComponent.symbolDropdownComponent.selectedSymbol]).ToString();
         orderPageComponent.positionInfoActualTakeProfitPriceText.text = Utils.RoundNDecimal(response.actualTakeProfitPrice, platformComponent.pricePrecisions[orderPageComponent.symbolDropdownComponent.selectedSymbol]).ToString();

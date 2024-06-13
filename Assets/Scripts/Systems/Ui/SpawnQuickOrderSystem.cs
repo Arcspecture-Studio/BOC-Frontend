@@ -26,7 +26,7 @@ public class SpawnQuickOrderSystem : MonoBehaviour
         quickOrderDataRowComponent.setting = response.setting;
         quickOrderDataRowComponent.symbolText.text = response.setting.order.symbol;
         string positionSide = response.isLong ? "LONG" : "SHORT";
-        Color positionSideColor = response.isLong ? OrderConfig.DISPLAY_COLOR_GREEN : Color.red;
+        Color positionSideColor = response.isLong ? OrderConfig.DISPLAY_COLOR_GREEN : OrderConfig.DISPLAY_COLOR_RED;
         quickOrderDataRowComponent.positionSideText.text = positionSide;
         quickOrderDataRowComponent.positionSideText.color = positionSideColor;
         quickOrderDataRowComponent.entryPriceText.text = Utils.RoundTwoDecimal(response.entryPrice).ToString();
