@@ -75,6 +75,10 @@ public class OrderPagesWebsocketResponseSystem : MonoBehaviour
             orderPageComponent.tradingBotId = "";
             orderPageComponent.positionInfoBotInChargeDropdown.value = 0;
         }
+        if (response.exitOrderType.HasValue)
+        {
+            orderPageComponent.resultComponent.exitOrderTypeText.text = response.exitOrderType.Value.ToString();
+        }
     }
     void AddOrderToServerResponse()
     {
