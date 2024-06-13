@@ -26,6 +26,7 @@ namespace General
         public float paidFundingAmount;
         public List<WebsocketGetThrottleOrderResponse> throttleOrders;
         public long spawnTime; // TIMESTAMP
+        public ExitOrderTypeEnum exitOrderType;
     }
     [Serializable]
     public class WebsocketGetThrottleOrderResponse

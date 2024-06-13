@@ -175,9 +175,9 @@ public class BotDataRowSystem : MonoBehaviour
                 TMP_Text shortThresholdPercentageText = shortThresholdPercentage.GetComponent<TMP_Text>();
                 shortThresholdPercentageText.text = "Short Threshold %: " + botDataRowComponent.setting.bot.premiumIndex.shortThresholdPercentage.ToString();
 
-                GameObject candleLength = Instantiate(botDataRowComponent.infoPanelData, botDataRowComponent.infoPanelContent);
-                TMP_Text candleLengthText = candleLength.GetComponent<TMP_Text>();
-                candleLengthText.text = "Candle Length: " + botDataRowComponent.setting.bot.premiumIndex.candleLength.ToString();
+                GameObject averageCandleLength = Instantiate(botDataRowComponent.infoPanelData, botDataRowComponent.infoPanelContent);
+                TMP_Text averageCandleLengthText = averageCandleLength.GetComponent<TMP_Text>();
+                averageCandleLengthText.text = "Average Candle Length: " + botDataRowComponent.setting.bot.premiumIndex.averageCandleLength.ToString();
 
                 GameObject reverseCandleBuffer = Instantiate(botDataRowComponent.infoPanelData, botDataRowComponent.infoPanelContent);
                 TMP_Text reverseCandleBufferText = reverseCandleBuffer.GetComponent<TMP_Text>();

@@ -13,5 +13,6 @@ namespace General
         public float? actualTakeProfitPrice;
         public float? paidFundingAmount;
         public bool? removeBot;
+        public ExitOrderTypeEnum? exitOrderType;
     }
 }

@@ -11,6 +11,7 @@ public class OrderPageResultComponent : MonoBehaviour
     public Transform totalWinLossAmountParent;
     public Transform balanceParent;
     public TMP_Text spawnTimeText;
+    public TMP_Text exitOrderTypeText;
 
     [Header("Runtime")]
     public GameObject orderInfoDataObject;

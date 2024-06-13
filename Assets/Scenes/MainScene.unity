@@ -4896,7 +4896,7 @@ MonoBehaviour:
   premiumIndexSettingObj: {fileID: 235893177}
   premiumIndexSetting_longThresholdPercentage: {fileID: 1099480019}
   premiumIndexSetting_shortThresholdPercentage: {fileID: 576361481}
-  premiumIndexSetting_candleLength: {fileID: 1780051496}
+  premiumIndexSetting_averageCandleLength: {fileID: 1780051496}
   premiumIndexSetting_reverseCandleBuffer: {fileID: 75572336}
   premiumIndexSetting_reverseCandleConfirmation: {fileID: 1399581595}
   premiumIndexSetting_fomoCandleConfirmation: {fileID: 540789848}
@@ -37695,23 +37695,6 @@ MonoBehaviour:
       m_Action: Back
       m_Flags: 0
     m_Flags: 0
-  submit:
-    m_Name: Submit
-    m_Type: 0
-    m_ExpectedControlType: 
-    m_Id: bbf01bdf-2aec-4817-b82c-5f782ab51f02
-    m_Processors: 
-    m_Interactions: 
-    m_SingletonActionBindings:
-    - m_Name: 
-      m_Id: 92a84c37-aba5-4780-85bb-f7a8e3d4b5ee
-      m_Path: '*/{Submit}'
-      m_Interactions: 
-      m_Processors: 
-      m_Groups: 
-      m_Action: Submit
-      m_Flags: 0
-    m_Flags: 0
   screenPos:
     m_Name: Screen Pos
     m_Type: 0
@@ -37735,6 +37718,23 @@ MonoBehaviour:
       m_Processors: 
       m_Groups: 
       m_Action: Screen Pos
+      m_Flags: 0
+    m_Flags: 0
+  submit:
+    m_Name: Submit
+    m_Type: 0
+    m_ExpectedControlType: 
+    m_Id: bbf01bdf-2aec-4817-b82c-5f782ab51f02
+    m_Processors: 
+    m_Interactions: 
+    m_SingletonActionBindings:
+    - m_Name: 
+      m_Id: 92a84c37-aba5-4780-85bb-f7a8e3d4b5ee
+      m_Path: '*/{Submit}'
+      m_Interactions: 
+      m_Processors: 
+      m_Groups: 
+      m_Action: Submit
       m_Flags: 0
     m_Flags: 0
   space:
