@@ -29,7 +29,12 @@ public class SettingPagePreferenceSystem : MonoBehaviour
 
     void DefineOnUIChangedListeners()
     {
-        settingPageComponent.symbolInput.onValueChanged.AddListener(value => settingPageComponent.symbolInput.text = value.ToUpper());
+        settingPageComponent.symbolInput.onValueChanged.AddListener(value =>
+        {
+            int caretPosition = settingPageComponent.symbolInput.caretPosition;
+            settingPageComponent.symbolInput.text = value.ToUpper();
+            settingPageComponent.symbolInput.caretPosition = caretPosition;
+        });
         settingPageComponent.symbolInput.onEndEdit.AddListener(value =>
         {
             if (value.IsNullOrEmpty())
