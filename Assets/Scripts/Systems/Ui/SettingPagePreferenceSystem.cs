@@ -29,12 +29,6 @@ public class SettingPagePreferenceSystem : MonoBehaviour
 
     void DefineOnUIChangedListeners()
     {
-        settingPageComponent.symbolInput.onValueChanged.AddListener(value =>
-        {
-            int caretPosition = settingPageComponent.symbolInput.caretPosition;
-            settingPageComponent.symbolInput.text = value.ToUpper();
-            settingPageComponent.symbolInput.caretPosition = caretPosition;
-        });
         settingPageComponent.symbolInput.onEndEdit.AddListener(value =>
         {
             if (value.IsNullOrEmpty())
@@ -42,6 +36,8 @@ public class SettingPagePreferenceSystem : MonoBehaviour
                 value = profileComponent.activeProfile.preference.order.symbol;
                 settingPageComponent.symbolInput.text = value;
             }
+            value = value.ToUpper();
+            settingPageComponent.symbolInput.text = value;
             if (profileComponent.activeProfile.preference.order.symbol == value) return;
             profileComponent.activeProfile.preference.order.symbol = value;
             settingPageComponent.updatePreferenceToServer = true;
