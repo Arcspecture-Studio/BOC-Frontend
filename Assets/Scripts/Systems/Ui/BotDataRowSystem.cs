@@ -129,7 +129,7 @@ public class BotDataRowSystem : MonoBehaviour
 
         GameObject atrTimeframe = Instantiate(botDataRowComponent.infoPanelData, botDataRowComponent.infoPanelContent);
         TMP_Text atrTimeframeText = atrTimeframe.GetComponent<TMP_Text>();
-        atrTimeframeText.text = "ATR Timeframe: " + OrderConfig.TIMEFRAME_ARRAY[(int)botDataRowComponent.setting.quickOrder.atrTimeframe];
+        atrTimeframeText.text = "ATR Timeframe: " + TimeframeArray.TIMEFRAME_ARRAY[(int)botDataRowComponent.setting.quickOrder.atrTimeframe];
 
         GameObject atrLength = Instantiate(botDataRowComponent.infoPanelData, botDataRowComponent.infoPanelContent);
         TMP_Text atrLengthText = atrLength.GetComponent<TMP_Text>();
@@ -167,29 +167,42 @@ public class BotDataRowSystem : MonoBehaviour
         switch (botDataRowComponent.setting.bot.botType)
         {
             case BotTypeEnum.PREMIUM_INDEX:
-                GameObject longThresholdPercentage = Instantiate(botDataRowComponent.infoPanelData, botDataRowComponent.infoPanelContent);
-                TMP_Text longThresholdPercentageText = longThresholdPercentage.GetComponent<TMP_Text>();
-                longThresholdPercentageText.text = "Long Threshold %: " + botDataRowComponent.setting.bot.premiumIndex.longThresholdPercentage.ToString();
+                GameObject premiumIndex_longThresholdPercentage = Instantiate(botDataRowComponent.infoPanelData, botDataRowComponent.infoPanelContent);
+                TMP_Text premiumIndex_longThresholdPercentageText = premiumIndex_longThresholdPercentage.GetComponent<TMP_Text>();
+                premiumIndex_longThresholdPercentageText.text = "Long Threshold %: " + botDataRowComponent.setting.bot.premiumIndex.longThresholdPercentage.ToString();
 
-                GameObject shortThresholdPercentage = Instantiate(botDataRowComponent.infoPanelData, botDataRowComponent.infoPanelContent);
-                TMP_Text shortThresholdPercentageText = shortThresholdPercentage.GetComponent<TMP_Text>();
-                shortThresholdPercentageText.text = "Short Threshold %: " + botDataRowComponent.setting.bot.premiumIndex.shortThresholdPercentage.ToString();
+                GameObject premiumIndex_shortThresholdPercentage = Instantiate(botDataRowComponent.infoPanelData, botDataRowComponent.infoPanelContent);
+                TMP_Text premiumIndex_shortThresholdPercentageText = premiumIndex_shortThresholdPercentage.GetComponent<TMP_Text>();
+                premiumIndex_shortThresholdPercentageText.text = "Short Threshold %: " + botDataRowComponent.setting.bot.premiumIndex.shortThresholdPercentage.ToString();
 
-                GameObject averageCandleLength = Instantiate(botDataRowComponent.infoPanelData, botDataRowComponent.infoPanelContent);
-                TMP_Text averageCandleLengthText = averageCandleLength.GetComponent<TMP_Text>();
-                averageCandleLengthText.text = "Average Candle Length: " + botDataRowComponent.setting.bot.premiumIndex.averageCandleLength.ToString();
+                GameObject premiumIndex_averageCandleLength = Instantiate(botDataRowComponent.infoPanelData, botDataRowComponent.infoPanelContent);
+                TMP_Text premiumIndex_averageCandleLengthText = premiumIndex_averageCandleLength.GetComponent<TMP_Text>();
+                premiumIndex_averageCandleLengthText.text = "Average Candle Length: " + botDataRowComponent.setting.bot.premiumIndex.averageCandleLength.ToString();
 
-                GameObject reverseCandleBuffer = Instantiate(botDataRowComponent.infoPanelData, botDataRowComponent.infoPanelContent);
-                TMP_Text reverseCandleBufferText = reverseCandleBuffer.GetComponent<TMP_Text>();
-                reverseCandleBufferText.text = "Reverse Candle Buffer: " + botDataRowComponent.setting.bot.premiumIndex.reverseCandleBuffer.ToString();
+                GameObject premiumIndex_reverseCandleBuffer = Instantiate(botDataRowComponent.infoPanelData, botDataRowComponent.infoPanelContent);
+                TMP_Text premiumIndex_reverseCandleBufferText = premiumIndex_reverseCandleBuffer.GetComponent<TMP_Text>();
+                premiumIndex_reverseCandleBufferText.text = "Reverse Candle Buffer: " + botDataRowComponent.setting.bot.premiumIndex.reverseCandleBuffer.ToString();
 
-                GameObject reverseCandleConfirmation = Instantiate(botDataRowComponent.infoPanelData, botDataRowComponent.infoPanelContent);
-                TMP_Text reverseCandleConfirmationText = reverseCandleConfirmation.GetComponent<TMP_Text>();
-                reverseCandleConfirmationText.text = "Reverse Candle Confirmation: " + botDataRowComponent.setting.bot.premiumIndex.reverseCandleConfirmation.ToString();
+                GameObject premiumIndex_reverseCandleConfirmation = Instantiate(botDataRowComponent.infoPanelData, botDataRowComponent.infoPanelContent);
+                TMP_Text premiumIndex_reverseCandleConfirmationText = premiumIndex_reverseCandleConfirmation.GetComponent<TMP_Text>();
+                premiumIndex_reverseCandleConfirmationText.text = "Reverse Candle Confirmation: " + botDataRowComponent.setting.bot.premiumIndex.reverseCandleConfirmation.ToString();
 
-                GameObject fomoCandleConfirmation = Instantiate(botDataRowComponent.infoPanelData, botDataRowComponent.infoPanelContent);
-                TMP_Text fomoCandleConfirmationText = fomoCandleConfirmation.GetComponent<TMP_Text>();
-                fomoCandleConfirmationText.text = "Fomo Candle Confirmation: " + botDataRowComponent.setting.bot.premiumIndex.fomoCandleConfirmation.ToString();
+                GameObject premiumIndex_fomoCandleConfirmation = Instantiate(botDataRowComponent.infoPanelData, botDataRowComponent.infoPanelContent);
+                TMP_Text premiumIndex_fomoCandleConfirmationText = premiumIndex_fomoCandleConfirmation.GetComponent<TMP_Text>();
+                premiumIndex_fomoCandleConfirmationText.text = "Fomo Candle Confirmation: " + botDataRowComponent.setting.bot.premiumIndex.fomoCandleConfirmation.ToString();
+                break;
+            case BotTypeEnum.MCDX:
+                GameObject mcdx_timeframe = Instantiate(botDataRowComponent.infoPanelData, botDataRowComponent.infoPanelContent);
+                TMP_Text mcdx_timeframeText = mcdx_timeframe.GetComponent<TMP_Text>();
+                mcdx_timeframeText.text = "Timeframe: " + TimeframeArray.TIMEFRAME_ARRAY[(int)botDataRowComponent.setting.bot.mcdx.timeframe];
+
+                GameObject mcdx_averageCandleLength = Instantiate(botDataRowComponent.infoPanelData, botDataRowComponent.infoPanelContent);
+                TMP_Text mcdx_averageCandleLengthText = mcdx_averageCandleLength.GetComponent<TMP_Text>();
+                mcdx_averageCandleLengthText.text = "Average Candle Length: " + botDataRowComponent.setting.bot.mcdx.averageCandleLength.ToString();
+
+                GameObject mcdx_fomoCandleConfirmation = Instantiate(botDataRowComponent.infoPanelData, botDataRowComponent.infoPanelContent);
+                TMP_Text mcdx_fomoCandleConfirmationText = mcdx_fomoCandleConfirmation.GetComponent<TMP_Text>();
+                mcdx_fomoCandleConfirmationText.text = "Fomo Candle Confirmation: " + botDataRowComponent.setting.bot.mcdx.fomoCandleConfirmation.ToString();
                 break;
         }
         #endregion

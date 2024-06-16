@@ -37,16 +37,22 @@ public class PreferenceBot
     public int shortOrderLimit;
     public bool autoDestroyOrder;
     public PreferenceBotPremiumIndex premiumIndex;
+    public PreferenceBotMcdx mcdx;
 }
 [Serializable]
-public class PreferenceBotStrategy { }
-[Serializable]
-public class PreferenceBotPremiumIndex : PreferenceBotStrategy
+public class PreferenceBotPremiumIndex
 {
     public float longThresholdPercentage;
     public float shortThresholdPercentage;
     public int averageCandleLength;
     public int reverseCandleBuffer;
     public int reverseCandleConfirmation;
+    public int fomoCandleConfirmation;
+}
+[Serializable]
+public class PreferenceBotMcdx
+{
+    public TimeframeEnum timeframe;
+    public int averageCandleLength;
     public int fomoCandleConfirmation;
 }

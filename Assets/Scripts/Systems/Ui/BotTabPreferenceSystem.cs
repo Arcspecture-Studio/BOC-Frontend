@@ -33,6 +33,9 @@ public class BotTabPreferenceSystem : MonoBehaviour
         botTabComponent.premiumIndexSetting_reverseCandleBuffer.text = preferenceBot.premiumIndex.reverseCandleBuffer.ToString();
         botTabComponent.premiumIndexSetting_reverseCandleConfirmation.text = preferenceBot.premiumIndex.reverseCandleConfirmation.ToString();
         botTabComponent.premiumIndexSetting_fomoCandleConfirmation.text = preferenceBot.premiumIndex.fomoCandleConfirmation.ToString();
+        botTabComponent.mcdxSetting_timeframeDropdown.value = (int)preferenceBot.mcdx.timeframe;
+        botTabComponent.mcdxSetting_averageCandleLength.text = preferenceBot.mcdx.averageCandleLength.ToString();
+        botTabComponent.mcdxSetting_fomoCandleConfirmation.text = preferenceBot.mcdx.fomoCandleConfirmation.ToString();
 
         botTabComponent.updatingUIFromProfile = false;
     }
@@ -69,7 +72,7 @@ public class BotTabPreferenceSystem : MonoBehaviour
         botTabComponent.botTypeDropdown.onValueChanged.AddListener(value =>
         {
             profileComponent.activeProfile.preference.bot.botType = (BotTypeEnum)value;
-            // settingPageComponent.updatePreferenceToServer = true;
+            settingPageComponent.updatePreferenceToServer = true;
         });
         botTabComponent.premiumIndexSetting_longThresholdPercentage.onEndEdit.AddListener(value =>
         {
@@ -135,6 +138,33 @@ public class BotTabPreferenceSystem : MonoBehaviour
             }
             if (profileComponent.activeProfile.preference.bot.premiumIndex.fomoCandleConfirmation.ToString() == value) return;
             profileComponent.activeProfile.preference.bot.premiumIndex.fomoCandleConfirmation = int.Parse(value);
+            settingPageComponent.updatePreferenceToServer = true;
+        });
+        botTabComponent.mcdxSetting_timeframeDropdown.onValueChanged.AddListener(value =>
+        {
+            profileComponent.activeProfile.preference.bot.mcdx.timeframe = (TimeframeEnum)value;
+            settingPageComponent.updatePreferenceToServer = true;
+        });
+        botTabComponent.mcdxSetting_averageCandleLength.onEndEdit.AddListener(value =>
+        {
+            if (value.IsNullOrEmpty())
+            {
+                value = profileComponent.activeProfile.preference.bot.mcdx.averageCandleLength.ToString();
+                botTabComponent.mcdxSetting_averageCandleLength.text = value;
+            }
+            if (profileComponent.activeProfile.preference.bot.mcdx.averageCandleLength.ToString() == value) return;
+            profileComponent.activeProfile.preference.bot.mcdx.averageCandleLength = int.Parse(value);
+            settingPageComponent.updatePreferenceToServer = true;
+        });
+        botTabComponent.mcdxSetting_fomoCandleConfirmation.onEndEdit.AddListener(value =>
+        {
+            if (value.IsNullOrEmpty())
+            {
+                value = profileComponent.activeProfile.preference.bot.mcdx.fomoCandleConfirmation.ToString();
+                botTabComponent.mcdxSetting_fomoCandleConfirmation.text = value;
+            }
+            if (profileComponent.activeProfile.preference.bot.mcdx.fomoCandleConfirmation.ToString() == value) return;
+            profileComponent.activeProfile.preference.bot.mcdx.fomoCandleConfirmation = int.Parse(value);
             settingPageComponent.updatePreferenceToServer = true;
         });
     }

@@ -128,7 +128,7 @@ public class QuickOrderDataRowSystem : MonoBehaviour
 
         GameObject atrTimeframe = Instantiate(quickOrderDataRowComponent.infoPanelData, quickOrderDataRowComponent.infoPanelContent);
         TMP_Text atrTimeframeText = atrTimeframe.GetComponent<TMP_Text>();
-        atrTimeframeText.text = "ATR Timeframe: " + OrderConfig.TIMEFRAME_ARRAY[(int)quickOrderDataRowComponent.setting.quickOrder.atrTimeframe];
+        atrTimeframeText.text = "ATR Timeframe: " + TimeframeArray.TIMEFRAME_ARRAY[(int)quickOrderDataRowComponent.setting.quickOrder.atrTimeframe];
 
         GameObject atrLength = Instantiate(quickOrderDataRowComponent.infoPanelData, quickOrderDataRowComponent.infoPanelContent);
         TMP_Text atrLengthText = atrLength.GetComponent<TMP_Text>();
