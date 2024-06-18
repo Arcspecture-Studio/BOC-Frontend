@@ -47,7 +47,6 @@ public class PreferenceBotPremiumIndex
     public int averageCandleLength;
     public int reverseCandleBuffer;
     public int reverseCandleConfirmation;
-    public int fomoCandleConfirmation;
 }
 [Serializable]
 public class PreferenceBotMcdx

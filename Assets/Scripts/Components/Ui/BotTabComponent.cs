@@ -20,7 +20,6 @@ public class BotTabComponent : MonoBehaviour
     public TMP_InputField premiumIndexSetting_averageCandleLength;
     public TMP_InputField premiumIndexSetting_reverseCandleBuffer;
     public TMP_InputField premiumIndexSetting_reverseCandleConfirmation;
-    public TMP_InputField premiumIndexSetting_fomoCandleConfirmation;
     public TMP_Dropdown mcdxSetting_timeframeDropdown;
     public TMP_InputField mcdxSetting_averageCandleLength;
     public TMP_InputField mcdxSetting_fomoCandleConfirmation;
