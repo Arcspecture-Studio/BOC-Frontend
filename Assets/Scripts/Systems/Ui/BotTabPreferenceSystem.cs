@@ -32,7 +32,6 @@ public class BotTabPreferenceSystem : MonoBehaviour
         botTabComponent.premiumIndexSetting_averageCandleLength.text = preferenceBot.premiumIndex.averageCandleLength.ToString();
         botTabComponent.premiumIndexSetting_reverseCandleBuffer.text = preferenceBot.premiumIndex.reverseCandleBuffer.ToString();
         botTabComponent.premiumIndexSetting_reverseCandleConfirmation.text = preferenceBot.premiumIndex.reverseCandleConfirmation.ToString();
-        botTabComponent.premiumIndexSetting_fomoCandleConfirmation.text = preferenceBot.premiumIndex.fomoCandleConfirmation.ToString();
         botTabComponent.mcdxSetting_timeframeDropdown.value = (int)preferenceBot.mcdx.timeframe;
         botTabComponent.mcdxSetting_averageCandleLength.text = preferenceBot.mcdx.averageCandleLength.ToString();
         botTabComponent.mcdxSetting_fomoCandleConfirmation.text = preferenceBot.mcdx.fomoCandleConfirmation.ToString();
@@ -127,17 +126,6 @@ public class BotTabPreferenceSystem : MonoBehaviour
             }
             if (profileComponent.activeProfile.preference.bot.premiumIndex.reverseCandleConfirmation.ToString() == value) return;
             profileComponent.activeProfile.preference.bot.premiumIndex.reverseCandleConfirmation = int.Parse(value);
-            settingPageComponent.updatePreferenceToServer = true;
-        });
-        botTabComponent.premiumIndexSetting_fomoCandleConfirmation.onEndEdit.AddListener(value =>
-        {
-            if (value.IsNullOrEmpty())
-            {
-                value = profileComponent.activeProfile.preference.bot.premiumIndex.fomoCandleConfirmation.ToString();
-                botTabComponent.premiumIndexSetting_fomoCandleConfirmation.text = value;
-            }
-            if (profileComponent.activeProfile.preference.bot.premiumIndex.fomoCandleConfirmation.ToString() == value) return;
-            profileComponent.activeProfile.preference.bot.premiumIndex.fomoCandleConfirmation = int.Parse(value);
             settingPageComponent.updatePreferenceToServer = true;
         });
         botTabComponent.mcdxSetting_timeframeDropdown.onValueChanged.AddListener(value =>

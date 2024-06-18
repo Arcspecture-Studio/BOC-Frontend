@@ -186,10 +186,6 @@ public class BotDataRowSystem : MonoBehaviour
                 GameObject premiumIndex_reverseCandleConfirmation = Instantiate(botDataRowComponent.infoPanelData, botDataRowComponent.infoPanelContent);
                 TMP_Text premiumIndex_reverseCandleConfirmationText = premiumIndex_reverseCandleConfirmation.GetComponent<TMP_Text>();
                 premiumIndex_reverseCandleConfirmationText.text = "Reverse Candle Confirmation: " + botDataRowComponent.setting.bot.premiumIndex.reverseCandleConfirmation.ToString();
-
-                GameObject premiumIndex_fomoCandleConfirmation = Instantiate(botDataRowComponent.infoPanelData, botDataRowComponent.infoPanelContent);
-                TMP_Text premiumIndex_fomoCandleConfirmationText = premiumIndex_fomoCandleConfirmation.GetComponent<TMP_Text>();
-                premiumIndex_fomoCandleConfirmationText.text = "Fomo Candle Confirmation: " + botDataRowComponent.setting.bot.premiumIndex.fomoCandleConfirmation.ToString();
                 break;
             case BotTypeEnum.MCDX:
                 GameObject mcdx_timeframe = Instantiate(botDataRowComponent.infoPanelData, botDataRowComponent.infoPanelContent);
