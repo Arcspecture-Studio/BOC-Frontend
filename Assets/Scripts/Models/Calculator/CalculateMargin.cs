@@ -44,6 +44,7 @@ public class CalculateMargin
     public float totalWinAmount;
     public float balanceIncrementRate;
     public float balanceAfterFullWin;
+    public float winLossDiff;
     #endregion
 
     public CalculateMargin(float balance,
@@ -261,6 +262,7 @@ public class CalculateMargin
         breakEvenPrice = breakEvenPrices[isLong ? 0 : ^1];
         float cumQuantity = Utils.RoundNDecimal(cumQuantities[isLong ? 0 : ^1] * Utils.PercentageToRate(takeProfitQuantityPercentage), quantityPrecision);
         totalWinAmount = cumQuantity * Mathf.Abs(takeProfitPrice - avgEntryPrices[isLong ? 0 : ^1]) - takeProfitPrice * cumQuantity * feeRate - avgEntryPrices[isLong ? 0 : ^1] * cumQuantity * feeRate;
+        winLossDiff = totalWinAmount - totalLossAmount;
         balanceIncrementRate = balance == 0 ? 0 : totalWinAmount / balance;
         balanceAfterFullWin = balance + totalWinAmount;
     }
