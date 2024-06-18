@@ -365,7 +365,9 @@ public class OrderPageSystem : MonoBehaviour
         temp = orderPageComponent.resultComponent.totalWinLossAmountDataObject.transform.GetChild(4).GetComponent<TMP_Text>();
         temp.text = Utils.RoundTwoDecimal(orderPageComponent.marginCalculator.totalWinAmount).ToString();
         temp.color = OrderConfig.DISPLAY_COLOR_GREEN;
-        orderPageComponent.resultComponent.totalWinLossAmountDataObject.transform.GetChild(5).gameObject.SetActive(false);
+        temp = orderPageComponent.resultComponent.totalWinLossAmountDataObject.transform.GetChild(5).GetComponent<TMP_Text>();
+        temp.text = "Diff: " + Utils.RoundTwoDecimal(orderPageComponent.marginCalculator.winLossDiff).ToString();
+        temp.color = orderPageComponent.marginCalculator.winLossDiff > 0 ? OrderConfig.DISPLAY_COLOR_GREEN : OrderConfig.DISPLAY_COLOR_RED;
         #endregion
         #region Balance
         orderPageComponent.resultComponent.balanceDataObject.transform.GetChild(0).GetComponent<TMP_Text>().text = Utils.TruncTwoDecimal(orderPageComponent.marginCalculator.balance).ToString();
@@ -522,15 +524,19 @@ public class OrderPageSystem : MonoBehaviour
         #endregion
 
         #region Update value in game object for display
+        TMP_Text temp;
         for (int i = 0; i < orderPageComponent.marginCalculator.entryPrices.Count; i++)
         {
             Transform entryPriceDataTransform = orderPageComponent.resultComponent.pricesParent.GetChild(i + 1);
-            TMP_Text temp = entryPriceDataTransform.GetChild(4).GetComponent<TMP_Text>();
+            temp = entryPriceDataTransform.GetChild(4).GetComponent<TMP_Text>();
             temp.text = tpPrices[i].ToString();
             temp = entryPriceDataTransform.GetChild(5).GetComponent<TMP_Text>();
             temp.text = Utils.RoundTwoDecimal(tpPricePercentages[i]).ToString() + "%";
         }
         orderPageComponent.resultComponent.totalWinLossAmountDataObject.transform.GetChild(4).GetComponent<TMP_Text>().text = Utils.RoundTwoDecimal(orderPageComponent.marginCalculator.totalWinAmount).ToString();
+        temp = orderPageComponent.resultComponent.totalWinLossAmountDataObject.transform.GetChild(5).GetComponent<TMP_Text>();
+        temp.text = "Diff: " + Utils.RoundTwoDecimal(orderPageComponent.marginCalculator.winLossDiff).ToString();
+        temp.color = orderPageComponent.marginCalculator.winLossDiff > 0 ? OrderConfig.DISPLAY_COLOR_GREEN : OrderConfig.DISPLAY_COLOR_RED;
         orderPageComponent.resultComponent.balanceDataObject.transform.GetChild(4).GetComponent<TMP_Text>().text = Utils.TruncTwoDecimal(orderPageComponent.marginCalculator.balanceAfterFullWin).ToString();
         orderPageComponent.resultComponent.balanceDataObject.transform.GetChild(5).GetComponent<TMP_Text>().text = "+" + Utils.RoundTwoDecimal(Utils.RateToPercentage(orderPageComponent.marginCalculator.balanceIncrementRate)).ToString() + " %";
         #endregion
