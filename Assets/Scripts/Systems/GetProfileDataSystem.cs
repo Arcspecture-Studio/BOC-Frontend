@@ -76,10 +76,9 @@ public class GetProfileDataSystem : MonoBehaviour
     }
     void processPlatformData(Dictionary<string, PlatformEnum> platforms)
     {
-        platformComponent.platforms = new();
         foreach (KeyValuePair<string, PlatformEnum> platform in platforms)
         {
-            platformComponent.platforms.Add(platform.Key, new Platform(platform.Value));
+            platformComponent.platforms.TryAdd(platform.Key, new Platform(platform.Value));
         }
     }
 }
