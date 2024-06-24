@@ -184,7 +184,7 @@ public class SettingPageProfileSystem : MonoBehaviour
 
         profileComponent.profiles.Remove(response.profileId);
         profileComponent.activeProfileId = response.newDefaultProfileId;
-        getRuntimeDataComponent.getRuntimeData = true;
+        getInitialDataComponent.getInitialData = true;
         settingPageComponent.updateProfileUI = true;
     }
     void OnRenameProfile()

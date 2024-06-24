@@ -3,6 +3,10 @@ using UnityEngine.Events;
 
 public class GetRuntimeDataComponent : MonoBehaviour
 {
+    /* Current usages
+     - user press refresh button
+     - on add new profile
+    */
     public bool getRuntimeData
     {
         set { onChange_getRuntimeData.Invoke(); }
