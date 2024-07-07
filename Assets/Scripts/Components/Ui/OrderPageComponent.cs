@@ -2,7 +2,6 @@ using DG.Tweening;
 using TMPro;
 using UnityEngine;
 using UnityEngine.Events;
-using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
 public class OrderPageComponent : MonoBehaviour
@@ -23,9 +22,7 @@ public class OrderPageComponent : MonoBehaviour
     public OrderPageResultComponent resultComponent;
     public GameObject dataRowPrefab;
     public TMP_Dropdown marginDistributionModeDropdown;
-    public GameObject marginWeightDistributionValueObject;
-    public Slider marginWeightDistributionValueSlider;
-    public TMP_InputField marginWeightDistributionValueInput;
+    public CustomSlider marginWeightDistributionValueCustomSlider;
     public Button calculateButton;
     public TMP_Text calculateButtonText;
     public GameObject takeProfitTypeObject;
@@ -34,12 +31,8 @@ public class OrderPageComponent : MonoBehaviour
     public TMP_InputField riskRewardRatioInput;
     public Button riskRewardMinusButton;
     public Button riskRewardAddButton;
-    public GameObject takeProfitTrailingCallbackPercentageObject;
-    public Slider takeProfitTrailingCallbackPercentageSlider;
-    public EventTrigger takeProfitTrailingCallbackPercentageSliderTrigger;
-    public TMP_Text takeProfitTrailingCallbackPercentageMinText;
-    public TMP_Text takeProfitTrailingCallbackPercentageMaxText;
-    public TMP_InputField takeProfitTrailingCallbackPercentageInput;
+    public CustomSlider takeProfitQuantityPercentageCustomSlider;
+    public CustomSlider takeProfitTrailingCallbackPercentageCustomSlider;
     public GameObject orderTypeObject;
     public TMP_Dropdown orderTypeDropdown;
     public GameObject applyButtonObject;
@@ -116,4 +109,13 @@ public class OrderPageComponent : MonoBehaviour
     public Tween spawnTween;
     public bool instantiateWithData;
     public float scrollRectYPos;
+    public bool updateTakeProfitPrice
+    {
+        set
+        {
+            onChange_updateTakeProfitPrice.Invoke();
+        }
+    }
+    [HideInInspector] public UnityEvent onChange_updateTakeProfitPrice = new();
+    public float quantityToClose;
 }

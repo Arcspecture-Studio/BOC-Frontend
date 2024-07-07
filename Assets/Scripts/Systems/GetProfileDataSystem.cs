@@ -13,6 +13,7 @@ public class GetProfileDataSystem : MonoBehaviour
     ProfileComponent profileComponent;
     SettingPageComponent settingPageComponent;
     GetRuntimeDataComponent getRuntimeDataComponent;
+    LoadingComponent loadingComponent;
 
     void Start()
     {
@@ -24,6 +25,7 @@ public class GetProfileDataSystem : MonoBehaviour
         profileComponent = GlobalComponent.instance.profileComponent;
         settingPageComponent = GlobalComponent.instance.settingPageComponent;
         getRuntimeDataComponent = GlobalComponent.instance.getRuntimeDataComponent;
+        loadingComponent = GlobalComponent.instance.loadingComponent;
 
         getProfileDataComponent.onChange_getProfileData.AddListener(GetProfileData);
         getProfileDataComponent.onChange_processProfileData.AddListener(ProcessProfileData);
@@ -37,6 +39,8 @@ public class GetProfileDataSystem : MonoBehaviour
     {
         General.WebsocketGeneralRequest request = new(WebsocketEventTypeEnum.GET_PROFILE_DATA, loginComponent.token);
         websocketComponent.generalRequests.Add(request);
+
+        loadingComponent.active = true;
     }
     void GetProfileDataResponse()
     {
@@ -72,10 +76,9 @@ public class GetProfileDataSystem : MonoBehaviour
     }
     void processPlatformData(Dictionary<string, PlatformEnum> platforms)
     {
-        platformComponent.platforms = new();
         foreach (KeyValuePair<string, PlatformEnum> platform in platforms)
         {
-            platformComponent.platforms.Add(platform.Key, new Platform(platform.Value));
+            platformComponent.platforms.TryAdd(platform.Key, new Platform(platform.Value));
         }
     }
 }

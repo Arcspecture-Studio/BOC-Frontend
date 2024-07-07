@@ -17,7 +17,7 @@ public class WebsocketComponent : MonoBehaviour
     [HideInInspector] public List<object> generalRequests = new();
     //[SerializedDictionary("Event Type", "List Of JSON String")]
     public Dictionary<WebsocketEventTypeEnum, List<string>> generalResponses = new();
-    public bool connectGeneralSocket;
+    [HideInInspector] public bool connectGeneralSocket;
     public bool connectedGeneralSocket
     {
         get { return generalSocket != null && generalSocket.IsAlive; }

@@ -1,3 +1,4 @@
+using System;
 using Newtonsoft.Json;
 using TMPro;
 using UnityEngine;
@@ -19,9 +20,11 @@ public class OrderPagesWebsocketResponseSystem : MonoBehaviour
     }
     void Update()
     {
+        AddOrderToServerResponse();
         SubmitOrderToServerResponse();
         PositionInfoUpdateResponse();
         SubmitThrottleToServerResponse();
+        DeleteOrderResponse();
     }
 
     void PositionInfoUpdateResponse()
@@ -54,11 +57,61 @@ public class OrderPagesWebsocketResponseSystem : MonoBehaviour
         if (response.actualTakeProfitPrice.HasValue && platformComponent.pricePrecisions.ContainsKey(orderPageComponent.symbolDropdownComponent.selectedSymbol))
         {
             orderPageComponent.positionInfoActualTakeProfitPriceText.text = Utils.RoundNDecimal(response.actualTakeProfitPrice.Value, platformComponent.pricePrecisions[orderPageComponent.symbolDropdownComponent.selectedSymbol]).ToString();
+
+            if (response.actualTakeProfitPrice.Value == 0)
+            {
+                promptComponent.ShowPrompt(PromptConstant.NOTICE, PromptConstant.TAKE_PROFIT_QUANTITY_INVALID, () =>
+                {
+                    promptComponent.active = false;
+                });
+            }
         }
         if (response.paidFundingAmount.HasValue)
         {
             orderPageComponent.positionInfoPaidFundingAmount.text = response.paidFundingAmount.Value.ToString();
         }
+        if (response.removeBot.HasValue && response.removeBot.Value)
+        {
+            orderPageComponent.tradingBotId = "";
+            orderPageComponent.positionInfoBotInChargeDropdown.value = 0;
+        }
+        if (response.exitOrderType.HasValue)
+        {
+            orderPageComponent.resultComponent.exitOrderTypeText.text = response.exitOrderType.Value.ToString();
+            switch (response.exitOrderType.Value)
+            {
+                case ExitOrderTypeEnum.NONE:
+                    orderPageComponent.resultComponent.exitOrderTypeText.color = OrderConfig.DISPLAY_COLOR_BLACK;
+                    break;
+                case ExitOrderTypeEnum.STOP_LOSS:
+                    orderPageComponent.resultComponent.exitOrderTypeText.color = OrderConfig.DISPLAY_COLOR_RED;
+                    break;
+                case ExitOrderTypeEnum.TAKE_PROFIT:
+                    orderPageComponent.resultComponent.exitOrderTypeText.color = OrderConfig.DISPLAY_COLOR_GREEN;
+                    break;
+            }
+        }
+    }
+    void AddOrderToServerResponse()
+    {
+        string jsonString = websocketComponent.RetrieveGeneralResponses(WebsocketEventTypeEnum.ADD_ORDER);
+        websocketComponent.RemovesGeneralResponses(WebsocketEventTypeEnum.ADD_ORDER);
+        if (jsonString.IsNullOrEmpty()) return;
+
+        General.WebsocketAddOrderResponse response = JsonConvert.DeserializeObject
+        <General.WebsocketAddOrderResponse>(jsonString, JsonSerializerConfig.settings);
+
+        OrderPageComponent orderPageComponent = null;
+        foreach (OrderPageComponent component in orderPagesComponent.childOrderPageComponents)
+        {
+            if (component.orderId.Equals(response.id))
+            {
+                orderPageComponent = component;
+            }
+        }
+        if (orderPageComponent == null) return;
+
+        orderPageComponent.resultComponent.spawnTimeText.text = DateTimeOffset.FromUnixTimeMilliseconds(response.spawnTime).ToLocalTime().ToString();
     }
     void SubmitOrderToServerResponse()
     {
@@ -88,7 +141,7 @@ public class OrderPagesWebsocketResponseSystem : MonoBehaviour
         }
         if (orderPageComponent.resultComponent.orderInfoDataObject != null)
         {
-            orderPageComponent.resultComponent.orderInfoDataObject.transform.GetChild(3).GetComponent<TMP_Text>().text = orderPageComponent.orderStatus.ToString();
+            orderPageComponent.resultComponent.orderInfoDataObject.transform.GetChild(4).GetComponent<TMP_Text>().text = orderPageComponent.orderStatus.ToString();
         }
         if (orderPageComponent.orderStatusError && !response.message.IsNullOrEmpty())
         {
@@ -149,6 +202,25 @@ public class OrderPagesWebsocketResponseSystem : MonoBehaviour
                         });
                     }
                     break;
+            }
+        }
+    }
+    void DeleteOrderResponse()
+    {
+        string jsonString = websocketComponent.RetrieveGeneralResponses(WebsocketEventTypeEnum.DELETE_ORDER);
+        websocketComponent.RemovesGeneralResponses(WebsocketEventTypeEnum.DELETE_ORDER);
+        if (jsonString.IsNullOrEmpty()) return;
+
+        General.WebsocketDeleteOrderResponse response = JsonConvert.DeserializeObject
+        <General.WebsocketDeleteOrderResponse>(jsonString, JsonSerializerConfig.settings);
+
+        if (response.id == null) return;
+        foreach (OrderPageComponent orderPageComponent in orderPagesComponent.childOrderPageComponents)
+        {
+            if (orderPageComponent.orderId == response.id)
+            {
+                orderPageComponent.destroySelf = true;
+                break;
             }
         }
     }

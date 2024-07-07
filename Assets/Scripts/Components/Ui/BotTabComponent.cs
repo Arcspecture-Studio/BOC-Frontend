@@ -14,9 +14,15 @@ public class BotTabComponent : MonoBehaviour
     public Toggle autoDestroyOrderToggle;
     public TMP_Dropdown botTypeDropdown;
     public GameObject premiumIndexSettingObj;
+    public GameObject mcdxSettingObj;
     public TMP_InputField premiumIndexSetting_longThresholdPercentage;
     public TMP_InputField premiumIndexSetting_shortThresholdPercentage;
-    public TMP_InputField premiumIndexSetting_candleLength;
+    public TMP_InputField premiumIndexSetting_averageCandleLength;
+    public TMP_InputField premiumIndexSetting_reverseCandleBuffer;
+    public TMP_InputField premiumIndexSetting_reverseCandleConfirmation;
+    public TMP_Dropdown mcdxSetting_timeframeDropdown;
+    public TMP_InputField mcdxSetting_averageCandleLength;
+    public TMP_InputField mcdxSetting_fomoCandleConfirmation;
     public Button addBotButton;
     public GameObject botDataObjectList;
     public Transform botDataRowParent;

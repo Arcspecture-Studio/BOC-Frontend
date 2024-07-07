@@ -24,8 +24,8 @@ public class AdjustHeightBasedOnChildsHeight : MonoBehaviour
             ReinitializeChildrens();
         }
         float y = padding * 2;
-        long activeChildCount = 0;
-        foreach(RectTransform child in childrens)
+        int activeChildCount = 0;
+        foreach (RectTransform child in childrens)
         {
             if (child.gameObject.activeSelf)
             {

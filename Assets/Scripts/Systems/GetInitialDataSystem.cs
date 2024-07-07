@@ -13,6 +13,7 @@ public class GetInitialDataSystem : MonoBehaviour
     GetRuntimeDataComponent getRuntimeDataComponent;
     ProfileComponent profileComponent;
     PlatformComponent platformComponent;
+    LoadingComponent loadingComponent;
 
     void Start()
     {
@@ -25,6 +26,7 @@ public class GetInitialDataSystem : MonoBehaviour
         getRuntimeDataComponent = GlobalComponent.instance.getRuntimeDataComponent;
         profileComponent = GlobalComponent.instance.profileComponent;
         platformComponent = GlobalComponent.instance.platformComponent;
+        loadingComponent = GlobalComponent.instance.loadingComponent;
 
         getInitialDataComponent.onChange_getInitialData.AddListener(GetInitialData);
     }
@@ -36,6 +38,8 @@ public class GetInitialDataSystem : MonoBehaviour
     {
         General.WebsocketGeneralRequest request = new(WebsocketEventTypeEnum.GET_INITIAL_DATA, loginComponent.token);
         websocketComponent.generalRequests.Add(request);
+
+        loadingComponent.active = true;
     }
     void GetInitialDataResponse()
     {

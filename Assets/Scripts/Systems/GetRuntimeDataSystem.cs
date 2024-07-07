@@ -51,6 +51,8 @@ public class GetRuntimeDataSystem : MonoBehaviour
     {
         General.WebsocketGeneralRequest request = new(WebsocketEventTypeEnum.GET_RUNTIME_DATA, loginComponent.token);
         websocketComponent.generalRequests.Add(request);
+
+        loadingComponent.active = true;
     }
     void GetRuntimeDataResponse()
     {
@@ -98,6 +100,7 @@ public class GetRuntimeDataSystem : MonoBehaviour
         }
         loadingComponent.active = false;
         miniPromptComponent.message = PromptConstant.DATA_FETCHED;
+        quickTabComponent.clearEntryPriceButton.onClick.Invoke();
     }
     void DestroyOrders()
     {

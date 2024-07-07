@@ -9,9 +9,8 @@ namespace General
             string orderId,
             string symbol,
             CalculateMargin marginCalculator,
-            TakeProfitTypeEnum takeProfitType,
             OrderTypeEnum orderType) :
-            base(WebsocketEventTypeEnum.ADD_ORDER, token, orderId, symbol, marginCalculator, takeProfitType, orderType, null)
+            base(WebsocketEventTypeEnum.ADD_ORDER, token, orderId, symbol, marginCalculator, orderType, null)
         {
         }
     }

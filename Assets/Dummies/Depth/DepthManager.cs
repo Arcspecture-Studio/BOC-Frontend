@@ -16,25 +16,25 @@ public class DepthManager : MonoBehaviour
 
     [Header("Configs")]
     public int barCount;
-    public double impactMarginNotional;
+    public float impactMarginNotional;
     public string jsonString;
     public bool displayCurrentDepth;
 
     [Header("Result")]
-    public double totalQuantityOnAskSide;
-    public double totalQuantityOnBidSide;
-    public double totalAmountOnAskSide;
-    public double totalAmountOnBidSide;
-    public double impactAskPrice;
-    public double impactBidPrice;
-    public double impactAskPricePercentage;
-    public double impactBidPricePercentage;
-    public double impactAskRatio;
-    public double impactBidRatio;
+    public float totalQuantityOnAskSide;
+    public float totalQuantityOnBidSide;
+    public float totalAmountOnAskSide;
+    public float totalAmountOnBidSide;
+    public float impactAskPrice;
+    public float impactBidPrice;
+    public float impactAskPricePercentage;
+    public float impactBidPricePercentage;
+    public float impactAskRatio;
+    public float impactBidRatio;
 
     // Runtime
     Depth depth;
-    double largestQuantityValue;
+    float largestQuantityValue;
     Binance.WebrequestGetDepthRequest request;
 
     void Start()
@@ -89,7 +89,7 @@ public class DepthManager : MonoBehaviour
             if (i < 100)
             {
                 image.color = Color.red;
-                image.fillAmount = (float)(depth.asks[i].quantity / largestQuantityValue);
+                image.fillAmount = depth.asks[i].quantity / largestQuantityValue;
                 barLabel.text = depth.asks[i].price.ToString() + " : " + depth.asks[i].quantity.ToString();
                 barObject.name = barLabel.text;
                 if (impactAskPrice >= depth.asks[i].price && !impactAskPriceFound)
@@ -103,7 +103,7 @@ public class DepthManager : MonoBehaviour
             {
                 int j = i - 100;
                 image.color = Color.green;
-                image.fillAmount = (float)(depth.bids[j].quantity / largestQuantityValue);
+                image.fillAmount = depth.bids[j].quantity / largestQuantityValue;
                 barLabel.text = depth.bids[j].price.ToString() + " : " + depth.bids[j].quantity.ToString();
                 barObject.name = barLabel.text;
                 if (impactBidPrice >= depth.bids[j].price && !impactBidPriceFound)
@@ -128,11 +128,11 @@ public class DepthManager : MonoBehaviour
         totalQuantityOnBidSide = 0;
         totalAmountOnAskSide = 0;
         totalAmountOnBidSide = 0;
-        double remainingBalance = impactMarginNotional;
-        double quantityPurchased = 0;
+        float remainingBalance = impactMarginNotional;
+        float quantityPurchased = 0;
         for (int i = 0; i < depth.bids.Count; i++)
         {
-            double amount = depth.bids[i].quantity * depth.bids[i].price;
+            float amount = depth.bids[i].quantity * depth.bids[i].price;
             totalAmountOnBidSide += amount;
             totalQuantityOnBidSide += depth.bids[i].quantity;
             if (remainingBalance > 0)
@@ -155,7 +155,7 @@ public class DepthManager : MonoBehaviour
         quantityPurchased = 0;
         for (int i = depth.asks.Count - 1; i >= 0; i--)
         {
-            double amount = depth.asks[i].quantity * depth.asks[i].price;
+            float amount = depth.asks[i].quantity * depth.asks[i].price;
             totalAmountOnAskSide += amount;
             totalQuantityOnAskSide += depth.asks[i].quantity;
             if (remainingBalance > 0)
@@ -179,13 +179,13 @@ public class DepthManager : MonoBehaviour
 
         impactAskRatio = 1;
         impactBidRatio = 1;
-        if (Math.Abs(impactBidPricePercentage) > Math.Abs(impactAskPricePercentage))
+        if (Mathf.Abs(impactBidPricePercentage) > Mathf.Abs(impactAskPricePercentage))
         {
-            impactBidRatio = Math.Abs(impactBidPricePercentage / impactAskPricePercentage);
+            impactBidRatio = Mathf.Abs(impactBidPricePercentage / impactAskPricePercentage);
         }
         else
         {
-            impactAskRatio = Math.Abs(impactAskPricePercentage / impactBidPricePercentage);
+            impactAskRatio = Mathf.Abs(impactAskPricePercentage / impactBidPricePercentage);
         }
     }
     void GenerateResultInJsonString()

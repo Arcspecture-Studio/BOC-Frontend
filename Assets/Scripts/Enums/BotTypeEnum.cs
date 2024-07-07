@@ -1,4 +1,5 @@
 public enum BotTypeEnum
 {
-    PREMIUM_INDEX
+    PREMIUM_INDEX,
+    MCDX
 }

@@ -1,3 +1,4 @@
+using System;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -55,14 +56,28 @@ public class SpawnOrderSystem : MonoBehaviour
         #endregion
         orderPageComponent.entryTimesInput.text = response.marginCalculator.entryPrices.Count.ToString();
         orderPageComponent.stopLossInput.text = Utils.RoundTwoDecimal(response.marginCalculator.stopLossPrice).ToString();
-        orderPageComponent.takeProfitTypeDropdown.value = (int)response.takeProfitType;
+        orderPageComponent.takeProfitTypeDropdown.value = (int)response.marginCalculator.takeProfitType;
         orderPageComponent.riskRewardRatioInput.text = response.marginCalculator.riskRewardRatio.ToString();
-        orderPageComponent.takeProfitTrailingCallbackPercentageSlider.value = (float)response.marginCalculator.takeProfitTrailingCallbackPercentage;
-        orderPageComponent.takeProfitTrailingCallbackPercentageInput.text = response.marginCalculator.takeProfitTrailingCallbackPercentage.ToString();
+        orderPageComponent.takeProfitQuantityPercentageCustomSlider.SetValue(response.marginCalculator.takeProfitQuantityPercentage);
+        orderPageComponent.takeProfitTrailingCallbackPercentageCustomSlider.SetValue(response.marginCalculator.takeProfitTrailingCallbackPercentage);
         orderPageComponent.orderTypeDropdown.value = (int)response.orderType;
         orderPageComponent.marginDistributionModeDropdown.value = response.marginCalculator.weightedQuantity ? 1 : 0;
-        orderPageComponent.marginWeightDistributionValueSlider.value = (float)response.marginCalculator.quantityWeight;
+        orderPageComponent.marginWeightDistributionValueCustomSlider.SetValue(response.marginCalculator.quantityWeight);
         orderPageComponent.marginCalculator = response.marginCalculator;
+        orderPageComponent.resultComponent.spawnTimeText.text = DateTimeOffset.FromUnixTimeMilliseconds(response.spawnTime).ToLocalTime().ToString();
+        orderPageComponent.resultComponent.exitOrderTypeText.text = response.exitOrderType.ToString();
+        switch (response.exitOrderType)
+        {
+            case ExitOrderTypeEnum.NONE:
+                orderPageComponent.resultComponent.exitOrderTypeText.color = OrderConfig.DISPLAY_COLOR_BLACK;
+                break;
+            case ExitOrderTypeEnum.STOP_LOSS:
+                orderPageComponent.resultComponent.exitOrderTypeText.color = OrderConfig.DISPLAY_COLOR_RED;
+                break;
+            case ExitOrderTypeEnum.TAKE_PROFIT:
+                orderPageComponent.resultComponent.exitOrderTypeText.color = OrderConfig.DISPLAY_COLOR_GREEN;
+                break;
+        }
         orderPageComponent.positionInfoAvgEntryPriceFilledText.text = Utils.RoundNDecimal(response.averagePriceFilled, platformComponent.pricePrecisions[orderPageComponent.symbolDropdownComponent.selectedSymbol]).ToString();
         orderPageComponent.positionInfoQuantityFilledText.text = Utils.RoundNDecimal(response.quantityFilled, platformComponent.quantityPrecisions[orderPageComponent.symbolDropdownComponent.selectedSymbol]).ToString();
         orderPageComponent.positionInfoActualTakeProfitPriceText.text = Utils.RoundNDecimal(response.actualTakeProfitPrice, platformComponent.pricePrecisions[orderPageComponent.symbolDropdownComponent.selectedSymbol]).ToString();

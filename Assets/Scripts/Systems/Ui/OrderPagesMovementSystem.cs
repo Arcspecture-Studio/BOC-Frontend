@@ -45,7 +45,7 @@ public class OrderPagesMovementSystem : MonoBehaviour
         }
         else
         {
-            if (Math.Round(xVelocity) == 0)
+            if (Mathf.Round(xVelocity) == 0)
             {
                 xVelocity = 0;
             }
@@ -62,7 +62,7 @@ public class OrderPagesMovementSystem : MonoBehaviour
         {
             if (xVelocity != 0)
             {
-                orderPagesComponent.currentPageIndex = (long)Math.Round(orderPagesComponent.currentXPos / orderPagesComponent.orderPagesGap);
+                orderPagesComponent.currentPageIndex = (int)Mathf.Round(orderPagesComponent.currentXPos / orderPagesComponent.orderPagesGap);
             }
             if (orderPagesComponent.currentXPos < -orderPagesComponent.borderGap)
             //if (orderPagesComponent.currentPageIndex < 0)

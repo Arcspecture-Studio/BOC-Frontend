@@ -2,9 +2,10 @@
     "name": "BOC.Models",
     "rootNamespace": "",
     "references": [
+        "GUID:d8b63aba1907145bea998dd612889d6b",
+        "GUID:d525ad6bd40672747bde77962f1c401e",
         "GUID:597d3c3569af0344d9a041a7eb28def8",
-        "GUID:fd5c2314a4dbfdf438b1f9fd2cec138d",
-        "GUID:d525ad6bd40672747bde77962f1c401e"
+        "GUID:fd5c2314a4dbfdf438b1f9fd2cec138d"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],

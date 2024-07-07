@@ -12,7 +12,18 @@ public class PromptComponent : MonoBehaviour
     public Button leftButton;
     public TMP_Text rightButtonText;
     public TMP_Text leftButtonText;
-    public bool active;
+
+    private bool _active;
+    public bool active
+    {
+        get { return _active; }
+        set
+        {
+            _active = value;
+            onChange_active.Invoke(value);
+        }
+    }
+    [HideInInspector] public UnityEvent<bool> onChange_active = new();
 
     void Show(string title, string message)
     {

@@ -9,10 +9,10 @@ public class SettingPageProfileSystem : MonoBehaviour
     SettingPageComponent settingPageComponent;
     ProfileComponent profileComponent;
     LoginComponent loginComponent;
-    PlatformComponent platformComponent;
     WebsocketComponent websocketComponent;
     PromptComponent promptComponent;
     GetInitialDataComponent getInitialDataComponent;
+    GetRuntimeDataComponent getRuntimeDataComponent;
     LoadingComponent loadingComponent;
     QuickTabComponent quickTabComponent;
     BotTabComponent botTabComponent;
@@ -23,10 +23,10 @@ public class SettingPageProfileSystem : MonoBehaviour
         settingPageComponent = GlobalComponent.instance.settingPageComponent;
         profileComponent = GlobalComponent.instance.profileComponent;
         loginComponent = GlobalComponent.instance.loginComponent;
-        platformComponent = GlobalComponent.instance.platformComponent;
         websocketComponent = GlobalComponent.instance.websocketComponent;
         promptComponent = GlobalComponent.instance.promptComponent;
         getInitialDataComponent = GlobalComponent.instance.getInitialDataComponent;
+        getRuntimeDataComponent = GlobalComponent.instance.getRuntimeDataComponent;
         loadingComponent = GlobalComponent.instance.loadingComponent;
         quickTabComponent = GlobalComponent.instance.quickTabComponent;
         botTabComponent = GlobalComponent.instance.botTabComponent;
@@ -147,6 +147,7 @@ public class SettingPageProfileSystem : MonoBehaviour
 
         profileComponent.profiles.Add(response.profile.id, response.profile);
         profileComponent.activeProfileId = response.profile.id;
+        getRuntimeDataComponent.getRuntimeData = true;
         settingPageComponent.updateProfileUI = true;
     }
     void OnRemoveProfile()
@@ -183,6 +184,7 @@ public class SettingPageProfileSystem : MonoBehaviour
 
         profileComponent.profiles.Remove(response.profileId);
         profileComponent.activeProfileId = response.newDefaultProfileId;
+        getInitialDataComponent.getInitialData = true;
         settingPageComponent.updateProfileUI = true;
     }
     void OnRenameProfile()

@@ -105,11 +105,15 @@ public class BotTabSystem : MonoBehaviour
     void ShowStretegySettingBasedOnBotType(int value)
     {
         botTabComponent.premiumIndexSettingObj.SetActive(false);
+        botTabComponent.mcdxSettingObj.SetActive(false);
 
         switch (botTabComponent.botType)
         {
             case BotTypeEnum.PREMIUM_INDEX:
                 botTabComponent.premiumIndexSettingObj.SetActive(true);
+                break;
+            case BotTypeEnum.MCDX:
+                botTabComponent.mcdxSettingObj.SetActive(true);
                 break;
         }
     }

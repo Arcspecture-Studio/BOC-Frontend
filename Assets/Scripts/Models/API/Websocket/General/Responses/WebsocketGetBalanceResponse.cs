@@ -6,6 +6,6 @@ namespace General
     [Serializable]
     public class WebsocketGetBalanceResponse : WebsocketGeneralResponse
     {
-        public SerializedDictionary<string, double> balances;
+        public SerializedDictionary<string, float> balances;
     }
 }

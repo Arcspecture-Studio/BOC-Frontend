@@ -10,9 +10,9 @@ public class GetBalanceComponent : MonoBehaviour
         set { onChange_getBalance.Invoke(); }
     }
     [HideInInspector] public UnityEvent onChange_getBalance = new();
-    public SerializedDictionary<string, double> processBalance
+    public SerializedDictionary<string, float> processBalance
     {
         set { onChange_processBalance.Invoke(value); }
     }
-    [HideInInspector] public UnityEvent<SerializedDictionary<string, double>> onChange_processBalance = new();
+    [HideInInspector] public UnityEvent<SerializedDictionary<string, float>> onChange_processBalance = new();
 }

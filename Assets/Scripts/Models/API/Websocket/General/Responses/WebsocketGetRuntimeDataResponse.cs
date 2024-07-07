@@ -20,12 +20,13 @@ namespace General
         public string symbol;
         public CalculateMargin marginCalculator;
         public OrderTypeEnum orderType;
-        public TakeProfitTypeEnum takeProfitType;
-        public double quantityFilled;
-        public double averagePriceFilled;
-        public double actualTakeProfitPrice;
-        public double paidFundingAmount;
+        public float quantityFilled;
+        public float averagePriceFilled;
+        public float actualTakeProfitPrice;
+        public float paidFundingAmount;
         public List<WebsocketGetThrottleOrderResponse> throttleOrders;
+        public long spawnTime; // TIMESTAMP
+        public ExitOrderTypeEnum exitOrderType;
     }
     [Serializable]
     public class WebsocketGetThrottleOrderResponse
@@ -40,7 +41,7 @@ namespace General
     public class WebsocketGetQuickOrderResponse
     {
         public string id;
-        public double entryPrice;
+        public float entryPrice;
         public bool isLong;
         public Preference setting;
     }

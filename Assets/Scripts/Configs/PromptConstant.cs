@@ -29,12 +29,15 @@
     public static readonly string API_KEY_EMPTY = "Api key/secret can't be empty";
     public static readonly string PROFILE_NAME_EMPTY = "Profile name can't be empty";
     public static readonly string REMOVE_PROFILE = "Remove Profile";
-    public static readonly string REMOVE_PROFILE_CONFIRM = "Are you sure to remove current profile named ";
+    public static readonly string REMOVE_PROFILE_CONFIRM = "Remove profile will delete all the orders(including on going positions)/quick orders/bots under this profile, are you sure to remove current profile named ";
     public static readonly string DISCONNECT_PLATFORM = "Disconnect Platform";
     public static readonly string DISCONNECT_PLATFORM_CONFIRM = "Disconnect platform will delete all the orders(including on going positions)/quick orders/bots under all profiles linked to this platform, are you sure to continue?";
     public static readonly string NOT_AUTHORIZED = "Not authorized";
     public static readonly string SWITCH_PLATFORM = "Switch Platform";
     public static readonly string SWITCH_PLATFORM_CONFIRM = "Switching to different platform will delete all the orders(including on going positions)/quick orders/bots under this profile, are you sure to continue?";
     public static readonly string SWITCH_PLATFORM_CANCELLED = "Switch Platform Cancelled";
+    public static readonly string PLATFORM_ADDED = "Platform Added";
+    public static readonly string PROFILE_ADDED = "Profile Added";
     public static readonly string DATA_FETCHED = "Data Fetched";
+    public static readonly string TAKE_PROFIT_QUANTITY_INVALID = "Take profit quantity percentage too small resulted in quantity became 0, no take profit order is placed";
 }

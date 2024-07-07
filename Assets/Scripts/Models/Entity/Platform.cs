@@ -6,12 +6,12 @@ using AYellowpaper.SerializedCollections;
 public class Platform
 {
     public PlatformEnum platform;
-    public SerializedDictionary<string, double> walletBalances;
+    public SerializedDictionary<string, float> walletBalances;
     public List<string> allSymbols;
     public Dictionary<string, string> marginAssets;
-    public Dictionary<string, long> quantityPrecisions;
-    public Dictionary<string, long> pricePrecisions;
-    public Dictionary<string, double?> fees;
+    public Dictionary<string, int> quantityPrecisions;
+    public Dictionary<string, int> pricePrecisions;
+    public Dictionary<string, float?> fees;
 
     public Platform(PlatformEnum platformEnum)
     {

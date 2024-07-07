@@ -1,15 +1,12 @@
-using DG.Tweening;
 using UnityEngine;
 using UnityEngine.Events;
 
 public class LoadingComponent : MonoBehaviour
 {
     [Header("Reference")]
-    public RectTransform iconRectTransform;
-    public Animation anim;
+    public Animator animator;
 
     [Header("Config")]
-    public Ease iconRotateAnimEase;
     [SerializeField] private bool _active;
     public bool active
     {

@@ -6,7 +6,7 @@ namespace General
     public class WebsocketGeneralResponse
     {
         public WebsocketEventTypeEnum eventType;
-        public long eventTime;
+        public long eventTime; // TIMESTAMP
         public bool success;
         public string message;
     }

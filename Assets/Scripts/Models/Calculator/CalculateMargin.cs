@@ -1,67 +1,81 @@
-using System;
 using System.Collections.Generic;
 using System.Linq;
+using UnityEngine;
 
 public class CalculateMargin
 {
-    // config
-    public double balance;
-    public double amountToLoss;
-    public long entryTimes;
-    public List<double> entryPrices;
-    public double stopLossPrice;
-    public double riskRewardRatio;
-    public double takeProfitTrailingCallbackPercentage;
-    public double feeRate;
-    public long quantityPrecision;
-    public long pricePrecision;
+    #region Config
+    public float balance;
+    public float amountToLoss;
+    public int entryTimes;
+    public List<float> entryPrices;
+    public float stopLossPrice;
+    public TakeProfitTypeEnum takeProfitType;
+    public float riskRewardRatio;
+    public int takeProfitQuantityPercentage;
+    public float takeProfitTrailingCallbackPercentage;
+    public float feeRate;
+    public int quantityPrecision;
+    public int pricePrecision;
     public bool weightedQuantity;
-    public double quantityWeight;
+    public float quantityWeight;
+    #endregion
 
-    // runtime
+    #region Runtime
     public bool isLong;
-    public List<double> stopLossPriceGaps;
-    public List<double> avgEntryPrices;
-    public List<double> quantities;
-    public List<double> cumQuantities;
-    public List<double> stopLossAmounts;
-    public List<double> fees;
-    public double totalLossAmount;
-    public double totalFee;
-    public double balanceDecrementRate;
-    public double balanceAfterLoss;
-    public double takeProfitPrice;
-    public List<double> takeProfitPrices;
-    public List<double> takeProfitTrailingPrices;
-    public double totalWinAmount;
-    public double balanceIncrementRate;
-    public double balanceAfterFullWin;
+    public List<float> stopLossPriceGaps;
+    public float stopLossPercentage;
+    public List<float> avgEntryPrices;
+    public List<float> quantities;
+    public List<float> cumQuantities;
+    public List<float> stopLossAmounts;
+    public List<float> fees;
+    public float totalLossAmount;
+    public float totalFee;
+    public float balanceDecrementRate;
+    public float balanceAfterLoss;
+    public float breakEvenPrice;
+    public List<float> breakEvenPrices;
+    public float takeProfitPrice;
+    public List<float> takeProfitPrices;
+    public List<float> takeProfitPricePercentages;
+    public List<float> takeProfitTrailingPrices;
+    public List<float> takeProfitTrailingPricePercentages;
+    public float totalWinAmount;
+    public float balanceIncrementRate;
+    public float balanceAfterFullWin;
+    public float winLossDiff;
+    #endregion
 
-    public CalculateMargin(double balance,
-        double maxLossPercentage,
-        double amountToLoss,
-        long entryTimes,
-        List<double> entryPrices,
-        double stopLossPrice,
-        double riskRewardRatio,
-        double takeProfitTrailingCallbackPercentage,
-        double feeRate,
-        long quantityPrecision,
-        long pricePrecision,
+    public CalculateMargin(float balance,
+        float maxLossPercentage,
+        float amountToLoss,
+        int entryTimes,
+        List<float> entryPrices,
+        float stopLossPrice,
+        TakeProfitTypeEnum takeProfitType,
+        float riskRewardRatio,
+        int takeProfitQuantityPercentage,
+        float takeProfitTrailingCallbackPercentage,
+        float feeRate,
+        int quantityPrecision,
+        int pricePrecision,
         bool weightedQuantity = false,
-        double quantityWeight = 1)
+        float quantityWeight = 1)
     {
         this.balance = balance;
-        this.amountToLoss = amountToLoss.Equals(double.NaN) ? balance * Utils.PercentageToRate(Math.Max(maxLossPercentage, 0)) : Math.Max(amountToLoss, 0);
+        this.amountToLoss = amountToLoss.Equals(float.NaN) ? balance * Utils.PercentageToRate(Mathf.Max(maxLossPercentage, 0)) : Mathf.Max(amountToLoss, 0);
         if (this.amountToLoss > this.balance) this.amountToLoss = this.balance;
-        this.entryTimes = Math.Max(entryTimes, 0);
+        this.entryTimes = Mathf.Max(entryTimes, 0);
         this.entryPrices = entryPrices;
         for (int i = 0; i < this.entryPrices.Count; i++)
         {
-            this.entryPrices[i] = Math.Max(this.entryPrices[i], 0);
+            this.entryPrices[i] = Mathf.Max(this.entryPrices[i], 0);
         }
-        this.stopLossPrice = Utils.RoundNDecimal(Math.Max(stopLossPrice, 0), pricePrecision);
-        this.riskRewardRatio = Math.Max(riskRewardRatio, 0);
+        this.stopLossPrice = Utils.RoundNDecimal(Mathf.Max(stopLossPrice, 0), pricePrecision);
+        this.takeProfitType = takeProfitType;
+        this.riskRewardRatio = Mathf.Max(riskRewardRatio, 0);
+        this.takeProfitQuantityPercentage = takeProfitQuantityPercentage;
         this.takeProfitTrailingCallbackPercentage = takeProfitTrailingCallbackPercentage;
         this.feeRate = feeRate;
         this.quantityPrecision = quantityPrecision;
@@ -71,7 +85,7 @@ public class CalculateMargin
         Calculate();
     }
 
-    public void Calculate()
+    void Calculate()
     {
         DeterminePositionDirection();
         CalculateEntryPrices();
@@ -88,13 +102,13 @@ public class CalculateMargin
     {
         if (entryPrices.Count == 1 && entryTimes > 1)
         {
-            double entryPriceDiff = Math.Abs(entryPrices[0] - stopLossPrice);
-            double pricePerSection = entryPriceDiff / entryTimes;
-            double initialEntryPrice = Math.Max(entryPrices[0], stopLossPrice);
-            List<double> newEntryPrices = new();
+            float entryPriceDiff = Mathf.Abs(entryPrices[0] - stopLossPrice);
+            float pricePerSection = entryPriceDiff / entryTimes;
+            float initialEntryPrice = Mathf.Max(entryPrices[0], stopLossPrice);
+            List<float> newEntryPrices = new();
             for (int i = 0; i <= entryTimes; i++)
             {
-                double entryPrice = initialEntryPrice - pricePerSection * i;
+                float entryPrice = initialEntryPrice - pricePerSection * i;
                 newEntryPrices.Add(entryPrice);
             }
             newEntryPrices.Remove(stopLossPrice);
@@ -102,13 +116,13 @@ public class CalculateMargin
         }
         else if (entryPrices.Count == 2 && entryTimes > 2)
         {
-            double entryPriceDiff = Math.Abs(entryPrices[0] - entryPrices[^1]);
-            double pricePerSection = entryPriceDiff / (entryTimes - 1);
-            double initialEntryPrice = Math.Max(entryPrices[0], entryPrices[^1]);
-            List<double> newEntryPrices = new();
+            float entryPriceDiff = Mathf.Abs(entryPrices[0] - entryPrices[^1]);
+            float pricePerSection = entryPriceDiff / (entryTimes - 1);
+            float initialEntryPrice = Mathf.Max(entryPrices[0], entryPrices[^1]);
+            List<float> newEntryPrices = new();
             for (int i = 0; i < entryTimes; i++)
             {
-                double entryPrice = initialEntryPrice - pricePerSection * i;
+                float entryPrice = initialEntryPrice - pricePerSection * i;
                 newEntryPrices.Add(entryPrice);
             }
             entryPrices = newEntryPrices;
@@ -129,8 +143,9 @@ public class CalculateMargin
         stopLossPriceGaps = new();
         entryPrices.ForEach(entryPrice =>
         {
-            stopLossPriceGaps.Add(Math.Abs(stopLossPrice - entryPrice));
+            stopLossPriceGaps.Add(Mathf.Abs(stopLossPrice - entryPrice));
         });
+        stopLossPercentage = Mathf.Abs(Utils.RateToPercentage(Utils.PriceMovingRate(entryPrices[isLong ? 0 : ^1], stopLossPrice)));
     }
     void CalculateEntryQuantity()
     {
@@ -139,9 +154,9 @@ public class CalculateMargin
         fees = new();
         if (weightedQuantity)
         {
-            List<double> distributions = new();
+            List<float> distributions = new();
             stopLossPriceGaps.ForEach(stopLossPriceGap => distributions.Add(stopLossPriceGap / stopLossPriceGaps.Sum()));
-            List<double> softmaxDistributions = Utils.ModifiedSoftmax(distributions, quantityWeight);
+            List<float> softmaxDistributions = Utils.ModifiedSoftmax(distributions, quantityWeight);
             for (int i = 0; i < softmaxDistributions.Count; i++)
             {
                 distributions[i] = distributions[i] + (softmaxDistributions[i] - 1f / softmaxDistributions.Count);
@@ -149,9 +164,9 @@ public class CalculateMargin
             distributions = Utils.AbsDistribution(distributions);
             for (int i = 0; i < entryPrices.Count; i++)
             {
-                double feePoint = entryPrices[i] * feeRate + stopLossPrice * feeRate;
-                double lossPoint = stopLossPriceGaps[i] + feePoint;
-                double quantity = Utils.TruncNDecimal((amountToLoss * distributions[i]) / lossPoint, quantityPrecision);
+                float feePoint = entryPrices[i] * feeRate + stopLossPrice * feeRate;
+                float lossPoint = stopLossPriceGaps[i] + feePoint;
+                float quantity = Utils.TruncNDecimal((amountToLoss * distributions[i]) / lossPoint, quantityPrecision);
                 quantities.Add(quantity);
                 stopLossAmounts.Add(quantity * lossPoint);
                 fees.Add(quantity * feePoint);
@@ -159,14 +174,14 @@ public class CalculateMargin
         }
         else
         {
-            List<double> feePoints = new();
-            List<double> lossPoints = new();
+            List<float> feePoints = new();
+            List<float> lossPoints = new();
             for (int i = 0; i < entryPrices.Count; i++)
             {
                 feePoints.Add(entryPrices[i] * feeRate + stopLossPrice * feeRate);
                 lossPoints.Add(feePoints[i] + stopLossPriceGaps[i]);
             }
-            double quantity = Utils.TruncNDecimal(amountToLoss / lossPoints.Sum(), quantityPrecision);
+            float quantity = Utils.TruncNDecimal(amountToLoss / lossPoints.Sum(), quantityPrecision);
             for (int i = 0; i < entryPrices.Count; i++)
             {
                 quantities.Add(quantity);
@@ -181,16 +196,16 @@ public class CalculateMargin
     }
     void CalculateAverageEntryPrice()
     {
-        List<double> sortedEntryPrices = new(entryPrices);
-        List<double> sortedQuantities = new(quantities);
+        List<float> sortedEntryPrices = new(entryPrices);
+        List<float> sortedQuantities = new(quantities);
         if (!isLong)
         {
             sortedEntryPrices.Reverse();
             sortedQuantities.Reverse();
         }
-        double avgEntryPrice = sortedEntryPrices[0];
+        float avgEntryPrice = sortedEntryPrices[0];
         avgEntryPrices = new() { Utils.RoundNDecimal(avgEntryPrice, pricePrecision) };
-        double avgQuantity = sortedQuantities[0];
+        float avgQuantity = sortedQuantities[0];
         cumQuantities = new() { avgQuantity };
         for (int i = 1; i < sortedEntryPrices.Count; i++)
         {
@@ -208,32 +223,55 @@ public class CalculateMargin
     void CalculateWinPercentageAndAmount()
     {
         takeProfitPrices = new();
+        takeProfitPricePercentages = new();
         takeProfitTrailingPrices = new();
+        takeProfitTrailingPricePercentages = new();
+        breakEvenPrices = new();
 
         for (int i = 0; i < avgEntryPrices.Count; i++)
         {
-            double price = (isLong ? 1 : -1) *
-                (avgEntryPrices[i] * cumQuantities[i] * feeRate + totalLossAmount * riskRewardRatio +
-                (isLong ? cumQuantities[i] * avgEntryPrices[i] : -cumQuantities[i] * avgEntryPrices[i])) /
-                (cumQuantities[i] * (isLong ? 1 - feeRate : 1 + feeRate));
-            if (double.IsNaN(price) || double.IsInfinity(price)) price = 0;
-            takeProfitPrices.Add(Utils.RoundNDecimal(Math.Max(price, 0), pricePrecision));
+            #region Calculate take profit price
+            float takeProfitCumQuantity = Utils.RoundNDecimal(cumQuantities[i] * Utils.PercentageToRate(takeProfitQuantityPercentage), quantityPrecision);
+            float takeProfitPrice = (isLong ? 1 : -1) *
+                (avgEntryPrices[i] * takeProfitCumQuantity * feeRate + totalLossAmount * riskRewardRatio +
+                (isLong ? takeProfitCumQuantity * avgEntryPrices[i] : -takeProfitCumQuantity * avgEntryPrices[i])) /
+                (takeProfitCumQuantity * (isLong ? 1 - feeRate : 1 + feeRate));
+            if (float.IsNaN(takeProfitPrice) || float.IsInfinity(takeProfitPrice)) takeProfitPrice = 0;
+            takeProfitPrices.Add(Utils.RoundNDecimal(Mathf.Max(takeProfitPrice, 0), pricePrecision));
+            takeProfitPricePercentages.Add(Mathf.Abs(Utils.RateToPercentage(Utils.PriceMovingRate(avgEntryPrices[i], takeProfitPrice))));
 
-            double percentage = takeProfitTrailingCallbackPercentage;
+            float percentage = takeProfitTrailingCallbackPercentage;
             if (isLong) percentage *= -1;
-            price = Utils.CalculateInitialPriceByMovingPercentage(percentage, price);
-            takeProfitTrailingPrices.Add(Utils.RoundNDecimal(Math.Max(price, 0), pricePrecision));
+            takeProfitPrice = Utils.CalculateInitialPriceByMovingPercentage(percentage, takeProfitPrice);
+            takeProfitTrailingPrices.Add(Utils.RoundNDecimal(Mathf.Max(takeProfitPrice, 0), pricePrecision));
+            takeProfitTrailingPricePercentages.Add(Mathf.Abs(Utils.RateToPercentage(Utils.PriceMovingRate(avgEntryPrices[i], takeProfitPrice))));
+            #endregion
+
+            #region Calculate break even price
+            float breakEvenCumQuantity = cumQuantities[i] - takeProfitCumQuantity;
+            float breakEvenPrice = (isLong ? 1 : -1) *
+                (avgEntryPrices[i] * breakEvenCumQuantity * feeRate +
+                (isLong ? breakEvenCumQuantity * avgEntryPrices[i] : -breakEvenCumQuantity * avgEntryPrices[i])) /
+                (breakEvenCumQuantity * (isLong ? 1 - feeRate : 1 + feeRate));
+            if (float.IsNaN(breakEvenPrice) || float.IsInfinity(breakEvenPrice)) breakEvenPrice = 0;
+            breakEvenPrices.Add(Utils.RoundNDecimal(Mathf.Max(breakEvenPrice, 0), pricePrecision));
+            #endregion
         }
 
         takeProfitPrice = takeProfitPrices[isLong ? 0 : ^1];
-        totalWinAmount = cumQuantities[isLong ? 0 : ^1] * Math.Abs(takeProfitPrice - avgEntryPrices[isLong ? 0 : ^1]) - takeProfitPrice * cumQuantities[isLong ? 0 : ^1] * feeRate - avgEntryPrices[isLong ? 0 : ^1] * cumQuantities[isLong ? 0 : ^1] * feeRate;
+        breakEvenPrice = breakEvenPrices[isLong ? 0 : ^1];
+        float cumQuantity = Utils.RoundNDecimal(cumQuantities[isLong ? 0 : ^1] * Utils.PercentageToRate(takeProfitQuantityPercentage), quantityPrecision);
+        totalWinAmount = cumQuantity * Mathf.Abs(takeProfitPrice - avgEntryPrices[isLong ? 0 : ^1]) - takeProfitPrice * cumQuantity * feeRate - avgEntryPrices[isLong ? 0 : ^1] * cumQuantity * feeRate;
+        winLossDiff = totalWinAmount - totalLossAmount;
         balanceIncrementRate = balance == 0 ? 0 : totalWinAmount / balance;
         balanceAfterFullWin = balance + totalWinAmount;
     }
-    public void RecalculateTakeProfitPrices(double riskRewardRatio,
-        double takeProfitTrailingCallbackPercentage)
+    public void RecalculateTakeProfitPrices(TakeProfitTypeEnum takeProfitType, float riskRewardRatio,
+        int takeProfitQuantityPercentage, float takeProfitTrailingCallbackPercentage) // only at frontend
     {
+        this.takeProfitType = takeProfitType;
         this.riskRewardRatio = riskRewardRatio;
+        this.takeProfitQuantityPercentage = takeProfitQuantityPercentage;
         this.takeProfitTrailingCallbackPercentage = takeProfitTrailingCallbackPercentage;
         CalculateWinPercentageAndAmount();
     }
