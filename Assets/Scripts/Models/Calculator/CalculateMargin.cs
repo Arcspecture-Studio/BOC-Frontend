@@ -233,14 +233,19 @@ public class CalculateMargin
                 (avgEntryPrices[i] * takeProfitCumQuantity * feeRate + totalLossAmount * riskRewardRatio +
                 (isLong ? takeProfitCumQuantity * avgEntryPrices[i] : -takeProfitCumQuantity * avgEntryPrices[i])) /
                 (takeProfitCumQuantity * (isLong ? 1 - feeRate : 1 + feeRate));
-            if (float.IsNaN(takeProfitPrice) || float.IsInfinity(takeProfitPrice)) takeProfitPrice = 0;
-            takeProfitPrices.Add(Utils.RoundNDecimal(Mathf.Max(takeProfitPrice, 0), pricePrecision));
+            if (float.IsNaN(takeProfitPrice) || float.IsInfinity(takeProfitPrice)) takeProfitPrice = -1;
+            else takeProfitPrice = Utils.RoundNDecimal(Mathf.Max(takeProfitPrice, 0), pricePrecision);
+            takeProfitPrices.Add(takeProfitPrice);
             takeProfitPricePercentages.Add(Mathf.Abs(Utils.RateToPercentage(Utils.PriceMovingRate(avgEntryPrices[i], takeProfitPrice))));
 
             float percentage = takeProfitTrailingCallbackPercentage;
             if (isLong) percentage *= -1;
-            takeProfitPrice = Utils.CalculateInitialPriceByMovingPercentage(percentage, takeProfitPrice);
-            takeProfitTrailingPrices.Add(Utils.RoundNDecimal(Mathf.Max(takeProfitPrice, 0), pricePrecision));
+            if (takeProfitPrice < 0) takeProfitTrailingPrices.Add(takeProfitPrice);
+            else
+            {
+                takeProfitPrice = Utils.CalculateInitialPriceByMovingPercentage(percentage, takeProfitPrice);
+                takeProfitTrailingPrices.Add(Utils.RoundNDecimal(Mathf.Max(takeProfitPrice, 0), pricePrecision));
+            }
             takeProfitTrailingPricePercentages.Add(Mathf.Abs(Utils.RateToPercentage(Utils.PriceMovingRate(avgEntryPrices[i], takeProfitPrice))));
             #endregion
         }
