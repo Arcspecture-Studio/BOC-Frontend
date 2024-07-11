@@ -58,7 +58,7 @@ public class OrderPagesWebsocketResponseSystem : MonoBehaviour
         {
             orderPageComponent.positionInfoActualTakeProfitPriceText.text = Utils.RoundNDecimal(response.actualTakeProfitPrice.Value, platformComponent.pricePrecisions[orderPageComponent.symbolDropdownComponent.selectedSymbol]).ToString();
 
-            if (response.actualTakeProfitPrice.Value == 0)
+            if (response.actualTakeProfitPrice.Value < 0)
             {
                 promptComponent.ShowPrompt(PromptConstant.NOTICE, PromptConstant.TAKE_PROFIT_QUANTITY_INVALID, () =>
                 {
