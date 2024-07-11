@@ -10,7 +10,12 @@ public class OrderPagesMovementSystem : MonoBehaviour
     float xVelocity;
     bool isSwiping
     {
-        get { return inputComponent.hold.IsPressed() && orderPagesComponent.status == OrderPagesStatusEnum.DETACH; }
+        get
+        {
+            return inputComponent.click.IsPressed() &&
+            inputComponent.screenPos.ReadValue<Vector2>().y > 60 &&
+            orderPagesComponent.status == OrderPagesStatusEnum.DETACH;
+        }
     }
 
     string movePagesFunctionName = "MovePages";

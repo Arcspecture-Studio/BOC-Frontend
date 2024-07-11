@@ -1,5 +1,4 @@
 using System;
-using Codice.Client.BaseCommands.Download;
 using DG.Tweening;
 using UnityEngine;
 
@@ -14,6 +13,8 @@ public class NavigationBarSystem : MonoBehaviour
     {
         navigationBarComponent = GlobalComponent.instance.navigationBarComponent;
         inputComponent = GlobalComponent.instance.inputComponent;
+
+        DefineButtonListeners();
     }
     void Update()
     {
@@ -21,17 +22,35 @@ public class NavigationBarSystem : MonoBehaviour
         UpdateContentXToSnap();
     }
 
+    void DefineButtonListeners()
+    {
+        navigationBarComponent.rightButton.onClick.AddListener(() =>
+        {
+            MoveContent(-buttonWidth);
+        });
+        navigationBarComponent.leftButton.onClick.AddListener(() =>
+        {
+            MoveContent(buttonWidth);
+        });
+    }
     void UpdateContentXToSnap()
     {
-        if (inputComponent.hold.IsPressed())
+        if (inputComponent.click.IsPressed()) // TODO: when click will stop tween, fix this
         {
             if (DOTween.IsTweening(moveNavBarFunctionName)) DOTween.Kill(moveNavBarFunctionName);
             return;
         }
+        MoveContent();
+    }
+    void MoveContent(float offset = 0)
+    {
+        if (DOTween.IsTweening(moveNavBarFunctionName)) return;
         float x = buttonWidth * Mathf.Round(navigationBarComponent.contentRect.localPosition.x / buttonWidth);
+        x += offset;
         x = Mathf.Clamp(x, -buttonWidth * Math.Max(0, GetActiveChild() - 3), 0);
         if (navigationBarComponent.contentRect.localPosition.x == x) return;
-        navigationBarComponent.contentRect.DOLocalMoveX(x, navigationBarComponent.pageScrollDelayDuration).SetId(moveNavBarFunctionName);
+        navigationBarComponent.contentRect.DOLocalMoveX(x, navigationBarComponent.pageScrollDelayDuration)
+        .SetId(moveNavBarFunctionName);
     }
     void UpdateContentWidth()
     {
