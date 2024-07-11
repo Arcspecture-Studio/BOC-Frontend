@@ -35,4 +35,5 @@ public class GlobalComponent : MonoBehaviour
     public GetProfileDataComponent getProfileDataComponent;
     public ExitComponent exitComponent;
     public ClosePositionPromptComponent closePositionPromptComponent;
+    public NavigationBarComponent navigationBarComponent;
 }
