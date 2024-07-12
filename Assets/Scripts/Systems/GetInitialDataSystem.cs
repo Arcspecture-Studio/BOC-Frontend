@@ -52,7 +52,7 @@ public class GetInitialDataSystem : MonoBehaviour
 
         if (!response.success)
         {
-            promptComponent.ShowPrompt(PromptConstant.ERROR, response.message, () =>
+            promptComponent.ShowPrompt(PromptConstant.ERROR, "testing123"/*response.message*/, () =>
             {
                 promptComponent.active = false;
             });
