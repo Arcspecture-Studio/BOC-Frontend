@@ -13,7 +13,7 @@ public class OrderPagesMovementSystem : MonoBehaviour
         get
         {
             return inputComponent.click.IsPressed() &&
-            inputComponent.screenPos.ReadValue<Vector2>().y > 60 &&
+            inputComponent.screenPos.ReadValue<Vector2>().y > (60f / 1000f * Screen.height) &&
             orderPagesComponent.status == OrderPagesStatusEnum.DETACH;
         }
     }

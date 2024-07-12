@@ -5,14 +5,12 @@ using UnityEngine;
 public class NavigationBarSystem : MonoBehaviour
 {
     NavigationBarComponent navigationBarComponent;
-    InputComponent inputComponent;
     float buttonWidth;
     string moveNavBarFunctionName = "MoveNavBar";
 
     void Start()
     {
         navigationBarComponent = GlobalComponent.instance.navigationBarComponent;
-        inputComponent = GlobalComponent.instance.inputComponent;
 
         DefineButtonListeners();
     }
@@ -35,7 +33,7 @@ public class NavigationBarSystem : MonoBehaviour
     }
     void UpdateContentXToSnap()
     {
-        if (inputComponent.click.IsPressed()) // TODO: when click will stop tween, fix this
+        if (navigationBarComponent.scrollView.isDragging)
         {
             if (DOTween.IsTweening(moveNavBarFunctionName)) DOTween.Kill(moveNavBarFunctionName);
             return;
