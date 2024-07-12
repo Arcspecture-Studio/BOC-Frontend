@@ -3,7 +3,7 @@ using UnityEngine.UI;
 
 public class NavigationBarComponent : MonoBehaviour
 {
-    public ScrollRect scrollView;
+    public ModifiedScrollRect scrollView;
     public RectTransform scrollViewRect;
     public RectTransform contentRect;
     public float pageScrollDelayDuration;
