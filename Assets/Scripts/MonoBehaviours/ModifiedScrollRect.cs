@@ -1,9 +1,14 @@
+using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
 public class ModifiedScrollRect : ScrollRect
 {
     public bool isDragging = false;
+    public bool IsFreelyScrolling
+    {
+        get { return !velocity.Equals(Vector2.zero); }
+    }
 
     public override void OnBeginDrag(PointerEventData eventData)
     {
