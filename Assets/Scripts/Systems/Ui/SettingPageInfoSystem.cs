@@ -55,6 +55,7 @@ public class SettingPageInfoSystem : MonoBehaviour
         if (totalOrders == orderPagesComponent.childOrderPageComponents.Count) return;
         totalOrders = orderPagesComponent.childOrderPageComponents.Count;
         settingPageComponent.totalOrdersText.text = orderPagesComponent.childOrderPageComponents.Count.ToString();
+        StartCoroutine(UpdateTotalOrdersInPosition());
     }
     void OnUpdateOrderStatus(object parameter)
     {
