@@ -1,3 +1,4 @@
+using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
@@ -18,6 +19,8 @@ public class SettingPageInfoSystem : MonoBehaviour
         orderPagesComponent = GlobalComponent.instance.orderPagesComponent;
 
         settingPageComponent.onChange_updateInfoUI.AddListener(UpdateInfoUI);
+
+        EventManager.AddListener(EventManagerConfig.UPDATE_ORDER_STATUS, OnUpdateOrderStatus);
     }
     void Update()
     {
@@ -49,8 +52,30 @@ public class SettingPageInfoSystem : MonoBehaviour
     }
     void UpdateTotalOrders()
     {
-        if (totalOrders == orderPagesComponent.transform.childCount) return;
-        totalOrders = orderPagesComponent.transform.childCount;
-        settingPageComponent.totalOrdersText.text = totalOrders.ToString();
+        if (totalOrders == orderPagesComponent.childOrderPageComponents.Count) return;
+        totalOrders = orderPagesComponent.childOrderPageComponents.Count;
+        settingPageComponent.totalOrdersText.text = orderPagesComponent.childOrderPageComponents.Count.ToString();
+    }
+    void OnUpdateOrderStatus(object parameter)
+    {
+        StartCoroutine(UpdateTotalOrdersInPosition());
+    }
+    IEnumerator UpdateTotalOrdersInPosition()
+    {
+        yield return new WaitUntil(() => totalOrders == orderPagesComponent.childOrderPageComponents.Count);
+
+        int totalOrdersInPosition = 0;
+        float totalAmountInPosition = 0;
+
+        foreach (OrderPageComponent orderPageComponent in orderPagesComponent.childOrderPageComponents)
+        {
+            if (orderPageComponent.orderStatus == OrderStatusEnum.FILLED)
+            {
+                totalOrdersInPosition++;
+                totalAmountInPosition += orderPageComponent.marginCalculator.totalLossAmount;
+            }
+        }
+        settingPageComponent.totalOrdersInPositionText.text = totalOrdersInPosition.ToString();
+        settingPageComponent.totalAmountInPositionText.text = Utils.RoundTwoDecimal(totalAmountInPosition).ToString();
     }
 }

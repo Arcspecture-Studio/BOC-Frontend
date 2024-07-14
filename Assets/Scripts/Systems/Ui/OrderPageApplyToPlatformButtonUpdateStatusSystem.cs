@@ -79,6 +79,7 @@ public class OrderPageApplyToPlatformButtonUpdateStatusSystem : MonoBehaviour
                 }
                 break;
         }
+        EventManager.Invoke(EventManagerConfig.UPDATE_ORDER_STATUS);
     }
     void OrderPageThrottleComponent_UpdateButtonStatus()
     {

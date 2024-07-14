@@ -12,6 +12,8 @@ public class SettingPageComponent : MonoBehaviour
     public RectTransform InfoBodyPanel;
     public TMP_Text activePlatformText;
     public TMP_Text totalOrdersText;
+    public TMP_Text totalOrdersInPositionText;
+    public TMP_Text totalAmountInPositionText;
     public GameObject balanceLabelPrefab;
     #endregion
 
