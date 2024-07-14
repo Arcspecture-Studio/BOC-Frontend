@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class UnityMainThread : MonoBehaviour
 {
-    static Queue<Action> jobs = new Queue<Action>();
+    static Queue<Action> jobs = new();
 
     void Update()
     {
