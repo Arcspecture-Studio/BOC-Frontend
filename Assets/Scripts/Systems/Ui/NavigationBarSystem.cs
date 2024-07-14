@@ -42,7 +42,7 @@ public class NavigationBarSystem : MonoBehaviour
     }
     void MoveContent(float offset = 0)
     {
-        if (DOTween.IsTweening(moveNavBarFunctionName)) return;
+        if (DOTween.IsTweening(moveNavBarFunctionName) || navigationBarComponent.scrollView.IsFreelyScrolling) return;
         float x = buttonWidth * Mathf.Round(navigationBarComponent.contentRect.localPosition.x / buttonWidth);
         x += offset;
         x = Mathf.Clamp(x, -buttonWidth * Math.Max(0, GetActiveChild() - 3), 0);
