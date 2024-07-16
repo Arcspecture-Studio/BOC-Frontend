@@ -2766,6 +2766,7 @@ GameObject:
   - component: {fileID: 76029978}
   - component: {fileID: 76029977}
   - component: {fileID: 76029976}
+  - component: {fileID: 76029979}
   m_Layer: 5
   m_Name: Dropdown
   m_TagString: Untagged
@@ -2845,13 +2846,7 @@ MonoBehaviour:
   m_ItemImage: {fileID: 0}
   m_Value: 0
   m_Options:
-    m_Options:
-    - m_Text: Market
-      m_Image: {fileID: 0}
-    - m_Text: Limit
-      m_Image: {fileID: 0}
-    - m_Text: Conditional
-      m_Image: {fileID: 0}
+    m_Options: []
   m_OnValueChanged:
     m_PersistentCalls:
       m_Calls: []
@@ -2894,6 +2889,18 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 76029974}
   m_CullTransparentMesh: 1
+--- !u!114 &76029979
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 76029974}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 28a7766d27ae17f45a7ceb3a4167f59d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &80058324
 GameObject:
   m_ObjectHideFlags: 0
@@ -6419,8 +6426,8 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1291532023}
   m_HandleRect: {fileID: 1291532022}
   m_Direction: 2
-  m_Value: -0.00000059643475
-  m_Size: 0.55504936
+  m_Value: -0.000002385739
+  m_Size: 0.5550725
   m_NumberOfSteps: 0
   m_OnValueChanged:
     m_PersistentCalls:
@@ -11024,7 +11031,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: None
+  m_text: 
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -36782,6 +36789,7 @@ GameObject:
   - component: {fileID: 1293686964}
   - component: {fileID: 1293686963}
   - component: {fileID: 1293686962}
+  - component: {fileID: 1293686965}
   m_Layer: 5
   m_Name: Dropdown
   m_TagString: Untagged
@@ -36861,13 +36869,7 @@ MonoBehaviour:
   m_ItemImage: {fileID: 0}
   m_Value: 0
   m_Options:
-    m_Options:
-    - m_Text: None
-      m_Image: {fileID: 0}
-    - m_Text: Take Immediately
-      m_Image: {fileID: 0}
-    - m_Text: Trailing
-      m_Image: {fileID: 0}
+    m_Options: []
   m_OnValueChanged:
     m_PersistentCalls:
       m_Calls: []
@@ -36910,6 +36912,19 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1293686960}
   m_CullTransparentMesh: 1
+--- !u!114 &1293686965
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1293686960}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 90aca8297182fde459bc158df9fb2de6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  showNone: 1
 --- !u!1 &1293817975
 GameObject:
   m_ObjectHideFlags: 0
@@ -41622,6 +41637,7 @@ GameObject:
   - component: {fileID: 1477664875}
   - component: {fileID: 1477664874}
   - component: {fileID: 1477664873}
+  - component: {fileID: 1477664876}
   m_Layer: 5
   m_Name: Dropdown
   m_TagString: Untagged
@@ -41701,11 +41717,7 @@ MonoBehaviour:
   m_ItemImage: {fileID: 0}
   m_Value: 0
   m_Options:
-    m_Options:
-    - m_Text: Premium Index
-      m_Image: {fileID: 0}
-    - m_Text: MCDX
-      m_Image: {fileID: 0}
+    m_Options: []
   m_OnValueChanged:
     m_PersistentCalls:
       m_Calls: []
@@ -41748,6 +41760,18 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1477664871}
   m_CullTransparentMesh: 1
+--- !u!114 &1477664876
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1477664871}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fc80b380275250c4d948803262991e1a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1482015154
 GameObject:
   m_ObjectHideFlags: 0
@@ -45387,7 +45411,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Equal Distribution
+  m_text: 
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -48487,7 +48511,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0, y: 307.0002}
+  m_AnchoredPosition: {x: 0, y: 307.0007}
   m_SizeDelta: {x: 0, y: 690}
   m_Pivot: {x: 0, y: 1}
 --- !u!114 &1746657102
@@ -53177,7 +53201,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Market
+  m_text: 
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -57093,6 +57117,7 @@ GameObject:
   - component: {fileID: 2054683799}
   - component: {fileID: 2054683798}
   - component: {fileID: 2054683797}
+  - component: {fileID: 2054683800}
   m_Layer: 5
   m_Name: Dropdown
   m_TagString: Untagged
@@ -57172,11 +57197,7 @@ MonoBehaviour:
   m_ItemImage: {fileID: 0}
   m_Value: 0
   m_Options:
-    m_Options:
-    - m_Text: Equal Distribution
-      m_Image: {fileID: 0}
-    - m_Text: Weighted Distribution
-      m_Image: {fileID: 0}
+    m_Options: []
   m_OnValueChanged:
     m_PersistentCalls:
       m_Calls: []
@@ -57219,6 +57240,18 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2054683795}
   m_CullTransparentMesh: 1
+--- !u!114 &2054683800
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2054683795}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2ddbff47441dc8446b18d7154085c017, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &2057974586
 GameObject:
   m_ObjectHideFlags: 0
@@ -57306,6 +57339,7 @@ GameObject:
   - component: {fileID: 2064388105}
   - component: {fileID: 2064388104}
   - component: {fileID: 2064388103}
+  - component: {fileID: 2064388106}
   m_Layer: 5
   m_Name: Dropdown
   m_TagString: Untagged
@@ -57385,11 +57419,7 @@ MonoBehaviour:
   m_ItemImage: {fileID: 0}
   m_Value: 0
   m_Options:
-    m_Options:
-    - m_Text: BINANCE
-      m_Image: {fileID: 0}
-    - m_Text: BINANCE_TESTNET
-      m_Image: {fileID: 0}
+    m_Options: []
   m_OnValueChanged:
     m_PersistentCalls:
       m_Calls: []
@@ -57432,6 +57462,18 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2064388101}
   m_CullTransparentMesh: 1
+--- !u!114 &2064388106
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2064388101}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fd12a6c38582b52479921086804c571b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &2064563750
 GameObject:
   m_ObjectHideFlags: 0
@@ -60052,7 +60094,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Premium Index
+  m_text: 
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
