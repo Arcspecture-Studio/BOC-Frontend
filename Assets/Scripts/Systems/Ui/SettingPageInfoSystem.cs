@@ -70,10 +70,13 @@ public class SettingPageInfoSystem : MonoBehaviour
 
         foreach (OrderPageComponent orderPageComponent in orderPagesComponent.childOrderPageComponents)
         {
-            if (orderPageComponent.orderStatus == OrderStatusEnum.FILLED && orderPageComponent.exitOrderType == ExitOrderTypeEnum.NONE)
+            if (orderPageComponent.orderStatus == OrderStatusEnum.FILLED)
             {
                 totalOrdersInPosition++;
-                totalAmountInPosition += orderPageComponent.marginCalculator.totalLossAmount;
+                if (orderPageComponent.exitOrderType == ExitOrderTypeEnum.NONE)
+                {
+                    totalAmountInPosition += orderPageComponent.marginCalculator.totalLossAmount;
+                }
             }
         }
         settingPageComponent.totalOrdersInPositionText.text = totalOrdersInPosition.ToString();
