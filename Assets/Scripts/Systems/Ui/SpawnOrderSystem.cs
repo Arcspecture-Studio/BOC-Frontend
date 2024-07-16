@@ -65,6 +65,7 @@ public class SpawnOrderSystem : MonoBehaviour
         orderPageComponent.marginWeightDistributionValueCustomSlider.SetValue(response.marginCalculator.quantityWeight);
         orderPageComponent.marginCalculator = response.marginCalculator;
         orderPageComponent.resultComponent.spawnTimeText.text = DateTimeOffset.FromUnixTimeMilliseconds(response.spawnTime).ToLocalTime().ToString();
+        orderPageComponent.exitOrderType = response.exitOrderType;
         orderPageComponent.resultComponent.exitOrderTypeText.text = response.exitOrderType.ToString();
         switch (response.exitOrderType)
         {

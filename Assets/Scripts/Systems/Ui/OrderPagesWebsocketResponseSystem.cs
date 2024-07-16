@@ -77,6 +77,7 @@ public class OrderPagesWebsocketResponseSystem : MonoBehaviour
         }
         if (response.exitOrderType.HasValue)
         {
+            orderPageComponent.exitOrderType = response.exitOrderType.Value;
             orderPageComponent.resultComponent.exitOrderTypeText.text = response.exitOrderType.Value.ToString();
             switch (response.exitOrderType.Value)
             {
