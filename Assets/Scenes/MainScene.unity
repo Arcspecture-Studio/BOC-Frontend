@@ -6419,8 +6419,8 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1291532023}
   m_HandleRect: {fileID: 1291532022}
   m_Direction: 2
-  m_Value: -0.000002385739
-  m_Size: 0.54544026
+  m_Value: -0.00000059643475
+  m_Size: 0.55504936
   m_NumberOfSteps: 0
   m_OnValueChanged:
     m_PersistentCalls:
@@ -10274,6 +10274,7 @@ GameObject:
   - component: {fileID: 301209652}
   - component: {fileID: 301209651}
   - component: {fileID: 301209650}
+  - component: {fileID: 301209653}
   m_Layer: 5
   m_Name: Dropdown
   m_TagString: Untagged
@@ -10353,37 +10354,7 @@ MonoBehaviour:
   m_ItemImage: {fileID: 0}
   m_Value: 0
   m_Options:
-    m_Options:
-    - m_Text: 1 minute
-      m_Image: {fileID: 0}
-    - m_Text: 3 minutes
-      m_Image: {fileID: 0}
-    - m_Text: 5 minutes
-      m_Image: {fileID: 0}
-    - m_Text: 15 minutes
-      m_Image: {fileID: 0}
-    - m_Text: 30 minutes
-      m_Image: {fileID: 0}
-    - m_Text: 1 hour
-      m_Image: {fileID: 0}
-    - m_Text: 2 hours
-      m_Image: {fileID: 0}
-    - m_Text: 4 hours
-      m_Image: {fileID: 0}
-    - m_Text: 6 hours
-      m_Image: {fileID: 0}
-    - m_Text: 8 hours
-      m_Image: {fileID: 0}
-    - m_Text: 12 hours
-      m_Image: {fileID: 0}
-    - m_Text: 1 day
-      m_Image: {fileID: 0}
-    - m_Text: 3 days
-      m_Image: {fileID: 0}
-    - m_Text: 1 week
-      m_Image: {fileID: 0}
-    - m_Text: 1 month
-      m_Image: {fileID: 0}
+    m_Options: []
   m_OnValueChanged:
     m_PersistentCalls:
       m_Calls: []
@@ -10426,6 +10397,18 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 301209648}
   m_CullTransparentMesh: 1
+--- !u!114 &301209653
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 301209648}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 633ab9266e913374a8c3640c77e58898, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &302297967
 GameObject:
   m_ObjectHideFlags: 0
@@ -11988,7 +11971,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 1 minute
+  m_text: 
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -22558,7 +22541,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 1 minute
+  m_text: 
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -48504,7 +48487,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0, y: 307.00073}
+  m_AnchoredPosition: {x: 0, y: 307.0002}
   m_SizeDelta: {x: 0, y: 690}
   m_Pivot: {x: 0, y: 1}
 --- !u!114 &1746657102
@@ -58002,6 +57985,7 @@ GameObject:
   - component: {fileID: 2078391925}
   - component: {fileID: 2078391924}
   - component: {fileID: 2078391923}
+  - component: {fileID: 2078391926}
   m_Layer: 5
   m_Name: Dropdown
   m_TagString: Untagged
@@ -58081,37 +58065,7 @@ MonoBehaviour:
   m_ItemImage: {fileID: 0}
   m_Value: 0
   m_Options:
-    m_Options:
-    - m_Text: 1 minute
-      m_Image: {fileID: 0}
-    - m_Text: 3 minutes
-      m_Image: {fileID: 0}
-    - m_Text: 5 minutes
-      m_Image: {fileID: 0}
-    - m_Text: 15 minutes
-      m_Image: {fileID: 0}
-    - m_Text: 30 minutes
-      m_Image: {fileID: 0}
-    - m_Text: 1 hour
-      m_Image: {fileID: 0}
-    - m_Text: 2 hours
-      m_Image: {fileID: 0}
-    - m_Text: 4 hours
-      m_Image: {fileID: 0}
-    - m_Text: 6 hours
-      m_Image: {fileID: 0}
-    - m_Text: 8 hours
-      m_Image: {fileID: 0}
-    - m_Text: 12 hours
-      m_Image: {fileID: 0}
-    - m_Text: 1 day
-      m_Image: {fileID: 0}
-    - m_Text: 3 days
-      m_Image: {fileID: 0}
-    - m_Text: 1 week
-      m_Image: {fileID: 0}
-    - m_Text: 1 month
-      m_Image: {fileID: 0}
+    m_Options: []
   m_OnValueChanged:
     m_PersistentCalls:
       m_Calls: []
@@ -58154,6 +58108,18 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2078391921}
   m_CullTransparentMesh: 1
+--- !u!114 &2078391926
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2078391921}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 633ab9266e913374a8c3640c77e58898, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &2081762368
 GameObject:
   m_ObjectHideFlags: 0
