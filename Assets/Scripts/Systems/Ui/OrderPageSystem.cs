@@ -471,7 +471,7 @@ public class OrderPageSystem : MonoBehaviour
             (OrderTypeEnum)orderPageComponent.orderTypeDropdown.value
         ));
     }
-    public void UpdateToServer()
+    public void UpdateToServer() // Used by order page prefab -> order type dropdown template item
     {
         websocketComponent.generalRequests.Add(
             new General.WebsocketUpdateOrderRequest(
@@ -504,7 +504,7 @@ public class OrderPageSystem : MonoBehaviour
             orderPageComponent.quantityToClose
         ));
     }
-    public void UpdateTakeProfitPrice()
+    void UpdateTakeProfitPrice()
     {
         #region Calculate and get latest take profit prices
         if (orderPageComponent.takeProfitTypeDropdown.value > (int)TakeProfitTypeEnum.NONE)
@@ -514,6 +514,10 @@ public class OrderPageSystem : MonoBehaviour
                 float.Parse(orderPageComponent.riskRewardRatioInput.text),
                 (int)orderPageComponent.takeProfitQuantityPercentageCustomSlider.slider.value,
                 orderPageComponent.takeProfitTrailingCallbackPercentageCustomSlider.slider.value);
+        }
+        else
+        {
+            orderPageComponent.marginCalculator.takeProfitType = (TakeProfitTypeEnum)orderPageComponent.takeProfitTypeDropdown.value;
         }
         List<float> tpPrices = (TakeProfitTypeEnum)orderPageComponent.takeProfitTypeDropdown.value == TakeProfitTypeEnum.TRAILING ?
         orderPageComponent.marginCalculator.takeProfitTrailingPrices :

@@ -5,7 +5,7 @@ using UnityEngine;
 public class InitializeDropdown_PlatformSystem : MonoBehaviour
 {
     TMP_Dropdown dropdown;
-    void Start()
+    void Awake()
     {
         dropdown = GetComponent<TMP_Dropdown>();
 

@@ -7,7 +7,7 @@ public class InitializeDropdown_TakeProfitTypeSystem : MonoBehaviour
     [SerializeField] bool showNone = true;
 
     TMP_Dropdown dropdown;
-    void Start()
+    void Awake()
     {
         dropdown = GetComponent<TMP_Dropdown>();
 

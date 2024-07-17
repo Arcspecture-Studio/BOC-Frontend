@@ -19,9 +19,12 @@ public class OrderPageTakeProfitTypeSystem : MonoBehaviour
         orderPageComponent.takeProfitTrailingCallbackPercentageCustomSlider.gameObject.SetActive(orderPageComponent.lockForEdit && orderPageComponent.takeProfitTypeDropdown.value == takeOnReturnTrailingEnum);
         orderPageComponent.takeProfitTypeDropdown.onValueChanged.AddListener(value =>
         {
-            orderPageComponent.riskRewardRatioObject.SetActive(orderPageComponent.lockForEdit && value > (int)TakeProfitTypeEnum.NONE);
-            orderPageComponent.takeProfitQuantityPercentageCustomSlider.gameObject.SetActive(orderPageComponent.lockForEdit && value > (int)TakeProfitTypeEnum.NONE);
-            orderPageComponent.takeProfitTrailingCallbackPercentageCustomSlider.gameObject.SetActive(orderPageComponent.lockForEdit && value == takeOnReturnTrailingEnum);
+            orderPageComponent.riskRewardRatioObject
+            .SetActive(orderPageComponent.lockForEdit && value > (int)TakeProfitTypeEnum.NONE);
+            orderPageComponent.takeProfitQuantityPercentageCustomSlider.gameObject
+            .SetActive(orderPageComponent.lockForEdit && value > (int)TakeProfitTypeEnum.NONE);
+            orderPageComponent.takeProfitTrailingCallbackPercentageCustomSlider.gameObject
+            .SetActive(orderPageComponent.lockForEdit && value == takeOnReturnTrailingEnum);
 
             orderPageComponent.updateTakeProfitPrice = true;
         });
