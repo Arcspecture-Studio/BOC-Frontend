@@ -90,6 +90,9 @@ public class OrderPagesWebsocketResponseSystem : MonoBehaviour
                 case ExitOrderTypeEnum.TAKE_PROFIT:
                     orderPageComponent.resultComponent.exitOrderTypeText.color = OrderConfig.DISPLAY_COLOR_GREEN;
                     break;
+                case ExitOrderTypeEnum.THROTTLE_STOP:
+                    orderPageComponent.resultComponent.exitOrderTypeText.color = OrderConfig.DISPLAY_COLOR_ORANGE;
+                    break;
             }
         }
     }

@@ -78,6 +78,9 @@ public class SpawnOrderSystem : MonoBehaviour
             case ExitOrderTypeEnum.TAKE_PROFIT:
                 orderPageComponent.resultComponent.exitOrderTypeText.color = OrderConfig.DISPLAY_COLOR_GREEN;
                 break;
+            case ExitOrderTypeEnum.THROTTLE_STOP:
+                orderPageComponent.resultComponent.exitOrderTypeText.color = OrderConfig.DISPLAY_COLOR_ORANGE;
+                break;
         }
         orderPageComponent.positionInfoAvgEntryPriceFilledText.text = Utils.RoundNDecimal(response.averagePriceFilled, platformComponent.pricePrecisions[orderPageComponent.symbolDropdownComponent.selectedSymbol]).ToString();
         orderPageComponent.positionInfoQuantityFilledText.text = Utils.RoundNDecimal(response.quantityFilled, platformComponent.quantityPrecisions[orderPageComponent.symbolDropdownComponent.selectedSymbol]).ToString();
