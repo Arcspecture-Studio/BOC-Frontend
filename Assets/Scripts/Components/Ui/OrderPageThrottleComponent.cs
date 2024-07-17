@@ -15,6 +15,7 @@ public class OrderPageThrottleComponent : MonoBehaviour
     public TMP_Text avgEntryPriceText;
     public TMP_Text breakEvenPriceText;
     public TMP_Dropdown orderTypeDropdown;
+    public TMP_Dropdown breakEvenTypeDropdown;
     public Button placeOrderButton;
     public Button cancelOrderButton;
     public Button cancelBreakEvenOrderButton;

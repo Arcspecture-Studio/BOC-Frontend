@@ -7,7 +7,9 @@ namespace General
     {
         public WebsocketUpdateThrottleOrderRequest(string token,
             string orderId,
-            OrderTypeEnum orderType) : base(WebsocketEventTypeEnum.UPDATE_THROTTLE_ORDER, token, orderId, null, null, orderType)
+            OrderTypeEnum orderType,
+            TakeProfitTypeEnum breakEvenType) : base(WebsocketEventTypeEnum.UPDATE_THROTTLE_ORDER,
+            token, orderId, null, null, orderType, breakEvenType)
         {
         }
     }

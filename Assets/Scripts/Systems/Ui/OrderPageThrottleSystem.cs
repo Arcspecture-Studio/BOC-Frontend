@@ -252,15 +252,17 @@ public class OrderPageThrottleSystem : MonoBehaviour
             orderPageThrottleComponent.orderId,
             orderPageComponent.orderId,
             orderPageThrottleComponent.throttleCalculator,
-            (OrderTypeEnum)orderPageThrottleComponent.orderTypeDropdown.value
+            (OrderTypeEnum)orderPageThrottleComponent.orderTypeDropdown.value,
+            (TakeProfitTypeEnum)orderPageThrottleComponent.breakEvenTypeDropdown.value
         ));
     }
-    public void UpdateToServer()
+    public void UpdateToServer() // Used by throttle tab prefab -> order type & break even type dropdown template item
     {
         websocketComponent.generalRequests.Add(new General.WebsocketUpdateThrottleOrderRequest(
             loginComponent.token,
             orderPageThrottleComponent.orderId,
-            (OrderTypeEnum)orderPageThrottleComponent.orderTypeDropdown.value
+            (OrderTypeEnum)orderPageThrottleComponent.orderTypeDropdown.value,
+            (TakeProfitTypeEnum)orderPageThrottleComponent.breakEvenTypeDropdown.value
         ));
     }
     void DeleteFromServer()

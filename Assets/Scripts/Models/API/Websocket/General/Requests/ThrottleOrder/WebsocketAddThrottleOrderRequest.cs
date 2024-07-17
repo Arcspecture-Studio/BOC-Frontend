@@ -9,7 +9,9 @@ namespace General
             string orderId,
             string parentOrderId,
             CalculateThrottle throttleCalculator,
-            OrderTypeEnum orderType) : base(WebsocketEventTypeEnum.ADD_THROTTLE_ORDER, token, orderId, parentOrderId, throttleCalculator, orderType)
+            OrderTypeEnum orderType,
+            TakeProfitTypeEnum breakEvenType) : base(WebsocketEventTypeEnum.ADD_THROTTLE_ORDER, token,
+            orderId, parentOrderId, throttleCalculator, orderType, breakEvenType)
         {
         }
     }

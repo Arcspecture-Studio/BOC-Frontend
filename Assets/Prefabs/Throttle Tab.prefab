@@ -1249,6 +1249,7 @@ MonoBehaviour:
   avgEntryPriceText: {fileID: 3256396121534919083}
   breakEvenPriceText: {fileID: 3256396121534919080}
   orderTypeDropdown: {fileID: 7677618695469683451}
+  breakEvenTypeDropdown: {fileID: 250982292805124352}
   placeOrderButton: {fileID: 3256396120120601116}
   cancelOrderButton: {fileID: 3256396120353969571}
   cancelBreakEvenOrderButton: {fileID: 6704962889583991794}

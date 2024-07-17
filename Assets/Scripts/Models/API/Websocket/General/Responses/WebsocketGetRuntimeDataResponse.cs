@@ -34,6 +34,7 @@ namespace General
         public string id;
         public CalculateThrottle throttleCalculator;
         public OrderTypeEnum orderType;
+        public TakeProfitTypeEnum breakEvenType;
         public OrderStatusEnum status;
         public bool statusError;
     }

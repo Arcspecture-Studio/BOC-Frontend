@@ -92,6 +92,7 @@ public class OrderPageApplyToPlatformButtonUpdateStatusSystem : MonoBehaviour
         bool orderUnsumitted = orderPageThrottleComponent.orderStatus == OrderStatusEnum.UNSUBMITTED;
         orderPageThrottleComponent.calculateButton.interactable = orderUnsumitted;
         orderPageThrottleComponent.orderTypeDropdown.interactable = orderUnsumitted;
+        orderPageThrottleComponent.breakEvenTypeDropdown.interactable = orderUnsumitted;
         switch (orderPageThrottleComponent.orderStatus)
         {
             case OrderStatusEnum.UNSUBMITTED:
