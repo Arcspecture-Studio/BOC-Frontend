@@ -253,7 +253,7 @@ public class OrderPageThrottleSystem : MonoBehaviour
             orderPageComponent.orderId,
             orderPageThrottleComponent.throttleCalculator,
             (OrderTypeEnum)orderPageThrottleComponent.orderTypeDropdown.value,
-            (TakeProfitTypeEnum)orderPageThrottleComponent.breakEvenTypeDropdown.value
+            (TakeProfitTypeEnum)orderPageThrottleComponent.breakEvenTypeDropdown.value + 1
         ));
     }
     public void UpdateToServer() // Used by throttle tab prefab -> order type & break even type dropdown template item
@@ -262,7 +262,7 @@ public class OrderPageThrottleSystem : MonoBehaviour
             loginComponent.token,
             orderPageThrottleComponent.orderId,
             (OrderTypeEnum)orderPageThrottleComponent.orderTypeDropdown.value,
-            (TakeProfitTypeEnum)orderPageThrottleComponent.breakEvenTypeDropdown.value
+            (TakeProfitTypeEnum)orderPageThrottleComponent.breakEvenTypeDropdown.value + 1
         ));
     }
     void DeleteFromServer()

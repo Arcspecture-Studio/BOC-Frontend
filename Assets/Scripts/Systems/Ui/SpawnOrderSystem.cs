@@ -102,7 +102,7 @@ public class SpawnOrderSystem : MonoBehaviour
                 throttleComponent.throttleQuantityInput.text = throttleOrder.throttleCalculator.throttleQty.ToString();
             }
             throttleComponent.orderTypeDropdown.value = (int)throttleOrder.orderType;
-            throttleComponent.breakEvenTypeDropdown.value = (int)throttleOrder.breakEvenType;
+            throttleComponent.breakEvenTypeDropdown.value = (int)throttleOrder.breakEvenType - 1;
         }
         #endregion
     }
