@@ -10,6 +10,7 @@ namespace General
         public string? parentOrderId;
         public CalculateThrottle? throttleCalculator;
         public OrderTypeEnum? orderType;
+        public TakeProfitTypeEnum breakEvenType;
 
         public WebsocketThrottleOrderRequest(
             WebsocketEventTypeEnum eventType,
@@ -17,11 +18,13 @@ namespace General
             string orderId,
             string? parentOrderId,
             CalculateThrottle? throttleCalculator,
-            OrderTypeEnum? orderType) : base(eventType, token, orderId)
+            OrderTypeEnum? orderType,
+            TakeProfitTypeEnum breakEvenType) : base(eventType, token, orderId)
         {
             this.parentOrderId = parentOrderId;
             this.throttleCalculator = throttleCalculator;
             this.orderType = orderType;
+            this.breakEvenType = breakEvenType;
         }
     }
 }

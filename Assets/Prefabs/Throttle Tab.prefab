@@ -1249,6 +1249,7 @@ MonoBehaviour:
   avgEntryPriceText: {fileID: 3256396121534919083}
   breakEvenPriceText: {fileID: 3256396121534919080}
   orderTypeDropdown: {fileID: 7677618695469683451}
+  breakEvenTypeDropdown: {fileID: 250982292805124352}
   placeOrderButton: {fileID: 3256396120120601116}
   cancelOrderButton: {fileID: 3256396120353969571}
   cancelBreakEvenOrderButton: {fileID: 6704962889583991794}
@@ -3249,6 +3250,7 @@ GameObject:
   - component: {fileID: 7882307126649968122}
   - component: {fileID: 7035036250999193284}
   - component: {fileID: 250982292805124352}
+  - component: {fileID: 2141367592676653947}
   m_Layer: 5
   m_Name: Dropdown
   m_TagString: Untagged
@@ -3371,6 +3373,19 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   m_AlphaFadeSpeed: 0.15
+--- !u!114 &2141367592676653947
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3682660630674447427}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 90aca8297182fde459bc158df9fb2de6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  showNone: 0
 --- !u!1 &3931089630393343594
 GameObject:
   m_ObjectHideFlags: 0
