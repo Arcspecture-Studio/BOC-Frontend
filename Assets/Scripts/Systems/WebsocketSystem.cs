@@ -134,7 +134,7 @@ public class WebsocketSystem : MonoBehaviour
         {
             websocketComponent.connectGeneralSocket = false;
 #if UNITY_EDITOR
-            string host = websocketComponent.localhost ? WebsocketConfig.GENERAL_HOST_LOCAL : WebsocketConfig.GENERAL_HOST;
+            string host = websocketComponent.localhost ? "ws://localhost" : WebsocketConfig.GENERAL_HOST;
 #else
             string host = WebsocketConfig.GENERAL_HOST;
 #endif
