@@ -24,11 +24,11 @@ public class NavigationBarSystem : MonoBehaviour
     {
         navigationBarComponent.rightButton.onClick.AddListener(() =>
         {
-            MoveContent(-buttonWidth);
+            MoveContent(-buttonWidth * 3);
         });
         navigationBarComponent.leftButton.onClick.AddListener(() =>
         {
-            MoveContent(buttonWidth);
+            MoveContent(buttonWidth * 3);
         });
     }
     void UpdateContentXToSnap()
