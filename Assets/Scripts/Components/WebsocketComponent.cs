@@ -1,16 +1,28 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
 using WebSocketSharp;
-using System.Security.Authentication;
 
 public class WebsocketComponent : MonoBehaviour
 {
     [Header("Config")]
-    public bool localhost = true;
-    public EnvPort envPort = EnvPort.DEVELOP;
-    public bool logging;
-    public SslProtocols sslProtocols = SslProtocols.Tls12;
-    public bool encryption = true;
+    public EnvironmentEnum env = EnvironmentEnum.DEVELOP;
+    public WebsocketConfigEnvData envData
+    {
+        get
+        {
+            WebsocketConfigEnvData data = WebsocketConfig.develop;
+            switch (env)
+            {
+                case EnvironmentEnum.TEST:
+                    data = WebsocketConfig.test;
+                    break;
+                case EnvironmentEnum.PRODUCTION:
+                    data = WebsocketConfig.production;
+                    break;
+            }
+            return data;
+        }
+    }
 
     [Header("Runtime")]
     public WebSocket generalSocket;
