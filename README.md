@@ -18,7 +18,7 @@ File gradlew.bat: https://raw.githubusercontent.com/googlesamples/unity-jar-reso
 
 Source: https://discussions.unity.com/t/unable-to-build-with-2021-3-34f1/937436/5
 
-1. Locate [Unity Editor Directory]\Editor\Data\PlaybackEngines\AndroidPlayer\SDK\cmdline-tools\2.1\bin\sdkmanager.bat
+1. We are going to patch unity engine file which located at [Unity Editor Directory]\Editor\Data\PlaybackEngines\AndroidPlayer\SDK\cmdline-tools\2.1\bin\sdkmanager.bat
 2. Open the sdkManager.bat using notepad++ with administrator and change this line
 
 set DEFAULT_JVM_OPTS=-Dcom.android.sdklib.toolsdir=%~dp0\..
