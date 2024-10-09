@@ -1,7 +1,9 @@
 {
     "name": "BOC.Configs",
     "rootNamespace": "",
-    "references": [],
+    "references": [
+        "GUID:6c5e2f7f75675f643ae735deb43bd057"
+    ],
     "includePlatforms": [],
     "excludePlatforms": [],
     "allowUnsafeCode": false,

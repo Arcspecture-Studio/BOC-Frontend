@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class CalculateRemainingLoss
+public class CalculateRemainingLoss // Unused for now
 {
     // config
     public float amountToLoss;

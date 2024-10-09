@@ -1,4 +1,4 @@
-public enum EnvPort
+public enum EnvironmentEnum
 {
     DEVELOP,
     TEST,
