@@ -10,17 +10,12 @@ public class WebsocketComponent : MonoBehaviour
     {
         get
         {
-            WebsocketConfigEnvData data = WebsocketConfig.develop;
-            switch (env)
+            return env switch
             {
-                case EnvironmentEnum.TEST:
-                    data = WebsocketConfig.test;
-                    break;
-                case EnvironmentEnum.PRODUCTION:
-                    data = WebsocketConfig.production;
-                    break;
-            }
-            return data;
+                EnvironmentEnum.TEST => WebsocketConfig.test,
+                EnvironmentEnum.PRODUCTION => WebsocketConfig.production,
+                _ => WebsocketConfig.develop,
+            };
         }
     }
 
