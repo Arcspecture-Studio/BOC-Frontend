@@ -1,6 +1,6 @@
 # BOC-Frontend
 
-Unity project version 2021.3.37f1
+Unity project version 2021.3.37f1 -> 2022.3.50f1
 
 ## Issue Installing Unity Mediation Resolving Android Dependencies Stuck at 0%
 
