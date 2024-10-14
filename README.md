@@ -16,15 +16,46 @@ File gradlew.bat: https://raw.githubusercontent.com/googlesamples/unity-jar-reso
 4. If Android Dependencies didn't automatically resolve, hit Assets -> Mobile Dependency Resolver -> Android Resolver -> Resolve
 5. Wait till it prompt "Resolution Succeeded."
 
-## Issue with "CommandInvokationFailure: Failed to update Android SDK package list." Unity 2021 engine bug
+## Issue with "CommandInvokationFailure: Failed to update Android SDK package list." Unity 2021.3 engine bug
 
 Source: https://discussions.unity.com/t/unable-to-build-with-2021-3-34f1/937436/5
 
 1. We are going to patch unity engine file which located at [Unity Editor Directory]\Editor\Data\PlaybackEngines\AndroidPlayer\SDK\cmdline-tools\2.1\bin\sdkmanager.bat
 2. Open the sdkManager.bat using notepad++ with administrator and change this line
-
+```
 set DEFAULT_JVM_OPTS=-Dcom.android.sdklib.toolsdir=%~dp0\..
-
+```
 to
-
+```
 set DEFAULT_JVM_OPTS="-Dcom.android.sdklib.toolsdir=%~dp0\.."
+```
+
+## Issue with building app failed after installing UnityLevelPlay_v8.4.1.unitypackage
+```
+FAILURE: Build completed with 2 failures.
+
+1: Task failed with an exception.
+-----------
+* What went wrong:
+Execution failed for task ':unityLibrary:generateReleaseRFile'.
+> Could not resolve all dependencies for configuration ':unityLibrary:releaseCompileClasspath'.
+...
+> Could not find com.ironsource.sdk:mediationsdk:8.4.0.
+Required by:
+    project :unityLibrary
+```
+
+Source: https://developers.is.com/ironsource-mobile/android/android-sdk/#step-1
+
+1. Go to here and enable this: Project Settings -> Player -> Publishing Settings -> Custom Gradle Settings Template
+2. This shal generate a settingTemplate.gradle under Assets/Plugins/Android/settingTemplate.gradle
+3. Add these lines into settingTemplate.gradle
+```
+dependencyResolutionManagement {
+    repositories {
+        maven {
+            url 'https://android-sdk.is.com/' 
+        }
+    }
+}
+```
