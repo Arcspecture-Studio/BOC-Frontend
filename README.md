@@ -1,10 +1,12 @@
 # BOC-Frontend
 
-Unity project version 2021.3.37f1
+Unity project version 2021.3.37f1 -> 2022.3.50f1
 
 ## Issue Installing Unity Mediation Resolving Android Dependencies Stuck at 0%
 
-Source: https://www.youtube.com/watch?v=SBtfuWEN5qk&t=380s (Unity ads mediation levelplay tutorial)
+Source:
+https://www.youtube.com/watch?v=SBtfuWEN5qk&t=380s (Unity ads mediation levelplay tutorial)
+https://www.youtube.com/watch?v=sU5njx1jn8w&t (Unity LevelPlay easy way [NEW] !! 2023)
 
 File gradlew.bat: https://raw.githubusercontent.com/googlesamples/unity-jar-resolver/master/gradlew.bat
 
