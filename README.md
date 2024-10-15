@@ -2,11 +2,13 @@
 
 Unity project version 2021.3.37f1 -> 2022.3.50f1
 
+## Unity LevelPlay Plugin Integration Guide
+
+Source: https://developers.is.com/ironsource-mobile/unity/unity-plugin/#step-1
+
 ## Issue Resolving Android Dependencies Stuck at 0% after importing UnityLevelPlay_v8.4.1.unitypackage
 
-Source:
-https://www.youtube.com/watch?v=SBtfuWEN5qk&t=380s (Unity ads mediation levelplay tutorial)
-https://www.youtube.com/watch?v=sU5njx1jn8w&t (Unity LevelPlay easy way [NEW] !! 2023)
+Source: https://www.youtube.com/watch?v=sU5njx1jn8w&t (Unity LevelPlay easy way [NEW] !! 2023)
 
 File gradlew.bat: https://raw.githubusercontent.com/googlesamples/unity-jar-resolver/master/gradlew.bat
 
