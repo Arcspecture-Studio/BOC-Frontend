@@ -45,7 +45,8 @@ jobs:
           UNITY_LICENSE: ${{ secrets.UNITY_LICENSE }}
           UNITY_EMAIL: ${{ secrets.UNITY_EMAIL }}
           UNITY_PASSWORD: ${{ secrets.UNITY_PASSWORD }}
-          ENCRYPTION_ACCESS_TOKEN_32: ${{secrets.ENCRYPTION_ACCESS_TOKEN_32}}
+          ENCRYPTION_ACCESS_TOKEN_32: ${{ secrets.TEST_ENCRYPTION_ACCESS_TOKEN_32 }}
+          WEBSOCKET_SERVER_HOST: ${{ env.WEBSOCKET_SERVER_HOST }}
         with:
           targetPlatform: ${{ matrix.targetPlatform }}
           versioning: Custom
