@@ -1,3 +1,5 @@
+using System;
+
 public static class WebsocketConfig
 {
     public static readonly WebsocketConfigEnvData develop = new(
@@ -7,13 +9,13 @@ public static class WebsocketConfig
         false
     );
     public static readonly WebsocketConfigEnvData test = new(
-        "ws://52.198.114.90",
+        Environment.GetEnvironmentVariable("WEBSOCKET_SERVER_HOST"),
         "3001",
         true,
         true
     );
     public static readonly WebsocketConfigEnvData production = new(
-        "ws://52.198.114.90",
+        Environment.GetEnvironmentVariable("WEBSOCKET_SERVER_HOST"),
         "3002",
         false,
         true
