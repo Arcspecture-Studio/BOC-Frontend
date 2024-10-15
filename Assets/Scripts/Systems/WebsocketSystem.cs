@@ -51,7 +51,7 @@ public class WebsocketSystem : MonoBehaviour
         {
             string rawData = e.Data;
             if (websocketComponent.envData.enableEncryption && !Utils.IsJsonString(e.Data))
-                rawData = Encryption.Decrypt(e.Data, SecretConfig.ENCRYPTION_ACCESS_TOKEN_32, websocketComponent.generalSocketIv);
+                rawData = Encryption.Decrypt(e.Data, EncryptionConfig.ENCRYPTION_ACCESS_TOKEN_32, websocketComponent.generalSocketIv);
             if (websocketComponent.envData.enableLog) Debug.Log(logPrefix + "Incoming message from: " + ((WebSocket)sender).Url + ", Data: " + rawData);
 
             General.WebsocketGeneralResponse response = JsonConvert.DeserializeObject<General.WebsocketGeneralResponse>(rawData, JsonSerializerConfig.settings);
@@ -157,7 +157,7 @@ public class WebsocketSystem : MonoBehaviour
     {
         string jsonStr = JsonConvert.SerializeObject(request, JsonSerializerConfig.settings);
         if (websocketComponent.envData.enableLog) Debug.Log(logPrefix + "Send message: " + jsonStr);
-        if (encrypt) jsonStr = Encryption.Encrypt(jsonStr, SecretConfig.ENCRYPTION_ACCESS_TOKEN_32, websocketComponent.generalSocketIv);
+        if (encrypt) jsonStr = Encryption.Encrypt(jsonStr, EncryptionConfig.ENCRYPTION_ACCESS_TOKEN_32, websocketComponent.generalSocketIv);
         socket.Send(jsonStr);
     }
 }
