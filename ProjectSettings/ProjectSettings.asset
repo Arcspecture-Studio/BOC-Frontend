@@ -143,8 +143,6 @@ PlayerSettings:
   bundleVersion: v5.0.0
   preloadedAssets:
   - {fileID: 11400000, guid: 400a248644c38ee4aa1a7fbfdd972193, type: 2}
-  - {fileID: -1696323715548719706, guid: beea4b7260fc210428f5df8446517234, type: 2}
-  - {fileID: 11400000, guid: 3dc8a58015c31b643a600348e96f0e84, type: 2}
   metroInputSource: 0
   wsaTransparentSwapchain: 0
   m_HolographicPauseOnTrackingLoss: 1
@@ -259,12 +257,12 @@ PlayerSettings:
   clonedFromGUID: f918f204a65eb664ba9e5b39d533ff8e
   templatePackageId: com.unity.template.mobile2d@2.0.1
   templateDefaultScene: Assets/Scenes/SampleScene.unity
-  useCustomMainManifest: 0
+  useCustomMainManifest: 1
   useCustomLauncherManifest: 0
   useCustomMainGradleTemplate: 1
   useCustomLauncherGradleManifest: 0
   useCustomBaseGradleTemplate: 0
-  useCustomGradlePropertiesTemplate: 0
+  useCustomGradlePropertiesTemplate: 1
   useCustomGradleSettingsTemplate: 1
   useCustomProguardFile: 0
   AndroidTargetArchitectures: 3
