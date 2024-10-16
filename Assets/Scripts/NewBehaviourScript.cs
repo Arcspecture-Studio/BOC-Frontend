@@ -11,11 +11,11 @@ public class NewBehaviourScript : MonoBehaviour
     {
         if (a)
         {
-            text.text = Environment.GetEnvironmentVariable("WEBSOCKET_SERVER_HOST");
+            text.text = Environment.GetEnvironmentVariable("WEBSOCKET_SERVER_HOST") ?? "WEBSOCKET_SERVER_HOST";
         }
         else
         {
-            text.text = Environment.GetEnvironmentVariable("ENCRYPTION_ACCESS_TOKEN_32");
+            text.text = Environment.GetEnvironmentVariable("ENCRYPTION_ACCESS_TOKEN_32") ?? "ENCRYPTION_ACCESS_TOKEN_32";
         }
     }
 }
