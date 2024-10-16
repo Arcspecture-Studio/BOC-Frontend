@@ -4,18 +4,16 @@ using UnityEngine;
 
 public class NewBehaviourScript : MonoBehaviour
 {
-    public bool a;
     public TMP_Text text;
 
     void Start()
     {
-        if (a)
+        string[] args = Environment.GetCommandLineArgs();
+        string arg = "";
+        for (int i = 0; i < args.Length; i++)
         {
-            text.text = Environment.GetEnvironmentVariable("WEBSOCKET_SERVER_HOST") ?? "WEBSOCKET_SERVER_HOST";
+            arg += args[i] + " || ";
         }
-        else
-        {
-            text.text = Environment.GetEnvironmentVariable("ENCRYPTION_ACCESS_TOKEN_32") ?? "ENCRYPTION_ACCESS_TOKEN_32";
-        }
+        text.text = arg;
     }
 }
