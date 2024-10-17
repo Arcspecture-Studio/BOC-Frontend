@@ -9,13 +9,13 @@ public static class WebsocketConfig
         false
     );
     public static readonly WebsocketConfigEnvData test = new(
-        Environment.GetEnvironmentVariable("WEBSOCKET_SERVER_HOST"),
+        EnvironmentParameter.WEBSOCKET_SERVER_HOST ?? "ws://localhost",
         "3001",
         true,
         true
     );
     public static readonly WebsocketConfigEnvData production = new(
-        Environment.GetEnvironmentVariable("WEBSOCKET_SERVER_HOST"),
+        EnvironmentParameter.WEBSOCKET_SERVER_HOST ?? "ws://localhost",
         "3002",
         false,
         true
