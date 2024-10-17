@@ -39,6 +39,14 @@ jobs:
         if: matrix.targetPlatform == 'Android'
         uses: jlumbroso/free-disk-space@v1.3.1
 
+      - name: Obtain environment parameters
+        run: |
+          echo 'public static class EnvironmentParameter' > Assets/Scripts/Configs/EnvironmentParameter.cs
+          echo '{' >> Assets/Scripts/Configs/EnvironmentParameter.cs
+          echo '    public static readonly string ENCRYPTION_ACCESS_TOKEN_32 = "${{ secrets.TEST_ENCRYPTION_ACCESS_TOKEN_32 }}";' >> Assets/Scripts/Configs/EnvironmentParameter.cs
+          echo '    public static readonly string WEBSOCKET_SERVER_HOST = "${{ vars.WEBSOCKET_SERVER_HOST }}";' >> Assets/Scripts/Configs/EnvironmentParameter.cs
+          echo '}' >> Assets/Scripts/Configs/EnvironmentParameter.cs
+
       - name: Build unity project
         uses: game-ci/unity-builder@v4
         env:
@@ -55,7 +63,6 @@ jobs:
           androidKeystorePass: ${{ secrets.ANDROID_KEYSTORE_PASS }}
           androidKeyaliasName: ${{ secrets.ANDROID_KEYALIAS_NAME }}
           androidKeyaliasPass: ${{ secrets.ANDROID_KEYALIAS_PASS }}
-          customParameters: -ENCRYPTION_ACCESS_TOKEN_32 "${{ secrets.TEST_ENCRYPTION_ACCESS_TOKEN_32 }}" -WEBSOCKET_SERVER_HOST "${{ vars.WEBSOCKET_SERVER_HOST }}"
           
       - name: Rename apk file
         run: sudo mv build/${{ matrix.targetPlatform }}/Android.apk build/${{ matrix.targetPlatform }}/BOC_Test.apk

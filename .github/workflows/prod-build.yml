@@ -35,16 +35,17 @@ jobs:
           key: Library-${{ matrix.targetPlatform }}
           restore-keys: Library-
 
-      - name: Write secret variables to SecretConfig.cs
-        run: |
-          echo 'public static class SecretConfig' > Assets/Scripts/Configs/SecretConfig.cs
-          echo '{' >> Assets/Scripts/Configs/SecretConfig.cs
-          echo '    public static readonly string ENCRYPTION_ACCESS_TOKEN_32 = "${{ secrets.PROD_ENCRYPTION_ACCESS_TOKEN_32 }}";' >> Assets/Scripts/Configs/SecretConfig.cs
-          echo '}' >> Assets/Scripts/Configs/SecretConfig.cs
-
       - name: Free disk space
         if: matrix.targetPlatform == 'Android'
         uses: jlumbroso/free-disk-space@v1.3.1
+
+      - name: Obtain environment parameters
+        run: |
+          echo 'public static class EnvironmentParameter' > Assets/Scripts/Configs/EnvironmentParameter.cs
+          echo '{' >> Assets/Scripts/Configs/EnvironmentParameter.cs
+          echo '    public static readonly string ENCRYPTION_ACCESS_TOKEN_32 = "${{ secrets.PROD_ENCRYPTION_ACCESS_TOKEN_32 }}";' >> Assets/Scripts/Configs/EnvironmentParameter.cs
+          echo '    public static readonly string WEBSOCKET_SERVER_HOST = "${{ vars.WEBSOCKET_SERVER_HOST }}";' >> Assets/Scripts/Configs/EnvironmentParameter.cs
+          echo '}' >> Assets/Scripts/Configs/EnvironmentParameter.cs  
 
       - name: Build unity project
         uses: game-ci/unity-builder@v4
