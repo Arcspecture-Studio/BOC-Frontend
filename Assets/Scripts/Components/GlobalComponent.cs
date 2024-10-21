@@ -36,4 +36,5 @@ public class GlobalComponent : MonoBehaviour
     public ExitComponent exitComponent;
     public ClosePositionPromptComponent closePositionPromptComponent;
     public NavigationBarComponent navigationBarComponent;
+    public UnityLevelPlayComponent unityLevelPlayComponent;
 }

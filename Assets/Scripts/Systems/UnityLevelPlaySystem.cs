@@ -4,27 +4,40 @@ using UnityEngine;
 
 public class UnityLevelPlaySystem : MonoBehaviour
 {
-    [SerializeField] string appKey;
+    UnityLevelPlayComponent unityLevelPlayComponent;
 
     string logPrefix = "[UnityLevelPlaySystem] ";
 
     void Start()
     {
+        if (unityLevelPlayComponent == null) unityLevelPlayComponent = GlobalComponent.instance.unityLevelPlayComponent;
+        if (!unityLevelPlayComponent.enableAds) return;
+
+        unityLevelPlayComponent.onChange_showBanner.AddListener(ShowBanner);
+        unityLevelPlayComponent.onChange_showRewardedVideo.AddListener(() =>
+        {
+            if (unityLevelPlayComponent.showRewardedVideo) ShowRewarded();
+        });
+
 #if UNITY_ANDROID
-        appKey = UnityLevelPlayConfig.ANDROID_APPKEY;
+        unityLevelPlayComponent.appKey = UnityLevelPlayConfig.ANDROID_APPKEY;
 #elif UNITY_IPHONE
-        appKey = "";
+        unityLevelPlayComponent.appKey = "";
 #else
-        appKey = "unexpected_platform";
+        unityLevelPlayComponent.appKey = "unexpected_platform";
 #endif
 
         IronSource.Agent.validateIntegration();
-        IronSource.Agent.init(appKey);
+        IronSource.Agent.init(unityLevelPlayComponent.appKey);
 
-        LoadBanner();
+        unityLevelPlayComponent.showBanner = true;
+        LoadRewarded();
     }
     void OnEnable()
     {
+        if (unityLevelPlayComponent == null) unityLevelPlayComponent = GlobalComponent.instance.unityLevelPlayComponent;
+        if (!unityLevelPlayComponent.enableAds) return;
+
         IronSourceEvents.onSdkInitializationCompletedEvent += SdkInitializationCompletedEvent;
 
         // AdInfo Banner Events
@@ -45,9 +58,9 @@ public class UnityLevelPlaySystem : MonoBehaviour
         IronSourceRewardedVideoEvents.onAdClickedEvent += RewardedVideoOnAdClickedEvent;
 
     }
-
     void OnApplicationPause(bool pause)
     {
+        if (!unityLevelPlayComponent.enableAds) return;
         IronSource.Agent.onApplicationPause(pause);
     }
 
@@ -57,21 +70,33 @@ public class UnityLevelPlaySystem : MonoBehaviour
     }
 
     #region Banner
+    void ShowBanner()
+    {
+        if (unityLevelPlayComponent.showBanner) LoadBanner();
+        else DestroyBanner();
+    }
     void LoadBanner()
     {
-        IronSource.Agent.loadBanner(IronSourceBannerSize.BANNER, IronSourceBannerPosition.BOTTOM);
+        IronSource.Agent.loadBanner(IronSourceBannerSize.SMART, IronSourceBannerPosition.BOTTOM);
     }
     void DestroyBanner()
     {
         IronSource.Agent.destroyBanner();
     }
+    #endregion
+
+    #region Banner Events
     void BannerOnAdLoadedEvent(IronSourceAdInfo adInfo)
     {
         Debug.Log(logPrefix + "BannerOnAdLoadedEvent With AdInfo: " + adInfo);
+
+        if (unityLevelPlayComponent.showBanner) IronSource.Agent.displayBanner();
     }
     void BannerOnAdLoadFailedEvent(IronSourceError ironSourceError)
     {
         Debug.Log(logPrefix + "BannerOnAdLoadFailedEvent With Error: " + ironSourceError);
+
+        if (unityLevelPlayComponent.showBanner) LoadBanner();
     }
     void BannerOnAdClickedEvent(IronSourceAdInfo adInfo)
     {
@@ -80,10 +105,14 @@ public class UnityLevelPlaySystem : MonoBehaviour
     void BannerOnAdScreenPresentedEvent(IronSourceAdInfo adInfo)
     {
         Debug.Log(logPrefix + "BannerOnAdScreenPresentedEvent With AdInfo: " + adInfo);
+
+        ScalableCanvas.instance.SetBottomPadding(ScalableCanvas.instance.ConvertPixelToCanvasResolution(Screen.width <= 720 ? 50 : 90));
     }
     void BannerOnAdScreenDismissedEvent(IronSourceAdInfo adInfo)
     {
         Debug.Log(logPrefix + "BannerOnAdScreenDismissedEvent With AdInfo: " + adInfo);
+
+        ScalableCanvas.instance.SetBottomPadding(0);
     }
     void BannerOnAdLeftApplicationEvent(IronSourceAdInfo adInfo)
     {
@@ -103,33 +132,44 @@ public class UnityLevelPlaySystem : MonoBehaviour
             IronSource.Agent.showRewardedVideo();
         }
     }
-    void RewardedVideoOnAdOpenedEvent(IronSourceAdInfo adInfo)
-    {
-        // The Rewarded Video ad view has opened. Your activity will loose focus.
-        Debug.Log(logPrefix + "RewardedVideoOnAdOpenedEvent With AdInfo " + adInfo);
-    }
-    void RewardedVideoOnAdClosedEvent(IronSourceAdInfo adInfo)
-    {
-        // The Rewarded Video ad view is about to be closed. Your activity will regain its focus.
-        Debug.Log(logPrefix + "RewardedVideoOnAdClosedEvent With AdInfo " + adInfo);
-    }
+    #endregion
+
+    #region Rewarded Events
     void RewardedVideoOnAdAvailable(IronSourceAdInfo adInfo)
     {
         // Indicates that there’s an available ad.
         // The adInfo object includes information about the ad that was loaded successfully
         // This replaces the RewardedVideoAvailabilityChangedEvent(true) event
         Debug.Log(logPrefix + "RewardedVideoOnAdAvailable With AdInfo " + adInfo);
+
+        if (unityLevelPlayComponent.showRewardedVideo) ShowRewarded();
     }
     void RewardedVideoOnAdUnavailable()
     {
         // Indicates that no ads are available to be displayed
         // This replaces the RewardedVideoAvailabilityChangedEvent(false) event
         Debug.Log(logPrefix + "RewardedVideoOnAdUnavailable");
+
+        if (unityLevelPlayComponent.enableAds) LoadRewarded();
     }
     void RewardedVideoOnAdShowFailedEvent(IronSourceError ironSourceError, IronSourceAdInfo adInfo)
     {
         // The rewarded video ad was failed to show.
         Debug.Log(logPrefix + "RewardedVideoOnAdShowFailedEvent With Error" + ironSourceError + "And AdInfo " + adInfo);
+
+        if (unityLevelPlayComponent.enableAds) LoadRewarded();
+    }
+    void RewardedVideoOnAdOpenedEvent(IronSourceAdInfo adInfo)
+    {
+        // The Rewarded Video ad view has opened. Your activity will loose focus.
+        Debug.Log(logPrefix + "RewardedVideoOnAdOpenedEvent With AdInfo " + adInfo);
+
+        unityLevelPlayComponent.showRewardedVideo = false;
+    }
+    void RewardedVideoOnAdClosedEvent(IronSourceAdInfo adInfo)
+    {
+        // The Rewarded Video ad view is about to be closed. Your activity will regain its focus.
+        Debug.Log(logPrefix + "RewardedVideoOnAdClosedEvent With AdInfo " + adInfo);
     }
     void RewardedVideoOnAdRewardedEvent(IronSourcePlacement ironSourcePlacement, IronSourceAdInfo adInfo)
     {
