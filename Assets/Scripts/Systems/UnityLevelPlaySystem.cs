@@ -84,7 +84,7 @@ public class UnityLevelPlaySystem : MonoBehaviour
     }
     void LoadBanner()
     {
-        IronSource.Agent.loadBanner(IronSourceBannerSize.SMART, IronSourceBannerPosition.BOTTOM);
+        IronSource.Agent.loadBanner(IronSourceBannerSize.BANNER, IronSourceBannerPosition.BOTTOM);
     }
     #endregion
 
