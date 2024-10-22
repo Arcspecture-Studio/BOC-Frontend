@@ -96,7 +96,9 @@ public class UnityLevelPlaySystem : MonoBehaviour
         if (unityLevelPlayComponent.showBanner)
         {
             IronSource.Agent.displayBanner();
-            ScalableCanvas.instance.SetBottomPadding(ScalableCanvas.instance.ConvertPixelToCanvasResolution(Screen.width <= 720 ? 50 : 90));
+#if UNITY_ANDROID
+            ScalableCanvas.instance.SetBottomPadding(ScalableCanvas.instance.ConvertDpToCanvasResolution(Screen.width <= 720 ? 50 : 90));
+#endif
         }
     }
     void BannerOnAdLoadFailedEvent(IronSourceError ironSourceError)

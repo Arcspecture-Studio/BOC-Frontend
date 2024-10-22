@@ -41,6 +41,14 @@ public class ScalableCanvas : MonoBehaviour
     {
         return pixel / Screen.height * canvasHeight;
     }
+    public float ConvertDpToPixel(float dp)
+    {
+        return dp * (Screen.dpi / 160);
+    }
+    public float ConvertDpToCanvasResolution(float dp)
+    {
+        return ConvertPixelToCanvasResolution(ConvertDpToPixel(dp));
+    }
     public float ConvertCanvasResolutionToPixel(float resolution)
     {
         return resolution / canvasHeight * Screen.height;
