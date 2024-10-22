@@ -72,16 +72,19 @@ public class UnityLevelPlaySystem : MonoBehaviour
     #region Banner
     void ShowBanner()
     {
-        if (unityLevelPlayComponent.showBanner) LoadBanner();
-        else DestroyBanner();
+        if (unityLevelPlayComponent.showBanner)
+        {
+            LoadBanner();
+        }
+        else
+        {
+            IronSource.Agent.destroyBanner();
+            ScalableCanvas.instance.SetBottomPadding(0);
+        }
     }
     void LoadBanner()
     {
         IronSource.Agent.loadBanner(IronSourceBannerSize.SMART, IronSourceBannerPosition.BOTTOM);
-    }
-    void DestroyBanner()
-    {
-        IronSource.Agent.destroyBanner();
     }
     #endregion
 
@@ -90,7 +93,11 @@ public class UnityLevelPlaySystem : MonoBehaviour
     {
         Debug.Log(logPrefix + "BannerOnAdLoadedEvent With AdInfo: " + adInfo);
 
-        if (unityLevelPlayComponent.showBanner) IronSource.Agent.displayBanner();
+        if (unityLevelPlayComponent.showBanner)
+        {
+            IronSource.Agent.displayBanner();
+            ScalableCanvas.instance.SetBottomPadding(ScalableCanvas.instance.ConvertPixelToCanvasResolution(Screen.width <= 720 ? 50 : 90));
+        }
     }
     void BannerOnAdLoadFailedEvent(IronSourceError ironSourceError)
     {
@@ -105,14 +112,10 @@ public class UnityLevelPlaySystem : MonoBehaviour
     void BannerOnAdScreenPresentedEvent(IronSourceAdInfo adInfo)
     {
         Debug.Log(logPrefix + "BannerOnAdScreenPresentedEvent With AdInfo: " + adInfo);
-
-        ScalableCanvas.instance.SetBottomPadding(ScalableCanvas.instance.ConvertPixelToCanvasResolution(Screen.width <= 720 ? 50 : 90));
     }
     void BannerOnAdScreenDismissedEvent(IronSourceAdInfo adInfo)
     {
         Debug.Log(logPrefix + "BannerOnAdScreenDismissedEvent With AdInfo: " + adInfo);
-
-        ScalableCanvas.instance.SetBottomPadding(0);
     }
     void BannerOnAdLeftApplicationEvent(IronSourceAdInfo adInfo)
     {
