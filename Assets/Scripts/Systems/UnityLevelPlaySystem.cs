@@ -14,10 +14,7 @@ public class UnityLevelPlaySystem : MonoBehaviour
         if (!unityLevelPlayComponent.enableAds) return;
 
         unityLevelPlayComponent.onChange_showBanner.AddListener(ShowBanner);
-        unityLevelPlayComponent.onChange_showRewardedVideo.AddListener(() =>
-        {
-            if (unityLevelPlayComponent.showRewardedVideo) ShowRewarded();
-        });
+        unityLevelPlayComponent.onChange_showRewardedVideo.AddListener(ShowRewarded);
 
 #if UNITY_ANDROID
         unityLevelPlayComponent.appKey = UnityLevelPlayConfig.ANDROID_APPKEY;
@@ -32,6 +29,7 @@ public class UnityLevelPlaySystem : MonoBehaviour
 
         unityLevelPlayComponent.showBanner = true;
         LoadRewarded();
+        unityLevelPlayComponent.showRewardedVideo = true; // testing
     }
     void OnEnable()
     {
@@ -70,6 +68,10 @@ public class UnityLevelPlaySystem : MonoBehaviour
     }
 
     #region Banner
+    void LoadBanner()
+    {
+        IronSource.Agent.loadBanner(IronSourceBannerSize.BANNER, IronSourceBannerPosition.BOTTOM);
+    }
     void ShowBanner()
     {
         if (unityLevelPlayComponent.showBanner)
@@ -81,10 +83,6 @@ public class UnityLevelPlaySystem : MonoBehaviour
             IronSource.Agent.destroyBanner();
             ScalableCanvas.instance.SetBottomPadding(0);
         }
-    }
-    void LoadBanner()
-    {
-        IronSource.Agent.loadBanner(IronSourceBannerSize.BANNER, IronSourceBannerPosition.BOTTOM);
     }
     #endregion
 
@@ -133,7 +131,7 @@ public class UnityLevelPlaySystem : MonoBehaviour
     }
     void ShowRewarded()
     {
-        if (IronSource.Agent.isRewardedVideoAvailable())
+        if (unityLevelPlayComponent.showRewardedVideo && IronSource.Agent.isRewardedVideoAvailable())
         {
             IronSource.Agent.showRewardedVideo();
         }
@@ -148,7 +146,7 @@ public class UnityLevelPlaySystem : MonoBehaviour
         // This replaces the RewardedVideoAvailabilityChangedEvent(true) event
         Debug.Log(logPrefix + "RewardedVideoOnAdAvailable With AdInfo " + adInfo);
 
-        if (unityLevelPlayComponent.showRewardedVideo) ShowRewarded();
+        ShowRewarded();
     }
     void RewardedVideoOnAdUnavailable()
     {
