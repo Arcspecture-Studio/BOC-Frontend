@@ -29,7 +29,7 @@ public class UnityLevelPlaySystem : MonoBehaviour
 
         unityLevelPlayComponent.showBanner = true;
         LoadRewarded();
-        unityLevelPlayComponent.showRewardedVideo = true; // testing
+        // unityLevelPlayComponent.showRewardedVideo = true; // TESTING
     }
     void OnEnable()
     {
