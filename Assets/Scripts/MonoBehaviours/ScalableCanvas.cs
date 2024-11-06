@@ -4,7 +4,7 @@ public class ScalableCanvas : MonoBehaviour
 {
     public static ScalableCanvas instance;
 
-    RectTransform rectTransform;
+    public RectTransform rectTransform;
     public const float canvasHeight = 1000; // As defined in canvas scalar with height matching
     public float canvasWidth
     {
@@ -15,10 +15,6 @@ public class ScalableCanvas : MonoBehaviour
     {
         if (instance == null) instance = this;
         else Destroy(gameObject);
-    }
-    void Start()
-    {
-        rectTransform = GetComponent<RectTransform>();
     }
 
     public void SetTopPadding(float value)
