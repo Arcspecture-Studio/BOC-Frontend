@@ -145,7 +145,20 @@ public class OrderPagesWebsocketResponseSystem : MonoBehaviour
         }
         if (orderPageComponent.resultComponent.orderInfoDataObject != null)
         {
-            orderPageComponent.resultComponent.orderInfoDataObject.transform.GetChild(4).GetComponent<TMP_Text>().text = orderPageComponent.orderStatus.ToString();
+            TMP_Text temp = orderPageComponent.resultComponent.orderInfoDataObject.transform.GetChild(4).GetComponent<TMP_Text>();
+            temp.text = orderPageComponent.orderStatus.ToString();
+            switch (orderPageComponent.orderStatus)
+            {
+                case OrderStatusEnum.UNSUBMITTED:
+                    temp.color = OrderConfig.DISPLAY_COLOR_YELLOW;
+                    break;
+                case OrderStatusEnum.SUBMITTED:
+                    temp.color = OrderConfig.DISPLAY_COLOR_CYAN;
+                    break;
+                case OrderStatusEnum.FILLED:
+                    temp.color = OrderConfig.DISPLAY_COLOR_ORANGE;
+                    break;
+            }
         }
         if (orderPageComponent.orderStatusError && !response.message.IsNullOrEmpty())
         {
