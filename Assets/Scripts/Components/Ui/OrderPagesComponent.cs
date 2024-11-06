@@ -6,6 +6,7 @@ public class OrderPagesComponent : MonoBehaviour
 {
     [Header("Reference")]
     public GameObject orderPagePrefab;
+    public RectTransform workspaceRect;
     public Transform orderPagesDeletedParent;
     public RectTransform closeTabButtonRect;
     public RectTransform undoButtonRect;
