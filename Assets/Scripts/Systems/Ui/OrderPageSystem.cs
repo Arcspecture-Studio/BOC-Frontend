@@ -306,7 +306,20 @@ public class OrderPageSystem : MonoBehaviour
         temp.text = direction;
         temp.color = directionColor;
         orderPageComponent.resultComponent.orderInfoDataObject.transform.GetChild(3).gameObject.SetActive(false);
-        orderPageComponent.resultComponent.orderInfoDataObject.transform.GetChild(4).GetComponent<TMP_Text>().text = orderPageComponent.orderStatus.ToString();
+        temp = orderPageComponent.resultComponent.orderInfoDataObject.transform.GetChild(4).GetComponent<TMP_Text>();
+        temp.text = orderPageComponent.orderStatus.ToString();
+        switch (orderPageComponent.orderStatus)
+        {
+            case OrderStatusEnum.UNSUBMITTED:
+                temp.color = OrderConfig.DISPLAY_COLOR_YELLOW;
+                break;
+            case OrderStatusEnum.SUBMITTED:
+                temp.color = OrderConfig.DISPLAY_COLOR_CYAN;
+                break;
+            case OrderStatusEnum.FILLED:
+                temp.color = OrderConfig.DISPLAY_COLOR_ORANGE;
+                break;
+        }
         orderPageComponent.resultComponent.orderInfoDataObject.transform.GetChild(5).gameObject.SetActive(false);
         #endregion
         #region Prices & Quantities
