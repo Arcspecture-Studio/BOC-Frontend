@@ -14,11 +14,13 @@ public class IoSystem : MonoBehaviour
     SettingPageComponent settingPageComponent;
     QuickTabComponent quickTabComponent;
     GetInitialDataComponent getInitialDataComponent;
-    string logPrefix = "[IoSystem] ";
     bool readTokenAdy = false;
+    string logPrefix;
 
     void Start()
     {
+        logPrefix = "[" + Application.productName + "][" + GetType().Name + "] ";
+
         ioComponent = GlobalComponent.instance.ioComponent;
         websocketComponent = GlobalComponent.instance.websocketComponent;
         loginComponent = GlobalComponent.instance.loginComponent;

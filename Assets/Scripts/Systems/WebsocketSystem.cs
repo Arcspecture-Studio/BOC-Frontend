@@ -13,10 +13,12 @@ public class WebsocketSystem : MonoBehaviour
     MiniPromptComponent miniPromptComponent;
 
     WebSocket generalSocket;
-    string logPrefix = "[WebsocketSystem] ";
+    string logPrefix;
 
     void Start()
     {
+        logPrefix = "[" + Application.productName + "][" + GetType().Name + "] ";
+
         websocketComponent = GlobalComponent.instance.websocketComponent;
         webrequestComponent = GlobalComponent.instance.webrequestComponent;
         promptComponent = GlobalComponent.instance.promptComponent;
