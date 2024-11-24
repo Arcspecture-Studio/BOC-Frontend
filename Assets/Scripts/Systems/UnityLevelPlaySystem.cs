@@ -10,7 +10,7 @@ public class UnityLevelPlaySystem : MonoBehaviour
 
     void Start()
     {
-        logPrefix = "[" + Application.productName + "][" + this.name + "] ";
+        logPrefix = "[" + Application.productName + "][" + GetType().Name + "] ";
 
         if (unityLevelPlayComponent == null) unityLevelPlayComponent = GlobalComponent.instance.unityLevelPlayComponent;
         if (!unityLevelPlayComponent.enableAds) return;

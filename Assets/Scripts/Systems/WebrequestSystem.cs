@@ -19,7 +19,7 @@ public class WebrequestSystem : MonoBehaviour
 
     void Start()
     {
-        logPrefix = "[" + Application.productName + "][" + this.name + "] ";
+        logPrefix = "[" + Application.productName + "][" + GetType().Name + "] ";
 
         webrequestComponent = GlobalComponent.instance.webrequestComponent;
         websocketComponent = GlobalComponent.instance.websocketComponent;

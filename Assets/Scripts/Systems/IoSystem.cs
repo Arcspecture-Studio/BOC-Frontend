@@ -19,7 +19,7 @@ public class IoSystem : MonoBehaviour
 
     void Start()
     {
-        logPrefix = "[" + Application.productName + "][" + this.name + "] ";
+        logPrefix = "[" + Application.productName + "][" + GetType().Name + "] ";
 
         ioComponent = GlobalComponent.instance.ioComponent;
         websocketComponent = GlobalComponent.instance.websocketComponent;
