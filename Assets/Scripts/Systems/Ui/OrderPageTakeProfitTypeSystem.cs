@@ -26,7 +26,7 @@ public class OrderPageTakeProfitTypeSystem : MonoBehaviour
             orderPageComponent.takeProfitTrailingCallbackPercentageCustomSlider.gameObject
             .SetActive(orderPageComponent.lockForEdit && value == takeOnReturnTrailingEnum);
 
-            orderPageComponent.updateTakeProfitPrice = true;
+            orderPageComponent.updateToServer = true;
         });
     }
     void ForSettingPageComponent()

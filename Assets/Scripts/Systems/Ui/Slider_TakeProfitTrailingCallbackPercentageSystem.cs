@@ -30,8 +30,8 @@ public class Slider_TakeProfitTrailingCallbackPercentageSystem : MonoBehaviour
                 break;
         }
 
-        orderPageComponent.takeProfitTrailingCallbackPercentageCustomSlider.onSliderUp.AddListener(() => orderPageComponent.updateTakeProfitPrice = true);
-        orderPageComponent.takeProfitTrailingCallbackPercentageCustomSlider.onInputSubmit.AddListener(value => orderPageComponent.updateTakeProfitPrice = true);
+        orderPageComponent.takeProfitTrailingCallbackPercentageCustomSlider.onSliderUp.AddListener(() => orderPageComponent.updateToServer = true);
+        orderPageComponent.takeProfitTrailingCallbackPercentageCustomSlider.onInputSubmit.AddListener(value => orderPageComponent.updateToServer = true);
     }
     void ForSettingPageComponent()
     {

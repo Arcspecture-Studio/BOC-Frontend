@@ -5,6 +5,6 @@ namespace General
     [Serializable]
     public class WebsocketAddTradingBotResponse : WebsocketGeneralResponse
     {
-        public WebsocketGetTradingBotResponse tradingBot;
+        public WebsocketGetTradingBotDataResponse tradingBot;
     }
 }

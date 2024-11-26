@@ -20,7 +20,6 @@ public class OrderPageSystem : MonoBehaviour
 
     bool? lockForEdit = null;
     OrderStatusEnum? orderStatus = null;
-    bool calculateButtonPressed = false;
 
     void Start()
     {
@@ -49,7 +48,6 @@ public class OrderPageSystem : MonoBehaviour
             else
             {
                 orderPageComponent.calculate = true;
-                calculateButtonPressed = true;
             }
         });
         orderPageComponent.placeOrderButton.onClick.AddListener(() =>
@@ -116,14 +114,14 @@ public class OrderPageSystem : MonoBehaviour
                 promptComponent.active = false;
             });
         });
-        orderPageComponent.riskRewardRatioInput.onSubmit.AddListener(value => orderPageComponent.updateTakeProfitPrice = true);
+        orderPageComponent.riskRewardRatioInput.onSubmit.AddListener(value => orderPageComponent.updateToServer = true);
         orderPageComponent.riskRewardMinusButton.onClick.AddListener(() =>
         {
             float rrr = float.Parse(orderPageComponent.riskRewardRatioInput.text);
             rrr -= 0.01f;
             orderPageComponent.riskRewardRatioInput.text = rrr.ToString();
 
-            orderPageComponent.updateTakeProfitPrice = true;
+            orderPageComponent.updateToServer = true;
         });
         orderPageComponent.riskRewardAddButton.onClick.AddListener(() =>
         {
@@ -131,14 +129,15 @@ public class OrderPageSystem : MonoBehaviour
             rrr += 0.01f;
             orderPageComponent.riskRewardRatioInput.text = rrr.ToString();
 
-            orderPageComponent.updateTakeProfitPrice = true;
+            orderPageComponent.updateToServer = true;
         });
 
         orderPageComponent.onChange_addToServer.AddListener(AddToServer);
         orderPageComponent.onChange_updateToServer.AddListener(UpdateToServer);
         orderPageComponent.onChange_deleteFromServer.AddListener(DeleteFromServer);
         orderPageComponent.onChange_submitToServer.AddListener(SubmitToServer);
-        orderPageComponent.onChange_updateTakeProfitPrice.AddListener(UpdateTakeProfitPrice);
+        orderPageComponent.onChange_updateTakeProfitPrice.AddListener(UpdateTakeProfitPriceUI);
+        orderPageComponent.onChange_postCalculate.AddListener(PostCalculate);
 
         orderPageComponent.orderIdText.text = "Order Id: " + orderPageComponent.orderId.ToString();
 
@@ -183,95 +182,96 @@ public class OrderPageSystem : MonoBehaviour
         orderPageComponent.lockForEdit = true;
         #endregion
 
-        if (calculateButtonPressed)
+        #region Prepare input data
+        // get input
+        string walletUnit = platformComponent.marginAssets[orderPageComponent.symbolDropdownComponent.selectedSymbol.ToUpper()];
+        float maxLossPercentage = orderPageComponent.maxLossPercentageInput.text.IsNullOrEmpty() ? float.NaN :
+            float.Parse(orderPageComponent.maxLossPercentageInput.text);
+        float amountToLoss = orderPageComponent.maxLossAmountInput.text.IsNullOrEmpty() ? float.NaN :
+            float.Parse(orderPageComponent.maxLossAmountInput.text);
+        int entryTimes = orderPageComponent.entryTimesInput.text.IsNullOrEmpty() ? 0 :
+            int.Parse(orderPageComponent.entryTimesInput.text);
+        List<float> entryPrices = new List<float>();
+        orderPageComponent.inputEntryPricesComponent.entryPriceInputs.ForEach(input =>
         {
-            #region Prepare data
-            // get input
-            string walletUnit = platformComponent.marginAssets[orderPageComponent.symbolDropdownComponent.selectedSymbol.ToUpper()];
-            float maxLossPercentage = orderPageComponent.maxLossPercentageInput.text.IsNullOrEmpty() ? float.NaN :
-                float.Parse(orderPageComponent.maxLossPercentageInput.text);
-            float amountToLoss = orderPageComponent.maxLossAmountInput.text.IsNullOrEmpty() ? float.NaN :
-                float.Parse(orderPageComponent.maxLossAmountInput.text);
-            int entryTimes = orderPageComponent.entryTimesInput.text.IsNullOrEmpty() ? 0 :
-                int.Parse(orderPageComponent.entryTimesInput.text);
-            List<float> entryPrices = new List<float>();
-            orderPageComponent.inputEntryPricesComponent.entryPriceInputs.ForEach(input =>
-            {
-                if (input.text != "") entryPrices.Add(float.Parse(input.text));
-            });
-            float stopLossPrice = orderPageComponent.stopLossInput.text.IsNullOrEmpty() ? float.NaN :
-                float.Parse(orderPageComponent.stopLossInput.text);
-            float takeProfitPrice = orderPageComponent.takeProfitInput.text.IsNullOrEmpty() ? float.NaN :
-                float.Parse(orderPageComponent.takeProfitInput.text);
-            float riskRewardRatio = orderPageComponent.riskRewardRatioInput.text.IsNullOrEmpty() ? profileComponent.activeProfile.preference.order.riskRewardRatio : float.Parse(orderPageComponent.riskRewardRatioInput.text);
+            if (input.text != "") entryPrices.Add(float.Parse(input.text));
+        });
+        float stopLossPrice = orderPageComponent.stopLossInput.text.IsNullOrEmpty() ? float.NaN :
+            float.Parse(orderPageComponent.stopLossInput.text);
+        float takeProfitPrice = orderPageComponent.takeProfitInput.text.IsNullOrEmpty() ? float.NaN :
+            float.Parse(orderPageComponent.takeProfitInput.text);
+        float riskRewardRatio = orderPageComponent.riskRewardRatioInput.text.IsNullOrEmpty() ? profileComponent.activeProfile.preference.order.riskRewardRatio : float.Parse(orderPageComponent.riskRewardRatioInput.text);
 
-            // validate input
-            if (walletUnit.IsNullOrEmpty())
+        // validate input
+        if (walletUnit.IsNullOrEmpty())
+        {
+            ShowPrompt("Wallet unit not available.");
+            yield break;
+        }
+        if (maxLossPercentage.Equals(float.NaN) && amountToLoss.Equals(float.NaN))
+        {
+            ShowPrompt("Either one of the loss percentage or loss amount must have value.");
+            yield break;
+        }
+        if (entryPrices.Count <= 0)
+        {
+            ShowPrompt("Entry price(s) cannot be empty.");
+            yield break;
+        }
+        if (stopLossPrice.Equals(float.NaN))
+        {
+            ShowPrompt("Stop loss price cannot be empty.");
+            yield break;
+        }
+        if (!((entryPrices[0] > stopLossPrice && entryPrices[^1] > stopLossPrice) || (entryPrices[0] < stopLossPrice && entryPrices[^1] < stopLossPrice)))
+        {
+            ShowPrompt("Entry price(s) and stop loss price not valid.");
+            yield break;
+        }
+        if (!takeProfitPrice.Equals(float.NaN))
+        {
+            if (!((entryPrices[0] > stopLossPrice && entryPrices[^1] > stopLossPrice && entryPrices[0] < takeProfitPrice && entryPrices[^1] < takeProfitPrice)
+              || (entryPrices[0] < stopLossPrice && entryPrices[^1] < stopLossPrice && entryPrices[0] > takeProfitPrice && entryPrices[^1] > takeProfitPrice)))
             {
-                ShowPrompt("Wallet unit not available.");
+                ShowPrompt("Entry price(s) and take profit price not valid.");
                 yield break;
             }
-            if (maxLossPercentage.Equals(float.NaN) && amountToLoss.Equals(float.NaN))
-            {
-                ShowPrompt("Either one of the loss percentage or loss amount must have value.");
-                yield break;
-            }
-            if (entryPrices.Count <= 0)
-            {
-                ShowPrompt("Entry price(s) cannot be empty.");
-                yield break;
-            }
-            if (stopLossPrice.Equals(float.NaN))
-            {
-                ShowPrompt("Stop loss price cannot be empty.");
-                yield break;
-            }
-            if (!((entryPrices[0] > stopLossPrice && entryPrices[^1] > stopLossPrice) || (entryPrices[0] < stopLossPrice && entryPrices[^1] < stopLossPrice)))
-            {
-                ShowPrompt("Entry price(s) and stop loss price not valid.");
-                yield break;
-            }
-            if (!takeProfitPrice.Equals(float.NaN))
-            {
-                if (!((entryPrices[0] > stopLossPrice && entryPrices[^1] > stopLossPrice && entryPrices[0] < takeProfitPrice && entryPrices[^1] < takeProfitPrice)
-                  || (entryPrices[0] < stopLossPrice && entryPrices[^1] < stopLossPrice && entryPrices[0] > takeProfitPrice && entryPrices[^1] > takeProfitPrice)))
-                {
-                    ShowPrompt("Entry price(s) and take profit price not valid.");
-                    yield break;
-                }
-            }
-
-            platformComponent.walletBalances = new();
-            getBalanceComponent.getBalance = true;
-            yield return new WaitUntil(() => platformComponent.walletBalances.ContainsKey(walletUnit));
-            float currentWalletBalance = platformComponent.walletBalances[walletUnit];
-
-            yield return new WaitUntil(() => platformComponent.fees.ContainsKey(orderPageComponent.symbolDropdownComponent.selectedSymbol)
-            && platformComponent.fees[orderPageComponent.symbolDropdownComponent.selectedSymbol].HasValue);
-            float feeRate = platformComponent.fees[orderPageComponent.symbolDropdownComponent.selectedSymbol].Value;
-            #endregion
-
-            #region Create calculator instance
-            orderPageComponent.marginCalculator = new CalculateMargin(
-                currentWalletBalance,
-                maxLossPercentage,
-                amountToLoss,
-                entryTimes,
-                entryPrices,
-                stopLossPrice,
-                (TakeProfitTypeEnum)orderPageComponent.takeProfitTypeDropdown.value,
-                riskRewardRatio,
-                (int)orderPageComponent.takeProfitQuantityPercentageCustomSlider.slider.value,
-                orderPageComponent.takeProfitTrailingCallbackPercentageCustomSlider.slider.value,
-                feeRate,
-                platformComponent.quantityPrecisions[orderPageComponent.symbolDropdownComponent.selectedSymbol],
-                platformComponent.pricePrecisions[orderPageComponent.symbolDropdownComponent.selectedSymbol],
-                orderPageComponent.marginDistributionModeDropdown.value == 1,
-                orderPageComponent.marginWeightDistributionValueCustomSlider.slider.value
-            );
-            #endregion
         }
 
+        platformComponent.walletBalances = new();
+        getBalanceComponent.getBalance = true;
+        yield return new WaitUntil(() => platformComponent.walletBalances.ContainsKey(walletUnit));
+        float currentWalletBalance = platformComponent.walletBalances[walletUnit];
+
+        yield return new WaitUntil(() => platformComponent.fees.ContainsKey(orderPageComponent.symbolDropdownComponent.selectedSymbol)
+        && platformComponent.fees[orderPageComponent.symbolDropdownComponent.selectedSymbol].HasValue);
+        float feeRate = platformComponent.fees[orderPageComponent.symbolDropdownComponent.selectedSymbol].Value;
+        #endregion
+
+        #region Create calculator instance
+        orderPageComponent.marginCalculatorRequest = new MarginCalculatorAdd(
+            currentWalletBalance,
+            maxLossPercentage,
+            amountToLoss,
+            entryTimes,
+            entryPrices,
+            stopLossPrice,
+            feeRate,
+            platformComponent.quantityPrecisions[orderPageComponent.symbolDropdownComponent.selectedSymbol],
+            platformComponent.pricePrecisions[orderPageComponent.symbolDropdownComponent.selectedSymbol],
+            orderPageComponent.marginDistributionModeDropdown.value == 1,
+            orderPageComponent.marginWeightDistributionValueCustomSlider.slider.value,
+            (TakeProfitTypeEnum)orderPageComponent.takeProfitTypeDropdown.value,
+            riskRewardRatio,
+            (int)orderPageComponent.takeProfitQuantityPercentageCustomSlider.slider.value,
+            orderPageComponent.takeProfitTrailingCallbackPercentageCustomSlider.slider.value
+        );
+        #endregion
+
+        orderPageComponent.addToServer = true;
+    }
+    void PostCalculate()
+    {
         #region Prepare game object for display
         orderPageComponent.resultComponent.pricesDataObjects.ForEach(obj => Destroy(obj));
         orderPageComponent.resultComponent.pricesDataObjects.Clear();
@@ -406,14 +406,6 @@ public class OrderPageSystem : MonoBehaviour
             orderPageComponent.calculateButton.interactable = true;
         }
         #endregion
-
-        #region Save order when calculate button is pressed
-        if (calculateButtonPressed)
-        {
-            calculateButtonPressed = false;
-            orderPageComponent.addToServer = true;
-        }
-        #endregion
     }
     void ShowPrompt(string message, bool goToEditMode = true)
     {
@@ -474,23 +466,29 @@ public class OrderPageSystem : MonoBehaviour
     }
     void AddToServer()
     {
-        if (orderPageComponent.marginCalculator == null) return;
+        if (orderPageComponent.marginCalculatorRequest == null) return;
         websocketComponent.generalRequests.Add(
             new General.WebsocketAddOrderRequest(
             loginComponent.token,
             orderPageComponent.orderId,
             orderPageComponent.symbolDropdownComponent.selectedSymbol,
-            orderPageComponent.marginCalculator,
+            orderPageComponent.marginCalculatorRequest,
             (OrderTypeEnum)orderPageComponent.orderTypeDropdown.value
         ));
     }
     public void UpdateToServer() // Used by order page prefab -> order type dropdown template item
     {
+        orderPageComponent.marginCalculatorRequest.UpdateMarginCalculatorFromUI(
+            orderPageComponent.takeProfitTypeDropdown.value,
+            orderPageComponent.riskRewardRatioInput.text,
+            orderPageComponent.takeProfitQuantityPercentageCustomSlider.slider.value,
+            orderPageComponent.takeProfitTrailingCallbackPercentageCustomSlider.slider.value
+        );
         websocketComponent.generalRequests.Add(
             new General.WebsocketUpdateOrderRequest(
             loginComponent.token,
             orderPageComponent.orderId,
-            orderPageComponent.marginCalculator,
+            orderPageComponent.marginCalculatorRequest.GetMarginCalculatorUpdate(),
             (OrderTypeEnum)orderPageComponent.orderTypeDropdown.value,
             orderPageComponent.tradingBotId
         ));
@@ -517,21 +515,9 @@ public class OrderPageSystem : MonoBehaviour
             orderPageComponent.quantityToClose
         ));
     }
-    void UpdateTakeProfitPrice()
+    void UpdateTakeProfitPriceUI()
     {
         #region Calculate and get latest take profit prices
-        if (orderPageComponent.takeProfitTypeDropdown.value > (int)TakeProfitTypeEnum.NONE)
-        {
-            orderPageComponent.marginCalculator.RecalculateTakeProfitPrices(
-                (TakeProfitTypeEnum)orderPageComponent.takeProfitTypeDropdown.value,
-                float.Parse(orderPageComponent.riskRewardRatioInput.text),
-                (int)orderPageComponent.takeProfitQuantityPercentageCustomSlider.slider.value,
-                orderPageComponent.takeProfitTrailingCallbackPercentageCustomSlider.slider.value);
-        }
-        else
-        {
-            orderPageComponent.marginCalculator.takeProfitType = (TakeProfitTypeEnum)orderPageComponent.takeProfitTypeDropdown.value;
-        }
         List<float> tpPrices = (TakeProfitTypeEnum)orderPageComponent.takeProfitTypeDropdown.value == TakeProfitTypeEnum.TRAILING ?
         orderPageComponent.marginCalculator.takeProfitTrailingPrices :
         orderPageComponent.marginCalculator.takeProfitPrices;
@@ -557,7 +543,5 @@ public class OrderPageSystem : MonoBehaviour
         orderPageComponent.resultComponent.balanceDataObject.transform.GetChild(4).GetComponent<TMP_Text>().text = Utils.TruncTwoDecimal(orderPageComponent.marginCalculator.balanceAfterFullWin).ToString();
         orderPageComponent.resultComponent.balanceDataObject.transform.GetChild(5).GetComponent<TMP_Text>().text = "+" + Utils.RoundTwoDecimal(Utils.RateToPercentage(orderPageComponent.marginCalculator.balanceIncrementRate)).ToString() + " %";
         #endregion
-
-        orderPageComponent.updateToServer = true;
     }
 }
