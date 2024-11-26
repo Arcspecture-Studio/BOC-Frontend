@@ -8,7 +8,7 @@ namespace General
     public class WebsocketOrderRequest : WebsocketIdRequest
     {
         public string? symbol;
-        public CalculateMargin? marginCalculator;
+        public MarginCalculatorUpdate? marginCalculator;
         public OrderTypeEnum? orderType;
         public string? tradingBotId;
 
@@ -16,7 +16,7 @@ namespace General
             string token,
             string orderId,
             string? symbol,
-            CalculateMargin? marginCalculator,
+            MarginCalculatorUpdate? marginCalculator,
             OrderTypeEnum? orderType,
             string? tradingBotId) : base(eventType, token, orderId)
         {

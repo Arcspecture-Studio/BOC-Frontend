@@ -5,7 +5,12 @@ namespace General
     [Serializable]
     public class WebsocketAddOrderResponse : WebsocketGeneralResponse
     {
-        public string id;
+        public WebsocketAddOrderDataResponse order;
+    }
+    [Serializable]
+    public class WebsocketAddOrderDataResponse : WebsocketUpdateOrderDataResponse
+    {
         public long spawnTime; // TIMESTAMP
+        public ExitOrderTypeEnum exitOrderType;
     }
 }

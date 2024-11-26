@@ -81,15 +81,15 @@ public class GetRuntimeDataSystem : MonoBehaviour
         DestroyOrders();
         DestroyQuickOrders();
         DestroyTradingBots();
-        foreach (General.WebsocketGetOrderResponse order in runtimeData.orders)
+        foreach (General.WebsocketGetOrderDataResponse order in runtimeData.orders)
         {
             spawnOrderComponent.orderToSpawn = order;
         }
-        foreach (General.WebsocketGetQuickOrderResponse quickOrder in runtimeData.quickOrders)
+        foreach (General.WebsocketGetQuickOrderDataResponse quickOrder in runtimeData.quickOrders)
         {
             spawnQuickOrderComponent.quickOrderToSpawn = quickOrder;
         }
-        foreach (General.WebsocketGetTradingBotResponse tradingBot in runtimeData.tradingBots)
+        foreach (General.WebsocketGetTradingBotDataResponse tradingBot in runtimeData.tradingBots)
         {
             spawnTradingBotComponent.botToSpawn = tradingBot;
         }

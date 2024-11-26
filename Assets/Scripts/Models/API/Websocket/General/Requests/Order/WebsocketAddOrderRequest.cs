@@ -8,7 +8,7 @@ namespace General
         public WebsocketAddOrderRequest(string token,
             string orderId,
             string symbol,
-            CalculateMargin marginCalculator,
+            MarginCalculatorAdd marginCalculator,
             OrderTypeEnum orderType) :
             base(WebsocketEventTypeEnum.ADD_ORDER, token, orderId, symbol, marginCalculator, orderType, null)
         {

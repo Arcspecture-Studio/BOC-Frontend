@@ -21,8 +21,8 @@ public class Slider_TakeProfitQuantityPercentageSystem : MonoBehaviour
         if (orderPageComponent == null) return;
         orderPageComponent.takeProfitQuantityPercentageCustomSlider.SetRangeAndPrecision(min, max);
 
-        orderPageComponent.takeProfitQuantityPercentageCustomSlider.onSliderUp.AddListener(() => orderPageComponent.updateTakeProfitPrice = true);
-        orderPageComponent.takeProfitQuantityPercentageCustomSlider.onInputSubmit.AddListener(value => orderPageComponent.updateTakeProfitPrice = true);
+        orderPageComponent.takeProfitQuantityPercentageCustomSlider.onSliderUp.AddListener(() => orderPageComponent.updateToServer = true);
+        orderPageComponent.takeProfitQuantityPercentageCustomSlider.onInputSubmit.AddListener(value => orderPageComponent.updateToServer = true);
     }
     void ForSettingPageComponent()
     {

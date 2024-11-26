@@ -21,6 +21,7 @@ public class OrderPagesWebsocketResponseSystem : MonoBehaviour
     void Update()
     {
         AddOrderToServerResponse();
+        UpdateOrderToServerResponse();
         SubmitOrderToServerResponse();
         PositionInfoUpdateResponse();
         SubmitThrottleToServerResponse();
@@ -78,22 +79,6 @@ public class OrderPagesWebsocketResponseSystem : MonoBehaviour
         if (response.exitOrderType.HasValue)
         {
             orderPageComponent.exitOrderType = response.exitOrderType.Value;
-            orderPageComponent.resultComponent.exitOrderTypeText.text = response.exitOrderType.Value.ToString();
-            switch (response.exitOrderType.Value)
-            {
-                case ExitOrderTypeEnum.NONE:
-                    orderPageComponent.resultComponent.exitOrderTypeText.color = OrderConfig.DISPLAY_COLOR_BLACK;
-                    break;
-                case ExitOrderTypeEnum.STOP_LOSS:
-                    orderPageComponent.resultComponent.exitOrderTypeText.color = OrderConfig.DISPLAY_COLOR_RED;
-                    break;
-                case ExitOrderTypeEnum.TAKE_PROFIT:
-                    orderPageComponent.resultComponent.exitOrderTypeText.color = OrderConfig.DISPLAY_COLOR_GREEN;
-                    break;
-                case ExitOrderTypeEnum.THROTTLE_STOP:
-                    orderPageComponent.resultComponent.exitOrderTypeText.color = OrderConfig.DISPLAY_COLOR_ORANGE;
-                    break;
-            }
         }
     }
     void AddOrderToServerResponse()
@@ -108,14 +93,39 @@ public class OrderPagesWebsocketResponseSystem : MonoBehaviour
         OrderPageComponent orderPageComponent = null;
         foreach (OrderPageComponent component in orderPagesComponent.childOrderPageComponents)
         {
-            if (component.orderId.Equals(response.id))
+            if (component.orderId.Equals(response.order.id))
             {
                 orderPageComponent = component;
             }
         }
         if (orderPageComponent == null) return;
 
-        orderPageComponent.resultComponent.spawnTimeText.text = DateTimeOffset.FromUnixTimeMilliseconds(response.spawnTime).ToLocalTime().ToString();
+        orderPageComponent.marginCalculator = response.order.marginCalculator;
+        orderPageComponent.postCalculate = true;
+        orderPageComponent.spawnTime = response.order.spawnTime;
+        orderPageComponent.exitOrderType = response.order.exitOrderType;
+    }
+    void UpdateOrderToServerResponse()
+    {
+        string jsonString = websocketComponent.RetrieveGeneralResponses(WebsocketEventTypeEnum.UPDATE_ORDER);
+        websocketComponent.RemovesGeneralResponses(WebsocketEventTypeEnum.UPDATE_ORDER);
+        if (jsonString.IsNullOrEmpty()) return;
+
+        General.WebsocketUpdateOrderResponse response = JsonConvert.DeserializeObject
+        <General.WebsocketUpdateOrderResponse>(jsonString, JsonSerializerConfig.settings);
+
+        OrderPageComponent orderPageComponent = null;
+        foreach (OrderPageComponent component in orderPagesComponent.childOrderPageComponents)
+        {
+            if (component.orderId.Equals(response.order.id))
+            {
+                orderPageComponent = component;
+            }
+        }
+        if (orderPageComponent == null) return;
+
+        orderPageComponent.marginCalculator = response.order.marginCalculator;
+        orderPageComponent.updateTakeProfitPrice = true;
     }
     void SubmitOrderToServerResponse()
     {

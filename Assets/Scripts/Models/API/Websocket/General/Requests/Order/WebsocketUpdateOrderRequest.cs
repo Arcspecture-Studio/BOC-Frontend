@@ -7,7 +7,7 @@ namespace General
     {
         public WebsocketUpdateOrderRequest(string token,
             string orderId,
-            CalculateMargin marginCalculator,
+            MarginCalculatorUpdate marginCalculator,
             OrderTypeEnum orderType,
             string tradingBotId) : base(WebsocketEventTypeEnum.UPDATE_ORDER, token, orderId, null, marginCalculator, orderType, tradingBotId)
         {

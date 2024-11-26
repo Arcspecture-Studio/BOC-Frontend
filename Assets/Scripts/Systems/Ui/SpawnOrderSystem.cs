@@ -18,7 +18,7 @@ public class SpawnOrderSystem : MonoBehaviour
         spawnOrderComponent.onChange_orderToSpawn.AddListener(SpawnOrder);
     }
 
-    void SpawnOrder(General.WebsocketGetOrderResponse response)
+    void SpawnOrder(General.WebsocketGetOrderDataResponse response)
     {
         GameObject orderPageObject = Instantiate(orderPagesComponent.orderPagePrefab, orderPagesComponent.transform, false);
         OrderPageComponent orderPageComponent = orderPageObject.GetComponent<OrderPageComponent>();
@@ -26,10 +26,11 @@ public class SpawnOrderSystem : MonoBehaviour
         orderPagesComponent.status = OrderPagesStatusEnum.DETACH;
         orderPagesComponent.currentPageIndex = orderPagesComponent.transform.childCount;
 
-        #region Apply data into game object
+        #region Input param
         orderPageComponent.instantiateWithData = true;
         orderPageComponent.orderId = response.id;
-        orderPageComponent.calculate = true;
+        orderPageComponent.calculateButton.interactable = false;
+        orderPageComponent.lockForEdit = true;
         orderPageComponent.orderStatus = response.status;
         orderPageComponent.orderStatusError = response.statusError;
         orderPageComponent.tradingBotId = response.tradingBotId;
@@ -37,6 +38,7 @@ public class SpawnOrderSystem : MonoBehaviour
         orderPageComponent.symbolDropdownComponent.selectedSymbol = response.symbol;
         orderPageComponent.maxLossPercentageInput.text = Utils.RoundTwoDecimal(Utils.RateToPercentage(response.marginCalculator.balanceDecrementRate)).ToString();
         orderPageComponent.maxLossAmountInput.text = Utils.RoundTwoDecimal(response.marginCalculator.amountToLoss).ToString();
+
         #region Removed all the price input objects
         for (int i = orderPageComponent.inputEntryPricesComponent.parent.childCount - 1; i >= 0; i--)
         {
@@ -45,6 +47,7 @@ public class SpawnOrderSystem : MonoBehaviour
         orderPageComponent.inputEntryPricesComponent.entryPriceInputs.Clear();
         orderPageComponent.inputEntryPricesComponent.entryPriceCloseButtons.Clear();
         #endregion
+
         #region Reinstantiate all the price input objects
         for (int i = 0; i < response.marginCalculator.entryPrices.Count; i++)
         {
@@ -54,6 +57,7 @@ public class SpawnOrderSystem : MonoBehaviour
             orderPageComponent.inputEntryPricesComponent.entryPriceInputs[i].text = Utils.RoundTwoDecimal(response.marginCalculator.entryPrices[i]).ToString();
         }
         #endregion
+
         orderPageComponent.entryTimesInput.text = response.marginCalculator.entryPrices.Count.ToString();
         orderPageComponent.stopLossInput.text = Utils.RoundTwoDecimal(response.marginCalculator.stopLossPrice).ToString();
         orderPageComponent.takeProfitTypeDropdown.value = (int)response.marginCalculator.takeProfitType;
@@ -63,30 +67,21 @@ public class SpawnOrderSystem : MonoBehaviour
         orderPageComponent.orderTypeDropdown.value = (int)response.orderType;
         orderPageComponent.marginDistributionModeDropdown.value = response.marginCalculator.weightedQuantity ? 1 : 0;
         orderPageComponent.marginWeightDistributionValueCustomSlider.SetValue(response.marginCalculator.quantityWeight);
+        #endregion
+
+        #region Result including calculator, spawn time & exit order type
         orderPageComponent.marginCalculator = response.marginCalculator;
-        orderPageComponent.resultComponent.spawnTimeText.text = DateTimeOffset.FromUnixTimeMilliseconds(response.spawnTime).ToLocalTime().ToString();
+        orderPageComponent.postCalculate = true;
+        orderPageComponent.spawnTime = response.spawnTime;
         orderPageComponent.exitOrderType = response.exitOrderType;
-        orderPageComponent.resultComponent.exitOrderTypeText.text = response.exitOrderType.ToString();
-        switch (response.exitOrderType)
-        {
-            case ExitOrderTypeEnum.NONE:
-                orderPageComponent.resultComponent.exitOrderTypeText.color = OrderConfig.DISPLAY_COLOR_BLACK;
-                break;
-            case ExitOrderTypeEnum.STOP_LOSS:
-                orderPageComponent.resultComponent.exitOrderTypeText.color = OrderConfig.DISPLAY_COLOR_RED;
-                break;
-            case ExitOrderTypeEnum.TAKE_PROFIT:
-                orderPageComponent.resultComponent.exitOrderTypeText.color = OrderConfig.DISPLAY_COLOR_GREEN;
-                break;
-            case ExitOrderTypeEnum.THROTTLE_STOP:
-                orderPageComponent.resultComponent.exitOrderTypeText.color = OrderConfig.DISPLAY_COLOR_ORANGE;
-                break;
-        }
+        #endregion
+
+        #region Position info
         orderPageComponent.positionInfoAvgEntryPriceFilledText.text = Utils.RoundNDecimal(response.averagePriceFilled, platformComponent.pricePrecisions[orderPageComponent.symbolDropdownComponent.selectedSymbol]).ToString();
         orderPageComponent.positionInfoQuantityFilledText.text = Utils.RoundNDecimal(response.quantityFilled, platformComponent.quantityPrecisions[orderPageComponent.symbolDropdownComponent.selectedSymbol]).ToString();
         orderPageComponent.positionInfoActualTakeProfitPriceText.text = Utils.RoundNDecimal(response.actualTakeProfitPrice, platformComponent.pricePrecisions[orderPageComponent.symbolDropdownComponent.selectedSymbol]).ToString();
         orderPageComponent.positionInfoPaidFundingAmount.text = response.paidFundingAmount.ToString();
-        foreach (General.WebsocketGetThrottleOrderResponse throttleOrder in response.throttleOrders)
+        foreach (General.WebsocketGetThrottleOrderDataResponse throttleOrder in response.throttleOrders)
         {
             GameObject throttleTabObject = Instantiate(orderPageComponent.throttleParentComponent.throttleTabPrefab, orderPageComponent.throttleParentComponent.transform);
             OrderPageThrottleComponent throttleComponent = throttleTabObject.GetComponent<OrderPageThrottleComponent>();
