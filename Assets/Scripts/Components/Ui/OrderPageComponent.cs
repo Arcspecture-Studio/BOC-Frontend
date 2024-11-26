@@ -165,7 +165,7 @@ public class OrderPageComponent : MonoBehaviour
     {
         set
         {
-            onChange_postCalculate.Invoke();
+            if (value) onChange_postCalculate.Invoke();
         }
     }
     [HideInInspector] public UnityEvent onChange_postCalculate = new();
