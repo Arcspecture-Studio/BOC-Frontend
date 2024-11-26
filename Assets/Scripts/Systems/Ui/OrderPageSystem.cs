@@ -3,9 +3,8 @@ using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using WebSocketSharp;
-using MongoDB.Bson;
 using DG.Tweening;
-using System;
+using MongoDB.Bson;
 
 public class OrderPageSystem : MonoBehaviour
 {
@@ -21,7 +20,7 @@ public class OrderPageSystem : MonoBehaviour
     bool? lockForEdit = null;
     OrderStatusEnum? orderStatus = null;
 
-    void Start()
+    void Awake()
     {
         orderPageComponent = GetComponent<OrderPageComponent>();
         websocketComponent = GlobalComponent.instance.websocketComponent;
@@ -32,8 +31,6 @@ public class OrderPageSystem : MonoBehaviour
         getBalanceComponent = GlobalComponent.instance.getBalanceComponent;
         closePositionPromptComponent = GlobalComponent.instance.closePositionPromptComponent;
 
-        if (orderPageComponent.orderId.IsNullOrEmpty())
-            orderPageComponent.orderId = ObjectId.GenerateNewId().ToString();
         orderPageComponent.orderIdButton.onClick.AddListener(() =>
         {
             GUIUtility.systemCopyBuffer = orderPageComponent.orderId.ToString();
@@ -139,6 +136,10 @@ public class OrderPageSystem : MonoBehaviour
         orderPageComponent.onChange_updateTakeProfitPrice.AddListener(UpdateTakeProfitPriceUI);
         orderPageComponent.onChange_postCalculate.AddListener(PostCalculate);
 
+        if (orderPageComponent.orderId.IsNullOrEmpty()) orderPageComponent.orderId = ObjectId.GenerateNewId().ToString();
+    }
+    void Start()
+    {
         orderPageComponent.orderIdText.text = "Order Id: " + orderPageComponent.orderId.ToString();
 
         RestoreFromProfilePreference();
