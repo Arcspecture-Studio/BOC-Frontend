@@ -4,31 +4,19 @@ public class Slider_TakeProfitTrailingCallbackPercentageSystem : MonoBehaviour
 {
     [SerializeField] OrderPageComponent orderPageComponent;
     [SerializeField] SettingPageComponent settingPageComponent;
-    ProfileComponent profileComponent;
-    PlatformComponent platformComponent;
 
-    void Start()
+    void Awake()
     {
-        profileComponent = GlobalComponent.instance.profileComponent;
-        platformComponent = GlobalComponent.instance.platformComponent;
-
         ForOrderPageComponent();
         ForSettingPageComponent();
     }
     void ForOrderPageComponent()
     {
         if (orderPageComponent == null) return;
-
-        switch (platformComponent.activePlatform)
-        {
-            case PlatformEnum.BINANCE:
-            case PlatformEnum.BINANCE_TESTNET:
-                orderPageComponent.takeProfitTrailingCallbackPercentageCustomSlider.SetRangeAndPrecision(
-                    BinanceConfig.TRAILING_MIN_PERCENTAGE,
-                    BinanceConfig.TRAILING_MAX_PERCENTAGE
-                );
-                break;
-        }
+        orderPageComponent.takeProfitTrailingCallbackPercentageCustomSlider.SetRangeAndPrecision(
+            OrderConfig.TRAILING_MIN_PERCENTAGE,
+            OrderConfig.TRAILING_MAX_PERCENTAGE
+        );
 
         orderPageComponent.takeProfitTrailingCallbackPercentageCustomSlider.onSliderUp.AddListener(() => orderPageComponent.updateToServer = true);
         orderPageComponent.takeProfitTrailingCallbackPercentageCustomSlider.onInputSubmit.AddListener(value => orderPageComponent.updateToServer = true);
@@ -36,25 +24,18 @@ public class Slider_TakeProfitTrailingCallbackPercentageSystem : MonoBehaviour
     void ForSettingPageComponent()
     {
         if (settingPageComponent == null) return;
-
-        switch (platformComponent.activePlatform)
-        {
-            case PlatformEnum.BINANCE:
-            case PlatformEnum.BINANCE_TESTNET:
-                settingPageComponent.takeProfitTrailingCallbackPercentageCustomSlider.SetRangeAndPrecision(
-                    BinanceConfig.TRAILING_MIN_PERCENTAGE,
-                    BinanceConfig.TRAILING_MAX_PERCENTAGE
-                );
-                break;
-        }
+        settingPageComponent.takeProfitTrailingCallbackPercentageCustomSlider.SetRangeAndPrecision(
+            OrderConfig.TRAILING_MIN_PERCENTAGE,
+            OrderConfig.TRAILING_MAX_PERCENTAGE
+        );
 
         settingPageComponent.takeProfitTrailingCallbackPercentageCustomSlider.onSliderMove.AddListener(value =>
-        profileComponent.activeProfile.preference.order.takeProfitTrailingCallbackPercentage = value);
+        GlobalComponent.instance.profileComponent.activeProfile.preference.order.takeProfitTrailingCallbackPercentage = value);
         settingPageComponent.takeProfitTrailingCallbackPercentageCustomSlider.onSliderUp.AddListener(() =>
         settingPageComponent.updatePreferenceToServer = true);
         settingPageComponent.takeProfitTrailingCallbackPercentageCustomSlider.onInputSubmit.AddListener(value =>
         {
-            profileComponent.activeProfile.preference.order.takeProfitTrailingCallbackPercentage = value;
+            GlobalComponent.instance.profileComponent.activeProfile.preference.order.takeProfitTrailingCallbackPercentage = value;
             settingPageComponent.updatePreferenceToServer = true;
         });
     }

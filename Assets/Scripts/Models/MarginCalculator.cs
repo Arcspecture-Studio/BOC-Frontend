@@ -15,6 +15,18 @@ public class MarginCalculatorUpdate
         this.takeProfitQuantityPercentage = takeProfitQuantityPercentage;
         this.takeProfitTrailingCallbackPercentage = takeProfitTrailingCallbackPercentage;
     }
+
+    public MarginCalculatorUpdate GetMarginCalculatorUpdate()
+    {
+        return new MarginCalculatorUpdate(takeProfitType, riskRewardRatio, takeProfitQuantityPercentage, takeProfitTrailingCallbackPercentage);
+    }
+    public void UpdateMarginCalculatorFromUI(int takeProfitType, string riskRewardRatio, float takeProfitQuantityPercentage, float takeProfitTrailingCallbackPercentage)
+    {
+        this.takeProfitType = (TakeProfitTypeEnum)takeProfitType;
+        this.riskRewardRatio = float.Parse(riskRewardRatio);
+        this.takeProfitQuantityPercentage = (int)takeProfitQuantityPercentage;
+        this.takeProfitTrailingCallbackPercentage = takeProfitTrailingCallbackPercentage;
+    }
 }
 public class MarginCalculatorConfig : MarginCalculatorUpdate
 {
@@ -64,18 +76,6 @@ public class MarginCalculatorAdd : MarginCalculatorConfig
     {
         this.maxLossPercentage = maxLossPercentage;
     }
-
-    public MarginCalculatorUpdate GetMarginCalculatorUpdate()
-    {
-        return new MarginCalculatorUpdate(takeProfitType, riskRewardRatio, takeProfitQuantityPercentage, takeProfitTrailingCallbackPercentage);
-    }
-    public void UpdateMarginCalculatorFromUI(int takeProfitType, string riskRewardRatio, float takeProfitQuantityPercentage, float takeProfitTrailingCallbackPercentage)
-    {
-        this.takeProfitType = (TakeProfitTypeEnum)takeProfitType;
-        this.riskRewardRatio = float.Parse(riskRewardRatio);
-        this.takeProfitQuantityPercentage = (int)takeProfitQuantityPercentage;
-        this.takeProfitTrailingCallbackPercentage = takeProfitTrailingCallbackPercentage;
-    }
 }
 public class MarginCalculator : MarginCalculatorConfig
 {
@@ -110,5 +110,26 @@ public class MarginCalculator : MarginCalculatorConfig
         pricePrecision, weightedQuantity, quantityWeight, takeProfitType, riskRewardRatio,
         takeProfitQuantityPercentage, takeProfitTrailingCallbackPercentage)
     {
+    }
+
+    public MarginCalculatorAdd GetMarginCalculatorAdd()
+    {
+        return new MarginCalculatorAdd(
+            balance,
+            Utils.RateToPercentage(amountToLoss / balance),
+            amountToLoss,
+            entryTimes,
+            entryPrices,
+            stopLossPrice,
+            feeRate,
+            quantityPrecision,
+            pricePrecision,
+            weightedQuantity,
+            quantityWeight,
+            takeProfitType,
+            riskRewardRatio,
+            takeProfitQuantityPercentage,
+            takeProfitTrailingCallbackPercentage
+        );
     }
 }
