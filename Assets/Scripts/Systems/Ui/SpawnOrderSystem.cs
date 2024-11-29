@@ -80,6 +80,8 @@ public class SpawnOrderSystem : MonoBehaviour
         orderPageComponent.positionInfoAvgEntryPriceFilledText.text = Utils.RoundNDecimal(response.averagePriceFilled, platformComponent.pricePrecisions[orderPageComponent.symbolDropdownComponent.selectedSymbol]).ToString();
         orderPageComponent.positionInfoQuantityFilledText.text = Utils.RoundNDecimal(response.quantityFilled, platformComponent.quantityPrecisions[orderPageComponent.symbolDropdownComponent.selectedSymbol]).ToString();
         orderPageComponent.positionInfoActualTakeProfitPriceText.text = Utils.RoundNDecimal(response.actualTakeProfitPrice, platformComponent.pricePrecisions[orderPageComponent.symbolDropdownComponent.selectedSymbol]).ToString();
+        orderPageComponent.positionInfoActualStopLossPriceText.text = Utils.RoundNDecimal(response.actualStopLossPrice, platformComponent.pricePrecisions[orderPageComponent.symbolDropdownComponent.selectedSymbol]).ToString();
+        orderPageComponent.positionInfoActualBreakEvenPriceText.text = Utils.RoundNDecimal(response.actualBreakEvenPrice, platformComponent.pricePrecisions[orderPageComponent.symbolDropdownComponent.selectedSymbol]).ToString();
         orderPageComponent.positionInfoPaidFundingAmount.text = response.paidFundingAmount.ToString();
         foreach (General.WebsocketGetThrottleOrderDataResponse throttleOrder in response.throttleOrders)
         {

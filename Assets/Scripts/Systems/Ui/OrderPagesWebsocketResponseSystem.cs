@@ -55,16 +55,29 @@ public class OrderPagesWebsocketResponseSystem : MonoBehaviour
         {
             orderPageComponent.positionInfoQuantityFilledText.text = Utils.RoundNDecimal(response.quantityFilled.Value, platformComponent.quantityPrecisions[orderPageComponent.symbolDropdownComponent.selectedSymbol]).ToString();
         }
-        if (response.actualTakeProfitPrice.HasValue && platformComponent.pricePrecisions.ContainsKey(orderPageComponent.symbolDropdownComponent.selectedSymbol))
+        if (platformComponent.pricePrecisions.ContainsKey(orderPageComponent.symbolDropdownComponent.selectedSymbol))
         {
-            orderPageComponent.positionInfoActualTakeProfitPriceText.text = Utils.RoundNDecimal(response.actualTakeProfitPrice.Value, platformComponent.pricePrecisions[orderPageComponent.symbolDropdownComponent.selectedSymbol]).ToString();
+            int pricePrecision = platformComponent.pricePrecisions[orderPageComponent.symbolDropdownComponent.selectedSymbol];
 
-            if (response.actualTakeProfitPrice.Value < 0)
+            if (response.actualTakeProfitPrice.HasValue)
             {
-                promptComponent.ShowPrompt(PromptConstant.NOTICE, PromptConstant.TAKE_PROFIT_QUANTITY_INVALID, () =>
+                orderPageComponent.positionInfoActualTakeProfitPriceText.text = Utils.RoundNDecimal(response.actualTakeProfitPrice.Value, pricePrecision).ToString();
+
+                if (response.actualTakeProfitPrice.Value < 0)
                 {
-                    promptComponent.active = false;
-                });
+                    promptComponent.ShowPrompt(PromptConstant.NOTICE, PromptConstant.TAKE_PROFIT_QUANTITY_INVALID, () =>
+                    {
+                        promptComponent.active = false;
+                    });
+                }
+            }
+            if (response.actualStopLossPrice.HasValue)
+            {
+                orderPageComponent.positionInfoActualStopLossPriceText.text = Utils.RoundNDecimal(response.actualStopLossPrice.Value, pricePrecision).ToString();
+            }
+            if (response.actualBreakEvenPrice.HasValue)
+            {
+                orderPageComponent.positionInfoActualBreakEvenPriceText.text = Utils.RoundNDecimal(response.actualBreakEvenPrice.Value, pricePrecision).ToString();
             }
         }
         if (response.paidFundingAmount.HasValue)
