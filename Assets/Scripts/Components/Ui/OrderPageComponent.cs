@@ -77,7 +77,22 @@ public class OrderPageComponent : MonoBehaviour
     }
     [HideInInspector] public UnityEvent onChange_submitToServer = new();
     public MarginCalculator marginCalculator; // Server side data
-    public MarginCalculatorAdd marginCalculatorRequest; // Used to send to server
+    private MarginCalculatorAdd _marginCalculatorRequest; // Used to send to server
+    public MarginCalculatorAdd marginCalculatorRequest
+    {
+        get
+        {
+            if (_marginCalculatorRequest == null && marginCalculator != null)
+            {
+                _marginCalculatorRequest = marginCalculator.GetMarginCalculatorAdd();
+            }
+            return _marginCalculatorRequest;
+        }
+        set
+        {
+            _marginCalculatorRequest = value;
+        }
+    }
     public bool lockForEdit;
     public string orderId;
     [SerializeField] private OrderStatusEnum _orderStatus = OrderStatusEnum.UNSUBMITTED;
