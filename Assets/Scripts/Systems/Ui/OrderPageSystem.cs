@@ -372,7 +372,9 @@ public class OrderPageSystem : MonoBehaviour
         temp.text = Utils.RoundTwoDecimal(orderPageComponent.marginCalculator.stopLossPercentage).ToString() + "%";
         temp.color = OrderConfig.DISPLAY_COLOR_RED;
         temp = orderPageComponent.resultComponent.totalWinLossAmountDataObject.transform.GetChild(2).GetComponent<TMP_Text>();
-        temp.text = Utils.RoundTwoDecimal(orderPageComponent.marginCalculator.totalLossAmount).ToString();
+        string totalLossAmount = Utils.RoundTwoDecimal(orderPageComponent.marginCalculator.totalLossAmount).ToString();
+        string lossAmountPerPercentage = Utils.RoundTwoDecimal(orderPageComponent.marginCalculator.totalLossAmount / orderPageComponent.marginCalculator.stopLossPercentage).ToString();
+        temp.text = totalLossAmount + " (" + lossAmountPerPercentage + "/1%)";
         temp.color = OrderConfig.DISPLAY_COLOR_RED;
         temp = orderPageComponent.resultComponent.totalWinLossAmountDataObject.transform.GetChild(3).GetComponent<TMP_Text>();
         temp.text = "Fee: " + Utils.RoundNDecimal(orderPageComponent.marginCalculator.totalFee, 6).ToString();
