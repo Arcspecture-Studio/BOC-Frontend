@@ -9,7 +9,9 @@ namespace General
             string orderId,
             MarginCalculatorUpdate marginCalculator,
             OrderTypeEnum orderType,
-            string tradingBotId) : base(WebsocketEventTypeEnum.UPDATE_ORDER, token, orderId, null, marginCalculator, orderType, tradingBotId)
+            FundingFeeHandlerEnum fundingFeeHandler,
+            string tradingBotId) : base(WebsocketEventTypeEnum.UPDATE_ORDER, token, orderId,
+            null, marginCalculator, orderType, fundingFeeHandler, tradingBotId)
         {
         }
     }

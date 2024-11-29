@@ -86,6 +86,11 @@ public class SettingPagePreferenceSystem : MonoBehaviour
             profileComponent.activeProfile.preference.order.orderType = (OrderTypeEnum)value;
             settingPageComponent.updatePreferenceToServer = true;
         });
+        settingPageComponent.fundingFeeHandlerDropdown.onValueChanged.AddListener(value =>
+        {
+            profileComponent.activeProfile.preference.order.fundingFeeHandler = (FundingFeeHandlerEnum)value;
+            settingPageComponent.updatePreferenceToServer = true;
+        });
     }
     void UpdatePreferenceToServer()
     {
@@ -112,6 +117,7 @@ public class SettingPagePreferenceSystem : MonoBehaviour
         settingPageComponent.takeProfitQuantityPercentageCustomSlider.SetValue(preferenceOrder.takeProfitQuantityPercentage);
         settingPageComponent.takeProfitTrailingCallbackPercentageCustomSlider.SetValue(preferenceOrder.takeProfitTrailingCallbackPercentage);
         settingPageComponent.orderTypeDropdown.value = (int)preferenceOrder.orderType;
+        settingPageComponent.fundingFeeHandlerDropdown.value = (int)preferenceOrder.fundingFeeHandler;
 
         updatingUIFromProfile = false;
     }

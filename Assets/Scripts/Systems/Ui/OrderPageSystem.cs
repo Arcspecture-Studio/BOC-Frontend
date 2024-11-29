@@ -172,6 +172,7 @@ public class OrderPageSystem : MonoBehaviour
         orderPageComponent.takeProfitQuantityPercentageCustomSlider.SetValue(preference.order.takeProfitQuantityPercentage);
         orderPageComponent.takeProfitTrailingCallbackPercentageCustomSlider.SetValue(preference.order.takeProfitTrailingCallbackPercentage);
         orderPageComponent.orderTypeDropdown.value = (int)preference.order.orderType;
+        orderPageComponent.fundingFeeHandlerDropdown.value = (int)preference.order.fundingFeeHandler;
     }
     IEnumerator CalculateMargin()
     {
@@ -474,7 +475,8 @@ public class OrderPageSystem : MonoBehaviour
             orderPageComponent.orderId,
             orderPageComponent.symbolDropdownComponent.selectedSymbol,
             orderPageComponent.marginCalculatorRequest,
-            (OrderTypeEnum)orderPageComponent.orderTypeDropdown.value
+            (OrderTypeEnum)orderPageComponent.orderTypeDropdown.value,
+            (FundingFeeHandlerEnum)orderPageComponent.fundingFeeHandlerDropdown.value
         ));
     }
     public void UpdateToServer() // Used by order page prefab -> order type dropdown template item
@@ -491,6 +493,7 @@ public class OrderPageSystem : MonoBehaviour
             orderPageComponent.orderId,
             orderPageComponent.marginCalculatorRequest.GetMarginCalculatorUpdate(),
             (OrderTypeEnum)orderPageComponent.orderTypeDropdown.value,
+            (FundingFeeHandlerEnum)orderPageComponent.fundingFeeHandlerDropdown.value,
             orderPageComponent.tradingBotId
         ));
     }

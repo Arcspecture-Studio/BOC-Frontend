@@ -36,6 +36,7 @@ public class OrderPageComponent : MonoBehaviour
     public CustomSlider takeProfitTrailingCallbackPercentageCustomSlider;
     public GameObject orderTypeObject;
     public TMP_Dropdown orderTypeDropdown;
+    public TMP_Dropdown fundingFeeHandlerDropdown;
     public GameObject applyButtonObject;
     public Button placeOrderButton;
     public Button cancelOrderButton;
@@ -45,6 +46,8 @@ public class OrderPageComponent : MonoBehaviour
     public GameObject positionInfoObject;
     public TMP_Text positionInfoAvgEntryPriceFilledText;
     public TMP_Text positionInfoActualTakeProfitPriceText;
+    public TMP_Text positionInfoActualStopLossPriceText;
+    public TMP_Text positionInfoActualBreakEvenPriceText;
     public TMP_Text positionInfoQuantityFilledText;
     public TMP_Text positionInfoPaidFundingAmount;
     public GameObject positionInfoBotInChargeObject;

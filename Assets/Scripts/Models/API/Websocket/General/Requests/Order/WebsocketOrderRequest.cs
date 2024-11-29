@@ -10,6 +10,7 @@ namespace General
         public string? symbol;
         public MarginCalculatorUpdate? marginCalculator;
         public OrderTypeEnum? orderType;
+        public FundingFeeHandlerEnum? fundingFeeHandler;
         public string? tradingBotId;
 
         public WebsocketOrderRequest(WebsocketEventTypeEnum eventType,
@@ -18,11 +19,13 @@ namespace General
             string? symbol,
             MarginCalculatorUpdate? marginCalculator,
             OrderTypeEnum? orderType,
+            FundingFeeHandlerEnum? fundingFeeHandler,
             string? tradingBotId) : base(eventType, token, orderId)
         {
             this.symbol = symbol;
             this.marginCalculator = marginCalculator;
             this.orderType = orderType;
+            this.fundingFeeHandler = fundingFeeHandler;
             this.tradingBotId = tradingBotId;
         }
     }

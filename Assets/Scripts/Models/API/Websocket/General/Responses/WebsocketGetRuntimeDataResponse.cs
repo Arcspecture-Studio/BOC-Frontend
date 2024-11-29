@@ -18,9 +18,12 @@ namespace General
         public string tradingBotId;
         public string symbol;
         public OrderTypeEnum orderType;
+        public FundingFeeHandlerEnum fundingFeeHandler;
         public float quantityFilled;
         public float averagePriceFilled;
         public float actualTakeProfitPrice;
+        public float actualStopLossPrice;
+        public float actualBreakEvenPrice;
         public float paidFundingAmount;
         public List<WebsocketGetThrottleOrderDataResponse> throttleOrders;
     }
