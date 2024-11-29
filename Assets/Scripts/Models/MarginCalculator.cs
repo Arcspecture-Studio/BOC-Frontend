@@ -88,6 +88,7 @@ public class MarginCalculator : MarginCalculatorConfig
     public List<float> stopLossAmounts;
     public List<float> fees;
     public float totalLossAmount;
+    public float lossAmountPerPercentage;
     public float totalFee;
     public float balanceDecrementRate;
     public float balanceAfterLoss;
