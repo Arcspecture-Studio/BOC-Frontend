@@ -20,6 +20,7 @@ public class PreferenceOrder
     public float takeProfitQuantityPercentage;
     public float takeProfitTrailingCallbackPercentage;
     public OrderTypeEnum orderType;
+    public FundingFeeHandlerEnum fundingFeeHandler;
 }
 [Serializable]
 public class PreferenceQuickOrder

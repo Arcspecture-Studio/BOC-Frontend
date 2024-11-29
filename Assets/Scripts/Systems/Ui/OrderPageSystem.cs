@@ -172,6 +172,7 @@ public class OrderPageSystem : MonoBehaviour
         orderPageComponent.takeProfitQuantityPercentageCustomSlider.SetValue(preference.order.takeProfitQuantityPercentage);
         orderPageComponent.takeProfitTrailingCallbackPercentageCustomSlider.SetValue(preference.order.takeProfitTrailingCallbackPercentage);
         orderPageComponent.orderTypeDropdown.value = (int)preference.order.orderType;
+        orderPageComponent.fundingFeeHandlerDropdown.value = (int)preference.order.fundingFeeHandler;
     }
     IEnumerator CalculateMargin()
     {

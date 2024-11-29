@@ -36,6 +36,7 @@ public class OrderPageComponent : MonoBehaviour
     public CustomSlider takeProfitTrailingCallbackPercentageCustomSlider;
     public GameObject orderTypeObject;
     public TMP_Dropdown orderTypeDropdown;
+    public TMP_Dropdown fundingFeeHandlerDropdown;
     public GameObject applyButtonObject;
     public Button placeOrderButton;
     public Button cancelOrderButton;

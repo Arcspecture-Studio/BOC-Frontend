@@ -112,6 +112,10 @@ public class QuickOrderDataRowSystem : MonoBehaviour
         GameObject orderType = Instantiate(quickOrderDataRowComponent.infoPanelData, quickOrderDataRowComponent.infoPanelContent);
         TMP_Text orderTypeText = orderType.GetComponent<TMP_Text>();
         orderTypeText.text = "Order Type: " + quickOrderDataRowComponent.setting.order.orderType.ToString();
+
+        GameObject fundingFeeHandler = Instantiate(quickOrderDataRowComponent.infoPanelData, quickOrderDataRowComponent.infoPanelContent);
+        TMP_Text fundingFeeHandlerText = fundingFeeHandler.GetComponent<TMP_Text>();
+        fundingFeeHandlerText.text = "Order Type: " + quickOrderDataRowComponent.setting.order.fundingFeeHandler.ToString();
         #endregion
 
         #region Quick Order

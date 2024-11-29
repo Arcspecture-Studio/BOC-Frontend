@@ -113,6 +113,10 @@ public class BotDataRowSystem : MonoBehaviour
         GameObject orderType = Instantiate(botDataRowComponent.infoPanelData, botDataRowComponent.infoPanelContent);
         TMP_Text orderTypeText = orderType.GetComponent<TMP_Text>();
         orderTypeText.text = "Order Type: " + botDataRowComponent.setting.order.orderType.ToString();
+
+        GameObject fundingFeeHandler = Instantiate(botDataRowComponent.infoPanelData, botDataRowComponent.infoPanelContent);
+        TMP_Text fundingFeeHandlerText = fundingFeeHandler.GetComponent<TMP_Text>();
+        fundingFeeHandlerText.text = "Order Type: " + botDataRowComponent.setting.order.fundingFeeHandler.ToString();
         #endregion
 
         #region Quick Order
