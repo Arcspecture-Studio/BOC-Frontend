@@ -128,7 +128,10 @@ public class OrderPageSystem : MonoBehaviour
 
             orderPageComponent.updateToServer = true;
         });
-
+        orderPageComponent.orderTypeDropdown.onValueChanged.AddListener(value =>
+        orderPageComponent.updateToServer = true);
+        orderPageComponent.fundingFeeHandlerDropdown.onValueChanged.AddListener(value =>
+        orderPageComponent.updateToServer = true);
         orderPageComponent.onChange_addToServer.AddListener(AddToServer);
         orderPageComponent.onChange_updateToServer.AddListener(UpdateToServer);
         orderPageComponent.onChange_deleteFromServer.AddListener(DeleteFromServer);
@@ -457,6 +460,7 @@ public class OrderPageSystem : MonoBehaviour
         orderPageComponent.takeProfitQuantityPercentageCustomSlider.gameObject.SetActive(orderPageComponent.lockForEdit && orderPageComponent.takeProfitTypeDropdown.value > (int)TakeProfitTypeEnum.NONE);
         orderPageComponent.takeProfitTrailingCallbackPercentageCustomSlider.gameObject.SetActive(orderPageComponent.lockForEdit && orderPageComponent.takeProfitTypeDropdown.value == (int)TakeProfitTypeEnum.TRAILING);
         orderPageComponent.orderTypeObject.SetActive(lockForEdit.Value);
+        orderPageComponent.fundingFeeHandlerObject.SetActive(lockForEdit.Value);
         orderPageComponent.applyButtonObject.SetActive(lockForEdit.Value);
     }
     void UpdateUiInteractableStatusBasedOnOrderStatus()
@@ -464,7 +468,7 @@ public class OrderPageSystem : MonoBehaviour
         if (orderStatus == orderPageComponent.orderStatus) return;
         orderStatus = orderPageComponent.orderStatus;
         bool isFilled = orderStatus.Equals(OrderStatusEnum.FILLED);
-        orderPageComponent.positionInfoObject.SetActive(isFilled);
+        orderPageComponent.positionInfoObject.SetActive(orderPageComponent.lockForEdit && (isFilled || orderPageComponent.exitOrderType > ExitOrderTypeEnum.NONE));
         orderPageComponent.throttleObject.SetActive(isFilled);
         if (orderStatus != OrderStatusEnum.FILLED) orderPageComponent.positionInfoPaidFundingAmount.text = "0";
     }
@@ -481,8 +485,9 @@ public class OrderPageSystem : MonoBehaviour
             (FundingFeeHandlerEnum)orderPageComponent.fundingFeeHandlerDropdown.value
         ));
     }
-    public void UpdateToServer() // Used by order page prefab -> order type dropdown template item
+    public void UpdateToServer()
     {
+        if (orderPageComponent.marginCalculatorRequest == null) return; // marginCalculator is null (orderTypeDropdown & fundingFeeHandlerDropdown will invoke this method during order spawn, but since marginCalculator is null during spawn, so this method will be skipped)
         orderPageComponent.marginCalculatorRequest.UpdateMarginCalculatorFromUI(
             orderPageComponent.takeProfitTypeDropdown.value,
             orderPageComponent.riskRewardRatioInput.text,
