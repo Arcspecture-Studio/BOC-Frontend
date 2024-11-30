@@ -11,6 +11,7 @@ public class InitializeDropdown_FundingFeeHandlerSystem : MonoBehaviour
 
         dropdown.ClearOptions();
         List<string> array = new() {
+            FundingFeeHandlerEnum.ADJUST_BOTH.ToString(),
             FundingFeeHandlerEnum.ADJUST_STOP_LOSS.ToString(),
             FundingFeeHandlerEnum.ADJUST_TAKE_PROFIT.ToString(),
             FundingFeeHandlerEnum.DO_NOTHING.ToString()
