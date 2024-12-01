@@ -456,12 +456,13 @@ public class OrderPageSystem : MonoBehaviour
         orderPageComponent.cancelErrorOrderButton.interactable = lockForEdit.Value;
         orderPageComponent.resultComponent.gameObject.SetActive(lockForEdit.Value);
         orderPageComponent.takeProfitTypeObject.SetActive(lockForEdit.Value);
-        orderPageComponent.riskRewardRatioObject.SetActive(orderPageComponent.lockForEdit && orderPageComponent.takeProfitTypeDropdown.value > (int)TakeProfitTypeEnum.NONE);
-        orderPageComponent.takeProfitQuantityPercentageCustomSlider.gameObject.SetActive(orderPageComponent.lockForEdit && orderPageComponent.takeProfitTypeDropdown.value > (int)TakeProfitTypeEnum.NONE);
-        orderPageComponent.takeProfitTrailingCallbackPercentageCustomSlider.gameObject.SetActive(orderPageComponent.lockForEdit && orderPageComponent.takeProfitTypeDropdown.value == (int)TakeProfitTypeEnum.TRAILING);
+        orderPageComponent.riskRewardRatioObject.SetActive(lockForEdit.Value && orderPageComponent.takeProfitTypeDropdown.value > (int)TakeProfitTypeEnum.NONE);
+        orderPageComponent.takeProfitQuantityPercentageCustomSlider.gameObject.SetActive(lockForEdit.Value && orderPageComponent.takeProfitTypeDropdown.value > (int)TakeProfitTypeEnum.NONE);
+        orderPageComponent.takeProfitTrailingCallbackPercentageCustomSlider.gameObject.SetActive(lockForEdit.Value && orderPageComponent.takeProfitTypeDropdown.value == (int)TakeProfitTypeEnum.TRAILING);
         orderPageComponent.orderTypeObject.SetActive(lockForEdit.Value);
         orderPageComponent.fundingFeeHandlerObject.SetActive(lockForEdit.Value);
         orderPageComponent.applyButtonObject.SetActive(lockForEdit.Value);
+        orderPageComponent.positionInfoObject.SetActive(lockForEdit.Value && orderPageComponent.exitOrderType > ExitOrderTypeEnum.NONE);
     }
     void UpdateUiInteractableStatusBasedOnOrderStatus()
     {
