@@ -155,7 +155,7 @@ public class OrderPageComponent : MonoBehaviour
             return _spawnTime;
         }
     }
-    [SerializeField] private ExitOrderTypeEnum _exitOrderType;
+    [SerializeField] private ExitOrderTypeEnum _exitOrderType = ExitOrderTypeEnum.NONE;
     public ExitOrderTypeEnum exitOrderType
     {
         set

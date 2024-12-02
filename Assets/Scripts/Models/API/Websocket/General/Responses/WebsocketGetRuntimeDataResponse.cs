@@ -29,6 +29,7 @@ namespace General
         public float actualBreakEvenPercentage;
         public float paidFundingAmount;
         public List<WebsocketGetThrottleOrderDataResponse> throttleOrders;
+        public ExitOrderTypeEnum exitOrderType;
     }
     [Serializable]
     public class WebsocketGetThrottleOrderDataResponse

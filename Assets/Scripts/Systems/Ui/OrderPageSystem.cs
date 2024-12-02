@@ -182,9 +182,10 @@ public class OrderPageSystem : MonoBehaviour
         if (!orderPageComponent.calculate) yield break;
         orderPageComponent.calculate = false;
 
-        #region Update button
+        #region Update button & UI
         orderPageComponent.calculateButton.interactable = false;
         orderPageComponent.lockForEdit = true;
+        orderPageComponent.exitOrderType = ExitOrderTypeEnum.NONE;
         #endregion
 
         #region Prepare input data

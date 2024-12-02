@@ -94,7 +94,7 @@ public class SpawnOrderSystem : MonoBehaviour
         else
         {
             orderPageComponent.positionInfoActualTakeProfitPriceText.text = Utils.RoundNDecimal(response.actualTakeProfitPrice, platformComponent.pricePrecisions[orderPageComponent.symbolDropdownComponent.selectedSymbol]).ToString();
-            orderPageComponent.positionInfoActualTakeProfitPercentageText.text = Utils.RoundTwoDecimal(response.actualTakeProfitPercentage).ToString();
+            orderPageComponent.positionInfoActualTakeProfitPercentageText.text = Utils.RoundTwoDecimal(response.actualTakeProfitPercentage).ToString() + "%";
         }
         if (response.actualStopLossPrice < 0)
         {
@@ -104,7 +104,7 @@ public class SpawnOrderSystem : MonoBehaviour
         else
         {
             orderPageComponent.positionInfoActualStopLossPriceText.text = Utils.RoundNDecimal(response.actualStopLossPrice, platformComponent.pricePrecisions[orderPageComponent.symbolDropdownComponent.selectedSymbol]).ToString();
-            orderPageComponent.positionInfoActualStopLossPercentageText.text = Utils.RoundTwoDecimal(response.actualStopLossPercentage).ToString();
+            orderPageComponent.positionInfoActualStopLossPercentageText.text = Utils.RoundTwoDecimal(response.actualStopLossPercentage).ToString() + "%";
         }
         if (response.actualBreakEvenPrice < 0)
         {
@@ -114,7 +114,7 @@ public class SpawnOrderSystem : MonoBehaviour
         else
         {
             orderPageComponent.positionInfoActualBreakEvenPriceText.text = Utils.RoundNDecimal(response.actualBreakEvenPrice, platformComponent.pricePrecisions[orderPageComponent.symbolDropdownComponent.selectedSymbol]).ToString();
-            orderPageComponent.positionInfoActualBreakEvenPercentageText.text = Utils.RoundTwoDecimal(response.actualBreakEvenPercentage).ToString();
+            orderPageComponent.positionInfoActualBreakEvenPercentageText.text = Utils.RoundTwoDecimal(response.actualBreakEvenPercentage).ToString() + "%";
         }
         orderPageComponent.positionInfoPaidFundingAmount.text = response.paidFundingAmount.ToString();
         foreach (General.WebsocketGetThrottleOrderDataResponse throttleOrder in response.throttleOrders)
