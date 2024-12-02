@@ -1,4 +1,3 @@
-using System;
 using Newtonsoft.Json;
 using TMPro;
 using UnityEngine;
@@ -61,23 +60,52 @@ public class OrderPagesWebsocketResponseSystem : MonoBehaviour
 
             if (response.actualTakeProfitPrice.HasValue)
             {
-                orderPageComponent.positionInfoActualTakeProfitPriceText.text = Utils.RoundNDecimal(response.actualTakeProfitPrice.Value, pricePrecision).ToString();
-
                 if (response.actualTakeProfitPrice.Value < 0)
                 {
+                    orderPageComponent.positionInfoActualTakeProfitPriceText.text = "-";
+                    orderPageComponent.positionInfoActualTakeProfitPercentageText.text = "";
+
                     promptComponent.ShowPrompt(PromptConstant.NOTICE, PromptConstant.TAKE_PROFIT_QUANTITY_INVALID, () =>
                     {
                         promptComponent.active = false;
                     });
                 }
+                else
+                {
+                    orderPageComponent.positionInfoActualTakeProfitPriceText.text = Utils.RoundNDecimal(response.actualTakeProfitPrice.Value, pricePrecision).ToString();
+                    orderPageComponent.positionInfoActualTakeProfitPercentageText.text =
+                    Utils.RoundTwoDecimal(response.actualTakeProfitPercentage.Value).ToString();
+                }
+
             }
             if (response.actualStopLossPrice.HasValue)
             {
-                orderPageComponent.positionInfoActualStopLossPriceText.text = Utils.RoundNDecimal(response.actualStopLossPrice.Value, pricePrecision).ToString();
+                if (response.actualStopLossPrice.Value < 0)
+                {
+                    orderPageComponent.positionInfoActualStopLossPriceText.text = "-";
+                    orderPageComponent.positionInfoActualStopLossPercentageText.text = "";
+                }
+                else
+                {
+                    orderPageComponent.positionInfoActualStopLossPriceText.text = Utils.RoundNDecimal(response.actualStopLossPrice.Value, pricePrecision).ToString();
+                    orderPageComponent.positionInfoActualStopLossPercentageText.text =
+                    Utils.RoundTwoDecimal(response.actualStopLossPercentage.Value).ToString();
+                }
             }
             if (response.actualBreakEvenPrice.HasValue)
             {
-                orderPageComponent.positionInfoActualBreakEvenPriceText.text = Utils.RoundNDecimal(response.actualBreakEvenPrice.Value, pricePrecision).ToString();
+
+                if (response.actualBreakEvenPrice.Value < 0)
+                {
+                    orderPageComponent.positionInfoActualBreakEvenPriceText.text = "-";
+                    orderPageComponent.positionInfoActualBreakEvenPercentageText.text = "";
+                }
+                else
+                {
+                    orderPageComponent.positionInfoActualBreakEvenPriceText.text = Utils.RoundNDecimal(response.actualBreakEvenPrice.Value, pricePrecision).ToString();
+                    orderPageComponent.positionInfoActualBreakEvenPercentageText.text =
+                    Utils.RoundTwoDecimal(response.actualBreakEvenPercentage.Value).ToString();
+                }
             }
         }
         if (response.paidFundingAmount.HasValue)

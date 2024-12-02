@@ -77,11 +77,45 @@ public class SpawnOrderSystem : MonoBehaviour
         #endregion
 
         #region Position info
-        orderPageComponent.positionInfoAvgEntryPriceFilledText.text = Utils.RoundNDecimal(response.averagePriceFilled, platformComponent.pricePrecisions[orderPageComponent.symbolDropdownComponent.selectedSymbol]).ToString();
         orderPageComponent.positionInfoQuantityFilledText.text = Utils.RoundNDecimal(response.quantityFilled, platformComponent.quantityPrecisions[orderPageComponent.symbolDropdownComponent.selectedSymbol]).ToString();
-        orderPageComponent.positionInfoActualTakeProfitPriceText.text = Utils.RoundNDecimal(response.actualTakeProfitPrice, platformComponent.pricePrecisions[orderPageComponent.symbolDropdownComponent.selectedSymbol]).ToString();
-        orderPageComponent.positionInfoActualStopLossPriceText.text = Utils.RoundNDecimal(response.actualStopLossPrice, platformComponent.pricePrecisions[orderPageComponent.symbolDropdownComponent.selectedSymbol]).ToString();
-        orderPageComponent.positionInfoActualBreakEvenPriceText.text = Utils.RoundNDecimal(response.actualBreakEvenPrice, platformComponent.pricePrecisions[orderPageComponent.symbolDropdownComponent.selectedSymbol]).ToString();
+        if (response.averagePriceFilled < 0)
+        {
+            orderPageComponent.positionInfoAvgEntryPriceFilledText.text = "-";
+        }
+        else
+        {
+            orderPageComponent.positionInfoAvgEntryPriceFilledText.text = Utils.RoundNDecimal(response.averagePriceFilled, platformComponent.pricePrecisions[orderPageComponent.symbolDropdownComponent.selectedSymbol]).ToString();
+        }
+        if (response.actualTakeProfitPrice < 0)
+        {
+            orderPageComponent.positionInfoActualTakeProfitPriceText.text = "-";
+            orderPageComponent.positionInfoActualTakeProfitPercentageText.text = "";
+        }
+        else
+        {
+            orderPageComponent.positionInfoActualTakeProfitPriceText.text = Utils.RoundNDecimal(response.actualTakeProfitPrice, platformComponent.pricePrecisions[orderPageComponent.symbolDropdownComponent.selectedSymbol]).ToString();
+            orderPageComponent.positionInfoActualTakeProfitPercentageText.text = Utils.RoundTwoDecimal(response.actualTakeProfitPercentage).ToString();
+        }
+        if (response.actualStopLossPrice < 0)
+        {
+            orderPageComponent.positionInfoActualStopLossPriceText.text = "-";
+            orderPageComponent.positionInfoActualStopLossPercentageText.text = "";
+        }
+        else
+        {
+            orderPageComponent.positionInfoActualStopLossPriceText.text = Utils.RoundNDecimal(response.actualStopLossPrice, platformComponent.pricePrecisions[orderPageComponent.symbolDropdownComponent.selectedSymbol]).ToString();
+            orderPageComponent.positionInfoActualStopLossPercentageText.text = Utils.RoundTwoDecimal(response.actualStopLossPercentage).ToString();
+        }
+        if (response.actualBreakEvenPrice < 0)
+        {
+            orderPageComponent.positionInfoActualBreakEvenPriceText.text = "-";
+            orderPageComponent.positionInfoActualBreakEvenPercentageText.text = "";
+        }
+        else
+        {
+            orderPageComponent.positionInfoActualBreakEvenPriceText.text = Utils.RoundNDecimal(response.actualBreakEvenPrice, platformComponent.pricePrecisions[orderPageComponent.symbolDropdownComponent.selectedSymbol]).ToString();
+            orderPageComponent.positionInfoActualBreakEvenPercentageText.text = Utils.RoundTwoDecimal(response.actualBreakEvenPercentage).ToString();
+        }
         orderPageComponent.positionInfoPaidFundingAmount.text = response.paidFundingAmount.ToString();
         foreach (General.WebsocketGetThrottleOrderDataResponse throttleOrder in response.throttleOrders)
         {

@@ -47,8 +47,11 @@ public class OrderPageComponent : MonoBehaviour
     public GameObject positionInfoObject;
     public TMP_Text positionInfoAvgEntryPriceFilledText;
     public TMP_Text positionInfoActualTakeProfitPriceText;
+    public TMP_Text positionInfoActualTakeProfitPercentageText;
     public TMP_Text positionInfoActualStopLossPriceText;
+    public TMP_Text positionInfoActualStopLossPercentageText;
     public TMP_Text positionInfoActualBreakEvenPriceText;
+    public TMP_Text positionInfoActualBreakEvenPercentageText;
     public TMP_Text positionInfoQuantityFilledText;
     public TMP_Text positionInfoPaidFundingAmount;
     public GameObject positionInfoBotInChargeObject;
@@ -162,6 +165,7 @@ public class OrderPageComponent : MonoBehaviour
             switch (_exitOrderType)
             {
                 case ExitOrderTypeEnum.NONE:
+                case ExitOrderTypeEnum.MANUAL_CLOSE:
                     resultComponent.exitOrderTypeText.color = OrderConfig.DISPLAY_COLOR_BLACK;
                     break;
                 case ExitOrderTypeEnum.STOP_LOSS:

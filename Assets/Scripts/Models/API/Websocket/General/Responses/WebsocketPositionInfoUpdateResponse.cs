@@ -11,8 +11,11 @@ namespace General
         public float? quantityFilled;
         public float? averagePriceFilled;
         public float? actualTakeProfitPrice;
+        public float? actualTakeProfitPercentage;
         public float? actualStopLossPrice;
+        public float? actualStopLossPercentage;
         public float? actualBreakEvenPrice;
+        public float? actualBreakEvenPercentage;
         public float? paidFundingAmount;
         public bool? removeBot;
         public ExitOrderTypeEnum? exitOrderType;
