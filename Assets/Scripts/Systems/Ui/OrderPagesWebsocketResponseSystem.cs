@@ -74,7 +74,7 @@ public class OrderPagesWebsocketResponseSystem : MonoBehaviour
                 {
                     orderPageComponent.positionInfoActualTakeProfitPriceText.text = Utils.RoundNDecimal(response.actualTakeProfitPrice.Value, pricePrecision).ToString();
                     orderPageComponent.positionInfoActualTakeProfitPercentageText.text =
-                    Utils.RoundTwoDecimal(response.actualTakeProfitPercentage.Value).ToString();
+                    Utils.RoundTwoDecimal(response.actualTakeProfitPercentage.Value).ToString() + "%";
                 }
 
             }
@@ -89,7 +89,7 @@ public class OrderPagesWebsocketResponseSystem : MonoBehaviour
                 {
                     orderPageComponent.positionInfoActualStopLossPriceText.text = Utils.RoundNDecimal(response.actualStopLossPrice.Value, pricePrecision).ToString();
                     orderPageComponent.positionInfoActualStopLossPercentageText.text =
-                    Utils.RoundTwoDecimal(response.actualStopLossPercentage.Value).ToString();
+                    Utils.RoundTwoDecimal(response.actualStopLossPercentage.Value).ToString() + "%";
                 }
             }
             if (response.actualBreakEvenPrice.HasValue)
@@ -104,7 +104,7 @@ public class OrderPagesWebsocketResponseSystem : MonoBehaviour
                 {
                     orderPageComponent.positionInfoActualBreakEvenPriceText.text = Utils.RoundNDecimal(response.actualBreakEvenPrice.Value, pricePrecision).ToString();
                     orderPageComponent.positionInfoActualBreakEvenPercentageText.text =
-                    Utils.RoundTwoDecimal(response.actualBreakEvenPercentage.Value).ToString();
+                    Utils.RoundTwoDecimal(response.actualBreakEvenPercentage.Value).ToString() + "%";
                 }
             }
         }
@@ -144,7 +144,6 @@ public class OrderPagesWebsocketResponseSystem : MonoBehaviour
         orderPageComponent.marginCalculator = response.order.marginCalculator;
         orderPageComponent.postCalculate = true;
         orderPageComponent.spawnTime = response.order.spawnTime;
-        orderPageComponent.exitOrderType = response.order.exitOrderType;
     }
     void UpdateOrderToServerResponse()
     {

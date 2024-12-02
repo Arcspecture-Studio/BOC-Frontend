@@ -11,6 +11,5 @@ namespace General
     public class WebsocketAddOrderDataResponse : WebsocketUpdateOrderDataResponse
     {
         public long spawnTime; // TIMESTAMP
-        public ExitOrderTypeEnum exitOrderType;
     }
 }
