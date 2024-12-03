@@ -65,6 +65,7 @@ public class SpawnOrderSystem : MonoBehaviour
         orderPageComponent.takeProfitTrailingCallbackPercentageCustomSlider.SetValue(response.marginCalculator.takeProfitTrailingCallbackPercentage);
         orderPageComponent.orderTypeDropdown.value = (int)response.orderType;
         orderPageComponent.fundingFeeHandlerDropdown.value = (int)response.fundingFeeHandler;
+        orderPageComponent.disableExitDropdown.value = response.disableExit ? 1 : 0;
         orderPageComponent.marginDistributionModeDropdown.value = response.marginCalculator.weightedQuantity ? 1 : 0;
         orderPageComponent.marginWeightDistributionValueCustomSlider.SetValue(response.marginCalculator.quantityWeight);
         #endregion

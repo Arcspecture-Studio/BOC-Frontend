@@ -19,6 +19,7 @@ namespace General
         public string symbol;
         public OrderTypeEnum orderType;
         public FundingFeeHandlerEnum fundingFeeHandler;
+        public bool disableExit;
         public float quantityFilled;
         public float averagePriceFilled;
         public float actualTakeProfitPrice;

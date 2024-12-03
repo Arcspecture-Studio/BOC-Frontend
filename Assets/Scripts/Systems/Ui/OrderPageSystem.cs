@@ -132,6 +132,8 @@ public class OrderPageSystem : MonoBehaviour
         orderPageComponent.updateToServer = true);
         orderPageComponent.fundingFeeHandlerDropdown.onValueChanged.AddListener(value =>
         orderPageComponent.updateToServer = true);
+        orderPageComponent.disableExitDropdown.onValueChanged.AddListener(value =>
+        orderPageComponent.updateToServer = true);
         orderPageComponent.onChange_addToServer.AddListener(AddToServer);
         orderPageComponent.onChange_updateToServer.AddListener(UpdateToServer);
         orderPageComponent.onChange_deleteFromServer.AddListener(DeleteFromServer);
@@ -182,10 +184,11 @@ public class OrderPageSystem : MonoBehaviour
         if (!orderPageComponent.calculate) yield break;
         orderPageComponent.calculate = false;
 
-        #region Update button & UI
+        #region Reset ui
         orderPageComponent.calculateButton.interactable = false;
         orderPageComponent.lockForEdit = true;
         orderPageComponent.exitOrderType = ExitOrderTypeEnum.NONE;
+        orderPageComponent.disableExitDropdown.value = 0;
         #endregion
 
         #region Prepare input data
@@ -489,7 +492,7 @@ public class OrderPageSystem : MonoBehaviour
     }
     public void UpdateToServer()
     {
-        if (orderPageComponent.marginCalculatorRequest == null) return; // marginCalculator is null (orderTypeDropdown & fundingFeeHandlerDropdown will invoke this method during order spawn, but since marginCalculator is null during spawn, so this method will be skipped)
+        if (orderPageComponent.marginCalculatorRequest == null) return; // marginCalculator is null (orderTypeDropdown & fundingFeeHandlerDropdown & disableExitDropdown will invoke this method during order spawn, but since marginCalculator is null during spawn, so this method will be skipped)
         orderPageComponent.marginCalculatorRequest.UpdateMarginCalculatorFromUI(
             orderPageComponent.takeProfitTypeDropdown.value,
             orderPageComponent.riskRewardRatioInput.text,
@@ -503,6 +506,7 @@ public class OrderPageSystem : MonoBehaviour
             orderPageComponent.marginCalculatorRequest.GetMarginCalculatorUpdate(),
             (OrderTypeEnum)orderPageComponent.orderTypeDropdown.value,
             (FundingFeeHandlerEnum)orderPageComponent.fundingFeeHandlerDropdown.value,
+            orderPageComponent.disableExitDropdown.value == 1,
             orderPageComponent.tradingBotId
         ));
     }
