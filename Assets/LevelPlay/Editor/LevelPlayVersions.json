@@ -3,6 +3,9 @@
         "displayName": "Unity Package",
         "packageURL": "https://github.com/ironsource-mobile/Unity-sdk/raw/master/${VERSION}/UnityLevelPlay_v${VERSION}.unitypackage",
         "versions": {
+            "8.5.1": {
+                "ironSourceSdkVersion": "[8.5.0, 9.0["
+            },
             "8.5.0": {
                 "ironSourceSdkVersion": "[8.5.0, 9.0["
             },
@@ -327,6 +330,17 @@
             "dependencyXmlURL": "https://s3.amazonaws.com/ssa.public/Dependencies-xmls/Fyber/${VERSION}/ISFyberAdapterDependencies.xml",
             "dependencyXmlFileName": "ISFyberAdapterDependencies.xml",
             "versions": {
+              "4.3.50.0": {
+                "ironSourceSdkVersion": "[8.4.0, 9.0[",
+                "android": {
+                  "adapterVersion": "4.3.35",
+                  "adNetworkVersion": "8.3.3"
+                },
+                "ios": {
+                  "adapterVersion": "4.3.38.0",
+                  "adNetworkVersion": "8.3.3"
+                }
+              },
               "4.3.49.0": {
                 "ironSourceSdkVersion": "[8.4.0, 9.0[",
                 "android": {
@@ -1026,6 +1040,17 @@
             "dependencyXmlFileName": "ISYandexAdapterDependencies.xml",
             "isNew": true,
             "versions": {
+              "4.3.7.0": {
+                "ironSourceSdkVersion": "[8.4.0, 9.0[",
+                "android": {
+                  "adapterVersion": "4.3.6",
+                  "adNetworkVersion": "7.7.0"
+                },
+                "ios": {
+                  "adapterVersion": "4.3.7.0",
+                  "adNetworkVersion": "7.7.0"
+                }
+              },
               "4.3.6.0": {
                 "ironSourceSdkVersion": "[8.4.0, 9.0[",
                 "android": {
