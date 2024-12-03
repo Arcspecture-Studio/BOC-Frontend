@@ -38,6 +38,7 @@ public class OrderPageComponent : MonoBehaviour
     public TMP_Dropdown orderTypeDropdown;
     public GameObject fundingFeeHandlerObject;
     public TMP_Dropdown fundingFeeHandlerDropdown;
+    public TMP_Dropdown disableExitDropdown;
     public GameObject applyButtonObject;
     public Button placeOrderButton;
     public Button cancelOrderButton;

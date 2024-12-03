@@ -11,5 +11,5 @@ public static class OrderConfig
     public static readonly float MARGIN_WEIGHT_DISTRIBUTION_VALUE_MIN = -5;
     public static readonly float MARGIN_WEIGHT_DISTRIBUTION_VALUE_MAX = 5;
     public static readonly float TRAILING_MIN_PERCENTAGE = 0.1f;
-    public static readonly float TRAILING_MAX_PERCENTAGE = 10f;
+    public static readonly float TRAILING_MAX_PERCENTAGE = 99f;
 }
