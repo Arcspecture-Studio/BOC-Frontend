@@ -465,6 +465,7 @@ public class OrderPageSystem : MonoBehaviour
         orderPageComponent.takeProfitTrailingCallbackPercentageCustomSlider.gameObject.SetActive(lockForEdit.Value && orderPageComponent.takeProfitTypeDropdown.value == (int)TakeProfitTypeEnum.TRAILING);
         orderPageComponent.orderTypeObject.SetActive(lockForEdit.Value);
         orderPageComponent.fundingFeeHandlerObject.SetActive(lockForEdit.Value);
+        orderPageComponent.disableExitObject.SetActive(lockForEdit.Value);
         orderPageComponent.applyButtonObject.SetActive(lockForEdit.Value);
         orderPageComponent.positionInfoObject.SetActive(lockForEdit.Value && orderPageComponent.exitOrderType > ExitOrderTypeEnum.NONE);
     }
