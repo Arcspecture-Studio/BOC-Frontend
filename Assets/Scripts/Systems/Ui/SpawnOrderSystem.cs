@@ -125,7 +125,6 @@ public class SpawnOrderSystem : MonoBehaviour
             throttleComponent.calculate = true;
             throttleComponent.orderId = throttleOrder.id;
             throttleComponent.orderStatus = throttleOrder.status;
-            throttleComponent.orderStatusError = throttleOrder.statusError;
             throttleComponent.throttleCalculator = throttleOrder.throttleCalculator;
             throttleComponent.pnlInput.text = throttleOrder.throttleCalculator.realizedPnl.ToString();
             if (throttleOrder.throttleCalculator.throttleQty > 0)

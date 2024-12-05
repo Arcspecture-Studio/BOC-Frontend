@@ -16,13 +16,15 @@ public class OrderPageThrottleComponent : MonoBehaviour
     public TMP_Text breakEvenPriceText;
     public TMP_Dropdown orderTypeDropdown;
     public TMP_Dropdown breakEvenTypeDropdown;
+    public TMP_Dropdown disableExitDropdown;
     public Button placeOrderButton;
     public Button cancelOrderButton;
     public Button cancelBreakEvenOrderButton;
-    public Button cancelErrorOrderButton;
     public Button closeTabButton;
     public GameObject resultObject;
     public GameObject orderTypeObject;
+    public GameObject breakEvenTypeObject;
+    public GameObject disableExitObject;
     public GameObject applyButtonObject;
 
     [Header("Runtime")]
@@ -64,18 +66,5 @@ public class OrderPageThrottleComponent : MonoBehaviour
         }
     }
     [HideInInspector] public UnityEvent onChange_orderStatus = new();
-    [SerializeField] private bool _orderStatusError;
-    public bool orderStatusError
-    {
-        set
-        {
-            _orderStatusError = value;
-            onChange_orderStatus.Invoke();
-        }
-        get
-        {
-            return _orderStatusError;
-        }
-    }
     [HideInInspector] public UnityEvent onChange_orderStatusError = new();
 }

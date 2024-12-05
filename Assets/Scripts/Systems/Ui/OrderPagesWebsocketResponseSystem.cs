@@ -252,8 +252,8 @@ public class OrderPagesWebsocketResponseSystem : MonoBehaviour
         if (orderPageThrottleComponent == null) return;
 
         orderPageThrottleComponent.orderStatus = response.status;
-        orderPageThrottleComponent.orderStatusError = response.statusError;
-        if (orderPageThrottleComponent.orderStatusError && !response.message.IsNullOrEmpty())
+        // orderPageThrottleComponent.orderStatusError = response.statusError;
+        if (response.statusError && !response.message.IsNullOrEmpty())
         {
             switch (platformComponent.activePlatform)
             {
