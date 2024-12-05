@@ -50,10 +50,10 @@ public class OrderPageThrottleSystem : MonoBehaviour
                         orderPageThrottleComponent.cancelOrderButton.onClick.Invoke();
                         break;
                     case OrderStatusEnum.FILLED:
-                        if (orderPageThrottleComponent.orderStatusError)
-                            orderPageThrottleComponent.cancelErrorOrderButton.onClick.Invoke();
-                        else
-                            orderPageThrottleComponent.cancelBreakEvenOrderButton.onClick.Invoke();
+                        // if (orderPageThrottleComponent.orderStatusError)
+                        //     orderPageThrottleComponent.cancelErrorOrderButton.onClick.Invoke();
+                        // else
+                        orderPageThrottleComponent.cancelBreakEvenOrderButton.onClick.Invoke();
                         break;
                 }
                 promptComponent.leftButton.onClick.AddListener(() =>
@@ -100,21 +100,6 @@ public class OrderPageThrottleSystem : MonoBehaviour
             () =>
             {
                 orderPageThrottleComponent.cancelBreakEvenOrderButton.interactable = false;
-                orderPageThrottleComponent.submitToServer = true;
-                promptComponent.active = false;
-            },
-            () =>
-            {
-                promptComponent.active = false;
-            });
-        });
-        orderPageThrottleComponent.cancelErrorOrderButton.onClick.AddListener(() =>
-        {
-            promptComponent.ShowSelection(PromptConstant.NOTICE, PromptConstant.CLOSE_THROTTLE_POSITION_PROMPT,
-                PromptConstant.YES_PROCEED, PromptConstant.NO,
-            () =>
-            {
-                orderPageThrottleComponent.cancelErrorOrderButton.interactable = false;
                 orderPageThrottleComponent.submitToServer = true;
                 promptComponent.active = false;
             },
@@ -232,6 +217,8 @@ public class OrderPageThrottleSystem : MonoBehaviour
             float.Parse(orderPageThrottleComponent.throttleQuantityInput.text);
         orderPageThrottleComponent.resultObject.SetActive(lockForEdit.Value);
         orderPageThrottleComponent.orderTypeObject.SetActive(throttleQuantity > 0 && lockForEdit.Value);
+        orderPageThrottleComponent.breakEvenTypeObject.SetActive(lockForEdit.Value);
+        orderPageThrottleComponent.disableExitObject.SetActive(lockForEdit.Value);
         orderPageThrottleComponent.applyButtonObject.SetActive(lockForEdit.Value);
     }
     void ShowPrompt(string message, bool goToEditMode = true)
@@ -247,7 +234,7 @@ public class OrderPageThrottleSystem : MonoBehaviour
     }
     void AddToServer()
     {
-        websocketComponent.generalRequests.Add(new General.WebsocketAddThrottleOrderRequest(
+        websocketComponent.generalRequests.Add(new General.WebsocketAddThrottleOrderRequest( // TODO: sent throttleCalculatorAdd, and no need set order type and break even type
             loginComponent.token,
             orderPageThrottleComponent.orderId,
             orderPageComponent.orderId,
@@ -256,13 +243,14 @@ public class OrderPageThrottleSystem : MonoBehaviour
             (TakeProfitTypeEnum)orderPageThrottleComponent.breakEvenTypeDropdown.value + 1
         ));
     }
-    public void UpdateToServer() // Used by throttle tab prefab -> order type & break even type dropdown template item
+    public void UpdateToServer() // Used by throttle tab prefab -> order type & break even type dropdown template item // TODO: Use listener and throttleCalculatorAdd instead
     {
         websocketComponent.generalRequests.Add(new General.WebsocketUpdateThrottleOrderRequest(
             loginComponent.token,
             orderPageThrottleComponent.orderId,
             (OrderTypeEnum)orderPageThrottleComponent.orderTypeDropdown.value,
-            (TakeProfitTypeEnum)orderPageThrottleComponent.breakEvenTypeDropdown.value + 1
+            (TakeProfitTypeEnum)orderPageThrottleComponent.breakEvenTypeDropdown.value + 1,
+            orderPageComponent.disableExitDropdown.value == 1
         ));
     }
     void DeleteFromServer()

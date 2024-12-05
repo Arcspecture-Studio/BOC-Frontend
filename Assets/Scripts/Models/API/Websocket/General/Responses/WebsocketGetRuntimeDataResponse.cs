@@ -40,7 +40,6 @@ namespace General
         public OrderTypeEnum orderType;
         public TakeProfitTypeEnum breakEvenType;
         public OrderStatusEnum status;
-        public bool statusError;
     }
     [Serializable]
     public class WebsocketGetQuickOrderDataResponse

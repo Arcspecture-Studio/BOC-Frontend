@@ -87,7 +87,6 @@ public class OrderPageApplyToPlatformButtonUpdateStatusSystem : MonoBehaviour
         orderPageThrottleComponent.placeOrderButton.interactable = true;
         orderPageThrottleComponent.cancelOrderButton.interactable = true;
         orderPageThrottleComponent.cancelBreakEvenOrderButton.interactable = true;
-        orderPageThrottleComponent.cancelErrorOrderButton.interactable = true;
 
         bool orderUnsumitted = orderPageThrottleComponent.orderStatus == OrderStatusEnum.UNSUBMITTED;
         orderPageThrottleComponent.calculateButton.interactable = orderUnsumitted;
@@ -99,29 +98,16 @@ public class OrderPageApplyToPlatformButtonUpdateStatusSystem : MonoBehaviour
                 orderPageThrottleComponent.placeOrderButton.gameObject.SetActive(true);
                 orderPageThrottleComponent.cancelOrderButton.gameObject.SetActive(false);
                 orderPageThrottleComponent.cancelBreakEvenOrderButton.gameObject.SetActive(false);
-                orderPageThrottleComponent.cancelErrorOrderButton.gameObject.SetActive(false);
                 break;
             case OrderStatusEnum.SUBMITTED:
                 orderPageThrottleComponent.placeOrderButton.gameObject.SetActive(false);
                 orderPageThrottleComponent.cancelOrderButton.gameObject.SetActive(true);
                 orderPageThrottleComponent.cancelBreakEvenOrderButton.gameObject.SetActive(false);
-                orderPageThrottleComponent.cancelErrorOrderButton.gameObject.SetActive(false);
                 break;
             case OrderStatusEnum.FILLED:
-                if (orderPageThrottleComponent.orderStatusError)
-                {
-                    orderPageThrottleComponent.placeOrderButton.gameObject.SetActive(false);
-                    orderPageThrottleComponent.cancelOrderButton.gameObject.SetActive(false);
-                    orderPageThrottleComponent.cancelBreakEvenOrderButton.gameObject.SetActive(false);
-                    orderPageThrottleComponent.cancelErrorOrderButton.gameObject.SetActive(true);
-                }
-                else
-                {
-                    orderPageThrottleComponent.placeOrderButton.gameObject.SetActive(false);
-                    orderPageThrottleComponent.cancelOrderButton.gameObject.SetActive(false);
-                    orderPageThrottleComponent.cancelBreakEvenOrderButton.gameObject.SetActive(true);
-                    orderPageThrottleComponent.cancelErrorOrderButton.gameObject.SetActive(false);
-                }
+                orderPageThrottleComponent.placeOrderButton.gameObject.SetActive(false);
+                orderPageThrottleComponent.cancelOrderButton.gameObject.SetActive(false);
+                orderPageThrottleComponent.cancelBreakEvenOrderButton.gameObject.SetActive(true);
                 break;
         }
     }
