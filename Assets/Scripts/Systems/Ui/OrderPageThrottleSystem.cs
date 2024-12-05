@@ -250,7 +250,7 @@ public class OrderPageThrottleSystem : MonoBehaviour
             orderPageThrottleComponent.orderId,
             (OrderTypeEnum)orderPageThrottleComponent.orderTypeDropdown.value,
             (TakeProfitTypeEnum)orderPageThrottleComponent.breakEvenTypeDropdown.value + 1,
-            orderPageComponent.disableExitDropdown.value == 1
+            orderPageThrottleComponent.disableExitDropdown.value == 1
         ));
     }
     void DeleteFromServer()
