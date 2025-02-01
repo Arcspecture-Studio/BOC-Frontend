@@ -135,10 +135,12 @@ public class OrderPageThrottleSystem : MonoBehaviour
             // get input
             float pnl = orderPageThrottleComponent.pnlInput.text.IsNullOrEmpty() ? float.NaN :
                 float.Parse(orderPageThrottleComponent.pnlInput.text);
-            float currentPrice = orderPageComponent.positionInfoAvgEntryPriceFilledText.text.IsNullOrEmpty() ? float.NaN :
-                float.Parse(orderPageComponent.positionInfoAvgEntryPriceFilledText.text);
-            float currentQuantity = orderPageComponent.positionInfoQuantityFilledText.text.IsNullOrEmpty() ? float.NaN :
-                float.Parse(orderPageComponent.positionInfoQuantityFilledText.text);
+            float currentPrice = orderPageComponent.marginCalculator.isLong ? orderPageComponent.marginCalculator.avgEntryPrices[0] : orderPageComponent.marginCalculator.avgEntryPrices[orderPageComponent.marginCalculator.avgEntryPrices.Count - 1];
+            float currentQuantity = orderPageComponent.marginCalculator.isLong ? orderPageComponent.marginCalculator.quantities[0] : orderPageComponent.marginCalculator.quantities[orderPageComponent.marginCalculator.quantities.Count - 1];
+            // float currentPrice = orderPageComponent.positionInfoAvgEntryPriceFilledText.text.IsNullOrEmpty() ? float.NaN :
+            // float.Parse(orderPageComponent.positionInfoAvgEntryPriceFilledText.text);
+            // float currentQuantity = orderPageComponent.positionInfoQuantityFilledText.text.IsNullOrEmpty() ? float.NaN :
+            // float.Parse(orderPageComponent.positionInfoQuantityFilledText.text);
             float throttlePrice = orderPageThrottleComponent.throttlePriceInput.text.IsNullOrEmpty() ? float.NaN :
                 float.Parse(orderPageThrottleComponent.throttlePriceInput.text);
             float throttleQuantity = orderPageThrottleComponent.throttleQuantityInput.text.IsNullOrEmpty() ? 0 :

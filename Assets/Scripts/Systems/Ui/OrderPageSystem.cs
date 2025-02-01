@@ -475,7 +475,8 @@ public class OrderPageSystem : MonoBehaviour
         orderStatus = orderPageComponent.orderStatus;
         bool isFilled = orderStatus.Equals(OrderStatusEnum.FILLED);
         orderPageComponent.positionInfoObject.SetActive(orderPageComponent.lockForEdit && (isFilled || orderPageComponent.exitOrderType > ExitOrderTypeEnum.NONE));
-        orderPageComponent.throttleObject.SetActive(isFilled);
+        // orderPageComponent.throttleObject.SetActive(isFilled);
+        orderPageComponent.throttleObject.SetActive(orderPageComponent.lockForEdit);
         if (orderStatus != OrderStatusEnum.FILLED) orderPageComponent.positionInfoPaidFundingAmount.text = "0";
     }
     void AddToServer()
