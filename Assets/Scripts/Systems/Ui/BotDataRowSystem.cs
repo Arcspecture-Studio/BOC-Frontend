@@ -131,17 +131,26 @@ public class BotDataRowSystem : MonoBehaviour
         TMP_Text quickEntryTimesText = quickEntryTimes.GetComponent<TMP_Text>();
         quickEntryTimesText.text = "Entry Times: " + botDataRowComponent.setting.quickOrder.quickEntryTimes.ToString();
 
-        GameObject atrTimeframe = Instantiate(botDataRowComponent.infoPanelData, botDataRowComponent.infoPanelContent);
-        TMP_Text atrTimeframeText = atrTimeframe.GetComponent<TMP_Text>();
-        atrTimeframeText.text = "ATR Timeframe: " + TimeframeArray.TIMEFRAME_ARRAY[(int)botDataRowComponent.setting.quickOrder.atrTimeframe];
+        if (botDataRowComponent.setting.quickOrder.slType == StopLossTypeEnum.ATR)
+        {
+            GameObject atrTimeframe = Instantiate(botDataRowComponent.infoPanelData, botDataRowComponent.infoPanelContent);
+            TMP_Text atrTimeframeText = atrTimeframe.GetComponent<TMP_Text>();
+            atrTimeframeText.text = "ATR Timeframe: " + TimeframeArray.TIMEFRAME_ARRAY[(int)botDataRowComponent.setting.quickOrder.atrTimeframe];
 
-        GameObject atrLength = Instantiate(botDataRowComponent.infoPanelData, botDataRowComponent.infoPanelContent);
-        TMP_Text atrLengthText = atrLength.GetComponent<TMP_Text>();
-        atrLengthText.text = "ATR Length: " + botDataRowComponent.setting.quickOrder.atrLength.ToString();
+            GameObject atrLength = Instantiate(botDataRowComponent.infoPanelData, botDataRowComponent.infoPanelContent);
+            TMP_Text atrLengthText = atrLength.GetComponent<TMP_Text>();
+            atrLengthText.text = "ATR Length: " + botDataRowComponent.setting.quickOrder.atrLength.ToString();
 
-        GameObject atrMultiplier = Instantiate(botDataRowComponent.infoPanelData, botDataRowComponent.infoPanelContent);
-        TMP_Text atrMultiplierText = atrMultiplier.GetComponent<TMP_Text>();
-        atrMultiplierText.text = "ATR Multiplier: " + botDataRowComponent.setting.quickOrder.atrMultiplier.ToString();
+            GameObject atrMultiplier = Instantiate(botDataRowComponent.infoPanelData, botDataRowComponent.infoPanelContent);
+            TMP_Text atrMultiplierText = atrMultiplier.GetComponent<TMP_Text>();
+            atrMultiplierText.text = "ATR Multiplier: " + botDataRowComponent.setting.quickOrder.atrMultiplier.ToString();
+        }
+        else
+        {
+            GameObject slPrice = Instantiate(botDataRowComponent.infoPanelData, botDataRowComponent.infoPanelContent);
+            TMP_Text slPriceText = slPrice.GetComponent<TMP_Text>();
+            slPriceText.text = "SL Price: " + botDataRowComponent.setting.quickOrder.slPrice.ToString();
+        }
         #endregion
 
         #region Bot

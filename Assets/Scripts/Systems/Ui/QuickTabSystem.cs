@@ -49,6 +49,10 @@ public class QuickTabSystem : MonoBehaviour
         {
             quickTabComponent.entryPriceInput.text = "";
         });
+        quickTabComponent.clearSlPriceButton.onClick.AddListener(() =>
+        {
+            quickTabComponent.slPriceInput.text = "";
+        });
     }
     void AfterClickLongShortButton()
     {
