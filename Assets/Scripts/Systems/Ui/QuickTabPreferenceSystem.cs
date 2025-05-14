@@ -25,6 +25,9 @@ public class QuickTabPreferenceSystem : MonoBehaviour
 
         quickTabComponent.entryTimesInput.text = preferenceQuickOrder.quickEntryTimes.ToString();
         quickTabComponent.slTypeDropdown.value = (int)preferenceQuickOrder.slType;
+        quickTabComponent.slPriceObject.SetActive(preferenceQuickOrder.slType == StopLossTypeEnum.PRICE);
+        quickTabComponent.atrObject.SetActive(preferenceQuickOrder.slType == StopLossTypeEnum.ATR);
+        quickTabComponent.previewOrderDropdown.value = preferenceQuickOrder.previewOrder ? 0 : 1;
         quickTabComponent.slPriceInput.text = preferenceQuickOrder.slPrice.ToString();
         quickTabComponent.atrTimeframeDropdown.value = (int)preferenceQuickOrder.atrTimeframe;
         quickTabComponent.atrLengthInput.text = preferenceQuickOrder.atrLength.ToString();
@@ -51,6 +54,12 @@ public class QuickTabPreferenceSystem : MonoBehaviour
             quickTabComponent.atrObject.SetActive(value == 1);
             if (profileComponent.activeProfile.preference.quickOrder.slType == (StopLossTypeEnum)value) return;
             profileComponent.activeProfile.preference.quickOrder.slType = (StopLossTypeEnum)value;
+            settingPageComponent.updatePreferenceToServer = true;
+        });
+        quickTabComponent.previewOrderDropdown.onValueChanged.AddListener(value =>
+        {
+            if (profileComponent.activeProfile.preference.quickOrder.previewOrder == (value == 0)) return;
+            profileComponent.activeProfile.preference.quickOrder.previewOrder = value == 0;
             settingPageComponent.updatePreferenceToServer = true;
         });
         quickTabComponent.slPriceInput.onEndEdit.AddListener(value =>

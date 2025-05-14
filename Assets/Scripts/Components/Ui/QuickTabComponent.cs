@@ -13,6 +13,7 @@ public class QuickTabComponent : MonoBehaviour
     public TMP_InputField entryPriceInput;
     public Button clearEntryPriceButton;
     public TMP_Dropdown slTypeDropdown;
+    public TMP_Dropdown previewOrderDropdown;
     public GameObject slPriceObject;
     public TMP_InputField slPriceInput;
     public Button clearSlPriceButton;
