@@ -27,6 +27,7 @@ public class PreferenceQuickOrder
 {
     public int quickEntryTimes;
     public StopLossTypeEnum slType;
+    public bool previewOrder;
     public float slPrice;
     public TimeframeEnum atrTimeframe;
     public int atrLength;
