@@ -69,8 +69,8 @@ public class QuickTabPreferenceSystem : MonoBehaviour
                 value = profileComponent.activeProfile.preference.quickOrder.slPrice.ToString();
                 quickTabComponent.slPriceInput.text = value;
             }
-            if (profileComponent.activeProfile.preference.quickOrder.slPrice == int.Parse(value)) return;
-            profileComponent.activeProfile.preference.quickOrder.slPrice = int.Parse(value);
+            if (profileComponent.activeProfile.preference.quickOrder.slPrice == float.Parse(value)) return;
+            profileComponent.activeProfile.preference.quickOrder.slPrice = float.Parse(value);
             settingPageComponent.updatePreferenceToServer = true;
         });
         quickTabComponent.atrTimeframeDropdown.onValueChanged.AddListener(value =>
