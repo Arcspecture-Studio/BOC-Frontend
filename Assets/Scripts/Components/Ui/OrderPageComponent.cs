@@ -1,3 +1,4 @@
+using System;
 using DG.Tweening;
 using TMPro;
 using UnityEngine;
@@ -35,6 +36,10 @@ public class OrderPageComponent : MonoBehaviour
     public CustomSlider takeProfitTrailingCallbackPercentageCustomSlider;
     public GameObject orderTypeObject;
     public TMP_Dropdown orderTypeDropdown;
+    public GameObject fundingFeeHandlerObject;
+    public TMP_Dropdown fundingFeeHandlerDropdown;
+    public GameObject disableExitObject;
+    public TMP_Dropdown disableExitDropdown;
     public GameObject applyButtonObject;
     public Button placeOrderButton;
     public Button cancelOrderButton;
@@ -44,6 +49,11 @@ public class OrderPageComponent : MonoBehaviour
     public GameObject positionInfoObject;
     public TMP_Text positionInfoAvgEntryPriceFilledText;
     public TMP_Text positionInfoActualTakeProfitPriceText;
+    public TMP_Text positionInfoActualTakeProfitPercentageText;
+    public TMP_Text positionInfoActualStopLossPriceText;
+    public TMP_Text positionInfoActualStopLossPercentageText;
+    public TMP_Text positionInfoActualBreakEvenPriceText;
+    public TMP_Text positionInfoActualBreakEvenPercentageText;
     public TMP_Text positionInfoQuantityFilledText;
     public TMP_Text positionInfoPaidFundingAmount;
     public GameObject positionInfoBotInChargeObject;
@@ -74,7 +84,23 @@ public class OrderPageComponent : MonoBehaviour
         set { onChange_submitToServer.Invoke(); }
     }
     [HideInInspector] public UnityEvent onChange_submitToServer = new();
-    public CalculateMargin marginCalculator;
+    public MarginCalculator marginCalculator; // Server side data
+    private MarginCalculatorAdd _marginCalculatorRequest; // Used to send to server
+    public MarginCalculatorAdd marginCalculatorRequest
+    {
+        get
+        {
+            if (_marginCalculatorRequest == null && marginCalculator != null)
+            {
+                _marginCalculatorRequest = marginCalculator.GetMarginCalculatorAdd();
+            }
+            return _marginCalculatorRequest;
+        }
+        set
+        {
+            _marginCalculatorRequest = value;
+        }
+    }
     public bool lockForEdit;
     public string orderId;
     [SerializeField] private OrderStatusEnum _orderStatus = OrderStatusEnum.UNSUBMITTED;
@@ -118,4 +144,55 @@ public class OrderPageComponent : MonoBehaviour
     }
     [HideInInspector] public UnityEvent onChange_updateTakeProfitPrice = new();
     public float quantityToClose;
+    [SerializeField] private long _spawnTime; // TIMESTAMP
+    public long spawnTime
+    {
+        set
+        {
+            _spawnTime = value;
+            resultComponent.spawnTimeText.text = DateTimeOffset.FromUnixTimeMilliseconds(_spawnTime).ToLocalTime().ToString();
+        }
+        get
+        {
+            return _spawnTime;
+        }
+    }
+    [SerializeField] private ExitOrderTypeEnum _exitOrderType = ExitOrderTypeEnum.NONE;
+    public ExitOrderTypeEnum exitOrderType
+    {
+        set
+        {
+            _exitOrderType = value;
+            resultComponent.exitOrderTypeText.text = _exitOrderType.ToString();
+            switch (_exitOrderType)
+            {
+                case ExitOrderTypeEnum.NONE:
+                case ExitOrderTypeEnum.MANUAL_CLOSE:
+                    resultComponent.exitOrderTypeText.color = OrderConfig.DISPLAY_COLOR_BLACK;
+                    break;
+                case ExitOrderTypeEnum.STOP_LOSS:
+                    resultComponent.exitOrderTypeText.color = OrderConfig.DISPLAY_COLOR_RED;
+                    break;
+                case ExitOrderTypeEnum.TAKE_PROFIT:
+                    resultComponent.exitOrderTypeText.color = OrderConfig.DISPLAY_COLOR_GREEN;
+                    break;
+                case ExitOrderTypeEnum.THROTTLE_STOP:
+                    resultComponent.exitOrderTypeText.color = OrderConfig.DISPLAY_COLOR_ORANGE;
+                    break;
+            }
+        }
+        get
+        {
+            return _exitOrderType;
+        }
+    }
+    public bool postCalculate
+    {
+        set
+        {
+            if (value) onChange_postCalculate.Invoke();
+        }
+    }
+    [HideInInspector] public UnityEvent onChange_postCalculate = new();
+
 }

@@ -112,6 +112,10 @@ public class QuickOrderDataRowSystem : MonoBehaviour
         GameObject orderType = Instantiate(quickOrderDataRowComponent.infoPanelData, quickOrderDataRowComponent.infoPanelContent);
         TMP_Text orderTypeText = orderType.GetComponent<TMP_Text>();
         orderTypeText.text = "Order Type: " + quickOrderDataRowComponent.setting.order.orderType.ToString();
+
+        GameObject fundingFeeHandler = Instantiate(quickOrderDataRowComponent.infoPanelData, quickOrderDataRowComponent.infoPanelContent);
+        TMP_Text fundingFeeHandlerText = fundingFeeHandler.GetComponent<TMP_Text>();
+        fundingFeeHandlerText.text = "Order Type: " + quickOrderDataRowComponent.setting.order.fundingFeeHandler.ToString();
         #endregion
 
         #region Quick Order
@@ -126,17 +130,26 @@ public class QuickOrderDataRowSystem : MonoBehaviour
         TMP_Text quickEntryTimesText = quickEntryTimes.GetComponent<TMP_Text>();
         quickEntryTimesText.text = "Entry Times: " + quickOrderDataRowComponent.setting.quickOrder.quickEntryTimes.ToString();
 
-        GameObject atrTimeframe = Instantiate(quickOrderDataRowComponent.infoPanelData, quickOrderDataRowComponent.infoPanelContent);
-        TMP_Text atrTimeframeText = atrTimeframe.GetComponent<TMP_Text>();
-        atrTimeframeText.text = "ATR Timeframe: " + TimeframeArray.TIMEFRAME_ARRAY[(int)quickOrderDataRowComponent.setting.quickOrder.atrTimeframe];
+        if (quickOrderDataRowComponent.setting.quickOrder.slType == StopLossTypeEnum.ATR)
+        {
+            GameObject atrTimeframe = Instantiate(quickOrderDataRowComponent.infoPanelData, quickOrderDataRowComponent.infoPanelContent);
+            TMP_Text atrTimeframeText = atrTimeframe.GetComponent<TMP_Text>();
+            atrTimeframeText.text = "ATR Timeframe: " + TimeframeArray.TIMEFRAME_ARRAY[(int)quickOrderDataRowComponent.setting.quickOrder.atrTimeframe];
 
-        GameObject atrLength = Instantiate(quickOrderDataRowComponent.infoPanelData, quickOrderDataRowComponent.infoPanelContent);
-        TMP_Text atrLengthText = atrLength.GetComponent<TMP_Text>();
-        atrLengthText.text = "ATR Length: " + quickOrderDataRowComponent.setting.quickOrder.atrLength.ToString();
+            GameObject atrLength = Instantiate(quickOrderDataRowComponent.infoPanelData, quickOrderDataRowComponent.infoPanelContent);
+            TMP_Text atrLengthText = atrLength.GetComponent<TMP_Text>();
+            atrLengthText.text = "ATR Length: " + quickOrderDataRowComponent.setting.quickOrder.atrLength.ToString();
 
-        GameObject atrMultiplier = Instantiate(quickOrderDataRowComponent.infoPanelData, quickOrderDataRowComponent.infoPanelContent);
-        TMP_Text atrMultiplierText = atrMultiplier.GetComponent<TMP_Text>();
-        atrMultiplierText.text = "ATR Multiplier: " + quickOrderDataRowComponent.setting.quickOrder.atrMultiplier.ToString();
+            GameObject atrMultiplier = Instantiate(quickOrderDataRowComponent.infoPanelData, quickOrderDataRowComponent.infoPanelContent);
+            TMP_Text atrMultiplierText = atrMultiplier.GetComponent<TMP_Text>();
+            atrMultiplierText.text = "ATR Multiplier: " + quickOrderDataRowComponent.setting.quickOrder.atrMultiplier.ToString();
+        }
+        else
+        {
+            GameObject slPrice = Instantiate(quickOrderDataRowComponent.infoPanelData, quickOrderDataRowComponent.infoPanelContent);
+            TMP_Text slPriceText = slPrice.GetComponent<TMP_Text>();
+            slPriceText.text = "SL Price: " + quickOrderDataRowComponent.setting.quickOrder.slPrice.ToString();
+        }
         #endregion
 
     }

@@ -6,39 +6,43 @@ namespace General
     [Serializable]
     public class WebsocketGetRuntimeDataResponse : WebsocketGetBalanceResponse
     {
-        public List<WebsocketGetOrderResponse> orders;
-        public List<WebsocketGetQuickOrderResponse> quickOrders;
-        public List<WebsocketGetTradingBotResponse> tradingBots;
+        public List<WebsocketGetOrderDataResponse> orders;
+        public List<WebsocketGetQuickOrderDataResponse> quickOrders;
+        public List<WebsocketGetTradingBotDataResponse> tradingBots;
     }
     [Serializable]
-    public class WebsocketGetOrderResponse
+    public class WebsocketGetOrderDataResponse : WebsocketAddOrderDataResponse
     {
-        public string id;
         public OrderStatusEnum status;
         public bool statusError;
         public string tradingBotId;
         public string symbol;
-        public CalculateMargin marginCalculator;
         public OrderTypeEnum orderType;
+        public FundingFeeHandlerEnum fundingFeeHandler;
+        public bool disableExit;
         public float quantityFilled;
         public float averagePriceFilled;
         public float actualTakeProfitPrice;
+        public float actualTakeProfitPercentage;
+        public float actualStopLossPrice;
+        public float actualStopLossPercentage;
+        public float actualBreakEvenPrice;
+        public float actualBreakEvenPercentage;
         public float paidFundingAmount;
-        public List<WebsocketGetThrottleOrderResponse> throttleOrders;
-        public long spawnTime; // TIMESTAMP
+        public List<WebsocketGetThrottleOrderDataResponse> throttleOrders;
         public ExitOrderTypeEnum exitOrderType;
     }
     [Serializable]
-    public class WebsocketGetThrottleOrderResponse
+    public class WebsocketGetThrottleOrderDataResponse
     {
         public string id;
         public CalculateThrottle throttleCalculator;
         public OrderTypeEnum orderType;
+        public TakeProfitTypeEnum breakEvenType;
         public OrderStatusEnum status;
-        public bool statusError;
     }
     [Serializable]
-    public class WebsocketGetQuickOrderResponse
+    public class WebsocketGetQuickOrderDataResponse
     {
         public string id;
         public float entryPrice;
@@ -46,7 +50,7 @@ namespace General
         public Preference setting;
     }
     [Serializable]
-    public class WebsocketGetTradingBotResponse
+    public class WebsocketGetTradingBotDataResponse
     {
         public string id;
         public Preference setting;

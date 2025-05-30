@@ -13,7 +13,7 @@ public class SpawnBotSystem : MonoBehaviour
         spawnTradingBotComponent.onChange_botToSpawn.AddListener(SpawnTradingBot);
     }
 
-    void SpawnTradingBot(General.WebsocketGetTradingBotResponse response)
+    void SpawnTradingBot(General.WebsocketGetTradingBotDataResponse response)
     {
         if (botTabComponent.spawnedBotDataObjects.ContainsKey(response.id)) return;
 

@@ -12,6 +12,12 @@ public class QuickTabComponent : MonoBehaviour
     public TMP_InputField entryTimesInput;
     public TMP_InputField entryPriceInput;
     public Button clearEntryPriceButton;
+    public TMP_Dropdown slTypeDropdown;
+    public TMP_Dropdown previewOrderDropdown;
+    public GameObject slPriceObject;
+    public TMP_InputField slPriceInput;
+    public Button clearSlPriceButton;
+    public GameObject atrObject;
     public TMP_Dropdown atrTimeframeDropdown;
     public TMP_InputField atrLengthInput;
     public TMP_InputField atrMultiplierInput;

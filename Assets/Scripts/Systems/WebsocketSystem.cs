@@ -13,10 +13,12 @@ public class WebsocketSystem : MonoBehaviour
     MiniPromptComponent miniPromptComponent;
 
     WebSocket generalSocket;
-    string logPrefix = "[WebsocketSystem] ";
+    string logPrefix;
 
     void Start()
     {
+        logPrefix = "[" + Application.productName + "][" + GetType().Name + "] ";
+
         websocketComponent = GlobalComponent.instance.websocketComponent;
         webrequestComponent = GlobalComponent.instance.webrequestComponent;
         promptComponent = GlobalComponent.instance.promptComponent;
@@ -40,7 +42,7 @@ public class WebsocketSystem : MonoBehaviour
     {
         generalSocket.OnOpen += (sender, e) =>
         {
-            if (websocketComponent.logging) Debug.Log(logPrefix + "Connection open: " + ((WebSocket)sender).Url);
+            if (websocketComponent.envData.enableLog) Debug.Log(logPrefix + "Connection open: " + ((WebSocket)sender).Url);
 
             UnityMainThread.AddJob(() =>
             {
@@ -50,9 +52,9 @@ public class WebsocketSystem : MonoBehaviour
         generalSocket.OnMessage += (sender, e) =>
         {
             string rawData = e.Data;
-            if (websocketComponent.encryption && !Utils.IsJsonString(e.Data))
-                rawData = Encryption.Decrypt(e.Data, SecretConfig.ENCRYPTION_ACCESS_TOKEN_32, websocketComponent.generalSocketIv);
-            if (websocketComponent.logging) Debug.Log(logPrefix + "Incoming message from: " + ((WebSocket)sender).Url + ", Data: " + rawData);
+            if (websocketComponent.envData.enableEncryption && !Utils.IsJsonString(e.Data))
+                rawData = Encryption.Decrypt(e.Data, EncryptionConfig.ENCRYPTION_ACCESS_TOKEN_32, websocketComponent.generalSocketIv);
+            if (websocketComponent.envData.enableLog) Debug.Log(logPrefix + "Incoming message from: " + ((WebSocket)sender).Url + ", Data: " + rawData);
 
             General.WebsocketGeneralResponse response = JsonConvert.DeserializeObject<General.WebsocketGeneralResponse>(rawData, JsonSerializerConfig.settings);
 
@@ -115,11 +117,11 @@ public class WebsocketSystem : MonoBehaviour
         };
         generalSocket.OnError += (sender, e) =>
         {
-            if (websocketComponent.logging) Debug.LogError(logPrefix + "Error at: " + ((WebSocket)sender).Url + ", Message: " + e.Message + ", Exception: " + e.Exception);
+            if (websocketComponent.envData.enableLog) Debug.LogError(logPrefix + "Error at: " + ((WebSocket)sender).Url + ", Message: " + e.Message + ", Exception: " + e.Exception);
         };
         generalSocket.OnClose += (sender, e) =>
         {
-            if (websocketComponent.logging) Debug.Log(logPrefix + "Connection closed at: " + ((WebSocket)sender).Url + ", Code: " + e.Code + ", WasClean: " + e.WasClean + ", Reason: " + e.Reason);
+            if (websocketComponent.envData.enableLog) Debug.Log(logPrefix + "Connection closed at: " + ((WebSocket)sender).Url + ", Code: " + e.Code + ", WasClean: " + e.WasClean + ", Reason: " + e.Reason);
             if (!e.WasClean) websocketComponent.connectGeneralSocket = true;
 
             UnityMainThread.AddJob(() =>
@@ -133,22 +135,7 @@ public class WebsocketSystem : MonoBehaviour
         if (websocketComponent.connectGeneralSocket)
         {
             websocketComponent.connectGeneralSocket = false;
-#if UNITY_EDITOR
-            string host = websocketComponent.localhost ? WebsocketConfig.GENERAL_HOST_LOCAL : WebsocketConfig.GENERAL_HOST;
-#else
-            string host = WebsocketConfig.GENERAL_HOST;
-#endif
-            string port = WebsocketConfig.GENERAL_PORT;
-            switch (websocketComponent.envPort)
-            {
-                case EnvPort.TEST:
-                    port = WebsocketConfig.GENERAL_PORT_TEST;
-                    break;
-                case EnvPort.PRODUCTION:
-                    port = WebsocketConfig.GENERAL_PORT_PRODUCTION;
-                    break;
-            }
-            generalSocket = new WebSocket(host + ":" + port);
+            generalSocket = new WebSocket(websocketComponent.envData.host + ":" + websocketComponent.envData.port);
             //if (!websocketComponent.localhost) generalSocket.SslConfiguration.EnabledSslProtocols = websocketComponent.sslProtocols;
             ListenGeneralSocket();
             websocketComponent.generalSocket = generalSocket;
@@ -164,15 +151,15 @@ public class WebsocketSystem : MonoBehaviour
 
         websocketComponent.generalRequests.ForEach(request =>
         {
-            Send(request, generalSocket, websocketComponent.encryption);
+            Send(request, generalSocket, websocketComponent.envData.enableEncryption);
         });
         websocketComponent.generalRequests.Clear();
     }
     void Send(object request, WebSocket socket, bool encrypt = false)
     {
         string jsonStr = JsonConvert.SerializeObject(request, JsonSerializerConfig.settings);
-        if (websocketComponent.logging) Debug.Log(logPrefix + "Send message: " + jsonStr);
-        if (encrypt) jsonStr = Encryption.Encrypt(jsonStr, SecretConfig.ENCRYPTION_ACCESS_TOKEN_32, websocketComponent.generalSocketIv);
+        if (websocketComponent.envData.enableLog) Debug.Log(logPrefix + "Send message: " + jsonStr);
+        if (encrypt) jsonStr = Encryption.Encrypt(jsonStr, EncryptionConfig.ENCRYPTION_ACCESS_TOKEN_32, websocketComponent.generalSocketIv);
         socket.Send(jsonStr);
     }
 }

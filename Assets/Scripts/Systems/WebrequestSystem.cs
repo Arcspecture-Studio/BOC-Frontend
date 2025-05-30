@@ -15,10 +15,12 @@ public class WebrequestSystem : MonoBehaviour
     PlatformComponent platformComponent;
     PromptComponent promptComponent;
     LoginComponent loginComponent;
-    string logPrefix = "[WebrequestSystem] ";
+    string logPrefix;
 
     void Start()
     {
+        logPrefix = "[" + Application.productName + "][" + GetType().Name + "] ";
+
         webrequestComponent = GlobalComponent.instance.webrequestComponent;
         websocketComponent = GlobalComponent.instance.websocketComponent;
         platformComponent = GlobalComponent.instance.platformComponent;

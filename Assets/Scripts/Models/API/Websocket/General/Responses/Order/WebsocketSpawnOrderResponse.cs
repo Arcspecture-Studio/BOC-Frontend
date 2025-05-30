@@ -7,6 +7,6 @@ namespace General
     [Serializable]
     public class WebsocketSpawnOrderResponse : WebsocketGeneralResponse
     {
-        public WebsocketGetOrderResponse order;
+        public WebsocketGetOrderDataResponse order;
     }
 }

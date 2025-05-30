@@ -3,9 +3,8 @@ using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using WebSocketSharp;
-using MongoDB.Bson;
 using DG.Tweening;
-using System;
+using MongoDB.Bson;
 
 public class OrderPageSystem : MonoBehaviour
 {
@@ -20,9 +19,8 @@ public class OrderPageSystem : MonoBehaviour
 
     bool? lockForEdit = null;
     OrderStatusEnum? orderStatus = null;
-    bool calculateButtonPressed = false;
 
-    void Start()
+    void Awake()
     {
         orderPageComponent = GetComponent<OrderPageComponent>();
         websocketComponent = GlobalComponent.instance.websocketComponent;
@@ -33,8 +31,6 @@ public class OrderPageSystem : MonoBehaviour
         getBalanceComponent = GlobalComponent.instance.getBalanceComponent;
         closePositionPromptComponent = GlobalComponent.instance.closePositionPromptComponent;
 
-        if (orderPageComponent.orderId.IsNullOrEmpty())
-            orderPageComponent.orderId = ObjectId.GenerateNewId().ToString();
         orderPageComponent.orderIdButton.onClick.AddListener(() =>
         {
             GUIUtility.systemCopyBuffer = orderPageComponent.orderId.ToString();
@@ -49,7 +45,6 @@ public class OrderPageSystem : MonoBehaviour
             else
             {
                 orderPageComponent.calculate = true;
-                calculateButtonPressed = true;
             }
         });
         orderPageComponent.placeOrderButton.onClick.AddListener(() =>
@@ -116,14 +111,14 @@ public class OrderPageSystem : MonoBehaviour
                 promptComponent.active = false;
             });
         });
-        orderPageComponent.riskRewardRatioInput.onSubmit.AddListener(value => orderPageComponent.updateTakeProfitPrice = true);
+        orderPageComponent.riskRewardRatioInput.onSubmit.AddListener(value => orderPageComponent.updateToServer = true);
         orderPageComponent.riskRewardMinusButton.onClick.AddListener(() =>
         {
             float rrr = float.Parse(orderPageComponent.riskRewardRatioInput.text);
             rrr -= 0.01f;
             orderPageComponent.riskRewardRatioInput.text = rrr.ToString();
 
-            orderPageComponent.updateTakeProfitPrice = true;
+            orderPageComponent.updateToServer = true;
         });
         orderPageComponent.riskRewardAddButton.onClick.AddListener(() =>
         {
@@ -131,15 +126,25 @@ public class OrderPageSystem : MonoBehaviour
             rrr += 0.01f;
             orderPageComponent.riskRewardRatioInput.text = rrr.ToString();
 
-            orderPageComponent.updateTakeProfitPrice = true;
+            orderPageComponent.updateToServer = true;
         });
-
+        orderPageComponent.orderTypeDropdown.onValueChanged.AddListener(value =>
+        orderPageComponent.updateToServer = true);
+        orderPageComponent.fundingFeeHandlerDropdown.onValueChanged.AddListener(value =>
+        orderPageComponent.updateToServer = true);
+        orderPageComponent.disableExitDropdown.onValueChanged.AddListener(value =>
+        orderPageComponent.updateToServer = true);
         orderPageComponent.onChange_addToServer.AddListener(AddToServer);
         orderPageComponent.onChange_updateToServer.AddListener(UpdateToServer);
         orderPageComponent.onChange_deleteFromServer.AddListener(DeleteFromServer);
         orderPageComponent.onChange_submitToServer.AddListener(SubmitToServer);
-        orderPageComponent.onChange_updateTakeProfitPrice.AddListener(UpdateTakeProfitPrice);
+        orderPageComponent.onChange_updateTakeProfitPrice.AddListener(UpdateTakeProfitPriceUI);
+        orderPageComponent.onChange_postCalculate.AddListener(PostCalculate);
 
+        if (orderPageComponent.orderId.IsNullOrEmpty()) orderPageComponent.orderId = ObjectId.GenerateNewId().ToString();
+    }
+    void Start()
+    {
         orderPageComponent.orderIdText.text = "Order Id: " + orderPageComponent.orderId.ToString();
 
         RestoreFromProfilePreference();
@@ -172,106 +177,110 @@ public class OrderPageSystem : MonoBehaviour
         orderPageComponent.takeProfitQuantityPercentageCustomSlider.SetValue(preference.order.takeProfitQuantityPercentage);
         orderPageComponent.takeProfitTrailingCallbackPercentageCustomSlider.SetValue(preference.order.takeProfitTrailingCallbackPercentage);
         orderPageComponent.orderTypeDropdown.value = (int)preference.order.orderType;
+        orderPageComponent.fundingFeeHandlerDropdown.value = (int)preference.order.fundingFeeHandler;
     }
     IEnumerator CalculateMargin()
     {
         if (!orderPageComponent.calculate) yield break;
         orderPageComponent.calculate = false;
 
-        #region Update button
+        #region Reset ui
         orderPageComponent.calculateButton.interactable = false;
         orderPageComponent.lockForEdit = true;
+        orderPageComponent.exitOrderType = ExitOrderTypeEnum.NONE;
+        orderPageComponent.disableExitDropdown.value = 0;
         #endregion
 
-        if (calculateButtonPressed)
+        #region Prepare input data
+        // get input
+        string walletUnit = platformComponent.marginAssets[orderPageComponent.symbolDropdownComponent.selectedSymbol.ToUpper()];
+        float maxLossPercentage = orderPageComponent.maxLossPercentageInput.text.IsNullOrEmpty() ? float.NaN :
+            float.Parse(orderPageComponent.maxLossPercentageInput.text);
+        float amountToLoss = orderPageComponent.maxLossAmountInput.text.IsNullOrEmpty() ? float.NaN :
+            float.Parse(orderPageComponent.maxLossAmountInput.text);
+        int entryTimes = orderPageComponent.entryTimesInput.text.IsNullOrEmpty() ? 0 :
+            int.Parse(orderPageComponent.entryTimesInput.text);
+        List<float> entryPrices = new List<float>();
+        orderPageComponent.inputEntryPricesComponent.entryPriceInputs.ForEach(input =>
         {
-            #region Prepare data
-            // get input
-            string walletUnit = platformComponent.marginAssets[orderPageComponent.symbolDropdownComponent.selectedSymbol.ToUpper()];
-            float maxLossPercentage = orderPageComponent.maxLossPercentageInput.text.IsNullOrEmpty() ? float.NaN :
-                float.Parse(orderPageComponent.maxLossPercentageInput.text);
-            float amountToLoss = orderPageComponent.maxLossAmountInput.text.IsNullOrEmpty() ? float.NaN :
-                float.Parse(orderPageComponent.maxLossAmountInput.text);
-            int entryTimes = orderPageComponent.entryTimesInput.text.IsNullOrEmpty() ? 0 :
-                int.Parse(orderPageComponent.entryTimesInput.text);
-            List<float> entryPrices = new List<float>();
-            orderPageComponent.inputEntryPricesComponent.entryPriceInputs.ForEach(input =>
-            {
-                if (input.text != "") entryPrices.Add(float.Parse(input.text));
-            });
-            float stopLossPrice = orderPageComponent.stopLossInput.text.IsNullOrEmpty() ? float.NaN :
-                float.Parse(orderPageComponent.stopLossInput.text);
-            float takeProfitPrice = orderPageComponent.takeProfitInput.text.IsNullOrEmpty() ? float.NaN :
-                float.Parse(orderPageComponent.takeProfitInput.text);
-            float riskRewardRatio = orderPageComponent.riskRewardRatioInput.text.IsNullOrEmpty() ? profileComponent.activeProfile.preference.order.riskRewardRatio : float.Parse(orderPageComponent.riskRewardRatioInput.text);
+            if (input.text != "") entryPrices.Add(float.Parse(input.text));
+        });
+        float stopLossPrice = orderPageComponent.stopLossInput.text.IsNullOrEmpty() ? float.NaN :
+            float.Parse(orderPageComponent.stopLossInput.text);
+        float takeProfitPrice = orderPageComponent.takeProfitInput.text.IsNullOrEmpty() ? float.NaN :
+            float.Parse(orderPageComponent.takeProfitInput.text);
+        float riskRewardRatio = orderPageComponent.riskRewardRatioInput.text.IsNullOrEmpty() ? profileComponent.activeProfile.preference.order.riskRewardRatio : float.Parse(orderPageComponent.riskRewardRatioInput.text);
 
-            // validate input
-            if (walletUnit.IsNullOrEmpty())
+        // validate input
+        if (walletUnit.IsNullOrEmpty())
+        {
+            ShowPrompt("Wallet unit not available.");
+            yield break;
+        }
+        if (maxLossPercentage.Equals(float.NaN) && amountToLoss.Equals(float.NaN))
+        {
+            ShowPrompt("Either one of the loss percentage or loss amount must have value.");
+            yield break;
+        }
+        if (entryPrices.Count <= 0)
+        {
+            ShowPrompt("Entry price(s) cannot be empty.");
+            yield break;
+        }
+        if (stopLossPrice.Equals(float.NaN))
+        {
+            ShowPrompt("Stop loss price cannot be empty.");
+            yield break;
+        }
+        if (!((entryPrices[0] > stopLossPrice && entryPrices[^1] > stopLossPrice) || (entryPrices[0] < stopLossPrice && entryPrices[^1] < stopLossPrice)))
+        {
+            ShowPrompt("Entry price(s) and stop loss price not valid.");
+            yield break;
+        }
+        if (!takeProfitPrice.Equals(float.NaN))
+        {
+            if (!((entryPrices[0] > stopLossPrice && entryPrices[^1] > stopLossPrice && entryPrices[0] < takeProfitPrice && entryPrices[^1] < takeProfitPrice)
+              || (entryPrices[0] < stopLossPrice && entryPrices[^1] < stopLossPrice && entryPrices[0] > takeProfitPrice && entryPrices[^1] > takeProfitPrice)))
             {
-                ShowPrompt("Wallet unit not available.");
+                ShowPrompt("Entry price(s) and take profit price not valid.");
                 yield break;
             }
-            if (maxLossPercentage.Equals(float.NaN) && amountToLoss.Equals(float.NaN))
-            {
-                ShowPrompt("Either one of the loss percentage or loss amount must have value.");
-                yield break;
-            }
-            if (entryPrices.Count <= 0)
-            {
-                ShowPrompt("Entry price(s) cannot be empty.");
-                yield break;
-            }
-            if (stopLossPrice.Equals(float.NaN))
-            {
-                ShowPrompt("Stop loss price cannot be empty.");
-                yield break;
-            }
-            if (!((entryPrices[0] > stopLossPrice && entryPrices[^1] > stopLossPrice) || (entryPrices[0] < stopLossPrice && entryPrices[^1] < stopLossPrice)))
-            {
-                ShowPrompt("Entry price(s) and stop loss price not valid.");
-                yield break;
-            }
-            if (!takeProfitPrice.Equals(float.NaN))
-            {
-                if (!((entryPrices[0] > stopLossPrice && entryPrices[^1] > stopLossPrice && entryPrices[0] < takeProfitPrice && entryPrices[^1] < takeProfitPrice)
-                  || (entryPrices[0] < stopLossPrice && entryPrices[^1] < stopLossPrice && entryPrices[0] > takeProfitPrice && entryPrices[^1] > takeProfitPrice)))
-                {
-                    ShowPrompt("Entry price(s) and take profit price not valid.");
-                    yield break;
-                }
-            }
-
-            platformComponent.walletBalances = new();
-            getBalanceComponent.getBalance = true;
-            yield return new WaitUntil(() => platformComponent.walletBalances.ContainsKey(walletUnit));
-            float currentWalletBalance = platformComponent.walletBalances[walletUnit];
-
-            yield return new WaitUntil(() => platformComponent.fees.ContainsKey(orderPageComponent.symbolDropdownComponent.selectedSymbol)
-            && platformComponent.fees[orderPageComponent.symbolDropdownComponent.selectedSymbol].HasValue);
-            float feeRate = platformComponent.fees[orderPageComponent.symbolDropdownComponent.selectedSymbol].Value;
-            #endregion
-
-            #region Create calculator instance
-            orderPageComponent.marginCalculator = new CalculateMargin(
-                currentWalletBalance,
-                maxLossPercentage,
-                amountToLoss,
-                entryTimes,
-                entryPrices,
-                stopLossPrice,
-                (TakeProfitTypeEnum)orderPageComponent.takeProfitTypeDropdown.value,
-                riskRewardRatio,
-                (int)orderPageComponent.takeProfitQuantityPercentageCustomSlider.slider.value,
-                orderPageComponent.takeProfitTrailingCallbackPercentageCustomSlider.slider.value,
-                feeRate,
-                platformComponent.quantityPrecisions[orderPageComponent.symbolDropdownComponent.selectedSymbol],
-                platformComponent.pricePrecisions[orderPageComponent.symbolDropdownComponent.selectedSymbol],
-                orderPageComponent.marginDistributionModeDropdown.value == 1,
-                orderPageComponent.marginWeightDistributionValueCustomSlider.slider.value
-            );
-            #endregion
         }
 
+        platformComponent.walletBalances = new();
+        getBalanceComponent.getBalance = true;
+        yield return new WaitUntil(() => platformComponent.walletBalances.ContainsKey(walletUnit));
+        float currentWalletBalance = platformComponent.walletBalances[walletUnit];
+
+        yield return new WaitUntil(() => platformComponent.fees.ContainsKey(orderPageComponent.symbolDropdownComponent.selectedSymbol)
+        && platformComponent.fees[orderPageComponent.symbolDropdownComponent.selectedSymbol].HasValue);
+        float feeRate = platformComponent.fees[orderPageComponent.symbolDropdownComponent.selectedSymbol].Value;
+        #endregion
+
+        #region Create calculator instance
+        orderPageComponent.marginCalculatorRequest = new MarginCalculatorAdd(
+            currentWalletBalance,
+            maxLossPercentage,
+            amountToLoss,
+            entryTimes,
+            entryPrices,
+            stopLossPrice,
+            feeRate,
+            platformComponent.quantityPrecisions[orderPageComponent.symbolDropdownComponent.selectedSymbol],
+            platformComponent.pricePrecisions[orderPageComponent.symbolDropdownComponent.selectedSymbol],
+            orderPageComponent.marginDistributionModeDropdown.value == 1,
+            orderPageComponent.marginWeightDistributionValueCustomSlider.slider.value,
+            (TakeProfitTypeEnum)orderPageComponent.takeProfitTypeDropdown.value,
+            riskRewardRatio,
+            (int)orderPageComponent.takeProfitQuantityPercentageCustomSlider.slider.value,
+            orderPageComponent.takeProfitTrailingCallbackPercentageCustomSlider.slider.value
+        );
+        #endregion
+
+        orderPageComponent.addToServer = true;
+    }
+    void PostCalculate()
+    {
         #region Prepare game object for display
         orderPageComponent.resultComponent.pricesDataObjects.ForEach(obj => Destroy(obj));
         orderPageComponent.resultComponent.pricesDataObjects.Clear();
@@ -306,7 +315,20 @@ public class OrderPageSystem : MonoBehaviour
         temp.text = direction;
         temp.color = directionColor;
         orderPageComponent.resultComponent.orderInfoDataObject.transform.GetChild(3).gameObject.SetActive(false);
-        orderPageComponent.resultComponent.orderInfoDataObject.transform.GetChild(4).GetComponent<TMP_Text>().text = orderPageComponent.orderStatus.ToString();
+        temp = orderPageComponent.resultComponent.orderInfoDataObject.transform.GetChild(4).GetComponent<TMP_Text>();
+        temp.text = orderPageComponent.orderStatus.ToString();
+        switch (orderPageComponent.orderStatus)
+        {
+            case OrderStatusEnum.UNSUBMITTED:
+                temp.color = OrderConfig.DISPLAY_COLOR_YELLOW;
+                break;
+            case OrderStatusEnum.SUBMITTED:
+                temp.color = OrderConfig.DISPLAY_COLOR_CYAN;
+                break;
+            case OrderStatusEnum.FILLED:
+                temp.color = OrderConfig.DISPLAY_COLOR_ORANGE;
+                break;
+        }
         orderPageComponent.resultComponent.orderInfoDataObject.transform.GetChild(5).gameObject.SetActive(false);
         #endregion
         #region Prices & Quantities
@@ -357,7 +379,9 @@ public class OrderPageSystem : MonoBehaviour
         temp.text = Utils.RoundTwoDecimal(orderPageComponent.marginCalculator.stopLossPercentage).ToString() + "%";
         temp.color = OrderConfig.DISPLAY_COLOR_RED;
         temp = orderPageComponent.resultComponent.totalWinLossAmountDataObject.transform.GetChild(2).GetComponent<TMP_Text>();
-        temp.text = Utils.RoundTwoDecimal(orderPageComponent.marginCalculator.totalLossAmount).ToString();
+        string totalLossAmount = Utils.RoundTwoDecimal(orderPageComponent.marginCalculator.totalLossAmount).ToString();
+        string lossAmountPerPercentage = Utils.RoundTwoDecimal(orderPageComponent.marginCalculator.lossAmountPerPercentage).ToString();
+        temp.text = totalLossAmount + " (" + lossAmountPerPercentage + "/1%)";
         temp.color = OrderConfig.DISPLAY_COLOR_RED;
         temp = orderPageComponent.resultComponent.totalWinLossAmountDataObject.transform.GetChild(3).GetComponent<TMP_Text>();
         temp.text = "Fee: " + Utils.RoundNDecimal(orderPageComponent.marginCalculator.totalFee, 6).ToString();
@@ -391,14 +415,6 @@ public class OrderPageSystem : MonoBehaviour
         if (orderPageComponent.orderStatus == OrderStatusEnum.UNSUBMITTED)
         {
             orderPageComponent.calculateButton.interactable = true;
-        }
-        #endregion
-
-        #region Save order when calculate button is pressed
-        if (calculateButtonPressed)
-        {
-            calculateButtonPressed = false;
-            orderPageComponent.addToServer = true;
         }
         #endregion
     }
@@ -444,41 +460,54 @@ public class OrderPageSystem : MonoBehaviour
         orderPageComponent.cancelErrorOrderButton.interactable = lockForEdit.Value;
         orderPageComponent.resultComponent.gameObject.SetActive(lockForEdit.Value);
         orderPageComponent.takeProfitTypeObject.SetActive(lockForEdit.Value);
-        orderPageComponent.riskRewardRatioObject.SetActive(orderPageComponent.lockForEdit && orderPageComponent.takeProfitTypeDropdown.value > (int)TakeProfitTypeEnum.NONE);
-        orderPageComponent.takeProfitQuantityPercentageCustomSlider.gameObject.SetActive(orderPageComponent.lockForEdit && orderPageComponent.takeProfitTypeDropdown.value > (int)TakeProfitTypeEnum.NONE);
-        orderPageComponent.takeProfitTrailingCallbackPercentageCustomSlider.gameObject.SetActive(orderPageComponent.lockForEdit && orderPageComponent.takeProfitTypeDropdown.value == (int)TakeProfitTypeEnum.TRAILING);
+        orderPageComponent.riskRewardRatioObject.SetActive(lockForEdit.Value && orderPageComponent.takeProfitTypeDropdown.value > (int)TakeProfitTypeEnum.NONE);
+        orderPageComponent.takeProfitQuantityPercentageCustomSlider.gameObject.SetActive(lockForEdit.Value && orderPageComponent.takeProfitTypeDropdown.value > (int)TakeProfitTypeEnum.NONE);
+        orderPageComponent.takeProfitTrailingCallbackPercentageCustomSlider.gameObject.SetActive(lockForEdit.Value && orderPageComponent.takeProfitTypeDropdown.value == (int)TakeProfitTypeEnum.TRAILING);
         orderPageComponent.orderTypeObject.SetActive(lockForEdit.Value);
+        orderPageComponent.fundingFeeHandlerObject.SetActive(lockForEdit.Value);
+        orderPageComponent.disableExitObject.SetActive(lockForEdit.Value);
         orderPageComponent.applyButtonObject.SetActive(lockForEdit.Value);
+        orderPageComponent.positionInfoObject.SetActive(lockForEdit.Value && orderPageComponent.exitOrderType > ExitOrderTypeEnum.NONE);
     }
     void UpdateUiInteractableStatusBasedOnOrderStatus()
     {
         if (orderStatus == orderPageComponent.orderStatus) return;
         orderStatus = orderPageComponent.orderStatus;
         bool isFilled = orderStatus.Equals(OrderStatusEnum.FILLED);
-        orderPageComponent.positionInfoObject.SetActive(isFilled);
+        orderPageComponent.positionInfoObject.SetActive(orderPageComponent.lockForEdit && (isFilled || orderPageComponent.exitOrderType > ExitOrderTypeEnum.NONE));
         orderPageComponent.throttleObject.SetActive(isFilled);
         if (orderStatus != OrderStatusEnum.FILLED) orderPageComponent.positionInfoPaidFundingAmount.text = "0";
     }
     void AddToServer()
     {
-        if (orderPageComponent.marginCalculator == null) return;
+        if (orderPageComponent.marginCalculatorRequest == null) return;
         websocketComponent.generalRequests.Add(
             new General.WebsocketAddOrderRequest(
             loginComponent.token,
             orderPageComponent.orderId,
             orderPageComponent.symbolDropdownComponent.selectedSymbol,
-            orderPageComponent.marginCalculator,
-            (OrderTypeEnum)orderPageComponent.orderTypeDropdown.value
+            orderPageComponent.marginCalculatorRequest,
+            (OrderTypeEnum)orderPageComponent.orderTypeDropdown.value,
+            (FundingFeeHandlerEnum)orderPageComponent.fundingFeeHandlerDropdown.value
         ));
     }
     public void UpdateToServer()
     {
+        if (orderPageComponent.marginCalculatorRequest == null) return; // marginCalculator is null (orderTypeDropdown & fundingFeeHandlerDropdown & disableExitDropdown will invoke this method during order spawn, but since marginCalculator is null during spawn, so this method will be skipped)
+        orderPageComponent.marginCalculatorRequest.UpdateMarginCalculatorFromUI(
+            orderPageComponent.takeProfitTypeDropdown.value,
+            orderPageComponent.riskRewardRatioInput.text,
+            orderPageComponent.takeProfitQuantityPercentageCustomSlider.slider.value,
+            orderPageComponent.takeProfitTrailingCallbackPercentageCustomSlider.slider.value
+        );
         websocketComponent.generalRequests.Add(
             new General.WebsocketUpdateOrderRequest(
             loginComponent.token,
             orderPageComponent.orderId,
-            orderPageComponent.marginCalculator,
+            orderPageComponent.marginCalculatorRequest.GetMarginCalculatorUpdate(),
             (OrderTypeEnum)orderPageComponent.orderTypeDropdown.value,
+            (FundingFeeHandlerEnum)orderPageComponent.fundingFeeHandlerDropdown.value,
+            orderPageComponent.disableExitDropdown.value == 1,
             orderPageComponent.tradingBotId
         ));
     }
@@ -504,17 +533,9 @@ public class OrderPageSystem : MonoBehaviour
             orderPageComponent.quantityToClose
         ));
     }
-    public void UpdateTakeProfitPrice()
+    void UpdateTakeProfitPriceUI()
     {
         #region Calculate and get latest take profit prices
-        if (orderPageComponent.takeProfitTypeDropdown.value > (int)TakeProfitTypeEnum.NONE)
-        {
-            orderPageComponent.marginCalculator.RecalculateTakeProfitPrices(
-                (TakeProfitTypeEnum)orderPageComponent.takeProfitTypeDropdown.value,
-                float.Parse(orderPageComponent.riskRewardRatioInput.text),
-                (int)orderPageComponent.takeProfitQuantityPercentageCustomSlider.slider.value,
-                orderPageComponent.takeProfitTrailingCallbackPercentageCustomSlider.slider.value);
-        }
         List<float> tpPrices = (TakeProfitTypeEnum)orderPageComponent.takeProfitTypeDropdown.value == TakeProfitTypeEnum.TRAILING ?
         orderPageComponent.marginCalculator.takeProfitTrailingPrices :
         orderPageComponent.marginCalculator.takeProfitPrices;
@@ -540,7 +561,5 @@ public class OrderPageSystem : MonoBehaviour
         orderPageComponent.resultComponent.balanceDataObject.transform.GetChild(4).GetComponent<TMP_Text>().text = Utils.TruncTwoDecimal(orderPageComponent.marginCalculator.balanceAfterFullWin).ToString();
         orderPageComponent.resultComponent.balanceDataObject.transform.GetChild(5).GetComponent<TMP_Text>().text = "+" + Utils.RoundTwoDecimal(Utils.RateToPercentage(orderPageComponent.marginCalculator.balanceIncrementRate)).ToString() + " %";
         #endregion
-
-        orderPageComponent.updateToServer = true;
     }
 }

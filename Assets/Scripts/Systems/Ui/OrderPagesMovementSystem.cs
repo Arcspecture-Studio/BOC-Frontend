@@ -1,5 +1,4 @@
 ﻿using DG.Tweening;
-using System;
 using UnityEngine;
 
 public class OrderPagesMovementSystem : MonoBehaviour
@@ -11,7 +10,13 @@ public class OrderPagesMovementSystem : MonoBehaviour
     float xVelocity;
     bool isSwiping
     {
-        get { return inputComponent.hold.IsPressed() && orderPagesComponent.status == OrderPagesStatusEnum.DETACH; }
+        get
+        {
+            return inputComponent.click.IsPressed()
+            && inputComponent.screenPos.ReadValue<Vector2>().y < ((ScalableCanvas.canvasHeight + orderPagesComponent.workspaceRect.offsetMax.y) / ScalableCanvas.canvasHeight * Screen.height) // Exclude top bar
+            && inputComponent.screenPos.ReadValue<Vector2>().y > ((orderPagesComponent.workspaceRect.offsetMin.y + ScalableCanvas.instance.rectTransform.offsetMin.y) / ScalableCanvas.canvasHeight * Screen.height) // Exclude bottom navigation bar(workspace) and banner ads(scalable canvas)
+            && orderPagesComponent.status == OrderPagesStatusEnum.DETACH;
+        }
     }
 
     string movePagesFunctionName = "MovePages";

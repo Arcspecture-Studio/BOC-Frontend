@@ -5,12 +5,18 @@ namespace General
     [Serializable]
     public class WebsocketUpdateOrderRequest : WebsocketOrderRequest
     {
+        public bool? disableExit;
+
         public WebsocketUpdateOrderRequest(string token,
             string orderId,
-            CalculateMargin marginCalculator,
+            MarginCalculatorUpdate marginCalculator,
             OrderTypeEnum orderType,
-            string tradingBotId) : base(WebsocketEventTypeEnum.UPDATE_ORDER, token, orderId, null, marginCalculator, orderType, tradingBotId)
+            FundingFeeHandlerEnum fundingFeeHandler,
+            bool disableExit,
+            string tradingBotId) : base(WebsocketEventTypeEnum.UPDATE_ORDER, token, orderId,
+            null, marginCalculator, orderType, fundingFeeHandler, tradingBotId)
         {
+            this.disableExit = disableExit;
         }
     }
 }

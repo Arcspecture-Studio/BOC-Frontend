@@ -1,8 +1,23 @@
+using System;
+
 public static class WebsocketConfig
 {
-    public static readonly string GENERAL_HOST_LOCAL = "ws://localhost";
-    public static readonly string GENERAL_HOST = "ws://54.255.11.230";
-    public static readonly string GENERAL_PORT = "3000";
-    public static readonly string GENERAL_PORT_TEST = "3001";
-    public static readonly string GENERAL_PORT_PRODUCTION = "3002";
+    public static readonly WebsocketConfigEnvData develop = new(
+        "ws://localhost",
+        "3000",
+        true,
+        false
+    );
+    public static readonly WebsocketConfigEnvData test = new(
+        EnvironmentParameter.WEBSOCKET_SERVER_HOST ?? "ws://localhost",
+        "3001",
+        true,
+        true
+    );
+    public static readonly WebsocketConfigEnvData production = new(
+        EnvironmentParameter.WEBSOCKET_SERVER_HOST ?? "ws://localhost",
+        "3002",
+        false,
+        true
+    );
 }

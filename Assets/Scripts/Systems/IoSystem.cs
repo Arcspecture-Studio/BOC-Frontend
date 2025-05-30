@@ -14,11 +14,13 @@ public class IoSystem : MonoBehaviour
     SettingPageComponent settingPageComponent;
     QuickTabComponent quickTabComponent;
     GetInitialDataComponent getInitialDataComponent;
-    string logPrefix = "[IoSystem] ";
     bool readTokenAdy = false;
+    string logPrefix;
 
     void Start()
     {
+        logPrefix = "[" + Application.productName + "][" + GetType().Name + "] ";
+
         ioComponent = GlobalComponent.instance.ioComponent;
         websocketComponent = GlobalComponent.instance.websocketComponent;
         loginComponent = GlobalComponent.instance.loginComponent;
@@ -77,7 +79,7 @@ public class IoSystem : MonoBehaviour
         try // to serialize the json string
         {
             TokenFile data = JsonConvert.DeserializeObject<TokenFile>(jsonString, JsonSerializerConfig.settings);
-            loginComponent.token = Encryption.Decrypt(data.token, SecretConfig.ENCRYPTION_ACCESS_TOKEN_32, data.key);
+            loginComponent.token = Encryption.Decrypt(data.token, EncryptionConfig.ENCRYPTION_ACCESS_TOKEN_32, data.key);
         }
         catch (Exception ex)
         {
@@ -96,7 +98,7 @@ public class IoSystem : MonoBehaviour
         ) return;
         ioComponent.writeToken = false;
 
-        string token = Encryption.Encrypt(loginComponent.token, SecretConfig.ENCRYPTION_ACCESS_TOKEN_32, websocketComponent.generalSocketIv);
+        string token = Encryption.Encrypt(loginComponent.token, EncryptionConfig.ENCRYPTION_ACCESS_TOKEN_32, websocketComponent.generalSocketIv);
         TokenFile file = new(token, websocketComponent.generalSocketIv);
         string jsonString = JsonConvert.SerializeObject(file, JsonSerializerConfig.settings);
         Write(ioComponent.tokenFileName, jsonString);

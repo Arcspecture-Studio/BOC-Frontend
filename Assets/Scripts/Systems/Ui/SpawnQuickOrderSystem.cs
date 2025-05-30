@@ -13,7 +13,7 @@ public class SpawnQuickOrderSystem : MonoBehaviour
         spawnQuickOrderComponent.onChange_quickOrderToSpawn.AddListener(SpawnQuickOrder);
     }
 
-    void SpawnQuickOrder(General.WebsocketGetQuickOrderResponse response)
+    void SpawnQuickOrder(General.WebsocketGetQuickOrderDataResponse response)
     {
         if (quickTabComponent.spawnedQuickOrderDataObjects.ContainsKey(response.id)) return;
 

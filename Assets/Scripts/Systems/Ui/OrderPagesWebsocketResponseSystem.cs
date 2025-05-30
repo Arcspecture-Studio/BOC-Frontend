@@ -1,4 +1,3 @@
-using System;
 using Newtonsoft.Json;
 using TMPro;
 using UnityEngine;
@@ -21,6 +20,7 @@ public class OrderPagesWebsocketResponseSystem : MonoBehaviour
     void Update()
     {
         AddOrderToServerResponse();
+        UpdateOrderToServerResponse();
         SubmitOrderToServerResponse();
         PositionInfoUpdateResponse();
         SubmitThrottleToServerResponse();
@@ -54,16 +54,58 @@ public class OrderPagesWebsocketResponseSystem : MonoBehaviour
         {
             orderPageComponent.positionInfoQuantityFilledText.text = Utils.RoundNDecimal(response.quantityFilled.Value, platformComponent.quantityPrecisions[orderPageComponent.symbolDropdownComponent.selectedSymbol]).ToString();
         }
-        if (response.actualTakeProfitPrice.HasValue && platformComponent.pricePrecisions.ContainsKey(orderPageComponent.symbolDropdownComponent.selectedSymbol))
+        if (platformComponent.pricePrecisions.ContainsKey(orderPageComponent.symbolDropdownComponent.selectedSymbol))
         {
-            orderPageComponent.positionInfoActualTakeProfitPriceText.text = Utils.RoundNDecimal(response.actualTakeProfitPrice.Value, platformComponent.pricePrecisions[orderPageComponent.symbolDropdownComponent.selectedSymbol]).ToString();
+            int pricePrecision = platformComponent.pricePrecisions[orderPageComponent.symbolDropdownComponent.selectedSymbol];
 
-            if (response.actualTakeProfitPrice.Value == 0)
+            if (response.actualTakeProfitPrice.HasValue)
             {
-                promptComponent.ShowPrompt(PromptConstant.NOTICE, PromptConstant.TAKE_PROFIT_QUANTITY_INVALID, () =>
+                if (response.actualTakeProfitPrice.Value < 0)
                 {
-                    promptComponent.active = false;
-                });
+                    orderPageComponent.positionInfoActualTakeProfitPriceText.text = "-";
+                    orderPageComponent.positionInfoActualTakeProfitPercentageText.text = "";
+
+                    promptComponent.ShowPrompt(PromptConstant.NOTICE, PromptConstant.TAKE_PROFIT_QUANTITY_INVALID, () =>
+                    {
+                        promptComponent.active = false;
+                    });
+                }
+                else
+                {
+                    orderPageComponent.positionInfoActualTakeProfitPriceText.text = Utils.RoundNDecimal(response.actualTakeProfitPrice.Value, pricePrecision).ToString();
+                    orderPageComponent.positionInfoActualTakeProfitPercentageText.text =
+                    Utils.RoundTwoDecimal(response.actualTakeProfitPercentage.Value).ToString() + "%";
+                }
+
+            }
+            if (response.actualStopLossPrice.HasValue)
+            {
+                if (response.actualStopLossPrice.Value < 0)
+                {
+                    orderPageComponent.positionInfoActualStopLossPriceText.text = "-";
+                    orderPageComponent.positionInfoActualStopLossPercentageText.text = "";
+                }
+                else
+                {
+                    orderPageComponent.positionInfoActualStopLossPriceText.text = Utils.RoundNDecimal(response.actualStopLossPrice.Value, pricePrecision).ToString();
+                    orderPageComponent.positionInfoActualStopLossPercentageText.text =
+                    Utils.RoundTwoDecimal(response.actualStopLossPercentage.Value).ToString() + "%";
+                }
+            }
+            if (response.actualBreakEvenPrice.HasValue)
+            {
+
+                if (response.actualBreakEvenPrice.Value < 0)
+                {
+                    orderPageComponent.positionInfoActualBreakEvenPriceText.text = "-";
+                    orderPageComponent.positionInfoActualBreakEvenPercentageText.text = "";
+                }
+                else
+                {
+                    orderPageComponent.positionInfoActualBreakEvenPriceText.text = Utils.RoundNDecimal(response.actualBreakEvenPrice.Value, pricePrecision).ToString();
+                    orderPageComponent.positionInfoActualBreakEvenPercentageText.text =
+                    Utils.RoundTwoDecimal(response.actualBreakEvenPercentage.Value).ToString() + "%";
+                }
             }
         }
         if (response.paidFundingAmount.HasValue)
@@ -77,19 +119,7 @@ public class OrderPagesWebsocketResponseSystem : MonoBehaviour
         }
         if (response.exitOrderType.HasValue)
         {
-            orderPageComponent.resultComponent.exitOrderTypeText.text = response.exitOrderType.Value.ToString();
-            switch (response.exitOrderType.Value)
-            {
-                case ExitOrderTypeEnum.NONE:
-                    orderPageComponent.resultComponent.exitOrderTypeText.color = OrderConfig.DISPLAY_COLOR_BLACK;
-                    break;
-                case ExitOrderTypeEnum.STOP_LOSS:
-                    orderPageComponent.resultComponent.exitOrderTypeText.color = OrderConfig.DISPLAY_COLOR_RED;
-                    break;
-                case ExitOrderTypeEnum.TAKE_PROFIT:
-                    orderPageComponent.resultComponent.exitOrderTypeText.color = OrderConfig.DISPLAY_COLOR_GREEN;
-                    break;
-            }
+            orderPageComponent.exitOrderType = response.exitOrderType.Value;
         }
     }
     void AddOrderToServerResponse()
@@ -104,14 +134,38 @@ public class OrderPagesWebsocketResponseSystem : MonoBehaviour
         OrderPageComponent orderPageComponent = null;
         foreach (OrderPageComponent component in orderPagesComponent.childOrderPageComponents)
         {
-            if (component.orderId.Equals(response.id))
+            if (component.orderId.Equals(response.order.id))
             {
                 orderPageComponent = component;
             }
         }
         if (orderPageComponent == null) return;
 
-        orderPageComponent.resultComponent.spawnTimeText.text = DateTimeOffset.FromUnixTimeMilliseconds(response.spawnTime).ToLocalTime().ToString();
+        orderPageComponent.marginCalculator = response.order.marginCalculator;
+        orderPageComponent.postCalculate = true;
+        orderPageComponent.spawnTime = response.order.spawnTime;
+    }
+    void UpdateOrderToServerResponse()
+    {
+        string jsonString = websocketComponent.RetrieveGeneralResponses(WebsocketEventTypeEnum.UPDATE_ORDER);
+        websocketComponent.RemovesGeneralResponses(WebsocketEventTypeEnum.UPDATE_ORDER);
+        if (jsonString.IsNullOrEmpty()) return;
+
+        General.WebsocketUpdateOrderResponse response = JsonConvert.DeserializeObject
+        <General.WebsocketUpdateOrderResponse>(jsonString, JsonSerializerConfig.settings);
+
+        OrderPageComponent orderPageComponent = null;
+        foreach (OrderPageComponent component in orderPagesComponent.childOrderPageComponents)
+        {
+            if (component.orderId.Equals(response.order.id))
+            {
+                orderPageComponent = component;
+            }
+        }
+        if (orderPageComponent == null) return;
+
+        orderPageComponent.marginCalculator = response.order.marginCalculator;
+        orderPageComponent.updateTakeProfitPrice = true;
     }
     void SubmitOrderToServerResponse()
     {
@@ -141,7 +195,20 @@ public class OrderPagesWebsocketResponseSystem : MonoBehaviour
         }
         if (orderPageComponent.resultComponent.orderInfoDataObject != null)
         {
-            orderPageComponent.resultComponent.orderInfoDataObject.transform.GetChild(4).GetComponent<TMP_Text>().text = orderPageComponent.orderStatus.ToString();
+            TMP_Text temp = orderPageComponent.resultComponent.orderInfoDataObject.transform.GetChild(4).GetComponent<TMP_Text>();
+            temp.text = orderPageComponent.orderStatus.ToString();
+            switch (orderPageComponent.orderStatus)
+            {
+                case OrderStatusEnum.UNSUBMITTED:
+                    temp.color = OrderConfig.DISPLAY_COLOR_YELLOW;
+                    break;
+                case OrderStatusEnum.SUBMITTED:
+                    temp.color = OrderConfig.DISPLAY_COLOR_CYAN;
+                    break;
+                case OrderStatusEnum.FILLED:
+                    temp.color = OrderConfig.DISPLAY_COLOR_ORANGE;
+                    break;
+            }
         }
         if (orderPageComponent.orderStatusError && !response.message.IsNullOrEmpty())
         {
@@ -185,8 +252,8 @@ public class OrderPagesWebsocketResponseSystem : MonoBehaviour
         if (orderPageThrottleComponent == null) return;
 
         orderPageThrottleComponent.orderStatus = response.status;
-        orderPageThrottleComponent.orderStatusError = response.statusError;
-        if (orderPageThrottleComponent.orderStatusError && !response.message.IsNullOrEmpty())
+        // orderPageThrottleComponent.orderStatusError = response.statusError;
+        if (response.statusError && !response.message.IsNullOrEmpty())
         {
             switch (platformComponent.activePlatform)
             {
